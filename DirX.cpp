@@ -7,6 +7,8 @@
 #include<string>
 #include<format>
 
+#include"WinApp.h"
+
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 
@@ -43,6 +45,58 @@ DirX::DirX() {
 	}
 	// 適切なアダプタが見つからなかったので起動できない
 	assert(useAdapter != nullptr);
+
+	ID3D12Device* device = nullptr;
+	// 機能レベルとログの出力の文字列
+	D3D_FEATURE_LEVEL featureLevels[] = {
+		D3D_FEATURE_LEVEL_12_2, D3D_FEATURE_LEVEL_12_1,D3D_FEATURE_LEVEL_12_0
+	};
+
+	const char* featureLevelStrings[] = { "12.2" , "12.1","12.0" };
+	// 高い順に生成できるか試していく
+	for (size_t i = 0; i < _countof(featureLevels); ++i) {
+		// 採用したアダプターでデバイス生成
+		hr = D3D12CreateDevice(useAdapter, featureLevels[i], IID_PPV_ARGS(&device));
+		// 指定した機能レベルでデバイスが生成できたかを確認
+		if (SUCCEEDED(hr)) {
+			// 生成できたのでログ出力を行ってループを抜ける
+			Log(std::format("FeatureLevel : {}\n", featureLevelStrings[i]));
+			break;
+		}
+	}
+	// デバイスの生成がうまくいかなかったので起動できない
+	assert(device != nullptr);
+	Log("Complete create D3D12Device!!!\n"); //初期化完了のログをだす
+
+	// コマンドキューを生成する
+	ID3D12CommandQueue* commandQueue = nullptr;
+	D3D12_COMMAND_QUEUE_DESC commandQueueDesc{};
+	hr = device->CreateCommandQueue(&commandQueueDesc,
+		IID_PPV_ARGS(&commandQueue));
+	// コマンドキューの生成がうまくいかなかったので起動できない
+	assert(SUCCEEDED(hr));
+
+	// コマンドアロケータを生成する
+	ID3D12CommandAllocator* commandAllocator = nullptr;
+	hr = device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocator));
+	// コマンドアロケーターの生成がうまくいかなかったので起動できない
+	assert(SUCCEEDED(hr));
+
+
+	// コマンドリストを生成する
+	ID3D12GraphicsCommandList* commandList = nullptr;
+	hr = device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator, nullptr,
+		IID_PPV_ARGS(&commandList));
+	// コマンドリストの生成がうまくいかなかったので起動できない
+	assert(SUCCEEDED(hr));
+
+	// スワップチェーンを生成する
+	IDXGISwapChain4* swapCgain = nullptr;
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
+	swapChainDesc.Width = WinApp::kClientHeight
+
+
+
 
 };
 DirX::~DirX() {}
