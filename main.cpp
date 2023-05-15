@@ -1,8 +1,35 @@
-#include<Windows.h>
+﻿#include<Windows.h>
+#include"WinApp.h"
+#include"DirX.h"
 
-// Windows�A�v���ł̃G���g���[�|�C���g�imain�֐��j
+
+
+
+// Windowsアプリでのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
-	//�o�̓E�B���h�E�ւ̕����o��
+
+	WinApp *winApp = new WinApp;
+
+	MSG msg{};
+
+	DirX* dirX = new DirX;
+	//ウィンドウの×ボタンが押されるまでループ
+	while (msg.message != WM_QUIT) {
+		// Windowにメッセージが来てたら最優先で処理させる
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		else {
+			// ゲームの処理
+		}
+	}
+
+
+
+
+
+	//出力ウィンドウへの文字出力
 	OutputDebugStringA("Hello,DirectX!\n");
 
 	return 0;
