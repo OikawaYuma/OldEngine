@@ -12,9 +12,11 @@ public:
 
 	WNDCLASS wc{};
 
+	static HWND hwnd_;
+
 	// クライアント領域のサイズ
-	const int32_t kClientWidth = 1280;
-	const int32_t kClientHeight = 720;
+	static const int32_t kClientWidth = 1280;
+	static const int32_t kClientHeight = 720;
 	
 
 };

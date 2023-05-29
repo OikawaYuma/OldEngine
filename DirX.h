@@ -1,8 +1,9 @@
 ﻿#pragma once
+#include <Windows.h>
 class DirX
 {
 public:
-	DirX();
+	DirX(HWND hwnd);
 	~DirX();
 
 };
