@@ -50,6 +50,10 @@ WinApp::WinApp(const wchar_t*label) {
 		wc.hInstance,			 // インスタンスハンドル
 		nullptr);				 // オプション
 
+#ifdef _DEBUG
+	
+#endif
+
 	// ウィンドウを表示する
 	ShowWindow(hwnd_, SW_SHOW);
 }

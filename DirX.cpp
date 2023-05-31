@@ -124,9 +124,7 @@ DirX::DirX(HWND hwnd) {
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 出力結果をSRGBに変換して書き込む
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D; //2dテクスチャとして書き込む
 	// ディスクリプタヒープの先頭を取得する
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvStartHandle = rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
-	// RTVを2つ作るのでディスクリプタを2つ用意
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[2];
+	rtvStartHandle = rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 	// まず1つ目を作る。1つ目は最初のところに作る。作る場所をこちらで指定してあげる必要がある
 	rtvHandles[0] = rtvStartHandle;
 	device->CreateRenderTargetView(swaoChainResources[0], &rtvDesc, rtvHandles[0]);
@@ -135,31 +133,35 @@ DirX::DirX(HWND hwnd) {
 	//2つ目を作る
 	device->CreateRenderTargetView(swaoChainResources[1], &rtvDesc, rtvHandles[1]);
 
-	//// これから書き込むバックバッファのインデックスを取得
-	//UINT backBufferIndex = swapChain->GetCurrentBackBufferIndex();
-	//// 描画先のRTVを設定する
-	//commandList->OMSetRenderTargets(1, &rtvHandles[backBufferIndex], false, nullptr);
-	//// 指定した色で画面全体をクリアする
-	//float clearColor[] = { 0.1f,0.25f,0.5f,1.0f }; // 青っぽい色。RGBAの順
-	//commandList->ClearRenderTargetView(rtvHandles[backBufferIndex], clearColor, 0, nullptr);
-	//// コマンドリストの内容を確定させる。すべてのコマンドを積んでからCloseすること
-	//hr = commandList->Close();
-	//assert(SUCCEEDED(hr));
-
-	//// GPUにコマンドリストの実行を行わせる
-	//ID3D12CommandList* commandLists[] = { commandList };
-	//commandQueue->ExecuteCommandLists(1, commandLists);
-	//// GPUとOSに画面の交換を行うよう通知する
-	//swapChain->Present(1, 0);
-	////次のフレーム用のコマンドリストを準備
-	//hr = commandAllocator->Reset();
-	//assert(SUCCEEDED(hr));
-	//hr = commandList->Reset(commandAllocator, nullptr);
-	//assert(SUCCEEDED(hr));
+	
 
 
 };
 DirX::~DirX() {}
+
+void DirX::DirXUpdata() {
+	// これから書き込むバックバッファのインデックスを取得
+	UINT backBufferIndex = swapChain->GetCurrentBackBufferIndex();
+	// 描画先のRTVを設定する
+	commandList->OMSetRenderTargets(1, &rtvHandles[backBufferIndex], false, nullptr);
+	// 指定した色で画面全体をクリアする
+	float clearColor[] = { 0.1f,0.25f,0.5f,1.0f }; // 青っぽい色。RGBAの順
+	commandList->ClearRenderTargetView(rtvHandles[backBufferIndex], clearColor, 0, nullptr);
+	// コマンドリストの内容を確定させる。すべてのコマンドを積んでからCloseすること
+	hr = commandList->Close();
+	assert(SUCCEEDED(hr));
+
+	// GPUにコマンドリストの実行を行わせる
+	ID3D12CommandList* commandLists[] = { commandList };
+	commandQueue->ExecuteCommandLists(1, commandLists);
+	// GPUとOSに画面の交換を行うよう通知する
+	swapChain->Present(1, 0);
+	//次のフレーム用のコマンドリストを準備
+	hr = commandAllocator->Reset();
+	assert(SUCCEEDED(hr));
+	hr = commandList->Reset(commandAllocator, nullptr);
+	assert(SUCCEEDED(hr));
+}
 
 
 

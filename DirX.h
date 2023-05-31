@@ -36,5 +36,9 @@ public:
 
 	//RTVの設定
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
+	// ディスクリプタヒープの先頭を取得する
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvStartHandle;
+	// RTVを2つ作るのでディスクリプタを2つ用意
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[2];
 };
 
