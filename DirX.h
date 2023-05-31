@@ -6,5 +6,9 @@ public:
 	DirX(HWND hwnd);
 	~DirX();
 
+	void DirXUpdata();
+
+
+
 };
 

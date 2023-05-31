@@ -13,6 +13,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	MSG msg{};
 
 	DirX* dirX = new DirX(winApp->hwnd_);
+
 	//ウィンドウの×ボタンが押されるまでループ
 	while (msg.message != WM_QUIT) {
 		// Windowにメッセージが来てたら最優先で処理させる

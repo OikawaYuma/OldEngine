@@ -12,7 +12,7 @@ public:
 
 	WNDCLASS wc{};
 
-	static HWND hwnd_;
+ static HWND hwnd_;
 
 	// クライアント領域のサイズ
 	static const int32_t kClientWidth = 1280;
