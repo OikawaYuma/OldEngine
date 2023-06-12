@@ -15,6 +15,7 @@ public:
 	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 	WinApp(const wchar_t* label);
 	~WinApp();
+	void Release();
 
 	WNDCLASS wc{};
 
@@ -23,6 +24,9 @@ public:
 	// クライアント領域のサイズ
 	static const int32_t kClientWidth = 1280;
 	static const int32_t kClientHeight = 720;
+
+	ID3D12Debug1* debugController;
+	
 	
 
 };

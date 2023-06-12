@@ -2,6 +2,9 @@
 #include <Windows.h>
 #include<string>
 
+#include<dxgidebug.h>
+#pragma comment(lib,"dxguid.lib")
+
 HWND WinApp::hwnd_;
 
 LRESULT  WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
@@ -51,7 +54,7 @@ WinApp::WinApp(const wchar_t*label) {
 		nullptr);				 // オプション
 
 #ifdef _DEBUG
-	ID3D12Debug1* debugController = nullptr;
+	debugController = nullptr;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)))) {
 		// デバックレイヤーを有効化する
 		debugController->EnableDebugLayer();
@@ -62,6 +65,16 @@ WinApp::WinApp(const wchar_t*label) {
 
 	// ウィンドウを表示する
 	ShowWindow(hwnd_, SW_SHOW);
+}
+
+void WinApp::Release() {
+	
+#ifdef _DEBUG
+	debugController->Release();
+#endif
+	CloseWindow(hwnd_);
+
+	
 }
 
 

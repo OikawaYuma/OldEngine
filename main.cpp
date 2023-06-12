@@ -1,19 +1,36 @@
 ﻿#include<Windows.h>
 #include"WinApp.h"
-#include"DirX.h"
-
+#include"DirXCommon.h"
+#include"TextureManager.h"
+#include"Vector4.h"
 
 
 
 // Windowsアプリでのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
+
+	Vector4 pos[3] = {
+	 { -0.9f,-0.5f,0.0f,1.0f },
+
+	 { -0.75f,0.5f,0.0f,1.0f },
+
+	 { -0.5f,-0.5f,0.0f,1.0f }
+	};
+	Vector4 pos2[3] = {
+	 { 0.25f,-0.5f,0.0f,1.0f },
+
+	 { 0.0f,0.5f,0.0f,1.0f },
+
+	 { 0.75f,-0.5f,0.0f,1.0f }
+	};
+
 	WinApp *winApp = new WinApp(L"CG2");
-
-	MSG msg{};
-
 	DirX* dirX = new DirX(winApp->hwnd_);
-
+	TextureManager* textureManager = new TextureManager(winApp, dirX,pos);
+	TextureManager* textureManager2 = new TextureManager(winApp, dirX, pos2);
+	
+	MSG msg{};
 	//ウィンドウの×ボタンが押されるまでループ
 	while (msg.message != WM_QUIT) {
 		// Windowにメッセージが来てたら最優先で処理させる
@@ -24,15 +41,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		else {
 			// ゲームの処理
 			dirX->DirXUpdata();
+			textureManager->Update(dirX);
+			textureManager2->Update(dirX);
+			dirX->ViewChange();
+			
 		}
 	}
 
-
-
-
-
 	//出力ウィンドウへの文字出力
 	OutputDebugStringA("Hello,DirectX!\n");
+
+	winApp->Release();
+	textureManager->Release();
+	textureManager2->Release();
+	dirX->DirXRelease( );
 
 	return 0;
 }

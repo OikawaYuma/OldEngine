@@ -7,10 +7,15 @@
 #include<string>
 #include<format>
 
-#include"WinApp.h"
+//#include"WinApp.h"
+#include<dxcapi.h>
+//#include"TextureManager.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
+#pragma comment(lib,"dxcompiler.lib")
+class TextureManager;
+class WinApp;
 class DirX
 {
 public:
@@ -18,6 +23,8 @@ public:
 	~DirX();
 
 	void DirXUpdata();
+	void ViewChange();
+	void DirXRelease();
 
 	IDXGIFactory7* dxgiFactory;
 	HRESULT hr;
@@ -31,8 +38,9 @@ public:
 
 	//スワップチェーン
 	IDXGISwapChain4* swapChain;
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 	ID3D12DescriptorHeap* rtvDescriptorHeap;
-	ID3D12Resource* swaoChainResources[2] = { nullptr };
+	ID3D12Resource* swapChainResources[2] = { nullptr };
 
 	//RTVの設定
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
@@ -40,5 +48,28 @@ public:
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvStartHandle;
 	// RTVを2つ作るのでディスクリプタを2つ用意
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[2];
+
+	// これから書き込むバックバッファのインデックスを取得
+	UINT backBufferIndex;
+	// TransitionBarrierの設定
+	D3D12_RESOURCE_BARRIER barrier{};
+
+	// 初期値0でFenceを作る
+	ID3D12Fence* fence;
+	uint64_t fenceValue;
+	HANDLE fenceEvent;
+
+	// dxCompilerを初期化
+	IDxcUtils* dxcUtils;
+	IDxcCompiler3* dxcCompiler;
+
+	IDxcIncludeHandler* includeHandler = nullptr;
+
+
+
+
+
+
+	
 };
 
