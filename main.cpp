@@ -28,7 +28,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	for (int i = 0; i < 20; i++) {
 		textureManager[i] = new TextureManager();
 		textureManager[i]->Initialize(winApp, dirX, pos[i]);
-
 	}
 	MSG msg{};
 	//ウィンドウの×ボタンが押されるまでループ
