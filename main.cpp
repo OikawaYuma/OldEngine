@@ -18,7 +18,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	 { -0.5f,-0.5f,0.0f,1.0f }
 	};
 	for (int i = 0; i < 2; i++) {
-		pos[i]->x = -0.9f, -0.75f, -0.5f;
+		pos[i]->x =  -0.9f, -0.75f, -0.5f;
 		pos[i]->y = -0.5f, 0.5f, -0.5f;
 		pos[i]->z = 0.0f, 0.0f, 0.0f;
 		pos[i]->w = 1.0f, 1.0f, 1.0f;
