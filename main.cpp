@@ -19,10 +19,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		pos[i][2] = { -0.80f,0.70f + (i * -0.10f),0.0f,1.0f };
 	}
 
-
-
-	
-
 	WinApp *winApp = new WinApp(L"CG2");
 	DirX* dirX = new DirX(winApp->hwnd_);
 	TextureManager* textureManager[20];
