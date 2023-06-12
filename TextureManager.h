@@ -18,9 +18,10 @@ class WinApp;
 class TextureManager
 {
 public:
-	TextureManager(WinApp* winApp, DirX* dirX, Vector4 *vertexDataA);
+	TextureManager();
 	~TextureManager();
 
+	void Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA);
 	void Update(DirX* dirX);
 	void Release();
 	HRESULT hr;

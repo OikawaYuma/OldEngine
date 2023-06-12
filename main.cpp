@@ -10,13 +10,22 @@
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
-	Vector4 pos[3] = {
+	Vector4 pos[3][2] = {
 	 { -0.9f,-0.5f,0.0f,1.0f },
 
 	 { -0.75f,0.5f,0.0f,1.0f },
 
 	 { -0.5f,-0.5f,0.0f,1.0f }
 	};
+	for (int i = 0; i < 2; i++) {
+		pos[i]->x = -0.9f, -0.75f, -0.5f;
+		pos[i]->y = -0.5f, 0.5f, -0.5f;
+		pos[i]->z = 0.0f, 0.0f, 0.0f;
+		pos[i]->w = 1.0f, 1.0f, 1.0f;
+	}
+
+
+
 	Vector4 pos2[3] = {
 	 { 0.25f,-0.5f,0.0f,1.0f },
 
@@ -27,9 +36,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	WinApp *winApp = new WinApp(L"CG2");
 	DirX* dirX = new DirX(winApp->hwnd_);
-	TextureManager* textureManager = new TextureManager(winApp, dirX,pos);
-	TextureManager* textureManager2 = new TextureManager(winApp, dirX, pos2);
-	
+	TextureManager* textureManager = new TextureManager();
+	TextureManager* textureManager2 = new TextureManager();
+	textureManager->Initialize(winApp, dirX, pos[0]);
+	textureManager2->Initialize(winApp, dirX, pos[1]);
 	MSG msg{};
 	//ウィンドウの×ボタンが押されるまでループ
 	while (msg.message != WM_QUIT) {

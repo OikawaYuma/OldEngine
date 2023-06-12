@@ -3,9 +3,13 @@
 #include"WinApp.h"
 #include"DirXCommon.h"
 
-TextureManager::TextureManager(WinApp* winApp,DirX* dirX, Vector4 *vertexDataA) {
+TextureManager::TextureManager() {
 
 	
+	
+}
+
+void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA) {
 	descriptionRootSignature.Flags =
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 	// シリアライズしてバイナリにする
@@ -29,7 +33,7 @@ TextureManager::TextureManager(WinApp* winApp,DirX* dirX, Vector4 *vertexDataA) 
 	inputElementDescs[0].SemanticIndex = 0;
 	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	
+
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
 
@@ -38,7 +42,7 @@ TextureManager::TextureManager(WinApp* winApp,DirX* dirX, Vector4 *vertexDataA) 
 	blendDesc.RenderTarget[0].RenderTargetWriteMask =
 		D3D12_COLOR_WRITE_ENABLE_ALL;
 
-	
+
 	// 裏面（時計回り）を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
 	// 三角形の中を塗りつぶす
@@ -77,7 +81,7 @@ TextureManager::TextureManager(WinApp* winApp,DirX* dirX, Vector4 *vertexDataA) 
 	assert(SUCCEEDED(hr));
 
 	uploadHeapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;// Uploadheapを使う
-	
+
 	// バッファリソース。テクスチャの場合はまた別の設定をする
 	vertexResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
 	vertexResourceDesc.Width = sizeof(Vector4) * 3;// リソースのサイズ。今回はVector4を3頂点分
@@ -95,7 +99,7 @@ TextureManager::TextureManager(WinApp* winApp,DirX* dirX, Vector4 *vertexDataA) 
 		IID_PPV_ARGS(&vertexResource));
 	assert(SUCCEEDED(hr));
 
-	
+
 	//リソースの先頭のアドレスから使う
 	vertexBufferView.BufferLocation = vertexResource->GetGPUVirtualAddress();
 	// 使用するリソースのサイズは頂点3つ分のサイズ
@@ -119,8 +123,8 @@ TextureManager::TextureManager(WinApp* winApp,DirX* dirX, Vector4 *vertexDataA) 
 	vertexData[1] = vertexDataA[1];
 	//右下
 	vertexData[2] = vertexDataA[2];
-	
-	
+
+
 	//クライアント領域のサイズと一緒にして画面全体に表示
 	viewport.Width = (float)winApp->kClientWidth;
 	viewport.Height = (float)winApp->kClientHeight;
@@ -129,13 +133,14 @@ TextureManager::TextureManager(WinApp* winApp,DirX* dirX, Vector4 *vertexDataA) 
 	viewport.MinDepth = 0.0f;
 	viewport.MaxDepth = 1.0f;
 
-	
+
 	// 基本的にビューポートと同じ矩形が構成されるようにする
 	scissorRect.left = 0;
 	scissorRect.right = winApp->kClientWidth;
 	scissorRect.top = 0;
 	scissorRect.bottom = winApp->kClientHeight;
-}
+
+};
 
 void TextureManager::Update(DirX* dirX) {
 	dirX->commandList->RSSetViewports(1, &viewport);  //viewportを設定
