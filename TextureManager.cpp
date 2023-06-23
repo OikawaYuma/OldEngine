@@ -2,6 +2,7 @@
 #include"function.h"
 #include"WinApp.h"
 #include"DirXCommon.h"
+#include"mathFunction.h"
 
 TextureManager::TextureManager() {
 
@@ -9,7 +10,11 @@ TextureManager::TextureManager() {
 	
 }
 
-D3D12_RESOURCE_DESC TextureManager::CreateBufferResourceDesc(size_t sizeInBytes) {
+
+
+ID3D12Resource* TextureManager::CreateBufferResource(ID3D12Device* device, size_t sizeInBytes) {
+	ID3D12Resource* resource= nullptr;
+
 	D3D12_RESOURCE_DESC resourceDesc{};
 	// バッファリソース。テクスチャの場合はまた別の設定をする
 	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
@@ -22,14 +27,8 @@ D3D12_RESOURCE_DESC TextureManager::CreateBufferResourceDesc(size_t sizeInBytes)
 	// バッファに場合はこれにする決まり
 	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	return resourceDesc;
-}
-
-ID3D12Resource* TextureManager::CreateBufferResource(ID3D12Device* device, size_t sizeInBytes,  D3D12_RESOURCE_DESC ResourceDesc) {
-	ID3D12Resource* resource= nullptr;
-
 	hr = device->CreateCommittedResource(&uploadHeapProperties, D3D12_HEAP_FLAG_NONE,
-		&ResourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		&resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&resource));
 	assert(SUCCEEDED(hr));
 
@@ -60,10 +59,15 @@ void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA
 
 	// シリアライズしてバイナリにする
 	signatureBlob = nullptr;// RootParmeter作成。複数でっていできるので配列。今回は結果１つだけなので長さ1の配列
-	D3D12_ROOT_PARAMETER rootParamerters[1] = {};
+	D3D12_ROOT_PARAMETER rootParamerters[2] = {};
 	rootParamerters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  // CBVを使う
 	rootParamerters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;  // PixelShaderで使う
 	rootParamerters[0].Descriptor.ShaderRegister = 0; //レジスタ番号0とバインド
+
+	rootParamerters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  // CBVを使う
+	rootParamerters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;  // vertexShaderで使う
+	rootParamerters[1].Descriptor.ShaderRegister = 0; //レジスタ番号0とバインド
+
 	descriptionRootSignature.pParameters = rootParamerters; // ルートパラメータ配列へのポインタ
 	descriptionRootSignature.NumParameters = _countof(rootParamerters); // 配列の長さ
 	errorBlob = nullptr;
@@ -134,10 +138,9 @@ void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA
 
 	uploadHeapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;// Uploadheapを使う
 	//バッファリソース
-	vertexResourceDesc = CreateBufferResourceDesc(sizeof(Vector4) * 3);
 	
 	// 実際に頂点リソースを作る
-	vertexResource = CreateBufferResource(dirX->device, sizeof(Vector4) * 3,vertexResourceDesc);
+	vertexResource = CreateBufferResource(dirX->device, sizeof(Vector4) * 3);
 
 	vertexBufferView = CreateBufferView();
 	
@@ -147,11 +150,10 @@ void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA
 	// 書き込むためのアドレスを取得
 	vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
 
-	//バッファリソース
-	materialResourceDesc = CreateBufferResourceDesc(sizeof(Vector4));
+
 
 	// 実際に頂点リソースを作る
-	materialResource = CreateBufferResource(dirX->device, sizeof(Vector4), materialResourceDesc);
+	materialResource = CreateBufferResource(dirX->device, sizeof(Vector4));
 
 	materialBufferView = CreateBufferView();;
 	// 頂点リソースにデータを書き込む
@@ -160,6 +162,18 @@ void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
 	*materialData = DrawColor;
+
+
+	//バッファリソース
+	// データを書き込む
+	wvpData = nullptr;
+	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
+	wvpResource = CreateBufferResource(dirX->device, sizeof(Matrix4x4));
+	// 書き込むためのアドレスを取得
+	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
+	//単位行列を書き込んでいく
+	*wvpData = MakeIdentity4x4();
+
 
 
 
@@ -208,6 +222,7 @@ void TextureManager::Update(DirX* dirX) {
 	dirX->commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// マテリアルCBufferの場所を設定
 	dirX->commandList->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
+	dirX->commandList->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
 	// 描画！（DrawCall/ドローコール）・3頂点で1つのインスタンス。インスタンスについては今後
 	dirX->commandList->DrawInstanced(3, 1, 0, 0);
 };
@@ -216,6 +231,7 @@ void TextureManager::Update(DirX* dirX) {
 void TextureManager::Release() {
 	vertexResource->Release();
 	materialResource->Release();
+	wvpResource->Release();
 	graphicsPipelineState->Release();
 	signatureBlob->Release();
 	if (errorBlob) {

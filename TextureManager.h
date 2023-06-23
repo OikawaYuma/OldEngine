@@ -7,6 +7,8 @@
 
 //#include"DirXCommon.h"
 #include "Vector4.h"
+#include"Vector3.h"
+#include"Matrix4x4.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -21,7 +23,7 @@ public:
 	TextureManager();
 	~TextureManager();
 
-	ID3D12Resource* CreateBufferResource(ID3D12Device* device,size_t sizeInBytes, D3D12_RESOURCE_DESC ResourceDesc);
+	ID3D12Resource* CreateBufferResource(ID3D12Device* device,size_t sizeInBytes);
 	D3D12_RESOURCE_DESC  CreateBufferResourceDesc(size_t sizeInBytes);
 	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
 
@@ -61,8 +63,6 @@ public:
 	D3D12_HEAP_PROPERTIES uploadHeapProperties{};
 
 	/*頂点用*/
-	//頂点リソースの設定
-	D3D12_RESOURCE_DESC vertexResourceDesc{};
 	// 実際に頂点リソースを作る
 	ID3D12Resource* vertexResource;
 	// 頂点バッファビューを作成する
@@ -73,13 +73,23 @@ public:
 
 	/*色用*/
 	//頂点リソースの設定
-	D3D12_RESOURCE_DESC materialResourceDesc{};
 	// 実際に頂点リソースを作る
 	ID3D12Resource* materialResource;
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
 	// 頂点リソースにデータを書き込む
 	Vector4* materialData;
+
+	/*移動用*/
+	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
+	ID3D12Resource* wvpResource;
+	// データを書き込む
+	Matrix4x4* wvpData;
+
+	// 頂点バッファビューを作成する
+	D3D12_VERTEX_BUFFER_VIEW wvpBufferView{};
+
+	
 
 
 

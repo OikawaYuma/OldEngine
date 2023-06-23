@@ -3,6 +3,10 @@
 #include"DirXCommon.h"
 #include"TextureManager.h"
 #include"Vector4.h"
+#include"Vector3.h"
+#include"Matrix4x4.h"
+#include"Transform.h"
+#include"mathFunction.h"
 
 
 
@@ -12,6 +16,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	Vector4 pos[20][3];
 	Vector4 color[20] = {0.0f,0.0f,0.0f,1.0f};
+	// Transform変数の初期化
+	Transform transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	Transform cameraTransform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,-5.0f} };
+
 	for (int i = 0; i < 20; i++) {
 		pos[i][0] = { -0.9f,0.70f+(i*-0.10f),0.0f,1.0f };
 		
@@ -19,6 +27,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		pos[i][2] = { -0.80f,0.70f + (i * -0.10f),0.0f,1.0f };
 	}
+
+	pos[0][0] = { -1.0f,-1.0f ,0.0f,1.0f };
+	pos[0][1] = { 0.0f,1.0f ,0.0f,1.0f };
+	pos[0][2] = { 1.0f,-1.0f,0.0f,1.0f };
 
 	WinApp *winApp = new WinApp(L"CG2");
 	DirX* dirX = new DirX(winApp->hwnd_);
@@ -44,7 +56,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		else {
 			// ゲームの処理
 			dirX->DirXUpdata();
+
+			transform.rotate.y += 0.01f;
+			Matrix4x4 worldmatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);;
+			Matrix4x4 cameraMatrix = MakeAffineMatrix(cameraTransform.scale, cameraTransform.rotate, cameraTransform.translate);
+
+			Matrix4x4 viewMatrix = Inverse(cameraMatrix);
+			Matrix4x4 projectionMatrix = MakePerspectiveFovMatrix(0.45f, float(winApp->kClientWidth) / float(winApp->kClientHeight), 0.1f, 100.0f);
+			Matrix4x4 worldViewProjectionMatrix = Multiply(worldmatrix, Multiply(viewMatrix, projectionMatrix));
+			
+
+
+
 			for (int i = 0; i < 20; i++) {
+				
+				*textureManager[i]->wvpData = worldViewProjectionMatrix;
 				textureManager[i]->Update(dirX);
 			}
 		

@@ -96,11 +96,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="WinApp.cpp" />
+    <ClCompile Include="mathFunction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirXCommon.h" />
     <ClInclude Include="function.h" />
+    <ClInclude Include="mathFunction.h" />
+    <ClInclude Include="Matrix4x4.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />
     <ClInclude Include="WinApp.h" />
   </ItemGroup>
