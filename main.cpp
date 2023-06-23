@@ -11,6 +11,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 	Vector4 pos[20][3];
+	Vector4 color[20] = {0.0f,0.0f,0.0f,1.0f};
 	for (int i = 0; i < 20; i++) {
 		pos[i][0] = { -0.9f,0.70f+(i*-0.10f),0.0f,1.0f };
 		
@@ -26,8 +27,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	
 
 	for (int i = 0; i < 20; i++) {
+
+		color[i] = { 0.05f * i,0.0f,0.0f,1.0f, };
+
 		textureManager[i] = new TextureManager();
-		textureManager[i]->Initialize(winApp, dirX, pos[i]);
+		textureManager[i]->Initialize(winApp, dirX, pos[i],color[i]);
 	}
 	MSG msg{};
 	//ウィンドウの×ボタンが押されるまでループ

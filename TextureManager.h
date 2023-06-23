@@ -21,10 +21,15 @@ public:
 	TextureManager();
 	~TextureManager();
 
-	void Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA);
+	ID3D12Resource* CreateBufferResource(ID3D12Device* device,size_t sizeInBytes, D3D12_RESOURCE_DESC ResourceDesc);
+	D3D12_RESOURCE_DESC  CreateBufferResourceDesc(size_t sizeInBytes);
+	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
+
+	void Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA,Vector4 DrawColor);
 	void Update(DirX* dirX);
 	void Release();
 	HRESULT hr;
+
 
 
 
@@ -50,8 +55,12 @@ public:
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
 	//実際に生成
 	ID3D12PipelineState* graphicsPipelineState;
+
+	
 	//頂点リソース用のヒープの設定
 	D3D12_HEAP_PROPERTIES uploadHeapProperties{};
+
+	/*頂点用*/
 	//頂点リソースの設定
 	D3D12_RESOURCE_DESC vertexResourceDesc{};
 	// 実際に頂点リソースを作る
@@ -60,6 +69,22 @@ public:
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView{};
 	// 頂点リソースにデータを書き込む
 	Vector4* vertexData;
+
+
+	/*色用*/
+	//頂点リソースの設定
+	D3D12_RESOURCE_DESC materialResourceDesc{};
+	// 実際に頂点リソースを作る
+	ID3D12Resource* materialResource;
+	// 頂点バッファビューを作成する
+	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
+	// 頂点リソースにデータを書き込む
+	Vector4* materialData;
+
+
+
+
+
 	//ビューポート
 	D3D12_VIEWPORT viewport{};
 	// シザー矩形

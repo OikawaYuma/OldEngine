@@ -9,11 +9,63 @@ TextureManager::TextureManager() {
 	
 }
 
-void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA) {
+D3D12_RESOURCE_DESC TextureManager::CreateBufferResourceDesc(size_t sizeInBytes) {
+	D3D12_RESOURCE_DESC resourceDesc{};
+	// バッファリソース。テクスチャの場合はまた別の設定をする
+	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resourceDesc.Width = sizeInBytes;// リソースのサイズ。今回はVector4を3頂点分
+	//バッファの場合はこれらは1にする決まり
+	resourceDesc.Height = 1;
+	resourceDesc.DepthOrArraySize = 1;
+	resourceDesc.MipLevels = 1;
+	resourceDesc.SampleDesc.Count = 1;
+	// バッファに場合はこれにする決まり
+	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	return resourceDesc;
+}
+
+ID3D12Resource* TextureManager::CreateBufferResource(ID3D12Device* device, size_t sizeInBytes,  D3D12_RESOURCE_DESC ResourceDesc) {
+	ID3D12Resource* resource= nullptr;
+
+	hr = device->CreateCommittedResource(&uploadHeapProperties, D3D12_HEAP_FLAG_NONE,
+		&ResourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&resource));
+	assert(SUCCEEDED(hr));
+
+	return resource;
+};
+
+D3D12_VERTEX_BUFFER_VIEW TextureManager::CreateBufferView() {
+	D3D12_VERTEX_BUFFER_VIEW view{};
+
+	//リソースの先頭のアドレスから使う
+	view.BufferLocation = vertexResource->GetGPUVirtualAddress();
+	// 使用するリソースのサイズは頂点3つ分のサイズ
+	view.SizeInBytes = sizeof(Vector4) * 3;
+	// 1頂点あたりのサイズ
+	view.StrideInBytes = sizeof(Vector4);
+	
+
+	return view;
+};
+
+
+	//ID3D12Resource* CreateBufferResourceDesc(ID3D12Device* device, size_t sizeInBytes);
+
+void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA, Vector4 DrawColor) {
 	descriptionRootSignature.Flags =
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+
+
 	// シリアライズしてバイナリにする
-	signatureBlob = nullptr;
+	signatureBlob = nullptr;// RootParmeter作成。複数でっていできるので配列。今回は結果１つだけなので長さ1の配列
+	D3D12_ROOT_PARAMETER rootParamerters[1] = {};
+	rootParamerters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  // CBVを使う
+	rootParamerters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;  // PixelShaderで使う
+	rootParamerters[0].Descriptor.ShaderRegister = 0; //レジスタ番号0とバインド
+	descriptionRootSignature.pParameters = rootParamerters; // ルートパラメータ配列へのポインタ
+	descriptionRootSignature.NumParameters = _countof(rootParamerters); // 配列の長さ
 	errorBlob = nullptr;
 	hr = D3D12SerializeRootSignature(&descriptionRootSignature,
 		D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob, &errorBlob);
@@ -81,36 +133,36 @@ void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA
 	assert(SUCCEEDED(hr));
 
 	uploadHeapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;// Uploadheapを使う
-
-	// バッファリソース。テクスチャの場合はまた別の設定をする
-	vertexResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	vertexResourceDesc.Width = sizeof(Vector4) * 3;// リソースのサイズ。今回はVector4を3頂点分
-	//バッファの場合はこれらは1にする決まり
-	vertexResourceDesc.Height = 1;
-	vertexResourceDesc.DepthOrArraySize = 1;
-	vertexResourceDesc.MipLevels = 1;
-	vertexResourceDesc.SampleDesc.Count = 1;
-	// バッファに場合はこれにする決まり
-	vertexResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	//バッファリソース
+	vertexResourceDesc = CreateBufferResourceDesc(sizeof(Vector4) * 3);
+	
 	// 実際に頂点リソースを作る
-	vertexResource = nullptr;
-	hr = dirX->device->CreateCommittedResource(&uploadHeapProperties, D3D12_HEAP_FLAG_NONE,
-		&vertexResourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-		IID_PPV_ARGS(&vertexResource));
-	assert(SUCCEEDED(hr));
+	vertexResource = CreateBufferResource(dirX->device, sizeof(Vector4) * 3,vertexResourceDesc);
 
-
-	//リソースの先頭のアドレスから使う
-	vertexBufferView.BufferLocation = vertexResource->GetGPUVirtualAddress();
-	// 使用するリソースのサイズは頂点3つ分のサイズ
-	vertexBufferView.SizeInBytes = sizeof(Vector4) * 3;
-	// 1頂点あたりのサイズ
-	vertexBufferView.StrideInBytes = sizeof(Vector4);
+	vertexBufferView = CreateBufferView();
+	
 
 	// 頂点リソースにデータを書き込む
 	vertexData = nullptr;
 	// 書き込むためのアドレスを取得
 	vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
+
+	//バッファリソース
+	materialResourceDesc = CreateBufferResourceDesc(sizeof(Vector4));
+
+	// 実際に頂点リソースを作る
+	materialResource = CreateBufferResource(dirX->device, sizeof(Vector4), materialResourceDesc);
+
+	materialBufferView = CreateBufferView();;
+	// 頂点リソースにデータを書き込む
+	materialData = nullptr;
+	// 書き込むためのアドレスを取得
+	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
+	// 色のデータを変数から読み込み
+	*materialData = DrawColor;
+
+
+
 	////左下
 	//vertexData[0] = { -0.5f,-0.5f,0.0f,1.0f };
 	////上
@@ -123,7 +175,9 @@ void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA
 	vertexData[1] = vertexDataA[1];
 	//右下
 	vertexData[2] = vertexDataA[2];
-
+	
+	//マテリアルにデータを書き込む
+	
 
 	//クライアント領域のサイズと一緒にして画面全体に表示
 	viewport.Width = (float)winApp->kClientWidth;
@@ -140,6 +194,7 @@ void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA
 	scissorRect.top = 0;
 	scissorRect.bottom = winApp->kClientHeight;
 
+	
 };
 
 void TextureManager::Update(DirX* dirX) {
@@ -151,6 +206,8 @@ void TextureManager::Update(DirX* dirX) {
 	dirX->commandList->IASetVertexBuffers(0, 1, &vertexBufferView);    //VBVを設定
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	dirX->commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// マテリアルCBufferの場所を設定
+	dirX->commandList->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
 	// 描画！（DrawCall/ドローコール）・3頂点で1つのインスタンス。インスタンスについては今後
 	dirX->commandList->DrawInstanced(3, 1, 0, 0);
 };
@@ -158,6 +215,7 @@ void TextureManager::Update(DirX* dirX) {
 
 void TextureManager::Release() {
 	vertexResource->Release();
+	materialResource->Release();
 	graphicsPipelineState->Release();
 	signatureBlob->Release();
 	if (errorBlob) {
@@ -165,5 +223,5 @@ void TextureManager::Release() {
 	}
 	rootSignature->Release();
 	pixelShaderBlob->Release();
-vertexShaderBlob->Release();
+	vertexShaderBlob->Release();
 };
