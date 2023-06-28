@@ -177,6 +177,7 @@ void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA
 
 
 
+
 	////左下
 	//vertexData[0] = { -0.5f,-0.5f,0.0f,1.0f };
 	////上
