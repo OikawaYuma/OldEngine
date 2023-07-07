@@ -8,9 +8,12 @@
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 
+
 class WinApp
 {
 public:
+
+	
 	
 	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 	WinApp(const wchar_t* label);

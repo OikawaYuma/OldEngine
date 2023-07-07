@@ -3,6 +3,7 @@
 #include"WinApp.h"
 #include"DirXCommon.h"
 #include"mathFunction.h"
+#include"ImGuiCommon.h"
 
 TextureManager::TextureManager() {
 
@@ -224,6 +225,7 @@ void TextureManager::Update(DirX* dirX) {
 	// マテリアルCBufferの場所を設定
 	dirX->commandList->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
 	dirX->commandList->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
+
 	// 描画！（DrawCall/ドローコール）・3頂点で1つのインスタンス。インスタンスについては今後
 	dirX->commandList->DrawInstanced(3, 1, 0, 0);
 };

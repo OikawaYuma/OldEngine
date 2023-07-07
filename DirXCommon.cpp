@@ -10,6 +10,8 @@
 #include"WinApp.h"
 #include"TextureManager.h"
 
+#include"ImGuiCommon.h"
+
 #include"imgui.h"
 #include"imgui_impl_win32.h"
 #include"imgui_impl_dx12.h"
@@ -24,8 +26,8 @@ ID3D12DescriptorHeap* DirX::CreateDescriptorHeap(ID3D12Device* device, D3D12_DES
 	// ディスクリプタヒープの生成
 	ID3D12DescriptorHeap* descriptorHeap = nullptr;
 	D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc{};
-	descriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; //レンダーターゲットビュー用
-	descriptorHeapDesc.NumDescriptors = 2; //ダブルバッファように2つ。多くても構わない
+	descriptorHeapDesc.Type = heapType; //レンダーターゲットビュー用
+	descriptorHeapDesc.NumDescriptors = numDescriptors; //ダブルバッファように2つ。多くても構わない
 	descriptorHeapDesc.Flags = shaderVisible ? D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE : D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
 	HRESULT hr = device->CreateDescriptorHeap(&descriptorHeapDesc, IID_PPV_ARGS(&descriptorHeap));
@@ -51,6 +53,7 @@ DirX::DirX(HWND hwnd) {
 		DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE, IID_PPV_ARGS(&useAdapter)) !=
 		DXGI_ERROR_NOT_FOUND; ++i) {
 		// アダプターの情報を取得する
+
 		DXGI_ADAPTER_DESC3 adapterDesc{};
 		hr = useAdapter->GetDesc3(&adapterDesc);
 		assert(SUCCEEDED(hr)); // 取得できないのは一大事
@@ -141,7 +144,6 @@ DirX::DirX(HWND hwnd) {
 
 	// スワップチェーンを生成する
 	swapChain = nullptr;
-	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 	swapChainDesc.Width = WinApp::kClientWidth;
 	swapChainDesc.Height = WinApp::kClientHeight;
 	swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -157,7 +159,7 @@ DirX::DirX(HWND hwnd) {
 	//RTV用のヒープでディスクリプタの数は2。RTVはSHADER内で触るものではないのでShaderVisibleはfalse
 	rtvDescriptorHeap = CreateDescriptorHeap(device, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 2, false);
 	//SRV用のヒープでディスクリプタの数は128。SRVはShader内で触るものなので、ShaderVisibleはtrue
-	//srvDescriptorHeap = CreateDescriptorHeap(device, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 128, true);
+	srvDescriptorHeap = CreateDescriptorHeap(device, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 128, true);
 	// SwapChainからResouceを引っ張ってくる
 	hr = swapChain->GetBuffer(0, IID_PPV_ARGS(&swapChainResources[0]));
 	//うまく取得できなければ起動できない
@@ -211,7 +213,7 @@ DirX::~DirX() {}
 
 void DirX::DirXUpdata() {
 	// ゲームの処理
-
+	
 	// これから書き込むバックバッファのインデックスを取得
 	backBufferIndex = swapChain->GetCurrentBackBufferIndex();
 	//描画先のRTVを設定する
@@ -235,9 +237,14 @@ void DirX::DirXUpdata() {
 	//指定した色で画面全体をクリアする
 	float clearColor[] = { 0.1f,0.25f,0.5f,1.0f }; //青っぽい色。 RGBAの淳  0.1/0.25/0.5/1.0f
 	commandList->ClearRenderTargetView(rtvHandles[backBufferIndex], clearColor, 0, nullptr);
+
+	
 }
 
+// 実際のcoomandListのImguiの描画コマンドを積む
+
 void DirX::ViewChange() {
+	//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 	//画面に描く処理はすべて終わり、画面に移すので、状態を遷移
 // 今回はRenderTargetからPresentにする
 	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;

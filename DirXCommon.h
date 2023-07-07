@@ -16,6 +16,7 @@
 #pragma comment(lib,"dxcompiler.lib")
 class TextureManager;
 class WinApp;
+class ImGuiCommon;
 class DirX
 {
 public:
