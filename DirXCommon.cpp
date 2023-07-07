@@ -294,6 +294,7 @@ void DirX::DirXRelease() {
 	CloseHandle(fenceEvent);
 	fence->Release();
 	rtvDescriptorHeap->Release();
+	srvDescriptorHeap->Release();
 	swapChainResources[0]->Release();
 	swapChainResources[1]->Release();
 	swapChain->Release();

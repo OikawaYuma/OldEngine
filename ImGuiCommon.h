@@ -15,6 +15,6 @@ public:
 
 	void UIParameter();
 	void UICreate(DirX* dirX);
-
+	void Release();
 };
 

@@ -85,6 +85,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	for (int i = 0; i < 20; i++) {
 		textureManager[i]->Release();
 	}
+	imGuiCommon->Release();
 	dirX->DirXRelease( );
 
 	return 0;

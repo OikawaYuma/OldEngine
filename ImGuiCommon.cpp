@@ -43,3 +43,10 @@ void ImGuiCommon::UICreate(DirX* dirX) {
 	// 実際のcoomandListのImguiの描画コマンドを積む
 	//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dirX->commandList);
 }
+
+
+void ImGuiCommon::Release() {
+	ImGui_ImplDX12_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+}
