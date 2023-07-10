@@ -14,6 +14,7 @@
 
 // Windowsアプリでのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+	CoInitializeEx(0,COINIT_MULTITHREADED );
 	Vector4 pos[20][3];
 	Vector4 color[20] = {0.0f,0.0f,0.0f,1.0f};
 	// Transform変数の初期化
@@ -87,6 +88,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 	imGuiCommon->Release();
 	dirX->DirXRelease( );
-
+	CoUninitialize();
 	return 0;
 }
