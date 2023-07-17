@@ -1,7 +1,7 @@
 ﻿#include<Windows.h>
 #include"WinApp.h"
 #include"DirXCommon.h"
-#include"TextureManager.h"
+#include"Mesh.h"
 #include"ImGuiCommon.h"
 
 #include"Vector4.h"
@@ -36,14 +36,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	ImGuiCommon* imGuiCommon = new ImGuiCommon;
 	
 
-	TextureManager* textureManager[20];
-	TextureManager* textureManager2 = new TextureManager();
+	Mesh* mesh_[20];
+	Mesh* mesh2 = new Mesh();
 	
 
 	for (int i = 0; i < 20; i++) {
 		color[i] = { 0.05f * i,0.0f,0.0f,1.0f, };
-		textureManager[i] = new TextureManager();
-		textureManager[i]->Initialize(winApp, dirX, pos[i],color[i]);
+		mesh_[i] = new Mesh();
+		mesh_[i]->Initialize(winApp, dirX, pos[i],color[i]);
 	}
 	
 	MSG msg{};
@@ -71,8 +71,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			
 			
 			for (int i = 0; i < 20; i++) {
-				*textureManager[i]->wvpData = worldViewProjectionMatrix;
-				textureManager[i]->Update(dirX);
+				*mesh_[i]->wvpData = worldViewProjectionMatrix;
+				mesh_[i]->Update(dirX);
 			}
 			imGuiCommon->Draw(dirX);
 			dirX->ViewChange();
@@ -84,7 +84,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	winApp->Release();
 	for (int i = 0; i < 20; i++) {
-		textureManager[i]->Release();
+		mesh_[i]->Release();
 	}
 	imGuiCommon->Release();
 	dirX->DirXRelease( );

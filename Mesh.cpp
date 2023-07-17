@@ -1,11 +1,11 @@
-﻿#include "TextureManager.h"
+﻿#include "Mesh.h"
 #include"function.h"
 #include"WinApp.h"
 #include"DirXCommon.h"
 #include"mathFunction.h"
 #include"ImGuiCommon.h"
 
-TextureManager::TextureManager() {
+Mesh::Mesh() {
 
 
 
@@ -14,8 +14,7 @@ TextureManager::TextureManager() {
 
 
 
-
-ID3D12Resource* TextureManager::CreateBufferResource(ID3D12Device* device, size_t sizeInBytes) {
+ID3D12Resource* Mesh::CreateBufferResource(ID3D12Device* device, size_t sizeInBytes) {
 	ID3D12Resource* resource= nullptr;
 
 	D3D12_RESOURCE_DESC resourceDesc{};
@@ -38,7 +37,7 @@ ID3D12Resource* TextureManager::CreateBufferResource(ID3D12Device* device, size_
 	return resource;
 };
 
-D3D12_VERTEX_BUFFER_VIEW TextureManager::CreateBufferView() {
+D3D12_VERTEX_BUFFER_VIEW Mesh::CreateBufferView() {
 	D3D12_VERTEX_BUFFER_VIEW view{};
 
 	//リソースの先頭のアドレスから使う
@@ -55,7 +54,7 @@ D3D12_VERTEX_BUFFER_VIEW TextureManager::CreateBufferView() {
 
 	//ID3D12Resource* CreateBufferResourceDesc(ID3D12Device* device, size_t sizeInBytes);
 
-void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA, Vector4 DrawColor) {
+void Mesh::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA, Vector4 DrawColor) {
 	descriptionRootSignature.Flags =
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
@@ -215,7 +214,7 @@ void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA
 	
 };
 
-void TextureManager::Update(DirX* dirX) {
+void Mesh::Update(DirX* dirX) {
 	dirX->commandList->RSSetViewports(1, &viewport);  //viewportを設定
 	dirX->commandList->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
@@ -233,7 +232,7 @@ void TextureManager::Update(DirX* dirX) {
 };
 
 
-void TextureManager::Release() {
+void Mesh::Release() {
 	vertexResource->Release();
 	materialResource->Release();
 	wvpResource->Release();

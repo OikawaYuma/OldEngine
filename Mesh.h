@@ -17,11 +17,12 @@
 class DirX;
 class WinApp;
 
-class TextureManager
+class Mesh
 {
 public:
-	TextureManager();
-	~TextureManager();
+	Mesh();
+	~Mesh();
+
 
 	ID3D12Resource* CreateBufferResource(ID3D12Device* device,size_t sizeInBytes);
 	D3D12_RESOURCE_DESC  CreateBufferResourceDesc(size_t sizeInBytes);
