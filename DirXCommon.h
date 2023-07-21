@@ -14,7 +14,7 @@
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
-class TextureManager;
+class Mesh;
 class WinApp;
 class ImGuiCommon;
 class DirX

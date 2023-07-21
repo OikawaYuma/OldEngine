@@ -16,18 +16,17 @@
 
 class DirX;
 class WinApp;
-
-class TextureManager
+class Mesh
 {
 public:
-	TextureManager();
-	~TextureManager();
+	Mesh();
+	~Mesh();
 
-	ID3D12Resource* CreateBufferResource(ID3D12Device* device,size_t sizeInBytes);
+	ID3D12Resource* CreateBufferResource(ID3D12Device* device, size_t sizeInBytes);
 	D3D12_RESOURCE_DESC  CreateBufferResourceDesc(size_t sizeInBytes);
 	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
 
-	void Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA,Vector4 DrawColor);
+	void Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA, Vector4 DrawColor);
 	void Update(DirX* dirX);
 	void Release();
 	HRESULT hr;
@@ -58,7 +57,7 @@ public:
 	//実際に生成
 	ID3D12PipelineState* graphicsPipelineState;
 
-	
+
 	//頂点リソース用のヒープの設定
 	D3D12_HEAP_PROPERTIES uploadHeapProperties{};
 
@@ -89,7 +88,7 @@ public:
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW wvpBufferView{};
 
-	
+
 
 
 
@@ -100,6 +99,5 @@ public:
 	// シザー矩形
 	D3D12_RECT scissorRect{};
 
-private:
 };
 

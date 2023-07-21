@@ -1,11 +1,11 @@
-﻿#include "TextureManager.h"
+﻿#include "Mesh.h"
 #include"function.h"
 #include"WinApp.h"
 #include"DirXCommon.h"
 #include"mathFunction.h"
 #include"ImGuiCommon.h"
 
-TextureManager::TextureManager() {
+Mesh::Mesh() {
 
 
 
@@ -15,8 +15,8 @@ TextureManager::TextureManager() {
 
 
 
-ID3D12Resource* TextureManager::CreateBufferResource(ID3D12Device* device, size_t sizeInBytes) {
-	ID3D12Resource* resource= nullptr;
+ID3D12Resource* Mesh::CreateBufferResource(ID3D12Device* device, size_t sizeInBytes) {
+	ID3D12Resource* resource = nullptr;
 
 	D3D12_RESOURCE_DESC resourceDesc{};
 	// バッファリソース。テクスチャの場合はまた別の設定をする
@@ -38,7 +38,7 @@ ID3D12Resource* TextureManager::CreateBufferResource(ID3D12Device* device, size_
 	return resource;
 };
 
-D3D12_VERTEX_BUFFER_VIEW TextureManager::CreateBufferView() {
+D3D12_VERTEX_BUFFER_VIEW Mesh::CreateBufferView() {
 	D3D12_VERTEX_BUFFER_VIEW view{};
 
 	//リソースの先頭のアドレスから使う
@@ -47,15 +47,15 @@ D3D12_VERTEX_BUFFER_VIEW TextureManager::CreateBufferView() {
 	view.SizeInBytes = sizeof(Vector4) * 3;
 	// 1頂点あたりのサイズ
 	view.StrideInBytes = sizeof(Vector4);
-	
+
 
 	return view;
 };
 
 
-	//ID3D12Resource* CreateBufferResourceDesc(ID3D12Device* device, size_t sizeInBytes);
+//ID3D12Resource* CreateBufferResourceDesc(ID3D12Device* device, size_t sizeInBytes);
 
-void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA, Vector4 DrawColor) {
+void Mesh::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA, Vector4 DrawColor) {
 	descriptionRootSignature.Flags =
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
@@ -141,12 +141,12 @@ void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA
 
 	uploadHeapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;// Uploadheapを使う
 	//バッファリソース
-	
+
 	// 実際に頂点リソースを作る
 	vertexResource = CreateBufferResource(dirX->device, sizeof(Vector4) * 3);
 
 	vertexBufferView = CreateBufferView();
-	
+
 
 	// 頂点リソースにデータを書き込む
 	vertexData = nullptr;
@@ -193,9 +193,9 @@ void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA
 	vertexData[1] = vertexDataA[1];
 	//右下
 	vertexData[2] = vertexDataA[2];
-	
+
 	//マテリアルにデータを書き込む
-	
+
 
 	//クライアント領域のサイズと一緒にして画面全体に表示
 	viewport.Width = (float)winApp->kClientWidth;
@@ -212,10 +212,10 @@ void TextureManager::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA
 	scissorRect.top = 0;
 	scissorRect.bottom = winApp->kClientHeight;
 
-	
+
 };
 
-void TextureManager::Update(DirX* dirX) {
+void Mesh::Update(DirX* dirX) {
 	dirX->commandList->RSSetViewports(1, &viewport);  //viewportを設定
 	dirX->commandList->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
@@ -233,7 +233,7 @@ void TextureManager::Update(DirX* dirX) {
 };
 
 
-void TextureManager::Release() {
+void Mesh::Release() {
 	vertexResource->Release();
 	materialResource->Release();
 	wvpResource->Release();
