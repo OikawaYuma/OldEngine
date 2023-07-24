@@ -53,7 +53,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\imgui;$(ProjectDir)Src;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Src\camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\imgui;$(ProjectDir)Src;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Src\camera;$(ProjectDir)Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,7 +80,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\imgui;$(ProjectDir)Src;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Src\camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\imgui;$(ProjectDir)Src;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Src\camera;$(ProjectDir)Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -99,6 +99,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Scene\gameScene.cpp" />
     <ClCompile Include="Src\camera\Camera.cpp" />
     <ClCompile Include="Src\DirXCommon.cpp" />
     <ClCompile Include="Externals\imgui\imgui.cpp" />
@@ -116,6 +117,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Lib\math\mathFunction.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scene\gameScene.h" />
     <ClInclude Include="Src\camera\Camera.h" />
     <ClInclude Include="Src\DirXCommon.h" />
     <ClInclude Include="Externals\imgui\imconfig.h" />

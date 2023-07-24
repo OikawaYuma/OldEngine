@@ -13,7 +13,7 @@ class WinApp
 {
 public:
 
-	
+	static WinApp* GetInstance();
 	
 	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 	WinApp(const wchar_t* label);

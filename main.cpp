@@ -34,7 +34,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	pos[0][2] = { 1.0f,-1.0f,0.0f,1.0f };
 
 	WinApp *winApp = new WinApp(L"CG2");
-	DirXCommon* dirX = new DirXCommon(winApp->hwnd_);
+	DirXCommon* dirX = new DirXCommon();
 	ImGuiCommon* imGuiCommon = new ImGuiCommon;
 	
 
@@ -46,7 +46,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	for (int i = 0; i < 20; i++) {
 		color[i] = { 0.05f * i,0.0f,0.0f,1.0f, };
 		mesh_[i] = new Mesh();
-		mesh_[i]->Initialize(winApp, dirX, pos[i],color[i]);
+		mesh_[i]->Initialize( dirX,pos[i],color[i]);
 	}
 	
 	MSG msg{};
@@ -59,21 +59,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			DispatchMessage(&msg);
 		}
 		else {
-		
+			// ゲームの処理の開始
+			dirX->BeginFrame();
+
+			//ImGuiの更新
 			imGuiCommon->Update();
 		
-			// ゲームの処理
-			dirX->Updata();
+			//三角形の回転
 			transform.rotate.y += 0.03f;
 			//カメラの更新
 			camera->Update(winApp, transform);
-			
 			
 			for (int i = 0; i < 20; i++) {
 				*mesh_[i]->wvpData = camera->worldViewProjectionMatrix;
 				mesh_[i]->Update(dirX);
 			}
+			//ImGuiの描画
 			imGuiCommon->Draw(dirX);
+			//スワップチェーン
 			dirX->ViewChange();
 		}
 	}
@@ -81,6 +84,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//出力ウィンドウへの文字出力
 	OutputDebugStringA("Hello,DirectX!\n");
 
+
+	/*------------------------------------------------------------
+	
+	-------------------------------------------------------------*/
 	winApp->Release();
 
 	for (int i = 0; i < 20; i++) {

@@ -20,10 +20,12 @@ class ImGuiCommon;
 class DirXCommon
 {
 public:
-	DirXCommon(HWND hwnd);
+	static DirXCommon* GetInstance();
+
+	DirXCommon();
 	~DirXCommon();
 
-	void Updata();
+	void BeginFrame();
 	void ViewChange();
 	void Release();
 

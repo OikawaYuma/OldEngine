@@ -63,6 +63,7 @@
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\camera\Camera.cpp" />
+    <ClCompile Include="Scene\gameScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Externals\imgui\imconfig.h">
@@ -120,6 +121,7 @@
       <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="Src\camera\Camera.h" />
+    <ClInclude Include="Scene\gameScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

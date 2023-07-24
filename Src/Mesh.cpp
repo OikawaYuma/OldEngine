@@ -54,7 +54,11 @@ D3D12_VERTEX_BUFFER_VIEW Mesh::CreateBufferView() {
 
 	//ID3D12Resource* CreateBufferResourceDesc(ID3D12Device* device, size_t sizeInBytes);
 
-void Mesh::Initialize(WinApp* winApp, DirXCommon* dirX, Vector4* vertexDataA, Vector4 DrawColor) {
+void Mesh::Initialize(DirXCommon *sDirX,  Vector4* vertexDataA, Vector4 DrawColor) {
+
+	WinApp* sWinApp = WinApp::GetInstance();
+	//DirXCommon* sDirX = DirXCommon::GetInstance();
+
 	descriptionRootSignature.Flags =
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
@@ -81,7 +85,7 @@ void Mesh::Initialize(WinApp* winApp, DirXCommon* dirX, Vector4* vertexDataA, Ve
 	}
 	// バイナリを元に生成
 	rootSignature = nullptr;
-	hr = dirX->device->CreateRootSignature(0, signatureBlob->GetBufferPointer(),
+	hr = sDirX->device->CreateRootSignature(0, signatureBlob->GetBufferPointer(),
 		signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(hr));
 
@@ -108,11 +112,11 @@ void Mesh::Initialize(WinApp* winApp, DirXCommon* dirX, Vector4* vertexDataA, Ve
 
 	// Shaderをコンパイルする
 	vertexShaderBlob = CompileShader(L"Object3d.VS.hlsl",
-		L"vs_6_0", dirX->dxcUtils, dirX->dxcCompiler, dirX->includeHandler);
+		L"vs_6_0", sDirX->dxcUtils, sDirX->dxcCompiler, sDirX->includeHandler);
 	assert(vertexShaderBlob != nullptr);
 
 	pixelShaderBlob = CompileShader(L"Object3d.PS.hlsl",
-		L"ps_6_0", dirX->dxcUtils, dirX->dxcCompiler, dirX->includeHandler);
+		L"ps_6_0", sDirX->dxcUtils, sDirX->dxcCompiler, sDirX->includeHandler);
 	assert(pixelShaderBlob != nullptr);
 
 	graphicsPipelineStateDesc.pRootSignature = rootSignature; // RootSignature
@@ -134,7 +138,7 @@ void Mesh::Initialize(WinApp* winApp, DirXCommon* dirX, Vector4* vertexDataA, Ve
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 	//実際に生成
 	graphicsPipelineState = nullptr;
-	hr = dirX->device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
+	hr = sDirX->device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
 		IID_PPV_ARGS(&graphicsPipelineState));
 	assert(SUCCEEDED(hr));
 
@@ -142,7 +146,7 @@ void Mesh::Initialize(WinApp* winApp, DirXCommon* dirX, Vector4* vertexDataA, Ve
 	//バッファリソース
 	
 	// 実際に頂点リソースを作る
-	vertexResource = CreateBufferResource(dirX->device, sizeof(Vector4) * 3);
+	vertexResource = CreateBufferResource(sDirX->device, sizeof(Vector4) * 3);
 
 	vertexBufferView = CreateBufferView();
 	
@@ -155,7 +159,7 @@ void Mesh::Initialize(WinApp* winApp, DirXCommon* dirX, Vector4* vertexDataA, Ve
 
 
 	// 実際に頂点リソースを作る
-	materialResource = CreateBufferResource(dirX->device, sizeof(Vector4));
+	materialResource = CreateBufferResource(sDirX->device, sizeof(Vector4));
 
 	materialBufferView = CreateBufferView();;
 	// 頂点リソースにデータを書き込む
@@ -170,7 +174,7 @@ void Mesh::Initialize(WinApp* winApp, DirXCommon* dirX, Vector4* vertexDataA, Ve
 	// データを書き込む
 	wvpData = nullptr;
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	wvpResource = CreateBufferResource(dirX->device, sizeof(Matrix4x4));
+	wvpResource = CreateBufferResource(sDirX->device, sizeof(Matrix4x4));
 	// 書き込むためのアドレスを取得
 	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
 	//単位行列を書き込んでいく
@@ -197,8 +201,8 @@ void Mesh::Initialize(WinApp* winApp, DirXCommon* dirX, Vector4* vertexDataA, Ve
 	
 
 	//クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = (float)winApp->kClientWidth;
-	viewport.Height = (float)winApp->kClientHeight;
+	viewport.Width = (float)sWinApp->kClientWidth;
+	viewport.Height = (float)sWinApp->kClientHeight;
 	viewport.TopLeftX = 1;
 	viewport.TopLeftY = 1;
 	viewport.MinDepth = 0.0f;
@@ -207,14 +211,15 @@ void Mesh::Initialize(WinApp* winApp, DirXCommon* dirX, Vector4* vertexDataA, Ve
 
 	// 基本的にビューポートと同じ矩形が構成されるようにする
 	scissorRect.left = 0;
-	scissorRect.right = winApp->kClientWidth;
+	scissorRect.right = sWinApp->kClientWidth;
 	scissorRect.top = 0;
-	scissorRect.bottom = winApp->kClientHeight;
+	scissorRect.bottom = sWinApp->kClientHeight;
 
 	
 };
 
 void Mesh::Update(DirXCommon* dirX) {
+	
 	dirX->commandList->RSSetViewports(1, &viewport);  //viewportを設定
 	dirX->commandList->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	// RootSignatureを設定。PSOに設定しているけど別途設定が必要

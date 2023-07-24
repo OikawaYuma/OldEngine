@@ -28,7 +28,7 @@ public:
 	D3D12_RESOURCE_DESC  CreateBufferResourceDesc(size_t sizeInBytes);
 	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
 
-	void Initialize(WinApp* winApp, DirXCommon* dirX, Vector4* vertexDataA,Vector4 DrawColor);
+	void Initialize(DirXCommon *sDirX, Vector4* vertexDataA,Vector4 DrawColor);
 	void Update(DirXCommon* dirX);
 	void Release();
 	HRESULT hr;

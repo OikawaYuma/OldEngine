@@ -36,7 +36,10 @@ ID3D12DescriptorHeap* DirXCommon::CreateDescriptorHeap(ID3D12Device* device, D3D
 	return descriptorHeap;
 };
 
-DirXCommon::DirXCommon(HWND hwnd) {
+DirXCommon::DirXCommon() {
+	WinApp* sWinApp = WinApp::GetInstance();
+
+
 	//DXGIファクトリーの生成
 	dxgiFactory = nullptr;
 	// HRESULTはWinodows系のエラーコードであり、
@@ -144,15 +147,15 @@ DirXCommon::DirXCommon(HWND hwnd) {
 
 	// スワップチェーンを生成する
 	swapChain = nullptr;
-	swapChainDesc.Width = WinApp::kClientWidth;
-	swapChainDesc.Height = WinApp::kClientHeight;
+	swapChainDesc.Width = sWinApp->kClientWidth;
+	swapChainDesc.Height = sWinApp->kClientHeight;
 	swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapChainDesc.SampleDesc.Count = 1; //マルチサンプルしない
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; //描画のターゲットとして利用する
 	swapChainDesc.BufferCount = 2; //ダブルバッファ
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD; //モニタにうつしたら中身を破棄
 	//コマンドキュー、ウィンドウハンドル設定を渡して生成する
-	hr = dxgiFactory->CreateSwapChainForHwnd(commandQueue, hwnd, &swapChainDesc, nullptr, nullptr, reinterpret_cast<IDXGISwapChain1**>(&swapChain));
+	hr = dxgiFactory->CreateSwapChainForHwnd(commandQueue, sWinApp->hwnd_, &swapChainDesc, nullptr, nullptr, reinterpret_cast<IDXGISwapChain1**>(&swapChain));
 	assert(SUCCEEDED(hr));
 
 	// ディスクリプタヒープの生成
@@ -211,7 +214,7 @@ DirXCommon::DirXCommon(HWND hwnd) {
 	
 DirXCommon::~DirXCommon() {}
 
-void DirXCommon::Updata() {
+void DirXCommon::BeginFrame() {
 	// ゲームの処理
 	
 	// これから書き込むバックバッファのインデックスを取得
@@ -322,7 +325,10 @@ void DirXCommon::Release() {
 
 }
 
-
+ DirXCommon* DirXCommon::GetInstance() {
+	static DirXCommon *instance;
+	return instance;
+}
 
 
 
