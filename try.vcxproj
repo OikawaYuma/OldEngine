@@ -53,7 +53,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)externals\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\imgui;$(ProjectDir)Src;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Src\camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -65,6 +65,9 @@
       <Command>copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"
 copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dxil.dll"</Command>
     </PostBuildEvent>
+    <FxCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)Resources\shaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -77,7 +80,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)externals\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\imgui;$(ProjectDir)Src;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Src\camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -91,42 +94,47 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <Command>copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"
 copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dxil.dll"</Command>
     </PostBuildEvent>
+    <FxCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)Resources\shaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DirXCommon.cpp" />
-    <ClCompile Include="externals\imgui\imgui.cpp" />
-    <ClCompile Include="externals\imgui\imgui_demo.cpp" />
-    <ClCompile Include="externals\imgui\imgui_draw.cpp" />
-    <ClCompile Include="externals\imgui\imgui_impl_dx12.cpp" />
-    <ClCompile Include="externals\imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="externals\imgui\imgui_tables.cpp" />
-    <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="function.cpp" />
-    <ClCompile Include="ImGuiCommon.cpp" />
+    <ClCompile Include="Src\camera\Camera.cpp" />
+    <ClCompile Include="Src\DirXCommon.cpp" />
+    <ClCompile Include="Externals\imgui\imgui.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_tables.cpp" />
+    <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Src\function.cpp" />
+    <ClCompile Include="Lib\imgui\ImGuiCommon.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="WinApp.cpp" />
-    <ClCompile Include="mathFunction.cpp" />
+    <ClCompile Include="Src\Mesh.cpp" />
+    <ClCompile Include="Src\WinApp.cpp" />
+    <ClCompile Include="Lib\math\mathFunction.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirXCommon.h" />
-    <ClInclude Include="externals\imgui\imconfig.h" />
-    <ClInclude Include="externals\imgui\imgui.h" />
-    <ClInclude Include="externals\imgui\imgui_impl_dx12.h" />
-    <ClInclude Include="externals\imgui\imgui_impl_win32.h" />
-    <ClInclude Include="externals\imgui\imgui_internal.h" />
-    <ClInclude Include="externals\imgui\imstb_rectpack.h" />
-    <ClInclude Include="externals\imgui\imstb_textedit.h" />
-    <ClInclude Include="externals\imgui\imstb_truetype.h" />
-    <ClInclude Include="function.h" />
-    <ClInclude Include="ImGuiCommon.h" />
-    <ClInclude Include="mathFunction.h" />
-    <ClInclude Include="Matrix4x4.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="Vector3.h" />
-    <ClInclude Include="Vector4.h" />
-    <ClInclude Include="WinApp.h" />
+    <ClInclude Include="Src\camera\Camera.h" />
+    <ClInclude Include="Src\DirXCommon.h" />
+    <ClInclude Include="Externals\imgui\imconfig.h" />
+    <ClInclude Include="Externals\imgui\imgui.h" />
+    <ClInclude Include="Externals\imgui\imgui_impl_dx12.h" />
+    <ClInclude Include="Externals\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="Externals\imgui\imgui_internal.h" />
+    <ClInclude Include="Externals\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Externals\imgui\imstb_textedit.h" />
+    <ClInclude Include="Externals\imgui\imstb_truetype.h" />
+    <ClInclude Include="Src\function.h" />
+    <ClInclude Include="Lib\imgui\ImGuiCommon.h" />
+    <ClInclude Include="Lib\math\mathFunction.h" />
+    <ClInclude Include="Math\Matrix4x4.h" />
+    <ClInclude Include="Src\Mesh.h" />
+    <ClInclude Include="Math\Transform.h" />
+    <ClInclude Include="Math\Vector3.h" />
+    <ClInclude Include="Math\Vector4.h" />
+    <ClInclude Include="Src\WinApp.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
@@ -143,7 +151,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="externals\imgui\LICENSE.txt" />
+    <Text Include="Externals\imgui\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">

@@ -3,6 +3,7 @@
 #include"DirXCommon.h"
 #include"Mesh.h"
 #include"ImGuiCommon.h"
+#include"Camera.h"
 
 #include"Vector4.h"
 #include"Vector3.h"
@@ -19,7 +20,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Vector4 color[20] = {0.0f,0.0f,0.0f,1.0f};
 	// Transform変数の初期化
 	Transform transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
-	Transform cameraTransform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,-5.0f} };
+	Camera *camera = new Camera;
+	camera->Initialize();
 	
 	for (int i = 0; i < 20; i++) {
 		pos[i][0] = { -0.9f ,0.70f + (i * -0.10f),0.0f,1.0f };
@@ -37,6 +39,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	
 
 	Mesh* mesh_[20];
+	// 実験用
 	Mesh* mesh2 = new Mesh();
 	
 
@@ -61,17 +64,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		
 			// ゲームの処理
 			dirX->Updata();
-			
 			transform.rotate.y += 0.03f;
-			Matrix4x4 worldmatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);;
-			Matrix4x4 cameraMatrix = MakeAffineMatrix(cameraTransform.scale, cameraTransform.rotate, cameraTransform.translate);
-			Matrix4x4 viewMatrix = Inverse(cameraMatrix);
-			Matrix4x4 projectionMatrix = MakePerspectiveFovMatrix(0.45f, float(winApp->kClientWidth) / float(winApp->kClientHeight), 0.1f, 100.0f);
-			Matrix4x4 worldViewProjectionMatrix = Multiply(worldmatrix, Multiply(viewMatrix, projectionMatrix));
+			//カメラの更新
+			camera->Update(winApp, transform);
 			
 			
 			for (int i = 0; i < 20; i++) {
-				*mesh_[i]->wvpData = worldViewProjectionMatrix;
+				*mesh_[i]->wvpData = camera->worldViewProjectionMatrix;
 				mesh_[i]->Update(dirX);
 			}
 			imGuiCommon->Draw(dirX);

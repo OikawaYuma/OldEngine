@@ -22,102 +22,104 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="externals\imgui\imgui.cpp">
+    <ClCompile Include="Externals\imgui\imgui.cpp">
       <Filter>Include\Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="externals\imgui\imgui_demo.cpp">
+    <ClCompile Include="Externals\imgui\imgui_demo.cpp">
       <Filter>Include\Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="externals\imgui\imgui_draw.cpp">
+    <ClCompile Include="Externals\imgui\imgui_draw.cpp">
       <Filter>Include\Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="externals\imgui\imgui_impl_dx12.cpp">
+    <ClCompile Include="Externals\imgui\imgui_impl_dx12.cpp">
       <Filter>Include\Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="externals\imgui\imgui_impl_win32.cpp">
+    <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp">
       <Filter>Include\Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="externals\imgui\imgui_tables.cpp">
+    <ClCompile Include="Externals\imgui\imgui_tables.cpp">
       <Filter>Include\Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="externals\imgui\imgui_widgets.cpp">
+    <ClCompile Include="Externals\imgui\imgui_widgets.cpp">
       <Filter>Include\Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="function.cpp">
+    <ClCompile Include="Src\function.cpp">
       <Filter>Func</Filter>
     </ClCompile>
-    <ClCompile Include="DirXCommon.cpp">
+    <ClCompile Include="Src\DirXCommon.cpp">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="WinApp.cpp">
+    <ClCompile Include="Src\WinApp.cpp">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="ImGuiCommon.cpp">
+    <ClCompile Include="Lib\imgui\ImGuiCommon.cpp">
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mathFunction.cpp">
+    <ClCompile Include="Lib\math\mathFunction.cpp">
       <Filter>Func</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
+    <ClCompile Include="Src\Mesh.cpp">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="Src\camera\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="externals\imgui\imconfig.h">
+    <ClInclude Include="Externals\imgui\imconfig.h">
       <Filter>Include\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="externals\imgui\imgui.h">
+    <ClInclude Include="Externals\imgui\imgui.h">
       <Filter>Include\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="externals\imgui\imgui_impl_dx12.h">
+    <ClInclude Include="Externals\imgui\imgui_impl_dx12.h">
       <Filter>Include\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="externals\imgui\imgui_impl_win32.h">
+    <ClInclude Include="Externals\imgui\imgui_impl_win32.h">
       <Filter>Include\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="externals\imgui\imgui_internal.h">
+    <ClInclude Include="Externals\imgui\imgui_internal.h">
       <Filter>Include\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="externals\imgui\imstb_rectpack.h">
+    <ClInclude Include="Externals\imgui\imstb_rectpack.h">
       <Filter>Include\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="externals\imgui\imstb_textedit.h">
+    <ClInclude Include="Externals\imgui\imstb_textedit.h">
       <Filter>Include\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="externals\imgui\imstb_truetype.h">
+    <ClInclude Include="Externals\imgui\imstb_truetype.h">
       <Filter>Include\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="function.h">
+    <ClInclude Include="Src\function.h">
       <Filter>Func</Filter>
     </ClInclude>
-    <ClInclude Include="DirXCommon.h">
+    <ClInclude Include="Src\DirXCommon.h">
       <Filter>Src</Filter>
     </ClInclude>
-    <ClInclude Include="ImGuiCommon.h">
+    <ClInclude Include="Lib\imgui\ImGuiCommon.h">
       <Filter>Src</Filter>
     </ClInclude>
-    <ClInclude Include="WinApp.h">
+    <ClInclude Include="Src\WinApp.h">
       <Filter>Src</Filter>
     </ClInclude>
-    <ClInclude Include="mathFunction.h">
+    <ClInclude Include="Lib\math\mathFunction.h">
       <Filter>Func</Filter>
     </ClInclude>
-    <ClInclude Include="Vector4.h">
+    <ClInclude Include="Math\Vector4.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Vector3.h">
+    <ClInclude Include="Math\Vector3.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h">
+    <ClInclude Include="Math\Transform.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix4x4.h">
+    <ClInclude Include="Math\Matrix4x4.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
+    <ClInclude Include="Src\Mesh.h">
       <Filter>Src</Filter>
     </ClInclude>
+    <ClInclude Include="Src\camera\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
@@ -128,7 +130,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="externals\imgui\LICENSE.txt">
+    <Text Include="Externals\imgui\LICENSE.txt">
       <Filter>Include\Imgui</Filter>
     </Text>
   </ItemGroup>
