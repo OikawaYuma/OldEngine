@@ -82,6 +82,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	OutputDebugStringA("Hello,DirectX!\n");
 
 	winApp->Release();
+
 	for (int i = 0; i < 20; i++) {
 		mesh_[i]->Release();
 	}
