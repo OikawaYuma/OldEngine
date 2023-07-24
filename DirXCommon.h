@@ -17,15 +17,15 @@
 class Mesh;
 class WinApp;
 class ImGuiCommon;
-class DirX
+class DirXCommon
 {
 public:
-	DirX(HWND hwnd);
-	~DirX();
+	DirXCommon(HWND hwnd);
+	~DirXCommon();
 
-	void DirXUpdata();
+	void Updata();
 	void ViewChange();
-	void DirXRelease();
+	void Release();
 
 	ID3D12DescriptorHeap* CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors,bool shaderVisible);
 

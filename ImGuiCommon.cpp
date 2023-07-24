@@ -6,7 +6,7 @@
 #include "externals/imgui/imgui_impl_win32.h"
 
 
-void ImGuiCommon::Initialize(WinApp* winApp_,DirX* dirX_) {
+void ImGuiCommon::Initialize(WinApp* winApp_,DirXCommon* dirX_) {
 	//ImGuiの初期化。詳細はさして重要ではないので省略する。
 	//こういうもんである
 	IMGUI_CHECKVERSION();
@@ -30,7 +30,7 @@ void ImGuiCommon::Update() {
 	ImGui::ShowDemoWindow();
 };
 
-void ImGuiCommon::Draw(DirX* dirX_) {	
+void ImGuiCommon::Draw(DirXCommon* dirX_) {	
 	ImGui::Render();
 	//描画用のDescriptorの設定
 	ID3D12DescriptorHeap* descriptorHeaps[] = { dirX_->srvDescriptorHeap };
@@ -39,7 +39,7 @@ void ImGuiCommon::Draw(DirX* dirX_) {
 }
 
 
-void ImGuiCommon::UICreate(DirX* dirX) {
+void ImGuiCommon::UICreate(DirXCommon* dirX) {
 	// 実際のcoomandListのImguiの描画コマンドを積む
 	//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dirX->commandList);
 }

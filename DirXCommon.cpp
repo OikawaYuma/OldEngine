@@ -22,7 +22,7 @@
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxguid.lib")
 
-ID3D12DescriptorHeap* DirX::CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible) {
+ID3D12DescriptorHeap* DirXCommon::CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible) {
 	// ディスクリプタヒープの生成
 	ID3D12DescriptorHeap* descriptorHeap = nullptr;
 	D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc{};
@@ -36,7 +36,7 @@ ID3D12DescriptorHeap* DirX::CreateDescriptorHeap(ID3D12Device* device, D3D12_DES
 	return descriptorHeap;
 };
 
-DirX::DirX(HWND hwnd) {
+DirXCommon::DirXCommon(HWND hwnd) {
 	//DXGIファクトリーの生成
 	dxgiFactory = nullptr;
 	// HRESULTはWinodows系のエラーコードであり、
@@ -209,9 +209,9 @@ DirX::DirX(HWND hwnd) {
 };
 
 	
-DirX::~DirX() {}
+DirXCommon::~DirXCommon() {}
 
-void DirX::DirXUpdata() {
+void DirXCommon::Updata() {
 	// ゲームの処理
 	
 	// これから書き込むバックバッファのインデックスを取得
@@ -243,7 +243,7 @@ void DirX::DirXUpdata() {
 
 // 実際のcoomandListのImguiの描画コマンドを積む
 
-void DirX::ViewChange() {
+void DirXCommon::ViewChange() {
 	//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 	//画面に描く処理はすべて終わり、画面に移すので、状態を遷移
 // 今回はRenderTargetからPresentにする
@@ -288,7 +288,7 @@ void DirX::ViewChange() {
 };
 
 
-void DirX::DirXRelease() {
+void DirXCommon::Release() {
 	
 	 
 	CloseHandle(fenceEvent);

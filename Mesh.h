@@ -14,7 +14,7 @@
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
 
-class DirX;
+class DirXCommon;
 class WinApp;
 
 class Mesh
@@ -28,8 +28,8 @@ public:
 	D3D12_RESOURCE_DESC  CreateBufferResourceDesc(size_t sizeInBytes);
 	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
 
-	void Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA,Vector4 DrawColor);
-	void Update(DirX* dirX);
+	void Initialize(WinApp* winApp, DirXCommon* dirX, Vector4* vertexDataA,Vector4 DrawColor);
+	void Update(DirXCommon* dirX);
 	void Release();
 	HRESULT hr;
 

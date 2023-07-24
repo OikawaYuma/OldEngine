@@ -54,7 +54,7 @@ D3D12_VERTEX_BUFFER_VIEW Mesh::CreateBufferView() {
 
 	//ID3D12Resource* CreateBufferResourceDesc(ID3D12Device* device, size_t sizeInBytes);
 
-void Mesh::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA, Vector4 DrawColor) {
+void Mesh::Initialize(WinApp* winApp, DirXCommon* dirX, Vector4* vertexDataA, Vector4 DrawColor) {
 	descriptionRootSignature.Flags =
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
@@ -214,7 +214,7 @@ void Mesh::Initialize(WinApp* winApp, DirX* dirX, Vector4* vertexDataA, Vector4 
 	
 };
 
-void Mesh::Update(DirX* dirX) {
+void Mesh::Update(DirXCommon* dirX) {
 	dirX->commandList->RSSetViewports(1, &viewport);  //viewportを設定
 	dirX->commandList->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	// RootSignatureを設定。PSOに設定しているけど別途設定が必要

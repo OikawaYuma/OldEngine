@@ -32,7 +32,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	pos[0][2] = { 1.0f,-1.0f,0.0f,1.0f };
 
 	WinApp *winApp = new WinApp(L"CG2");
-	DirX* dirX = new DirX(winApp->hwnd_);
+	DirXCommon* dirX = new DirXCommon(winApp->hwnd_);
 	ImGuiCommon* imGuiCommon = new ImGuiCommon;
 	
 
@@ -60,7 +60,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			imGuiCommon->Update();
 		
 			// ゲームの処理
-			dirX->DirXUpdata();
+			dirX->Updata();
 			
 			transform.rotate.y += 0.03f;
 			Matrix4x4 worldmatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);;
@@ -87,7 +87,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		mesh_[i]->Release();
 	}
 	imGuiCommon->Release();
-	dirX->DirXRelease( );
+	dirX->Release( );
 	CoUninitialize();
 	return 0;
 }
