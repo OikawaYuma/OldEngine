@@ -68,7 +68,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//三角形の回転
 			transform.rotate.y += 0.03f;
 			//カメラの更新
-			camera->Update(winApp, transform);
+			camera->Update(transform);
 			
 			for (int i = 0; i < 20; i++) {
 				*mesh_[i]->wvpData = camera->worldViewProjectionMatrix;

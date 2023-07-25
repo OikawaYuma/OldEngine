@@ -15,7 +15,7 @@ public:
 	Matrix4x4 worldViewProjectionMatrix;
 
 	void Initialize();
-	void Update(WinApp* winApp,Transform transform);
+	void Update(Transform transform);
 	void Draw();
 };
 
