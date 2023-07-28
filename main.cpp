@@ -16,7 +16,7 @@
 // Windowsアプリでのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	CoInitializeEx(0,COINIT_MULTITHREADED );
-	Vector4 pos[20][3];
+	Vector4 triangle[20][3];
 	Vector4 color[20] = {0.0f,0.0f,0.0f,1.0f};
 	// Transform変数の初期化
 	Transform transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
@@ -24,14 +24,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	camera->Initialize();
 	
 	for (int i = 0; i < 20; i++) {
-		pos[i][0] = { -0.9f ,0.70f + (i * -0.10f),0.0f,1.0f };
-		pos[i][1] = { -0.85f,0.80f + (i * -0.10f),0.0f,1.0f },
-		pos[i][2] = { -0.80f,0.70f + (i * -0.10f),0.0f,1.0f };
+		triangle[i][0] = { -0.9f ,0.70f + (i * -0.10f),0.0f,1.0f };
+		triangle[i][1] = { -0.85f,0.80f + (i * -0.10f),0.0f,1.0f },
+		triangle[i][2] = { -0.80f,0.70f + (i * -0.10f),0.0f,1.0f };
 	}
 
-	pos[0][0] = { -1.0f,-1.0f ,0.0f,1.0f };
-	pos[0][1] = { 0.0f,1.0f ,0.0f,1.0f };
-	pos[0][2] = { 1.0f,-1.0f,0.0f,1.0f };
+	triangle[0][0] = { -1.0f,-1.0f ,0.0f,1.0f };
+	triangle[0][1] = { 0.0f,1.0f ,0.0f,1.0f };
+	triangle[0][2] = { 1.0f,-1.0f,0.0f,1.0f };
 
 	WinApp *winApp = new WinApp(L"CG2");
 	DirXCommon* dirX = new DirXCommon();
@@ -46,7 +46,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	for (int i = 0; i < 20; i++) {
 		color[i] = { 0.05f * i,0.0f,0.0f,1.0f, };
 		mesh_[i] = new Mesh();
-		mesh_[i]->Initialize( dirX,pos[i],color[i]);
+		mesh_[i]->Initialize( dirX,triangle[i],color[i]);
 	}
 	
 	MSG msg{};
@@ -67,6 +67,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		
 			//三角形の回転
 			transform.rotate.y += 0.03f;
+
 			//カメラの更新
 			camera->Update(transform);
 			
@@ -74,8 +75,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				*mesh_[i]->wvpData = camera->worldViewProjectionMatrix;
 				mesh_[i]->Update(dirX);
 			}
+
 			//ImGuiの描画
 			imGuiCommon->Draw(dirX);
+
 			//スワップチェーン
 			dirX->ViewChange();
 		}
