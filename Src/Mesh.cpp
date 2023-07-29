@@ -218,8 +218,9 @@ void Mesh::Initialize(DirXCommon *sDirX,  Vector4* vertexDataA, Vector4 DrawColo
 	
 };
 
-void Mesh::Update(DirXCommon* dirX) {
-	
+void Mesh::Update(DirXCommon* dirX,Vector4 DrawColor) {
+	// 色のデータを変数から読み込み
+	*materialData = DrawColor;
 	dirX->commandList->RSSetViewports(1, &viewport);  //viewportを設定
 	dirX->commandList->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	// RootSignatureを設定。PSOに設定しているけど別途設定が必要

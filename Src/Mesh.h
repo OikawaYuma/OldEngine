@@ -29,7 +29,7 @@ public:
 	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
 
 	void Initialize(DirXCommon *sDirX, Vector4* vertexDataA,Vector4 DrawColor);
-	void Update(DirXCommon* dirX);
+	void Update(DirXCommon* dirX, Vector4 DrawColor);
 	void Release();
 	HRESULT hr;
 

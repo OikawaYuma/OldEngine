@@ -41,6 +41,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Mesh* mesh_[20];
 	// 実験用
 	Mesh* mesh2 = new Mesh();
+
+	bool isRotate = true;
 	
 
 	for (int i = 0; i < 20; i++) {
@@ -51,6 +53,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	
 	MSG msg{};
 	imGuiCommon->Initialize(winApp, dirX);
+
+	
 	//ウィンドウの×ボタンが押されるまでループ
 	while (msg.message != WM_QUIT) {
 		// Windowにメッセージが来てたら最優先で処理させる
@@ -65,16 +69,37 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//ImGuiの更新
 			imGuiCommon->Update();
 		
-			//三角形の回転
-			transform.rotate.y += 0.03f;
+			
 
 			//カメラの更新
 			camera->Update(transform);
-			
+			if (isRotate) {
+				transform.rotate.y += 0.03f;
+			}
 			for (int i = 0; i < 20; i++) {
 				*mesh_[i]->wvpData = camera->worldViewProjectionMatrix;
-				mesh_[i]->Update(dirX);
+				mesh_[i]->Update(dirX,color[i]);
 			}
+
+			ImGui::Begin("Debug");
+			ImGui::Text("TransformS : x %2.2f : y %2.2f : z %2.2f", transform.scale.x, transform.scale.y, transform.scale.z);
+			ImGui::Text("TransformR : x %2.2f : y %2.2f : z %2.2f", transform.rotate.x, transform.rotate.y, transform.rotate.z);
+			ImGui::Text("TransformT : x %2.2f : y %2.2f : z %2.2f", transform.translate.x, transform.translate.y, transform.translate.z);
+			if (ImGui::Button("isRotate")) {
+				if (isRotate) {
+					isRotate = false;
+					transform.rotate.y = 0;
+				}
+				else{ isRotate = true; }
+			}
+			ImGui::SliderFloat3("coler : R %2.2f", &color[0].x,0.0f,1.0f);
+			
+			ImGui::SliderFloat("cameraT : ",&camera->cameraTransform.translate.z,-10.0f,0);
+
+
+
+			ImGui::End();
+
 
 			//ImGuiの描画
 			imGuiCommon->Draw(dirX);
