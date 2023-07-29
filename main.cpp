@@ -93,7 +93,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				else{ isRotate = true; }
 			}
 			ImGui::SliderFloat3("coler : R %2.2f", &color[0].x,0.0f,1.0f);
-			
+			ImGui::ColorEdit3("color", &color[0].x);
 			ImGui::SliderFloat("cameraT : ",&camera->cameraTransform.translate.z,-10.0f,0);
 
 
