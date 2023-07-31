@@ -9,7 +9,7 @@
 #include"Vector3.h"
 #include"Matrix4x4.h"
 #include"Transform.h"
-#include"mathFunction.h"
+#include "mathFunction.h"
 
 
 
@@ -42,7 +42,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// 実験用
 	Mesh* mesh2 = new Mesh();
 
-	bool isRotate = true;
+	bool Reset = true;
 	
 
 	for (int i = 0; i < 20; i++) {
@@ -73,7 +73,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			//カメラの更新
 			camera->Update(transform);
-			if (isRotate) {
+			if (Reset) {
 				transform.rotate.y += 0.03f;
 			}
 			for (int i = 0; i < 20; i++) {
@@ -85,14 +85,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			ImGui::Text("TransformS : x %2.2f : y %2.2f : z %2.2f", transform.scale.x, transform.scale.y, transform.scale.z);
 			ImGui::Text("TransformR : x %2.2f : y %2.2f : z %2.2f", transform.rotate.x, transform.rotate.y, transform.rotate.z);
 			ImGui::Text("TransformT : x %2.2f : y %2.2f : z %2.2f", transform.translate.x, transform.translate.y, transform.translate.z);
-			if (ImGui::Button("isRotate")) {
-				if (isRotate) {
-					isRotate = false;
+			if (ImGui::Button("Reset")) {
+				if (Reset) {
+					Reset = false;
+					transform.translate.x = 0.0f;
+					transform.translate.y = 0.0f;
+					transform.translate.z = 0.0f;
+
+					transform.rotate.x = 0;
 					transform.rotate.y = 0;
+					transform.rotate.z = 0;
+
+					transform.scale.x = 1.0f;
+					transform.scale.x = 1.0f;
+					transform.scale.x = 1.0f;
 				}
-				else{ isRotate = true; }
+				else{ Reset = true; }
 			}
-			ImGui::SliderFloat3("coler : R %2.2f", &color[0].x,0.0f,1.0f);
+			ImGui::SliderFloat3("Translate", &transform.translate.x, -1.0f, 1.0f);
+			ImGui::SliderFloat3("Rotate", &transform.rotate.x, -1.0f, 1.0f);
+			ImGui::SliderFloat3("Scale", &transform.scale.x, -1.0f, 1.0f);
+
+
+			ImGui::SliderFloat3("coler : RGB", &color[0].x,0.0f,1.0f);
 			ImGui::ColorEdit3("color", &color[0].x);
 			ImGui::SliderFloat("cameraT : ",&camera->cameraTransform.translate.z,-10.0f,0);
 
