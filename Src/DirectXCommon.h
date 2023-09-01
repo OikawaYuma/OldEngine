@@ -17,14 +17,17 @@
 class Mesh;
 class WinApp;
 class ImGuiCommon;
-class DirXCommon
-{
+class DirectXCommon final{
+
+private:
+	
 public:
-	static DirXCommon* GetInstance();
-
-	DirXCommon();
-	~DirXCommon();
-
+	static DirectXCommon* GetInstance();
+	DirectXCommon();
+	~DirectXCommon();
+	/*DirectXCommon();
+	~DirectXCommon();*/
+	void Initialize();
 	void BeginFrame();
 	void ViewChange();
 	void Release();
@@ -44,8 +47,8 @@ public:
 	//スワップチェーン
 	IDXGISwapChain4* swapChain;
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
-	ID3D12DescriptorHeap* rtvDescriptorHeap;
-	ID3D12DescriptorHeap* srvDescriptorHeap;
+	ID3D12DescriptorHeap* rtvDescriptorHeap = nullptr;
+	ID3D12DescriptorHeap* srvDescriptorHeap = nullptr;
 	ID3D12Resource* swapChainResources[2] = { nullptr };
 
 	//RTVの設定

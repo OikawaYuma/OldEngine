@@ -11,13 +11,18 @@
 
 class WinApp
 {
-public:
 
+private:
+	
+public:
+	WinApp();
+	~WinApp();
 	static WinApp* GetInstance();
 	
 	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-	WinApp(const wchar_t* label);
-	~WinApp();
+	/*WinApp();
+	~WinApp();*/
+	void Initialize(const wchar_t* label);
 	void Release();
 
 	WNDCLASS wc{};

@@ -5,17 +5,20 @@
 #include<cassert>
 #include <dxcapi.h>
 
-//#include"DirXCommon.h"
+//#include"DirectXCommon.h"
+#include "VertexData.h"
 #include "Vector4.h"
 #include"Vector3.h"
+#include"Vector2.h"
 #include"Matrix4x4.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
 
-class DirXCommon;
+class DirectXCommon;
 class WinApp;
+class TextureManager;
 
 class Mesh
 {
@@ -28,12 +31,18 @@ public:
 	D3D12_RESOURCE_DESC  CreateBufferResourceDesc(size_t sizeInBytes);
 	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
 
-	void Initialize(DirXCommon *sDirX, Vector4* vertexDataA,Vector4 DrawColor);
-	void Update(DirXCommon* dirX, Vector4 DrawColor);
+	void Initialize( VertexData* vertexDataA,Vector4 DrawColor);
+	void Update( Vector4 DrawColor);
+	void Draw(DirectXCommon* dirX);
 	void Release();
 	HRESULT hr;
 
-
+	void SetTextureManager(TextureManager *textureManager) {
+		textureManager_ = textureManager;
+	}
+	void SetDirectXCommon(DirectXCommon* directXCommon) {
+		directXCommon_ = directXCommon;
+	}
 
 
 	// RootSignature作成
@@ -44,21 +53,22 @@ public:
 	// バイナリを元に生成
 	ID3D12RootSignature* rootSignature;
 	// InputLayout
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[1] = {};
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	D3D12_INPUT_LAYOUT_DESC  inputLayoutDesc{};
 	// blendStateの設定
 	D3D12_BLEND_DESC blendDesc{};
 	// RasiterzerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 
-
+	TextureManager* textureManager_ = nullptr;
 
 	IDxcBlob* vertexShaderBlob;
 	IDxcBlob* pixelShaderBlob;
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
 	//実際に生成
 	ID3D12PipelineState* graphicsPipelineState;
-
+	// RootParmeter作成。複数でっていできるので配列。今回は結果１つだけなので長さ1の配列
+	D3D12_ROOT_PARAMETER rootParamerters[3] = {};
 	
 	//頂点リソース用のヒープの設定
 	D3D12_HEAP_PROPERTIES uploadHeapProperties{};
@@ -69,7 +79,7 @@ public:
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView{};
 	// 頂点リソースにデータを書き込む
-	Vector4* vertexData;
+	VertexData* vertexData_;
 
 
 	/*色用*/
@@ -92,15 +102,21 @@ public:
 
 	
 
+	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 
 
 
+	D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
 
+	
+
+	
 	//ビューポート
 	D3D12_VIEWPORT viewport{};
 	// シザー矩形
 	D3D12_RECT scissorRect{};
 
 private:
+	DirectXCommon* directXCommon_ = nullptr;
 };
 

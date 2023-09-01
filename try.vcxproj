@@ -53,7 +53,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\imgui;$(ProjectDir)Src;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Src\camera;$(ProjectDir)Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\imgui;$(ProjectDir)Src;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Src\camera;$(ProjectDir)Scene;$(ProjectDir)SubDir;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,7 +80,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\imgui;$(ProjectDir)Src;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Src\camera;$(ProjectDir)Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\imgui;$(ProjectDir)Src;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Src\camera;$(ProjectDir)Scene;$(ProjectDir)SubDir;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -101,7 +101,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="Scene\gameScene.cpp" />
     <ClCompile Include="Src\camera\Camera.cpp" />
-    <ClCompile Include="Src\DirXCommon.cpp" />
+    <ClCompile Include="Src\DirectXCommon.cpp" />
     <ClCompile Include="Externals\imgui\imgui.cpp" />
     <ClCompile Include="Externals\imgui\imgui_demo.cpp" />
     <ClCompile Include="Externals\imgui\imgui_draw.cpp" />
@@ -115,11 +115,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Src\Mesh.cpp" />
     <ClCompile Include="Src\WinApp.cpp" />
     <ClCompile Include="Lib\math\mathFunction.cpp" />
+    <ClCompile Include="Src\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene\gameScene.h" />
     <ClInclude Include="Src\camera\Camera.h" />
-    <ClInclude Include="Src\DirXCommon.h" />
+    <ClInclude Include="Src\DirectXCommon.h" />
     <ClInclude Include="Externals\imgui\imconfig.h" />
     <ClInclude Include="Externals\imgui\imgui.h" />
     <ClInclude Include="Externals\imgui\imgui_impl_dx12.h" />
@@ -131,12 +132,15 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Src\function.h" />
     <ClInclude Include="Lib\imgui\ImGuiCommon.h" />
     <ClInclude Include="Lib\math\mathFunction.h" />
-    <ClInclude Include="Math\Matrix4x4.h" />
+    <ClInclude Include="Lib\Math\Matrix4x4.h" />
     <ClInclude Include="Src\Mesh.h" />
-    <ClInclude Include="Math\Transform.h" />
-    <ClInclude Include="Math\Vector3.h" />
-    <ClInclude Include="Math\Vector4.h" />
+    <ClInclude Include="Lib\Math\Transform.h" />
+    <ClInclude Include="Lib\Math\Vector3.h" />
+    <ClInclude Include="Lib\Math\Vector4.h" />
     <ClInclude Include="Src\WinApp.h" />
+    <ClInclude Include="Src\TextureManager.h" />
+    <ClInclude Include="Lib\math\Vector2.h" />
+    <ClInclude Include="Lib\math\VertexData.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
@@ -159,6 +163,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ProjectReference Include="externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Object3d.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

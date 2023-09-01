@@ -4,17 +4,17 @@
 #include"imgui_impl_dx12.h"
 
 class WinApp;
-class DirXCommon;
+class DirectXCommon;
 class ImGuiCommon
 {
 public:
 	
-	void Initialize(WinApp* winApp_, DirXCommon* dirX_);
+	void Initialize(WinApp* winApp_, DirectXCommon* dirX_);
 	void Update();
-	void Draw(DirXCommon* dirX_);
+	void Draw(DirectXCommon* dirX_);
 
 	void UIParameter();
-	void UICreate(DirXCommon* dirX);
+	void UICreate(DirectXCommon* dirX);
 	void Release();
 };
 

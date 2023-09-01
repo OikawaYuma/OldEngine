@@ -1,28 +1,23 @@
-﻿#include "DirXCommon.h"
-#include<Windows.h>
-#include<d3d12.h>
-#include<dxgi1_6.h>
-#include<cassert>
-#include"function.h"
-#include<string>
-#include<format>
-#include<dxgidebug.h>
-#include"WinApp.h"
-#include"Mesh.h"
-
-#include"ImGuiCommon.h"
-
-#include"imgui.h"
-#include"imgui_impl_win32.h"
-#include"imgui_impl_dx12.h"
-
-
-
+﻿#include "DirectXCommon.h"
+#include <Windows.h>
+#include <d3d12.h>
+#include <dxgi1_6.h>
+#include <cassert>
+#include "function.h"
+#include <string>
+#include <format>
+#include <dxgidebug.h>
+#include "WinApp.h"
+#include "Mesh.h"
+#include "ImGuiCommon.h"
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+#include "imgui_impl_dx12.h"
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxguid.lib")
 
-ID3D12DescriptorHeap* DirXCommon::CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible) {
+ID3D12DescriptorHeap* DirectXCommon::CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible) {
 	// ディスクリプタヒープの生成
 	ID3D12DescriptorHeap* descriptorHeap = nullptr;
 	D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc{};
@@ -36,7 +31,14 @@ ID3D12DescriptorHeap* DirXCommon::CreateDescriptorHeap(ID3D12Device* device, D3D
 	return descriptorHeap;
 };
 
-DirXCommon::DirXCommon() {
+DirectXCommon::DirectXCommon() {
+	
+};
+
+
+DirectXCommon::~DirectXCommon() {}
+
+void DirectXCommon::Initialize() {
 	WinApp* sWinApp = WinApp::GetInstance();
 
 
@@ -64,7 +66,7 @@ DirXCommon::DirXCommon() {
 		if (!(adapterDesc.Flags & DXGI_ADAPTER_FLAG3_SOFTWARE)) {
 			// 採用したアダプタの情報をログに出力。wstringの方なので注意
 			ConsoleLog(ConvertString(std::format(L"USE Adapter:{}\n", adapterDesc.Description))
-		);
+			);
 			break;
 		}
 		useAdapter = nullptr; // ソフトウェアアダプタの場合は見なかったことにする
@@ -119,7 +121,7 @@ DirXCommon::DirXCommon() {
 
 		// 解放
 		infoQueue->Release();
-	}
+		}
 #endif
 
 
@@ -171,7 +173,7 @@ DirXCommon::DirXCommon() {
 	assert(SUCCEEDED(hr));
 
 	// RTVの設定
-	
+
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 出力結果をSRGBに変換して書き込む
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D; //2dテクスチャとして書き込む
 	// ディスクリプタヒープの先頭を取得する
@@ -208,15 +210,13 @@ DirXCommon::DirXCommon() {
 	hr = dxcUtils->CreateDefaultIncludeHandler(&includeHandler);
 	assert(SUCCEEDED(hr));
 
-	
+
+
 };
 
-	
-DirXCommon::~DirXCommon() {}
-
-void DirXCommon::BeginFrame() {
+void DirectXCommon::BeginFrame() {
 	// ゲームの処理
-	
+
 	// これから書き込むバックバッファのインデックスを取得
 	backBufferIndex = swapChain->GetCurrentBackBufferIndex();
 	//描画先のRTVを設定する
@@ -241,12 +241,12 @@ void DirXCommon::BeginFrame() {
 	float clearColor[] = { 0.1f,0.25f,0.5f,1.0f }; //青っぽい色。 RGBAの淳  0.1/0.25/0.5/1.0f
 	commandList->ClearRenderTargetView(rtvHandles[backBufferIndex], clearColor, 0, nullptr);
 
-	
+
 }
 
 // 実際のcoomandListのImguiの描画コマンドを積む
 
-void DirXCommon::ViewChange() {
+void DirectXCommon::ViewChange() {
 	//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 	//画面に描く処理はすべて終わり、画面に移すので、状態を遷移
 // 今回はRenderTargetからPresentにする
@@ -291,9 +291,9 @@ void DirXCommon::ViewChange() {
 };
 
 
-void DirXCommon::Release() {
-	
-	 
+void DirectXCommon::Release() {
+
+
 	CloseHandle(fenceEvent);
 	fence->Release();
 	rtvDescriptorHeap->Release();
@@ -308,13 +308,13 @@ void DirXCommon::Release() {
 	useAdapter->Release();
 
 
-//#ifdef _DEBUG
-//	textureManager_->debugController->Release();
-//#endif // _DEBUG
-	//CloseWindow(hwnd);
+	//#ifdef _DEBUG
+	//	textureManager_->debugController->Release();
+	//#endif // _DEBUG
+		//CloseWindow(hwnd);
 
 
-	// リソースリークチェック
+		// リソースリークチェック
 	IDXGIDebug1* debug;
 	if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debug)))) {
 		debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
@@ -325,8 +325,8 @@ void DirXCommon::Release() {
 
 }
 
- DirXCommon* DirXCommon::GetInstance() {
-	static DirXCommon *instance;
+DirectXCommon* DirectXCommon::GetInstance() {
+	static DirectXCommon* instance;
 	return instance;
 }
 

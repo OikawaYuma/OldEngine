@@ -46,7 +46,7 @@
     <ClCompile Include="Src\function.cpp">
       <Filter>Func</Filter>
     </ClCompile>
-    <ClCompile Include="Src\DirXCommon.cpp">
+    <ClCompile Include="Src\DirectXCommon.cpp">
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\WinApp.cpp">
@@ -64,6 +64,7 @@
     </ClCompile>
     <ClCompile Include="Src\camera\Camera.cpp" />
     <ClCompile Include="Scene\gameScene.cpp" />
+    <ClCompile Include="Src\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Externals\imgui\imconfig.h">
@@ -93,7 +94,7 @@
     <ClInclude Include="Src\function.h">
       <Filter>Func</Filter>
     </ClInclude>
-    <ClInclude Include="Src\DirXCommon.h">
+    <ClInclude Include="Src\DirectXCommon.h">
       <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="Lib\imgui\ImGuiCommon.h">
@@ -105,16 +106,16 @@
     <ClInclude Include="Lib\math\mathFunction.h">
       <Filter>Func</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Vector4.h">
+    <ClInclude Include="Lib\Math\Vector4.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Vector3.h">
+    <ClInclude Include="Lib\Math\Vector3.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Transform.h">
+    <ClInclude Include="Lib\Math\Transform.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Matrix4x4.h">
+    <ClInclude Include="Lib\Math\Matrix4x4.h">
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Src\Mesh.h">
@@ -122,6 +123,9 @@
     </ClInclude>
     <ClInclude Include="Src\camera\Camera.h" />
     <ClInclude Include="Scene\gameScene.h" />
+    <ClInclude Include="Src\TextureManager.h" />
+    <ClInclude Include="Lib\math\VertexData.h" />
+    <ClInclude Include="Lib\math\Vector2.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
@@ -135,5 +139,8 @@
     <Text Include="Externals\imgui\LICENSE.txt">
       <Filter>Include\Imgui</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Object3d.hlsli" />
   </ItemGroup>
 </Project>

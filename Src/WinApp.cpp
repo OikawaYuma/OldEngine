@@ -30,8 +30,11 @@ HWND WinApp::hwnd_;
 	// 標準のメッセージ処理を行う
 	return DefWindowProc(hwnd, msg, wparam, lparam);
 };
-WinApp::WinApp(const wchar_t*label) {
+WinApp::WinApp() {
 	
+	
+}
+void WinApp::Initialize(const wchar_t* label) {
 	// ウィンドウプロシージャ
 	wc.lpfnWndProc = WindowProc;
 	// ウィンドウクラス名（なんでも良い）
@@ -58,7 +61,7 @@ WinApp::WinApp(const wchar_t*label) {
 		CW_USEDEFAULT,			 // 表示X座標（Windowsに任せる）
 		CW_USEDEFAULT,			 // 表示Y座標（WindowsOSに任せる）
 		wrc.right - wrc.left,	 // ウィンドウ横幅
-		wrc.bottom-wrc.top,		 // ウィンドウ縦幅
+		wrc.bottom - wrc.top,		 // ウィンドウ縦幅
 		nullptr,				 // 親ウィンドウハンドル
 		nullptr,				 // メニューハンドル
 		wc.hInstance,			 // インスタンスハンドル
@@ -71,12 +74,12 @@ WinApp::WinApp(const wchar_t*label) {
 		debugController->EnableDebugLayer();
 		// さらにGPU側でもチェックを行うようにする
 		debugController->SetEnableGPUBasedValidation(TRUE);
-	}
+}
 #endif
 
 	// ウィンドウを表示する
 	ShowWindow(hwnd_, SW_SHOW);
-}
+};
 
 void WinApp::Release() {
 	
