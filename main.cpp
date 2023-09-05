@@ -54,7 +54,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	//
 
-	MSG msg{};
+	
 	WinApp* sWinApp = WinApp::GetInstance();
 	sWinApp->Initialize(L"CG2");
 	////DirectXCommon* dirX = new DirectXCommon();
@@ -85,10 +85,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//}
 	//
 
-
-	
-
-	
+	MSG msg{};
 	//imGuiCommon->Initialize(winApp, dirX);
 
 
