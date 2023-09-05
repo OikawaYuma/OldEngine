@@ -17,7 +17,7 @@
 
 // Windowsアプリでのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
-	CoInitializeEx(0, COINIT_MULTITHREADED);
+	//CoInitializeEx(0, COINIT_MULTITHREADED);
 	//VertexData triangle[20][3];
 	//VertexData triangle1[3];
 	//Vector4 color[20] = { 0.0f,0.0f,0.0f,1.0f };
@@ -54,9 +54,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	//
 
-
-	WinApp* swinApp = WinApp::GetInstance();
-	swinApp->Initialize(L"CG2");
+	MSG msg{};
+	WinApp* sWinApp = WinApp::GetInstance();
+	sWinApp->Initialize(L"CG2");
 	////DirectXCommon* dirX = new DirectXCommon();
 
 	//DirectXCommon* dirX = new DirectXCommon();
@@ -88,7 +88,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	
 
-	MSG msg{};
+	
 	//imGuiCommon->Initialize(winApp, dirX);
 
 

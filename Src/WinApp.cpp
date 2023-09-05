@@ -72,12 +72,12 @@ void WinApp::Release() {
 
 /*-----Accessor-----*/
 WinApp* WinApp::GetInstance() {
-	static WinApp *instance;
-	return instance;
+	static WinApp instance;
+	return &instance;
 }
 
 
-LRESULT  WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+LRESULT CALLBACK  WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) {
 		return true;
 	}

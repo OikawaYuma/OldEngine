@@ -15,6 +15,11 @@ class WinApp final
 private:
 	
 public:
+
+	// コンストラクタ
+	WinApp() = default;
+	//デストラクタ
+	~WinApp() = default;
 	/*-----Default Method-----*/
 	// 初期化
 	void Initialize(const wchar_t* label);
@@ -35,31 +40,28 @@ public:
 	static int32_t GetKClientWidth() { return kClientWidth_; };
 	static int32_t GetKClientHeight() { return kClientHeight_; };
 
-	static HWND GetHwnd() { return hwnd_; }
+	 HWND GetHwnd() { return hwnd_; }
 
 
-	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-
-
-	
-
-private:
-	// コンストラクタ
-	WinApp() = default;
-	//デストラクタ
-	~WinApp() = default;
+	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 	// ウィンドウの生成
-	static HWND hwnd_;
+	HWND hwnd_;
 
 	//ウィンドウクラス
 	WNDCLASS wc_{};
+	
+
+private:
+
+
+	
 
 	// クライアント領域のサイズ
 	const static  int32_t kClientWidth_ = 1280;
 	const static  int32_t kClientHeight_ = 720;
 
-	static ID3D12Debug1* debugController_;
+	ID3D12Debug1* debugController_;
 	
 
 };
