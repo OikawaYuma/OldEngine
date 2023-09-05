@@ -149,15 +149,15 @@ void DirectXCommon::Initialize() {
 
 	// スワップチェーンを生成する
 	swapChain = nullptr;
-	swapChainDesc.Width = sWinApp->kClientWidth;
-	swapChainDesc.Height = sWinApp->kClientHeight;
+	swapChainDesc.Width = sWinApp->GetKClientWidth();
+	swapChainDesc.Height = sWinApp->GetKClientHeight();
 	swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapChainDesc.SampleDesc.Count = 1; //マルチサンプルしない
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; //描画のターゲットとして利用する
 	swapChainDesc.BufferCount = 2; //ダブルバッファ
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD; //モニタにうつしたら中身を破棄
 	//コマンドキュー、ウィンドウハンドル設定を渡して生成する
-	hr = dxgiFactory->CreateSwapChainForHwnd(commandQueue, sWinApp->hwnd_, &swapChainDesc, nullptr, nullptr, reinterpret_cast<IDXGISwapChain1**>(&swapChain));
+	hr = dxgiFactory->CreateSwapChainForHwnd(commandQueue, sWinApp->GetHwnd(), &swapChainDesc, nullptr, nullptr, reinterpret_cast<IDXGISwapChain1**>(&swapChain));
 	assert(SUCCEEDED(hr));
 
 	// ディスクリプタヒープの生成

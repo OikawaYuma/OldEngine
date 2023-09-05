@@ -55,7 +55,7 @@ void TextureManager::SetTexture(DirectXCommon* dirX) {
 
 
 DirectX::ScratchImage TextureManager::LoadTexture(const std::string& filePath) {
-	// テクスチャファイルを呼んでプログラムを使えるようにする
+	////// テクスチャファイルを呼んでプログラムを使えるようにする
 	filePathW_ = ConvertString(filePath);
 
 	// エラー検知用変数

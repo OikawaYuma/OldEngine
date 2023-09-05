@@ -10,7 +10,7 @@ void Camera::Update(Transform transform) {
 	worldmatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);;
 	cameraMatrix = MakeAffineMatrix(cameraTransform.scale, cameraTransform.rotate, cameraTransform.translate);
 	viewMatrix = Inverse(cameraMatrix);
-	projectionMatrix = MakePerspectiveFovMatrix(0.45f, float(sWinApp->kClientWidth) / float(sWinApp->kClientHeight), 0.1f, 100.0f);
+	projectionMatrix = MakePerspectiveFovMatrix(0.45f, float(sWinApp->GetKClientWidth()) / float(sWinApp->GetKClientHeight()), 0.1f, 100.0f);
 	worldViewProjectionMatrix = Multiply(worldmatrix, Multiply(viewMatrix, projectionMatrix));
 
 

@@ -233,8 +233,8 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	
 
 	//クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = (float)sWinApp->kClientWidth;
-	viewport.Height = (float)sWinApp->kClientHeight;
+	viewport.Width = (float)sWinApp->GetKClientWidth();
+	viewport.Height = (float)sWinApp->GetKClientHeight();
 	viewport.TopLeftX = 1;
 	viewport.TopLeftY = 1;
 	viewport.MinDepth = 0.0f;
@@ -243,9 +243,9 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 
 	// 基本的にビューポートと同じ矩形が構成されるようにする
 	scissorRect.left = 0;
-	scissorRect.right = sWinApp->kClientWidth;
+	scissorRect.right = sWinApp->GetKClientWidth();
 	scissorRect.top = 0;
-	scissorRect.bottom = sWinApp->kClientHeight;
+	scissorRect.bottom = sWinApp->GetKClientHeight();
 
 	
 };

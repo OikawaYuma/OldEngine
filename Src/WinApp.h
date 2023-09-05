@@ -9,32 +9,57 @@
 #pragma comment(lib,"dxgi.lib")
 
 
-class WinApp
+class WinApp final
 {
 
 private:
 	
 public:
-	WinApp();
-	~WinApp();
-	static WinApp* GetInstance();
-	
-	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-	/*WinApp();
-	~WinApp();*/
+	/*-----Default Method-----*/
+	// 初期化
 	void Initialize(const wchar_t* label);
+	// 解放処理
 	void Release();
 
-	WNDCLASS wc{};
+	/*-----User Method-----*/
 
- static HWND hwnd_;
+	// シングルトンパターンの実装
+	// コピーコンストラクタを無効にする
+	WinApp(const WinApp& obj) = delete;
+	// 代入演算子を無効にする
+	WinApp& operator=(const WinApp& obj) = delete;
+
+	// Accessor
+	static WinApp* GetInstance();
+
+	static int32_t GetKClientWidth() { return kClientWidth_; };
+	static int32_t GetKClientHeight() { return kClientHeight_; };
+
+	static HWND GetHwnd() { return hwnd_; }
+
+
+	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+
+
+	
+
+private:
+	// コンストラクタ
+	WinApp() = default;
+	//デストラクタ
+	~WinApp() = default;
+
+	// ウィンドウの生成
+	static HWND hwnd_;
+
+	//ウィンドウクラス
+	WNDCLASS wc_{};
 
 	// クライアント領域のサイズ
-	static const int32_t kClientWidth = 1280;
-	static const int32_t kClientHeight = 720;
+	const static  int32_t kClientWidth_ = 1280;
+	const static  int32_t kClientHeight_ = 720;
 
-	ID3D12Debug1* debugController;
-	
+	static ID3D12Debug1* debugController_;
 	
 
 };
