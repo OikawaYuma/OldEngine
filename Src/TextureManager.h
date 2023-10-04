@@ -20,7 +20,7 @@ public:
 	
 	void Initialize(const std::string& filePath);
 	//void Update(Mesh* mesh );
-
+	void Release();
 	void SetTexture();
 
 	void SetDirectXCommon();

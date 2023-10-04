@@ -20,6 +20,7 @@
 class Mesh;
 class WinApp;
 class ImGuiCommon;
+class TextureManager;
 
 class DirectXCommon final{
 public:
@@ -91,5 +92,7 @@ private:
 	IDxcCompiler3* dxcCompiler_;
 
 	IDxcIncludeHandler* includeHandler_;
+	WinApp* sWinApp_ = nullptr;
+	TextureManager* textureManager_ = nullptr;
 };
 

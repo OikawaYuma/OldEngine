@@ -180,7 +180,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		mesh_[i]->Release();
 	}
 	imGuiCommon->Release();
+	textureManager->Release();
 	sDirctX->Release();
-	//CoUninitialize();
+	
+	CoUninitialize();
 	return 0;
 }

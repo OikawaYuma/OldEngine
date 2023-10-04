@@ -37,7 +37,7 @@ ID3D12DescriptorHeap* DirectXCommon::CreateDescriptorHeap(ID3D12Device* device, 
 
 
 void DirectXCommon::Initialize() {
-	WinApp* sWinApp = WinApp::GetInstance();
+	sWinApp_ = WinApp::GetInstance();
 
 	//DXGIファクトリーの生成
 	dxgiFactory = nullptr;
@@ -144,15 +144,15 @@ void DirectXCommon::Initialize() {
 
 	// スワップチェーンを生成する
 	swapChain_ = nullptr;
-	swapChainDesc_.Width = sWinApp->GetKClientWidth();
-	swapChainDesc_.Height = sWinApp->GetKClientHeight();
+	swapChainDesc_.Width = sWinApp_->GetKClientWidth();
+	swapChainDesc_.Height = sWinApp_->GetKClientHeight();
 	swapChainDesc_.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapChainDesc_.SampleDesc.Count = 1; //マルチサンプルしない
 	swapChainDesc_.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; //描画のターゲットとして利用する
 	swapChainDesc_.BufferCount = 2; //ダブルバッファ
 	swapChainDesc_.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD; //モニタにうつしたら中身を破棄lkjhgvc
 	//コマンドキュー、ウィンドウハンドル設定を渡して生成する
-	hr_ = dxgiFactory->CreateSwapChainForHwnd(commandQueue_, sWinApp->GetHwnd(), &swapChainDesc_, nullptr, nullptr, reinterpret_cast<IDXGISwapChain1**>(&swapChain_));
+	hr_ = dxgiFactory->CreateSwapChainForHwnd(commandQueue_, sWinApp_->GetHwnd(), &swapChainDesc_, nullptr, nullptr, reinterpret_cast<IDXGISwapChain1**>(&swapChain_));
 	assert(SUCCEEDED(hr_));
 
 	// ディスクリプタヒープの生成
@@ -304,9 +304,9 @@ void DirectXCommon::Release() {
 
 
 	//#ifdef _DEBUG
-	//	textureManager_->debugController->Release();
+	//	textureManager_->Release();
 	//#endif // _DEBUG
-		//CloseWindow(hwnd);
+		CloseWindow(sWinApp_->GetHwnd());
 
 
 		// リソースリークチェック

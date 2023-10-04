@@ -25,6 +25,12 @@ void TextureManager::Initialize(  const std::string& filePath) {
 	sDirectXCommon_->GetDevice()->CreateShaderResourceView(textureResource_, &srvDesc_, textureSrvHandleCPU_);
 };
 
+void TextureManager::Release() {
+	resource_->Release();
+	textureResource_->Release();
+	mipImages_.Release();
+}
+
 //void TextureManager::Update(Mesh* mesh) {
 //	descriptorRange_[0].BaseShaderRegister = 0; // 0から始まる
 //	descriptorRange_[0].NumDescriptors = 1; // 数は1つ
