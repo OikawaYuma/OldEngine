@@ -2,27 +2,27 @@
 #include "DirectXCommon.h"
 //DirectXCommon dirX;
 void TextureManager::Initialize(  const std::string& filePath) {
-	//DirectXCommon* sDirectXCommon = DirectXCommon::GetInstance();
+	sDirectXCommon_ = DirectXCommon::GetInstance();
 	// Textureを読んで転送する
-	mipImages = LoadTexture(filePath);
-	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
-	textureResource = CreateTextureResource(directXCommon_->device, metadata);
-	UploadTextureData(textureResource, mipImages);
+	mipImages_ = LoadTexture(filePath);
+	const DirectX::TexMetadata& metadata = mipImages_.GetMetadata();
+	textureResource_ = CreateTextureResource(sDirectXCommon_->GetDevice(), metadata);
+	UploadTextureData(textureResource_, mipImages_);
 
 	// metaDataを基にSRVの設定
-	srvDesc.Format = metadata.format;
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = UINT(metadata.mipLevels);
+	srvDesc_.Format = metadata.format;
+	srvDesc_.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc_.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
+	srvDesc_.Texture2D.MipLevels = UINT(metadata.mipLevels);
 
 	// SRVを作成するDescriptorHeapの場所を決める
-	textureSrvHandleCPU_ = directXCommon_->srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
-	textureSrvHandleGPU_ = directXCommon_->srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart();
+	textureSrvHandleCPU_ = sDirectXCommon_->GetSrvDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
+	textureSrvHandleGPU_ = sDirectXCommon_->GetSrvDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
 	// 先頭はImGuiが使っているのでその次を使う
-	textureSrvHandleCPU_.ptr += directXCommon_->device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	textureSrvHandleGPU_.ptr += directXCommon_->device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	textureSrvHandleCPU_.ptr += sDirectXCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	textureSrvHandleGPU_.ptr += sDirectXCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	// SRVの生成
-	directXCommon_->device->CreateShaderResourceView(textureResource, &srvDesc, textureSrvHandleCPU_);
+	sDirectXCommon_->GetDevice()->CreateShaderResourceView(textureResource_, &srvDesc_, textureSrvHandleCPU_);
 };
 
 //void TextureManager::Update(Mesh* mesh) {
@@ -49,13 +49,13 @@ void TextureManager::Initialize(  const std::string& filePath) {
 //};
 
 
-void TextureManager::SetTexture(DirectXCommon* dirX) {
-	dirX->commandList->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU_);
+void TextureManager::SetTexture() {
+	sDirectXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU_);
 };
 
 
 DirectX::ScratchImage TextureManager::LoadTexture(const std::string& filePath) {
-	// テクスチャファイルを呼んでプログラムを使えるようにする
+	////// テクスチャファイルを呼んでプログラムを使えるようにする
 	filePathW_ = ConvertString(filePath);
 
 	// エラー検知用変数
@@ -82,21 +82,21 @@ ID3D12Resource* TextureManager::CreateTextureResource(ID3D12Device* device, cons
 	resourceDesc_.Dimension = D3D12_RESOURCE_DIMENSION(metadata.dimension); // Textureの次元数。普段使っているのは2次元
 
 	// 利用するHeapの設定。非常に特殊な運用。02_04exで一般的なケース版がある
-	heapProperties.Type = D3D12_HEAP_TYPE_CUSTOM; // 細かい設定を行う
-	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
-	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
+	heapProperties_.Type = D3D12_HEAP_TYPE_CUSTOM; // 細かい設定を行う
+	heapProperties_.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
+	heapProperties_.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
 
 	// Rewsourceの生成
-	resource = nullptr;
+	resource_ = nullptr;
 	HRESULT hr = device->CreateCommittedResource(
-		&heapProperties, // Heapの設定
+		&heapProperties_, // Heapの設定
 		D3D12_HEAP_FLAG_NONE, //Heapの特殊な設定。特になし。
 		&resourceDesc_, // Resourceの設定
 		D3D12_RESOURCE_STATE_GENERIC_READ, // 初回のResourceState。Textureは基本読むだけ
 		nullptr, // Clear最適地。使わないのでnullptr
-		IID_PPV_ARGS(&resource));
+		IID_PPV_ARGS(&resource_));
 	assert(SUCCEEDED(hr));
-	return resource;
+	return resource_;
 
 }
 

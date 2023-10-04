@@ -33,16 +33,14 @@ public:
 
 	void Initialize( VertexData* vertexDataA,Vector4 DrawColor);
 	void Update( Vector4 DrawColor);
-	void Draw(DirectXCommon* dirX);
+	void Draw();
 	void Release();
 	HRESULT hr;
 
 	void SetTextureManager(TextureManager *textureManager) {
 		textureManager_ = textureManager;
 	}
-	void SetDirectXCommon(DirectXCommon* directXCommon) {
-		directXCommon_ = directXCommon;
-	}
+	
 
 
 	// RootSignature作成
@@ -117,6 +115,6 @@ public:
 	D3D12_RECT scissorRect{};
 
 private:
-	DirectXCommon* directXCommon_ = nullptr;
+	DirectXCommon* sDirectXCommon_ = nullptr;
 };
 

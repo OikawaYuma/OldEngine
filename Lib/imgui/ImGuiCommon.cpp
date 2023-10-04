@@ -6,19 +6,21 @@
 #include "imgui_impl_win32.h"
 
 
-void ImGuiCommon::Initialize(WinApp* winApp_, DirectXCommon* dirX_) {
+void ImGuiCommon::Initialize() {
+	sWinApp_ = WinApp::GetInstance();
+	sDirectXCommon_ = DirectXCommon::GetInstance();
 	//ImGuiの初期化。詳細はさして重要ではないので省略する。
 	//こういうもんである
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
-	ImGui_ImplWin32_Init(winApp_->hwnd_);
-	ImGui_ImplDX12_Init(dirX_->device,
-		dirX_->swapChainDesc.BufferCount,
-		dirX_->rtvDesc.Format,
-		dirX_->srvDescriptorHeap,
-		dirX_->srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
-		dirX_->srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
+	ImGui_ImplWin32_Init(sWinApp_->GetHwnd());
+	ImGui_ImplDX12_Init(sDirectXCommon_->GetDevice(),
+		sDirectXCommon_->GetSwapChainDesc().BufferCount,
+		sDirectXCommon_->GetrtvDesc().Format,
+		sDirectXCommon_->GetSrvDescriptorHeap(),
+		sDirectXCommon_->GetSrvDescriptorHeap()->GetCPUDescriptorHandleForHeapStart(),
+		sDirectXCommon_->GetSrvDescriptorHeap()->GetGPUDescriptorHandleForHeapStart());
 
 }
 
@@ -30,18 +32,20 @@ void ImGuiCommon::Update() {
 	ImGui::ShowDemoWindow();
 };
 
-void ImGuiCommon::Draw(DirectXCommon* dirX_) {
+void ImGuiCommon::Draw() {
 	ImGui::Render();
-	//描画用のDescriptorの設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = { dirX_->srvDescriptorHeap };
-	dirX_->commandList->SetDescriptorHeaps(1, descriptorHeaps);
-	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dirX_->commandList);
+	////描画用のDescriptorの設定
+	//ID3D12DescriptorHeap* descriptorHeaps[] = { sDirectXCommon_->GetSrvDescriptorHeap()};
+	//sDirectXCommon_->GetCommandList()->SetDescriptorHeaps(1, descriptorHeaps);
+	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), sDirectXCommon_->GetCommandList());
 }
 
 
-void ImGuiCommon::UICreate(DirectXCommon* dirX) {
-	// 実際のcoomandListのImguiの描画コマンドを積む
-	//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dirX->commandList);
+void ImGuiCommon::UICreate() {
+	//ImGui::Render();
+	//描画用のDescriptorの設定
+	ID3D12DescriptorHeap* descriptorHeaps[] = { sDirectXCommon_->GetSrvDescriptorHeap() };
+	sDirectXCommon_->GetCommandList()->SetDescriptorHeaps(1, descriptorHeaps);
 }
 
 

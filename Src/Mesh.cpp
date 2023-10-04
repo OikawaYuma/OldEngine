@@ -17,7 +17,7 @@ Mesh::Mesh() {
 
 ID3D12Resource* Mesh::CreateBufferResource(ID3D12Device* device, size_t sizeInBytes) {
 	ID3D12Resource* resource= nullptr;
-
+	
 	D3D12_RESOURCE_DESC resourceDesc{};
 	// バッファリソース。テクスチャの場合はまた別の設定をする
 	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
@@ -58,7 +58,7 @@ D3D12_VERTEX_BUFFER_VIEW Mesh::CreateBufferView() {
 void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 
 	WinApp* sWinApp = WinApp::GetInstance();
-	//DirectXCommon* sDirX = DirectXCommon::GetInstance();
+	sDirectXCommon_ = DirectXCommon::GetInstance();
 
 	descriptionRootSignature.Flags =
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
@@ -109,7 +109,7 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	}
 	// バイナリを元に生成
 	rootSignature = nullptr;
-	hr = directXCommon_->device->CreateRootSignature(0, signatureBlob->GetBufferPointer(),
+	hr = sDirectXCommon_->GetDevice()->CreateRootSignature(0, signatureBlob->GetBufferPointer(),
 		signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(hr));
 
@@ -140,11 +140,11 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 
 	// Shaderをコンパイルする
 	vertexShaderBlob = CompileShader(L"Object3d.VS.hlsl",
-		L"vs_6_0", directXCommon_->dxcUtils, directXCommon_->dxcCompiler, directXCommon_->includeHandler);
+		L"vs_6_0", sDirectXCommon_->GetDxcUtils(), sDirectXCommon_->GetDxcCompiler(), sDirectXCommon_->GetIncludeHandler());
 	assert(vertexShaderBlob != nullptr);
 
 	pixelShaderBlob = CompileShader(L"Object3d.PS.hlsl",
-		L"ps_6_0", directXCommon_->dxcUtils, directXCommon_->dxcCompiler, directXCommon_->includeHandler);
+		L"ps_6_0", sDirectXCommon_->GetDxcUtils(), sDirectXCommon_->GetDxcCompiler(), sDirectXCommon_->GetIncludeHandler());
 	assert(pixelShaderBlob != nullptr);
 
 	graphicsPipelineStateDesc.pRootSignature = rootSignature; // RootSignature
@@ -166,7 +166,7 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 	//実際に生成
 	graphicsPipelineState = nullptr;
-	hr = directXCommon_->device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
+	hr = sDirectXCommon_->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
 		IID_PPV_ARGS(&graphicsPipelineState));
 	assert(SUCCEEDED(hr));
 
@@ -174,7 +174,7 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	//バッファリソース
 	
 	// 実際に頂点リソースを作る
-	vertexResource = CreateBufferResource(directXCommon_->device, sizeof(VertexData) * 3);
+	vertexResource = CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(VertexData) * 3);
 
 	vertexBufferView = CreateBufferView();
 	
@@ -196,7 +196,7 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 
 
 	// 実際に頂点リソースを作る
-	materialResource = CreateBufferResource(directXCommon_->device, sizeof(Vector4));
+	materialResource = CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Vector4));
 
 	materialBufferView = CreateBufferView();;
 	// 頂点リソースにデータを書き込む
@@ -211,7 +211,7 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	// データを書き込む
 	wvpData = nullptr;
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	wvpResource = CreateBufferResource(directXCommon_->device, sizeof(Matrix4x4));
+	wvpResource = CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Matrix4x4));
 	// 書き込むためのアドレスを取得
 	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
 	//単位行列を書き込んでいく
@@ -233,8 +233,8 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	
 
 	//クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = (float)sWinApp->kClientWidth;
-	viewport.Height = (float)sWinApp->kClientHeight;
+	viewport.Width = (float)sWinApp->GetKClientWidth();
+	viewport.Height = (float)sWinApp->GetKClientHeight();
 	viewport.TopLeftX = 1;
 	viewport.TopLeftY = 1;
 	viewport.MinDepth = 0.0f;
@@ -243,9 +243,9 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 
 	// 基本的にビューポートと同じ矩形が構成されるようにする
 	scissorRect.left = 0;
-	scissorRect.right = sWinApp->kClientWidth;
+	scissorRect.right = sWinApp->GetKClientWidth();
 	scissorRect.top = 0;
-	scissorRect.bottom = sWinApp->kClientHeight;
+	scissorRect.bottom = sWinApp->GetKClientHeight();
 
 	
 };
@@ -253,27 +253,26 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 void Mesh::Update(Vector4 DrawColor) {
 	// 色のデータを変数から読み込み
 	*materialData = DrawColor;
-	directXCommon_->commandList->RSSetViewports(1, &viewport);  //viewportを設定
-	directXCommon_->commandList->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
+	sDirectXCommon_->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
+	sDirectXCommon_->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
-	directXCommon_->commandList->SetGraphicsRootSignature(rootSignature);
-	directXCommon_->commandList->SetPipelineState(graphicsPipelineState);    //PSOを設定
-	directXCommon_->commandList->IASetVertexBuffers(0, 1, &vertexBufferView);    //VBVを設定
+	sDirectXCommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature);
+	sDirectXCommon_->GetCommandList()->SetPipelineState(graphicsPipelineState);    //PSOを設定
+	sDirectXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView);    //VBVを設定
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
-	directXCommon_->commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	sDirectXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// マテリアルCBufferの場所を設定
-	directXCommon_->commandList->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
-	directXCommon_->commandList->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
+	sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
+	sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
 	
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
-	directXCommon_->commandList->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_);
-
+	sDirectXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_);
 	// 描画！（DrawCall/ドローコール）・3頂点で1つのインスタンス。インスタンスについては今後
-	directXCommon_->commandList->DrawInstanced(3, 1, 0, 0);
+	sDirectXCommon_->GetCommandList()->DrawInstanced(3, 1, 0, 0);
 };
-void Mesh::Draw(DirectXCommon* dirX) {
+void Mesh::Draw() {
 	
-	dirX->commandList->DrawInstanced(3, 1, 0, 0);
+	sDirectXCommon_->GetCommandList()->DrawInstanced(3, 1, 0, 0);
 }
 
 

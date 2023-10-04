@@ -9,12 +9,17 @@ class ImGuiCommon
 {
 public:
 	
-	void Initialize(WinApp* winApp_, DirectXCommon* dirX_);
+	void Initialize();
 	void Update();
-	void Draw(DirectXCommon* dirX_);
+	void Draw();
 
 	void UIParameter();
-	void UICreate(DirectXCommon* dirX);
+	void UICreate();
 	void Release();
+
+private:
+
+	WinApp* sWinApp_ = nullptr;
+	DirectXCommon* sDirectXCommon_ = nullptr;
 };
 

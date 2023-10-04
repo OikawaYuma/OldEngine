@@ -21,11 +21,9 @@ public:
 	void Initialize(const std::string& filePath);
 	//void Update(Mesh* mesh );
 
-	void SetTexture(DirectXCommon* dirX);
+	void SetTexture();
 
-	void SetDirectXCommon(DirectXCommon* directXCommon) {
-		directXCommon_ = directXCommon;
-	}
+	void SetDirectXCommon();
 
 	DirectX::ScratchImage LoadTexture(const std::string& filePath);
 
@@ -37,17 +35,17 @@ public:
 	HRESULT hr_;
 
 	// Textureを読んで転送する
-	DirectX::ScratchImage mipImages;
+	DirectX::ScratchImage mipImages_;
 
 	// 利用するHeapの設定。非常に特殊な運用。02_04exで一般的なケース版がある
-	D3D12_HEAP_PROPERTIES heapProperties{};
+	D3D12_HEAP_PROPERTIES heapProperties_{};
 
 
 	// Rewsourceの生成
-	ID3D12Resource* resource;
-	ID3D12Resource* textureResource;
+	ID3D12Resource* resource_;
+	ID3D12Resource* textureResource_;
 	// metaDataを基にSRVの設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc_{};
 
 	// DirectX12のTextureResourceを作る
 	ID3D12Resource* CreateTextureResource(ID3D12Device* device, const DirectX::TexMetadata& matdata);
@@ -64,7 +62,7 @@ public:
 
 	
 private:
-	DirectXCommon* directXCommon_ = nullptr;
+	DirectXCommon* sDirectXCommon_ = nullptr;
 
 };
 

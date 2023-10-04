@@ -31,18 +31,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		triangle[i][0].texcorrd = { 0.0f,1.0f };
 
 		triangle[i][1].position = { -0.85f,0.80f + (i * -0.10f),0.0f,1.0f },
-		triangle[i][0].texcorrd = { 0.5f,0.0f };
+		triangle[i][1].texcorrd = { 0.5f,0.0f };
 
 		triangle[i][2].position = { -0.80f,0.70f + (i * -0.10f),0.0f,1.0f };
-		triangle[i][0].texcorrd = { 1.0f,1.0f };
+		triangle[i][2].texcorrd = { 1.0f,1.0f };
 	}
 
 	triangle[0][0].position = { -1.0f,-1.0f ,0.0f,1.0f };
 	triangle[0][0].texcorrd = { 0.0f,1.0f };
 	triangle[0][1].position = { 0.0f,1.0f ,0.0f,1.0f };
-	triangle[0][0].texcorrd = { 0.5f,0.0f };
+	triangle[0][1].texcorrd = { 0.5f,0.0f };
 	triangle[0][2].position = { 1.0f,-1.0f,0.0f,1.0f };
-	triangle[0][0].texcorrd = { 1.0f,1.0f };
+	triangle[0][2].texcorrd = { 1.0f,1.0f };
 
 
 	triangle1[0].position = { -0.5f,-0.5f ,0.0f,1.0f };
@@ -54,14 +54,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	
 
+	
+	WinApp* sWinApp = WinApp::GetInstance();
+	sWinApp->Initialize(L"CG2");
+	////DirectXCommon* dirX = new DirectXCommon();
 
-	WinApp* winApp = new WinApp();
-	winApp->Initialize(L"CG2");
-	//DirectXCommon* dirX = new DirectXCommon();
+	DirectXCommon* sDirctX = DirectXCommon::GetInstance();
 
-	DirectXCommon* dirX = new DirectXCommon();
-
-	dirX->Initialize();
+	sDirctX->Initialize();
 	ImGuiCommon* imGuiCommon = new ImGuiCommon;
 
 	Mesh* mesh_[20];
@@ -69,27 +69,28 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// 実験用
 	Mesh* mesh2 = new Mesh();
 
-	TextureManager* textureManager = new TextureManager;
-	textureManager->SetDirectXCommon(dirX);
-	textureManager->Initialize( "Resources/uvChecker.png");
+	
 	bool Reset = true;
 
 
 	for (int i = 0; i < 20; i++) {
-		color[i] = { 0.05f * i,0.0f,0.0f,1.0f, };
+		color[i] = { 0.05f * i+0.5f,0.0f,0.0f,1.0f, };
 		mesh_[i] = new Mesh();
-		mesh_[i]->SetDirectXCommon(dirX);
 		mesh_[i]->Initialize( triangle[i], color[i]);
-		mesh_[i]->SetTextureManager(textureManager);
 		
+		
+	}
+	TextureManager* textureManager = new TextureManager;
+	textureManager->Initialize("Resources/uvChecker.png");
+	for (int i = 0; i < 20; i++) {
+	
+		mesh_[i]->SetTextureManager(textureManager);
+
 	}
 	
 
-
-	
-
 	MSG msg{};
-	imGuiCommon->Initialize(winApp, dirX);
+	imGuiCommon->Initialize();
 
 
 	//ウィンドウの×ボタンが押されるまでループ
@@ -101,8 +102,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 		else {
 			// ゲームの処理の開始
-			dirX->BeginFrame();
-
+			sDirctX->BeginFrame();
+			imGuiCommon->UICreate();
 			//ImGuiの更新
 			imGuiCommon->Update();
 
@@ -117,6 +118,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				*mesh_[i]->wvpData = camera->worldViewProjectionMatrix;
 				mesh_[i]->Update( color[i]);
 			
+				//mesh_[i]->Draw();
+
 			}
 
 			ImGui::Begin("Debug");
@@ -157,10 +160,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 			//ImGuiの描画
-			imGuiCommon->Draw(dirX);
+			imGuiCommon->Draw();
 
 			//スワップチェーン
-			dirX->ViewChange();
+			sDirctX->ViewChange();
 		}
 	}
 
@@ -171,13 +174,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	/*------------------------------------------------------------
 
 	-------------------------------------------------------------*/
-	winApp->Release();
+	sWinApp->Release();
 
 	for (int i = 0; i < 20; i++) {
 		mesh_[i]->Release();
 	}
 	imGuiCommon->Release();
-	dirX->Release();
-	CoUninitialize();
+	sDirctX->Release();
+	//CoUninitialize();
 	return 0;
 }
