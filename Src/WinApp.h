@@ -1,19 +1,16 @@
 ﻿#pragma once
-#include<Windows.h>
-#include<cstdint>
-
-#include<d3d12.h>
-#include<dxgi1_6.h>
+#include <Windows.h>
+#include <cstdint>
+#include <d3d12.h>
+#include <dxgi1_6.h>
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
-
-
+/*----------------------------------------------------------
+	   このクラスはシングルトンパターンのを元に設計する
+--------------------------------------------------------------*/
 class WinApp final
 {
-
-private:
-	
 public:
 
 	// コンストラクタ
@@ -42,7 +39,6 @@ public:
 
 	 HWND GetHwnd() { return hwnd_; }
 
-
 	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 	// ウィンドウの生成
@@ -51,11 +47,7 @@ public:
 	//ウィンドウクラス
 	WNDCLASS wc_{};
 	
-
 private:
-
-
-	
 
 	// クライアント領域のサイズ
 	const static  int32_t kClientWidth_ = 1280;
