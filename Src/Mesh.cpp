@@ -44,7 +44,7 @@ D3D12_VERTEX_BUFFER_VIEW Mesh::CreateBufferView() {
 	//リソースの先頭のアドレスから使う
 	view.BufferLocation = vertexResource->GetGPUVirtualAddress();
 	// 使用するリソースのサイズは頂点3つ分のサイズ
-	view.SizeInBytes = sizeof(VertexData) * 3;
+	view.SizeInBytes = sizeof(VertexData) * 6;
 	// 1頂点あたりのサイズ
 	view.StrideInBytes = sizeof(VertexData);
 	
@@ -164,6 +164,13 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	// どのように画面に色を打ち込むかの設定（気にしなくてよい）
 	graphicsPipelineStateDesc.SampleDesc.Count = 1;
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+
+	// DeptjStencilの設定
+	graphicsPipelineStateDesc.DepthStencilState = sDirectXCommon_->GetDepthStencilDesc();
+	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+
+
 	//実際に生成
 	graphicsPipelineState = nullptr;
 	hr = sDirectXCommon_->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
@@ -174,7 +181,7 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	//バッファリソース
 	
 	// 実際に頂点リソースを作る
-	vertexResource = CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(VertexData) * 3);
+	vertexResource = CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(VertexData) * 6);
 
 	vertexBufferView = CreateBufferView();
 	
@@ -193,6 +200,16 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	//右下
 	vertexData_[2].position= vertexDataA[2].position;
 	vertexData_[2].texcorrd = vertexDataA[2].texcorrd;
+
+	//左下
+	vertexData_[3].position = vertexDataA[3].position;
+	vertexData_[3].texcorrd = vertexDataA[3].texcorrd;
+	//上
+	vertexData_[4].position = vertexDataA[4].position;
+	vertexData_[4].texcorrd = vertexDataA[4].texcorrd;
+	//右下
+	vertexData_[5].position = vertexDataA[5].position;
+	vertexData_[5].texcorrd = vertexDataA[5].texcorrd;
 
 
 	// 実際に頂点リソースを作る
@@ -268,7 +285,7 @@ void Mesh::Update(Vector4 DrawColor) {
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	sDirectXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_);
 	// 描画！（DrawCall/ドローコール）・3頂点で1つのインスタンス。インスタンスについては今後
-	sDirectXCommon_->GetCommandList()->DrawInstanced(3, 1, 0, 0);
+	sDirectXCommon_->GetCommandList()->DrawInstanced(6, 1, 0, 0);
 };
 void Mesh::Draw() {
 	

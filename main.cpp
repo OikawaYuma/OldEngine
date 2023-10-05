@@ -18,8 +18,8 @@
 // Windowsアプリでのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	CoInitializeEx(0, COINIT_MULTITHREADED);
-	VertexData triangle[20][3];
-	VertexData triangle1[3];
+	VertexData triangle[20][6];
+	VertexData triangle1[6];
 	Vector4 color[20] = { 0.0f,0.0f,0.0f,1.0f };
 	// Transform変数の初期化
 	Transform transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
@@ -51,6 +51,32 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	triangle1[1].texcorrd = { 0.5f,0.0f };
 	triangle1[2].position = { 0.5f,-0.5f,0.0f,1.0f };
 	triangle1[2].texcorrd = { 1.0f,1.0f };
+
+	for (int i = 0; i < 20; i++) {
+		triangle[i][3].position = { -0.9f ,0.70f + (i * -0.10f),0.0f,1.0f };
+		triangle[i][3].texcorrd = { 0.0f,1.0f };
+
+		triangle[i][4].position = { -0.85f,0.80f + (i * -0.10f),0.0f,1.0f },
+		triangle[i][4].texcorrd = { 0.5f,0.0f };
+
+		triangle[i][5].position = { -0.80f,0.70f + (i * -0.10f),0.0f,1.0f };
+		triangle[i][5].texcorrd = { 1.0f,1.0f };
+	}
+
+	triangle[0][3].position = { -1.0f,-1.0f ,1.0f,1.0f };
+	triangle[0][3].texcorrd = { 0.0f,1.0f };
+	triangle[0][4].position = { 0.0f,0.0f ,0.0f,1.0f };
+	triangle[0][4].texcorrd = { 0.5f,0.0f };
+	triangle[0][5].position = { 1.0f,-1.0f,-1.0f,1.0f };
+	triangle[0][5].texcorrd = { 1.0f,1.0f };
+
+
+	triangle1[3].position = { -0.5f,-0.5f ,0.5f,1.0f };
+	triangle1[3].texcorrd = { 0.0f,1.0f };
+	triangle1[4].position = { 0.0f,0.0f ,0.0f,1.0f };
+	triangle1[4].texcorrd = { 0.5f,0.0f };
+	triangle1[5].position = { 0.5f,-0.5f,-0.5f,1.0f };
+	triangle1[5].texcorrd = { 1.0f,1.0f };
 
 	
 

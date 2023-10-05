@@ -35,7 +35,7 @@ public:
 	void Release();
 
 	ID3D12DescriptorHeap* CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors,bool shaderVisible);
-
+	ID3D12Resource* CreateDepthStencilTextureResource(ID3D12Device* device, int32_t width, int32_t height);
 	// Accessor
 	ID3D12Device* GetDevice() { return device_; };
 	IDxcUtils* GetDxcUtils() { return dxcUtils_; };
@@ -45,7 +45,7 @@ public:
 	DXGI_SWAP_CHAIN_DESC1 GetSwapChainDesc() { return swapChainDesc_; };
 	ID3D12DescriptorHeap* GetSrvDescriptorHeap() { return srvDescriptorHeap_; };
 	D3D12_RENDER_TARGET_VIEW_DESC GetrtvDesc() { return rtvDesc_; };
-
+	D3D12_DEPTH_STENCIL_DESC GetDepthStencilDesc() { return depthStencilDesc_; };
 
 private:
 	// DXGIファクトリーの生成
@@ -94,5 +94,17 @@ private:
 	IDxcIncludeHandler* includeHandler_;
 	WinApp* sWinApp_ = nullptr;
 	TextureManager* textureManager_ = nullptr;
+
+
+	// DepthStencilTextureをウィンドウのサイズで作成
+	ID3D12Resource* depthStencilResource_;
+
+	// DSVようのヒープでディスクリプタの数は1。DSVはShader内で触るものではないので、ShaderVisibleはfalse
+	ID3D12DescriptorHeap* dsvDescriptorHeap_;
+	// DepthStencilStateの設定
+	D3D12_DEPTH_STENCIL_DESC depthStencilDesc_{};
+
+	// 描画先のRTVを設定する
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle;
 };
 

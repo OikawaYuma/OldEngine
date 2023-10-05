@@ -14,12 +14,13 @@
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
 class DirectXCommon;
+class WinApp;
 class TextureManager
 {
 public:
 	
 	void Initialize(const std::string& filePath);
-	//void Update(Mesh* mesh );
+	void Update();
 	void Release();
 	void SetTexture();
 
@@ -41,14 +42,20 @@ public:
 	D3D12_HEAP_PROPERTIES heapProperties_{};
 
 
-	// Rewsourceの生成
+	// Resourceの生成
 	ID3D12Resource* resource_;
 	ID3D12Resource* textureResource_;
+
+	
+
 	// metaDataを基にSRVの設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc_{};
 
 	// DirectX12のTextureResourceを作る
 	ID3D12Resource* CreateTextureResource(ID3D12Device* device, const DirectX::TexMetadata& matdata);
+
+
+	
 	D3D12_RESOURCE_DESC resourceDesc_{};
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 	
@@ -63,6 +70,7 @@ public:
 	
 private:
 	DirectXCommon* sDirectXCommon_ = nullptr;
+	WinApp* sWinApp_ = nullptr;
 
 };
 

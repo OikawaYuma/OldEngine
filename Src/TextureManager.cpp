@@ -1,8 +1,10 @@
 ﻿#include "TextureManager.h"
 #include "DirectXCommon.h"
+#include "WinApp.h"
 //DirectXCommon dirX;
 void TextureManager::Initialize(  const std::string& filePath) {
 	sDirectXCommon_ = DirectXCommon::GetInstance();
+	sWinApp_ = WinApp::GetInstance();
 	// Textureを読んで転送する
 	mipImages_ = LoadTexture(filePath);
 	const DirectX::TexMetadata& metadata = mipImages_.GetMetadata();
@@ -23,12 +25,27 @@ void TextureManager::Initialize(  const std::string& filePath) {
 	textureSrvHandleGPU_.ptr += sDirectXCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	// SRVの生成
 	sDirectXCommon_->GetDevice()->CreateShaderResourceView(textureResource_, &srvDesc_, textureSrvHandleCPU_);
+	
+	
+
+	
+	
+
+
 };
+
+void TextureManager::Update() {
+	
+	
+
+}
+
 
 void TextureManager::Release() {
 	resource_->Release();
 	textureResource_->Release();
 	mipImages_.Release();
+	
 }
 
 //void TextureManager::Update(Mesh* mesh) {
@@ -105,6 +122,7 @@ ID3D12Resource* TextureManager::CreateTextureResource(ID3D12Device* device, cons
 	return resource_;
 
 }
+
 
 void TextureManager::UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages) {
 	// Meta情報を取得
