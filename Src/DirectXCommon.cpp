@@ -318,6 +318,7 @@ void DirectXCommon::Release() {
 	swapChainResources_[0]->Release();
 	swapChainResources_[1]->Release();
 	depthStencilResource_->Release();
+	dsvDescriptorHeap_->Release();
 	swapChain_->Release();
 	commandList_->Release();
 	commandAllocator_->Release();
