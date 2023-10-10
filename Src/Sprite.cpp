@@ -89,6 +89,7 @@ void Sprite::Release() {
 	transformationMatrixResouceSprite->Release();
 	vertexResourceSprite_->Release();
 	
+	
 };
 
 ID3D12Resource* Sprite::CreateBufferResourceA(ID3D12Device* device, size_t sizeInBytes) {
