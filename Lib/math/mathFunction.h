@@ -18,5 +18,7 @@ Vector3 MakeTransform(const Vector3& vector, const Matrix4x4& matrix);
 
 Matrix4x4 Inverse(const Matrix4x4& m);
 
+Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip);
+
 // 1. 透視投影行列
 Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip);

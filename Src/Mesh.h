@@ -25,7 +25,7 @@ class Mesh
 public:
 	Mesh();
 	~Mesh();
-
+	
 
 	ID3D12Resource* CreateBufferResource(ID3D12Device* device,size_t sizeInBytes);
 	D3D12_RESOURCE_DESC  CreateBufferResourceDesc(size_t sizeInBytes);
@@ -68,8 +68,7 @@ public:
 	// RootParmeter作成。複数でっていできるので配列。今回は結果１つだけなので長さ1の配列
 	D3D12_ROOT_PARAMETER rootParamerters[3] = {};
 	
-	//頂点リソース用のヒープの設定
-	D3D12_HEAP_PROPERTIES uploadHeapProperties{};
+	
 
 	/*頂点用*/
 	// 実際に頂点リソースを作る

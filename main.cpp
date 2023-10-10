@@ -5,6 +5,7 @@
 #include "ImGuiCommon.h"
 #include "TextureManager.h"
 #include "Camera.h"
+#include "Sprite.h"
 
 #include "VertexData.h"
 #include "Vector4.h"
@@ -90,8 +91,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	sDirctX->Initialize();
 	ImGuiCommon* imGuiCommon = new ImGuiCommon;
 
+	
 	Mesh* mesh_[20];
-
 	// 実験用
 	Mesh* mesh2 = new Mesh();
 
@@ -100,20 +101,28 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 	for (int i = 0; i < 20; i++) {
-		color[i] = { 0.05f * i+0.5f,0.0f,0.0f,1.0f, };
+		color[i] = { 1.0f,1.0f,1.0f,1.0f, };
 		mesh_[i] = new Mesh();
 		mesh_[i]->Initialize( triangle[i], color[i]);
 		
 		
 	}
+	Sprite* sprite = new Sprite();
+	
+	
 	TextureManager* textureManager = new TextureManager;
 	textureManager->Initialize("Resources/uvChecker.png");
+
+	TextureManager* textureManager2 = new TextureManager;
+	textureManager2->Initialize("Resources/uvChecker.png");
+
 	for (int i = 0; i < 20; i++) {
 	
-		mesh_[i]->SetTextureManager(textureManager);
+		mesh_[i]->SetTextureManager(textureManager2);
 
 	}
-	
+	sprite->SetTextureManager(textureManager);
+	sprite->Initialize();
 
 	MSG msg{};
 	imGuiCommon->Initialize();
@@ -132,11 +141,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			imGuiCommon->UICreate();
 			//ImGuiの更新
 			imGuiCommon->Update();
-
+			
 
 
 			//カメラの更新
 			camera->Update(transform);
+			sprite->Update();
 			if (Reset) {
 				transform.rotate.y += 0.03f;
 			}
@@ -147,6 +157,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				//mesh_[i]->Draw();
 
 			}
+			sprite->Draw();
 
 			ImGui::Begin("Debug");
 			ImGui::Text("TransformS : x %2.2f : y %2.2f : z %2.2f", transform.scale.x, transform.scale.y, transform.scale.z);
@@ -207,6 +218,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 	imGuiCommon->Release();
 	textureManager->Release();
+	sprite->Release();
 	sDirctX->Release();
 	
 	CoUninitialize();

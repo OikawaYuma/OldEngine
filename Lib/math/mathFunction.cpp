@@ -238,3 +238,23 @@ Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip
 
 	return m4;
 };
+
+// 2. 正射影行列
+Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip) {
+	Matrix4x4 m4;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			m4.m[i][j] = 0;
+		}
+	}
+	m4.m[0][0] = 2 / (right - left);
+	m4.m[1][1] = 2 / (top - bottom);
+	m4.m[2][2] = 1 / (farClip - nearClip);
+	m4.m[3][0] = (left + right) / (left - right);
+	m4.m[3][1] = (top + bottom) / (bottom - top);
+	m4.m[3][2] = nearClip / (nearClip - farClip);
+	m4.m[3][3] = 1;
+
+
+	return m4;
+};
