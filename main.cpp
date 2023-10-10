@@ -218,6 +218,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 	imGuiCommon->Release();
 	textureManager->Release();
+	textureManager2->Release();
 	sprite->Release();
 	sDirctX->Release();
 	
