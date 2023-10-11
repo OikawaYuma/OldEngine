@@ -6,6 +6,7 @@
 #include "TextureManager.h"
 #include "Camera.h"
 #include "Sprite.h"
+#include "Sphere.h"
 
 #include "VertexData.h"
 #include "Vector4.h"
@@ -108,6 +109,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		
 	}
 	Sprite* sprite = new Sprite();
+	Sphere* sphere = new Sphere();
+	
 	
 	
 	TextureManager* textureManager = new TextureManager;
@@ -123,6 +126,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 	sprite->SetTextureManager(textureManager);
 	sprite->Initialize();
+
+	sphere->SetMesh(mesh_[0]); 
+	sphere->SetTextureManager(textureManager2);
+	sphere->Initialize();
+
 
 	MSG msg{};
 	imGuiCommon->Initialize();
@@ -157,7 +165,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				//mesh_[i]->Draw();
 
 			}
-			sprite->Draw();
+
+
+			sphere->Draw();
+			//sprite->Draw();
 
 			ImGui::Begin("Debug");
 			ImGui::Text("TransformS : x %2.2f : y %2.2f : z %2.2f", transform.scale.x, transform.scale.y, transform.scale.z);
@@ -220,6 +231,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	textureManager->Release();
 	textureManager2->Release();
 	sprite->Release();
+	sphere->Release();
 	sDirctX->Release();
 	
 	CoUninitialize();

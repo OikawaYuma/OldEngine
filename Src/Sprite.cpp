@@ -32,16 +32,16 @@ void Sprite::Initialize() {
 	// 1枚目の三角形
 	vertexDataSprite_[0].position = { 0.0f,360.0f,0.0f,1.0f };//左下
 	vertexDataSprite_[0].texcorrd = {0.0f,1.0f};
-	vertexDataSprite_[1].position = {0.0f,0.0f,0.0f,1.0f};
+	vertexDataSprite_[1].position = {0.0f,0.0f,0.0f,1.0f}; // 左上
 	vertexDataSprite_[1].texcorrd = {0.0f,0.0f};
-	vertexDataSprite_[2].position = {640.0f,360.0f,0.0f,1.0f};
+	vertexDataSprite_[2].position = {640.0f,360.0f,0.0f,1.0f}; // 右下
 	vertexDataSprite_[2].texcorrd = {1.0f,1.0f};
 	// 2枚目の三角形				   
-	vertexDataSprite_[3].position = {0.0f,0.0f,0.0f,1.0f};
+	vertexDataSprite_[3].position = {0.0f,0.0f,0.0f,1.0f}; // 左上
 	vertexDataSprite_[3].texcorrd = {0.0f,0.0f};
-	vertexDataSprite_[4].position = {640.0f,0.0f,0.0f,1.0f};
+	vertexDataSprite_[4].position = {640.0f,0.0f,0.0f,1.0f}; // 右上
 	vertexDataSprite_[4].texcorrd = {1.0f,0.0f};
-	vertexDataSprite_[5].position = {640.0f,360.0f,0.0f,1.0f};
+	vertexDataSprite_[5].position = {640.0f,360.0f,0.0f,1.0f}; // 右下
 	vertexDataSprite_[5].texcorrd = {1.0f,1.0f};
 
 	
