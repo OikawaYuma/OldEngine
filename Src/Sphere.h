@@ -54,7 +54,7 @@ private:
 	// バイナリを元に生成
 	ID3D12RootSignature* rootSignature;
 	// InputLayout
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
 	D3D12_INPUT_LAYOUT_DESC  inputLayoutDesc{};
 	// blendStateの設定
 	D3D12_BLEND_DESC blendDesc{};

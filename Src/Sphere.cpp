@@ -80,7 +80,11 @@ sWinApp = WinApp::GetInstance();
 	inputElementDescs[1].SemanticIndex = 0;
 	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
 	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-
+	inputElementDescs[2].SemanticName = "NORMAL";
+	inputElementDescs[2].SemanticIndex = 0;
+	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	inputElementDescs[2].AlignedByteOffset =
+		D3D12_APPEND_ALIGNED_ELEMENT;
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
 
@@ -170,6 +174,11 @@ sWinApp = WinApp::GetInstance();
 						(sin(lat)) ,
 						(cos(lat) * sin(lon)),
 			1.0f};
+			vertexData_[start].normal = { 
+				vertexData_[start].position.x,
+				vertexData_[start].position.y,
+				vertexData_[start].position.z,
+			};
 			vertexData_[start].texcorrd = {
 				float(lonIndex) / float(kSubdivision),
 				1.0f - float(latIndex) / float(kSubdivision)
@@ -181,6 +190,11 @@ sWinApp = WinApp::GetInstance();
 				(sin(lat + latD)) ,
 				(cos(lat + latD) * sin(lon)),
 			1.0f };
+			vertexData_[start+1].normal = {
+				vertexData_[start + 1].position.x,
+				vertexData_[start + 1].position.y,
+				vertexData_[start + 1].position.z,
+			};
 			vertexData_[start+1].texcorrd = {
 				float(lonIndex) / float(kSubdivision),
 				1.0f - float(latIndex +1) / float(kSubdivision)
@@ -192,6 +206,12 @@ sWinApp = WinApp::GetInstance();
 				(sin(lat)) ,
 				(cos(lat) * sin(lon + lonD)) ,
 			1.0f };
+
+			vertexData_[start + 2].normal = {
+				vertexData_[start +2].position.x,
+				vertexData_[start +2].position.y,
+				vertexData_[start +2].position.z,
+			};
 			vertexData_[start+2].texcorrd = {
 				float(lonIndex +1 ) / float(kSubdivision),
 				1.0f - float(latIndex) / float(kSubdivision)
@@ -203,6 +223,12 @@ sWinApp = WinApp::GetInstance();
 				(sin(lat + latD)) ,
 				(cos(lat + latD) * sin(lon)),
 			1.0f };
+
+			vertexData_[start + 3].normal = {
+				vertexData_[start + 3].position.x,
+				vertexData_[start + 3].position.y,
+				vertexData_[start + 3].position.z,
+			};
 			vertexData_[start+3].texcorrd = {
 				float(lonIndex) / float(kSubdivision),
 				1.0f - float(latIndex +1) / float(kSubdivision)
@@ -214,6 +240,12 @@ sWinApp = WinApp::GetInstance();
 				(sin(lat + latD)) ,
 				(cos(lat + latD) * sin(lon + lonD)) ,
 			1.0f };
+
+			vertexData_[start +4].normal = {
+				vertexData_[start + 4].position.x,
+				vertexData_[start + 4].position.y,
+				vertexData_[start + 4].position.z,
+			};
 			vertexData_[start+4].texcorrd = {
 				float(lonIndex + 1) / float(kSubdivision),
 				1.0f - float(latIndex + 1) / float(kSubdivision)
@@ -225,6 +257,12 @@ sWinApp = WinApp::GetInstance();
 				(sin(lat)) ,
 				(cos(lat) * sin(lon + lonD)) ,
 			1.0f };
+
+			vertexData_[start + 5].normal = {
+				vertexData_[start + 5].position.x,
+				vertexData_[start + 5].position.y,
+				vertexData_[start + 5].position.z,
+			};
 			vertexData_[start+5].texcorrd = {
 				float(lonIndex + 1) / float(kSubdivision),
 				1.0f - float(latIndex) / float(kSubdivision)
@@ -324,6 +362,13 @@ void Sphere::Release() {
 	materialResource->Release();
 	wvpResource->Release();
 	graphicsPipelineState->Release();
+	signatureBlob->Release();
+	if (errorBlob) {
+		errorBlob->Release();
+	}
+	rootSignature->Release();
+	pixelShaderBlob->Release();
+	vertexShaderBlob->Release();
 }
 
 D3D12_VERTEX_BUFFER_VIEW  Sphere::CreateBufferView() {
