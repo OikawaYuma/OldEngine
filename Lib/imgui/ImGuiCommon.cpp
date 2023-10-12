@@ -24,6 +24,8 @@ void ImGuiCommon::Initialize() {
 
 }
 
+
+
 void ImGuiCommon::Update() {
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();

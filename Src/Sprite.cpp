@@ -59,11 +59,11 @@ void Sprite::Initialize() {
 
 	
 	// Transform変数の初期化
-	transform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 };
 void Sprite::Update() {
 	// Sprite用のWorldViewProjectMatrixを作る
-Matrix4x4 worldMatrixSprite = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
+Matrix4x4 worldMatrixSprite = MakeAffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
 Matrix4x4 viewMatrixSprite = MakeIdentity4x4();
 Matrix4x4 projectionMatrixSprite = MakeOrthographicMatrix(0.0f, 0.0f, float(sWinApp->GetKClientWidth()), float(sWinApp->GetKClientHeight()), 0.0f, 100.0f);
 Matrix4x4 worldViewProjectionMatrixSprite = Multiply(worldMatrixSprite, Multiply(viewMatrixSprite, projectionMatrixSprite));

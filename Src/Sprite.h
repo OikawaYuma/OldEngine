@@ -38,6 +38,10 @@ public:
 		textureManager_ = textureManager;
 	}
 
+	Transform GetTransform() {
+		return transform_;
+	}
+	Transform transform_;
 	ID3D12Resource* CreateBufferResourceA(ID3D12Device* device, size_t sizeInBytes);
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
 private:
@@ -62,6 +66,6 @@ private:
 
 	// RootParmeter作成。複数でっていできるので配列。今回は結果１つだけなので長さ1の配列
 	D3D12_ROOT_PARAMETER rootParamerters[1] = {};
-	Transform transform;
+	
 };
 

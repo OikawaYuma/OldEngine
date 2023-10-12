@@ -109,15 +109,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		
 	}
 	Sprite* sprite = new Sprite();
+	Sprite* sprite2 = new Sprite();
 	Sphere* sphere = new Sphere();
 	
-	
+
 	
 	TextureManager* textureManager = new TextureManager;
-	textureManager->Initialize("Resources/uvChecker.png");
+	
 
 	TextureManager* textureManager2 = new TextureManager;
-	textureManager2->Initialize("Resources/uvChecker.png");
+	textureManager2->Initialize("Resources/uvChecker.png",1);
+	textureManager->Initialize("Resources/monsterBall.png",2);
+	
 
 	for (int i = 0; i < 20; i++) {
 	
@@ -127,9 +130,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	sprite->SetTextureManager(textureManager);
 	sprite->Initialize();
 
+	sprite2->SetTextureManager(textureManager2);
+	sprite2->Initialize();
+
+	
+
 	sphere->SetMesh(mesh_[0]); 
 	sphere->SetTextureManager(textureManager2);
 	sphere->Initialize();
+
+
+
+	// 
+	bool useMonsterBall = true;
+
 
 
 	MSG msg{};
@@ -155,6 +169,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//カメラの更新
 			camera->Update(transform);
 			sprite->Update();
+			sprite2->Update();
+			
 			if (Reset) {
 				transform.rotate.y += 0.03f;
 			}
@@ -167,8 +183,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 
+			if (useMonsterBall) {
+				sphere->SetTextureManager(textureManager);
+			} 
+			else{
+				sphere->SetTextureManager(textureManager2);
+			}
 			sphere->Draw();
-			//sprite->Draw();
+			sprite->Draw();
+			sprite2->Draw();
 
 			ImGui::Begin("Debug");
 			ImGui::Text("TransformS : x %2.2f : y %2.2f : z %2.2f", transform.scale.x, transform.scale.y, transform.scale.z);
@@ -202,7 +225,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			ImGui::DragFloat3("cameraR : ", &camera->cameraTransform.rotate.x, 0.1f);
 			ImGui::DragFloat3("cameraS : ", &camera->cameraTransform.scale.x, 0.1f);
 
+			ImGui::DragFloat3("spriteT : ", &sprite->transform_.translate.x, 0.1f);
+			
 
+			ImGui::Checkbox("useMonsterBall", &useMonsterBall);
 
 			ImGui::End();
 
@@ -231,6 +257,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	textureManager->Release();
 	textureManager2->Release();
 	sprite->Release();
+	sprite2->Release();
 	sphere->Release();
 	sDirctX->Release();
 	

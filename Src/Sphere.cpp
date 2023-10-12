@@ -237,7 +237,16 @@ sWinApp = WinApp::GetInstance();
 	}
 	
 	
+	// 実際に頂点リソースを作る
+	materialResource = mesh_->CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Vector4));
 
+	materialBufferView = CreateBufferView();;
+	// 頂点リソースにデータを書き込む
+	materialData = nullptr;
+	// 書き込むためのアドレスを取得
+	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
+	// 色のデータを変数から読み込み
+	*materialData = {1.0f,1.0f,1.0f,1.0f};
 
 \
 
@@ -300,7 +309,7 @@ void Sphere::Draw() {
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	sDirectXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// マテリアルCBufferの場所を設定
-	//sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
+	sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
 	//sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
 
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
@@ -312,8 +321,9 @@ void Sphere::Draw() {
 
 void Sphere::Release() {
 	vertexResource->Release();
-	//materialResource->Release();
+	materialResource->Release();
 	wvpResource->Release();
+	graphicsPipelineState->Release();
 }
 
 D3D12_VERTEX_BUFFER_VIEW  Sphere::CreateBufferView() {

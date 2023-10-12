@@ -19,12 +19,12 @@ class TextureManager
 {
 public:
 	
-	void Initialize(const std::string& filePath);
+	void Initialize(const std::string& filePath,int num);
 	void Update();
 	void Release();
 	void SetTexture();
-
 	void SetDirectXCommon();
+
 
 	DirectX::ScratchImage LoadTexture(const std::string& filePath);
 

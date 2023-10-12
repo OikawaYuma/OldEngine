@@ -2,7 +2,7 @@
 #include "DirectXCommon.h"
 #include "WinApp.h"
 //DirectXCommon dirX;
-void TextureManager::Initialize(  const std::string& filePath) {
+void TextureManager::Initialize(  const std::string& filePath,int num) {
 	sDirectXCommon_ = DirectXCommon::GetInstance();
 	sWinApp_ = WinApp::GetInstance();
 	// Textureを読んで転送する
@@ -14,15 +14,15 @@ void TextureManager::Initialize(  const std::string& filePath) {
 	// metaDataを基にSRVの設定
 	srvDesc_.Format = metadata.format;
 	srvDesc_.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc_.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
+	srvDesc_.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャfi
 	srvDesc_.Texture2D.MipLevels = UINT(metadata.mipLevels);
 
 	// SRVを作成するDescriptorHeapの場所を決める
 	textureSrvHandleCPU_ = sDirectXCommon_->GetSrvDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
 	textureSrvHandleGPU_ = sDirectXCommon_->GetSrvDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
 	// 先頭はImGuiが使っているのでその次を使う
-	textureSrvHandleCPU_.ptr += sDirectXCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	textureSrvHandleGPU_.ptr += sDirectXCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	textureSrvHandleCPU_.ptr += sDirectXCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * num;
+	textureSrvHandleGPU_.ptr += sDirectXCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)* num;
 	// SRVの生成
 	sDirectXCommon_->GetDevice()->CreateShaderResourceView(textureResource_, &srvDesc_, textureSrvHandleCPU_);
 	
