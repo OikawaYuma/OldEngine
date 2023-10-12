@@ -316,7 +316,7 @@ void Sphere::Draw() {
 	sDirectXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_);
 	// 描画！（DrawCall/ドローコール）・3頂点で1つのインスタンス。インスタンスについては今後
 	sDirectXCommon_->GetCommandList()->DrawInstanced(1536, 1, 0, 0);
-
+	//
 }
 
 void Sphere::Release() {
