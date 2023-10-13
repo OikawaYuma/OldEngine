@@ -67,5 +67,9 @@ private:
 	// RootParmeter作成。複数でっていできるので配列。今回は結果１つだけなので長さ1の配列
 	D3D12_ROOT_PARAMETER rootParamerters[1] = {};
 	
+	uint32_t* indexDataSprite;
+	ID3D12Resource* indexResourceSprite;
+	D3D12_INDEX_BUFFER_VIEW indexBufferViewSprite{};
+
 };
 

@@ -18,12 +18,12 @@ void Sprite::Initialize() {
 	rootParamerters[0].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange_); // Tableで利用する数
 
 	// Sprite用の頂点リソースを作る
-	vertexResourceSprite_ = CreateBufferResourceA(sDirectXCommon->GetDevice(), sizeof(VertexData) * 6);
+	vertexResourceSprite_ = CreateBufferResourceA(sDirectXCommon->GetDevice(), sizeof(VertexData) * 4);
 
 	// リソースを先頭のアドレスから使う
 	vertexBufferViewSprite_.BufferLocation = vertexResourceSprite_->GetGPUVirtualAddress();
 	// 使用するリソースのサイズは頂点6つ分のサイズ
-	vertexBufferViewSprite_.SizeInBytes = sizeof(VertexData) * 6;
+	vertexBufferViewSprite_.SizeInBytes = sizeof(VertexData) * 4;
 	// 1頂点あたりのサイズ
 	vertexBufferViewSprite_.StrideInBytes = sizeof(VertexData);
 
@@ -36,13 +36,10 @@ void Sprite::Initialize() {
 	vertexDataSprite_[1].texcorrd = {0.0f,0.0f};
 	vertexDataSprite_[2].position = {640.0f,360.0f,0.0f,1.0f}; // 右下
 	vertexDataSprite_[2].texcorrd = {1.0f,1.0f};
-	// 2枚目の三角形				   
-	vertexDataSprite_[3].position = {0.0f,0.0f,0.0f,1.0f}; // 左上
-	vertexDataSprite_[3].texcorrd = {0.0f,0.0f};
-	vertexDataSprite_[4].position = {640.0f,0.0f,0.0f,1.0f}; // 右上
-	vertexDataSprite_[4].texcorrd = {1.0f,0.0f};
-	vertexDataSprite_[5].position = {640.0f,360.0f,0.0f,1.0f}; // 右下
-	vertexDataSprite_[5].texcorrd = {1.0f,1.0f};
+	
+	vertexDataSprite_[3].position = {640.0f,0.0f,0.0f,1.0f}; // 右上
+	vertexDataSprite_[3].texcorrd = {1.0f,0.0f};
+	
 
 	
 	
@@ -53,13 +50,28 @@ void Sprite::Initialize() {
 	transformationMatrixResouceSprite->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixDataSprite));
 	// 単位行列を書き込んでおく
 	*transformationMatrixDataSprite = MakeIdentity4x4();
-
-	
-
-
 	
 	// Transform変数の初期化
 	transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+
+	indexResourceSprite = CreateBufferResourceA(sDirectXCommon->GetDevice(), sizeof(uint32_t) * 6);
+	// リソースの先頭のアドレスから使う
+	indexBufferViewSprite.BufferLocation = indexResourceSprite->GetGPUVirtualAddress();
+	// 使用するリソースのサイズはインデックス6つ分のサイズ
+	indexBufferViewSprite.SizeInBytes = sizeof(uint32_t) * 6;
+	// インデックスはuint_tとする
+	indexBufferViewSprite.Format = DXGI_FORMAT_R32_UINT;
+
+	// インデックスリソースにデータを書き込む
+	uint32_t* indexDataSprite = nullptr;
+	indexResourceSprite->Map(0, nullptr, reinterpret_cast<void**>(&indexDataSprite));
+	indexDataSprite[0] = 0;
+	indexDataSprite[1] = 1;
+	indexDataSprite[2] = 2;
+	indexDataSprite[3] = 1;
+	indexDataSprite[4] = 3;
+	indexDataSprite[5] = 2;
+
 };
 void Sprite::Update() {
 	// Sprite用のWorldViewProjectMatrixを作る
@@ -75,14 +87,15 @@ void Sprite::Draw() {
 	
 	
 	sDirectXCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferViewSprite_); // VBVを設定
-	
+	sDirectXCommon->GetCommandList()->IASetIndexBuffer(&indexBufferViewSprite);
 	// TransformationmatrixCBufferの場所を設定
 	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResouceSprite->GetGPUVirtualAddress());
 
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_);
 	// 描画（DrawCall/ドローコール）
-	sDirectXCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
+	//sDirectXCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
+	sDirectXCommon->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0,0);
 }
 void Sprite::Release() {
 

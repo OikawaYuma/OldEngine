@@ -298,8 +298,7 @@ sWinApp = WinApp::GetInstance();
 	//単位行列を書き込んでいく
 	*wvpData = MakeIdentity4x4();
 
-
-
+	
 
 
 	////左下
@@ -344,6 +343,7 @@ void Sphere::Draw() {
 	sDirectXCommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature);
 	sDirectXCommon_->GetCommandList()->SetPipelineState(graphicsPipelineState);    //PSOを設定
 	sDirectXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView);    //VBVを設定
+	//sDirectXCommon_->GetCommandList()->IASetIndexBuffer(&indexBufferViewSprite);    
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	sDirectXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// マテリアルCBufferの場所を設定
