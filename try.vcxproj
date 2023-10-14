@@ -120,6 +120,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Src\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Lib\math\Material.h" />
+    <ClInclude Include="Lib\math\Matrix3x3.h" />
     <ClInclude Include="Scene\gameScene.h" />
     <ClInclude Include="Src\Sphere.h" />
     <ClInclude Include="Src\Sprite.h" />

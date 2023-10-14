@@ -130,6 +130,8 @@
     <ClInclude Include="Lib\math\Vector2.h" />
     <ClInclude Include="Src\Sprite.h" />
     <ClInclude Include="Src\Sphere.h" />
+    <ClInclude Include="Lib\math\Material.h" />
+    <ClInclude Include="Lib\math\Matrix3x3.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
