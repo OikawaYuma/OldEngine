@@ -101,6 +101,7 @@ void Sprite::Release() {
 
 	transformationMatrixResouceSprite->Release();
 	vertexResourceSprite_->Release();
+	indexResourceSprite->Release();
 	
 	
 };
