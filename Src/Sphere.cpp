@@ -284,8 +284,8 @@ sWinApp = WinApp::GetInstance();
 	// 書き込むためのアドレスを取得
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
-	*materialData = {1.0f,1.0f,1.0f,1.0f};
-
+	materialData->color = {1.0f,1.0f,1.0f,1.0f};
+	materialData->uvTransform = MakeIdentity4x4();
 \
 
 	//バッファリソース
@@ -298,7 +298,16 @@ sWinApp = WinApp::GetInstance();
 	//単位行列を書き込んでいく
 	*wvpData = MakeIdentity4x4();
 
-	
+	uvTransform = {
+		{1.0f,1.0f,1.0f},
+		{0.0f,0.0f,0.0f},
+		{0.0f,0.0f,0.0f}
+	};
+
+	Matrix4x4 uvTransformmatrix = MakeScaleMatrix(uvTransform.scale);
+	uvTransformmatrix = Multiply(uvTransformmatrix, MakeRotateZMatrix(uvTransform.rotate.z));
+	uvTransformmatrix = Multiply(uvTransformmatrix, MakeTranslateMatrix(uvTransform.translate));
+	materialData->uvTransform = uvTransformmatrix;
 
 
 	////左下

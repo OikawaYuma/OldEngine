@@ -223,8 +223,8 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	// 書き込むためのアドレスを取得
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
-	*materialData = DrawColor;
-
+	materialData->color = DrawColor;
+	materialData->uvTransform = MakeIdentity4x4();
 
 	//バッファリソース
 	// データを書き込む
@@ -236,10 +236,16 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	//単位行列を書き込んでいく
 	*wvpData = MakeIdentity4x4();
 
+	uvTransform = {
+		{1.0f,1.0f,1.0f},
+		{0.0f,0.0f,0.0f},
+		{0.0f,0.0f,0.0f}
+	};
 
-
-
-
+	Matrix4x4 uvTransformmatrix = MakeScaleMatrix(uvTransform.scale);
+	uvTransformmatrix = Multiply(uvTransformmatrix, MakeRotateZMatrix(uvTransform.rotate.z));
+	uvTransformmatrix = Multiply(uvTransformmatrix, MakeTranslateMatrix(uvTransform.translate));
+	materialData->uvTransform = uvTransformmatrix;
 	////左下
 	//vertexData[0] = { -0.5f,-0.5f,0.0f,1.0f };
 	////上
@@ -271,7 +277,7 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 
 void Mesh::Update(Vector4 DrawColor) {
 	// 色のデータを変数から読み込み
-	*materialData = DrawColor;
+	materialData->color = DrawColor;
 	sDirectXCommon_->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
 	sDirectXCommon_->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	// RootSignatureを設定。PSOに設定しているけど別途設定が必要

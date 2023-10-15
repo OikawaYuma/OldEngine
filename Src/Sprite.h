@@ -16,6 +16,7 @@
 #include"Vector3.h"
 #include"Vector2.h"
 #include "Matrix4x4.h"
+#include "Material.h"
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
@@ -44,6 +45,7 @@ public:
 	Transform transform_;
 	ID3D12Resource* CreateBufferResourceA(ID3D12Device* device, size_t sizeInBytes);
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
+	Transform uvTransformSprite;
 private:
 	ID3D12Resource* vertexResourceSprite_ =nullptr;
 	WinApp* sWinApp;
@@ -70,6 +72,17 @@ private:
 	uint32_t* indexDataSprite;
 	ID3D12Resource* indexResourceSprite;
 	D3D12_INDEX_BUFFER_VIEW indexBufferViewSprite{};
+
+	/*色用*/
+//頂点リソースの設定
+// 実際に頂点リソースを作る
+	ID3D12Resource* materialResource;
+	// 頂点バッファビューを作成する
+	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
+	// 頂点リソースにデータを書き込む
+	Material* materialData;
+
+	
 
 };
 

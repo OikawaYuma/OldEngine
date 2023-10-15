@@ -8,9 +8,11 @@
 //#include"DirectXCommon.h"
 #include "VertexData.h"
 #include "Vector4.h"
-#include"Vector3.h"
-#include"Vector2.h"
-#include"Matrix4x4.h"
+#include "Vector3.h"
+#include "Vector2.h"
+#include "Matrix4x4.h"
+#include "Material.h"
+#include "Transform.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -86,7 +88,7 @@ public:
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
 	// 頂点リソースにデータを書き込む
-	Vector4* materialData;
+	Material* materialData;
 
 	/*移動用*/
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
@@ -112,7 +114,7 @@ public:
 	D3D12_VIEWPORT viewport{};
 	// シザー矩形
 	D3D12_RECT scissorRect{};
-
+	Transform uvTransform;
 private:
 	DirectXCommon* sDirectXCommon_ = nullptr;
 };

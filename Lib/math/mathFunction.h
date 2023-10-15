@@ -20,5 +20,10 @@ Matrix4x4 Inverse(const Matrix4x4& m);
 
 Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float bottom, float nearClip, float farClip);
 
+Matrix4x4 MakeScaleMatrix(const Vector3& scale);
+
+// 1. 平行移動行列
+Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
+
 // 1. 透視投影行列
 Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip);

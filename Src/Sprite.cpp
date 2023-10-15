@@ -40,9 +40,28 @@ void Sprite::Initialize() {
 	vertexDataSprite_[3].position = {640.0f,0.0f,0.0f,1.0f}; // 右上
 	vertexDataSprite_[3].texcorrd = {1.0f,0.0f};
 	
+	// 実際に頂点リソースを作る
+	materialResource = CreateBufferResourceA(sDirectXCommon->GetDevice(), sizeof(Vector4));
 
-	
-	
+	materialBufferView = CreateBufferView();;
+	// 頂点リソースにデータを書き込む
+	materialData = nullptr;
+	// 書き込むためのアドレスを取得
+	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
+	// 色のデータを変数から読み込み
+	materialData->color = {1.0f,1.0f,1.0f,1.0f};
+	materialData->uvTransform = MakeIdentity4x4();
+
+	uvTransformSprite = {
+		{1.0f,1.0f,1.0f},
+		{0.0f,0.0f,0.0f},
+		{0.0f,0.0f,0.0f}
+	};
+
+	Matrix4x4 uvTransformmatrix = MakeScaleMatrix(uvTransformSprite.scale);
+	uvTransformmatrix = Multiply(uvTransformmatrix, MakeRotateZMatrix(uvTransformSprite.rotate.z));
+	uvTransformmatrix = Multiply(uvTransformmatrix, MakeTranslateMatrix(uvTransformSprite.translate));
+	materialData->uvTransform = uvTransformmatrix;
 
 	// Sprite用のTransformationMatrix用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
 	transformationMatrixResouceSprite = CreateBufferResourceA(sDirectXCommon->GetDevice(),sizeof(Matrix4x4));

@@ -230,6 +230,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			ImGui::Checkbox("useMonsterBall", &useMonsterBall);
 
+			ImGui::DragFloat2("YVTranslate", &sprite->uvTransformSprite.translate.x, 0.01f, -10.0f, 10.0f);
+			ImGui::DragFloat2("UVScale", &sprite->uvTransformSprite.scale.x, 0.01f, -10.0f, 10.0f);
+			ImGui::SliderAngle("UVRotate", &sprite->uvTransformSprite.rotate.z);
+
+
 			ImGui::End();
 
 

@@ -4,8 +4,9 @@
 
 #include <cstdint>
 
-struct {
+struct Material{
 	Vector4 color;
 	int32_t enableLighting;
-	Matrix
+	float padding[23];
+	Matrix4x4 uvTransform;
 };
