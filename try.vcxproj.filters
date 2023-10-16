@@ -67,6 +67,7 @@
     <ClCompile Include="Src\TextureManager.cpp" />
     <ClCompile Include="Src\Sprite.cpp" />
     <ClCompile Include="Src\Sphere.cpp" />
+    <ClCompile Include="Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Externals\imgui\imconfig.h">
@@ -130,6 +131,8 @@
     <ClInclude Include="Lib\math\Vector2.h" />
     <ClInclude Include="Src\Sprite.h" />
     <ClInclude Include="Src\Sphere.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelData.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
