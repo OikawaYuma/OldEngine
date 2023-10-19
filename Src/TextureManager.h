@@ -26,11 +26,10 @@ public:
 	void SetDirectXCommon();
 
 
-	DirectX::ScratchImage LoadTexture(const std::string& filePath);
+	static DirectX::ScratchImage LoadTexture(const std::string& filePath);
 
-	// テクスチャファイルを呼んでプログラムを使えるようにする
-	DirectX::ScratchImage image_{};
-	std::wstring filePathW_; 
+
+
 	
 	// エラー検知用変数
 	HRESULT hr_;

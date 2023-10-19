@@ -79,14 +79,15 @@ void TextureManager::SetTexture() {
 
 DirectX::ScratchImage TextureManager::LoadTexture(const std::string& filePath) {
 	////// テクスチャファイルを呼んでプログラムを使えるようにする
-	filePathW_ = ConvertString(filePath);
-
+	std::wstring filePathW = ConvertString(filePath);
+	// テクスチャファイルを呼んでプログラムを使えるようにする
+	DirectX::ScratchImage image{};
 	// エラー検知用変数
-	hr_ = DirectX::LoadFromWICFile(filePathW_.c_str(), DirectX::WIC_FLAGS_FORCE_SRGB, nullptr, image_);
+	HRESULT hr_ = DirectX::LoadFromWICFile(filePathW.c_str(), DirectX::WIC_FLAGS_FORCE_SRGB, nullptr, image);
 
 	// ミップマップの作成
 	DirectX::ScratchImage mipImages{};
-	hr_ = DirectX::GenerateMipMaps(image_.GetImages(), image_.GetImageCount(), image_.GetMetadata(), DirectX::TEX_FILTER_SRGB, 0, mipImages);
+	hr_ = DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_SRGB, 0, mipImages);
 	assert(SUCCEEDED(hr_));
 	
 	// ミップマップ付きのデータを渡す

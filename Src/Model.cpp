@@ -1,67 +1,119 @@
-﻿#include "Mesh.h"
-#include"function.h"
-#include"WinApp.h"
-#include"DirectXCommon.h"
-#include"mathFunction.h"
-#include"ImGuiCommon.h"
-#include "TextureManager.h"
-
-Mesh::Mesh() {
+#include "Model.h"
+#include "DirectXCommon.h"
 
 
+Model::Model() {};
+ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string& filename)
+{
+	ModelData modelData; // 構築するMataData
+	std::vector<Vector4> positions; // 位置
+	std::vector<Vector3> normals; // 法線
+	std::vector<Vector2> texcoords; // テクスチャ座標
+	std::string line; // ファイルから読んだ1行を格納するもの
+
+	std::ifstream file(directoryPath + "/" + filename); // ファイルを開く
+	assert(file.is_open()); // とりあえず開けなかったら止める
+
+	while(std::getline(file, line)) {
+		std::string identifier;
+		std::istringstream s(line);
+		s >> identifier; // 先頭の識別子を読む
+
+		// identifierに応じた処理
+		if (identifier == "v") {
+			Vector4 position;
+			s >> position.x >> position.y >> position.z;
+			position.w = 1.0f;
+			position.z *= -1.0f;
+			positions.push_back(position);
+		}
+		else if (identifier == "vt") {
+			Vector2 texcoord;
+			s >> texcoord.x >> texcoord.y;
+			
+			texcoord.y *= -1.0f;// -texcoord.y; //- texcoord.y;
+			texcoords.push_back(texcoord);
+		}
+		else if (identifier == "vn") {
+			Vector3 normal;
+			s >> normal.x >> normal.y >> normal.z;
+			normal.z *= -1.0f;
+			normals.push_back(normal);
+		}
+		else if (identifier == "f") {
+			VertexData triangle[3];
+			// 面は三角形限定。その他は未対応
+			for (int32_t faceVertex = 0; faceVertex < 3; ++faceVertex) {
+				std::string vertexDefinition;
+				s >> vertexDefinition;
+				// 頂点の要素へのIndexは「位置/UV/法線」で格納されているので、分解してIndexを取得する
+				std::istringstream v(vertexDefinition);
+				uint32_t elementIndices[3];
+				for (int32_t element = 0; element < 3; ++element) {
+					std::string index;
+					std::getline(v, index, '/');// 区切りでインデックスを読んでいく
+					elementIndices[element] = std::stoi(index);
+
+				}
+				// 要素へのIndexから、実際の要素の値を取得して、頂点を構築する
+				Vector4 position = positions[elementIndices[0] - 1];
+				Vector2 texcoord = texcoords[elementIndices[1] - 1];
+				Vector3 normal = normals[elementIndices[2] - 1];
+				//position.x *= -1.0f;
+				//texcoord.y = 1.0f - texcoord.y;
+				//normal.x *= -1.0f;
+			
+				VertexData vertex = { position, texcoord, normal };
+				modelData.vertices.push_back(vertex);
+				
+				triangle[faceVertex] = { position,texcoord,normal };
+				
+			}
+			modelData.vertices.push_back(triangle[2]);
+			modelData.vertices.push_back(triangle[1]);
+			modelData.vertices.push_back(triangle[0]);
+			
+		}
+		else if (identifier == "mtllib") {
+			// materialtemplateLibraryファイルの名前を取得する
+			std::string materialFilename;
+			s >> materialFilename;
+			// 基本的にobjファイルと同一階層にmtlは存在させるので、ディレクトリ名とファイル名を渡す
+			modelData.material = LoadMaterialTemplateFile(directoryPath, materialFilename);
+		}
+		
+	}
+	return modelData;
 
 };
 
+MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename) {
+	MaterialData materialData;// 構築するMaterialData
+	std::string line; // ファイルから読んだ1行をかくのうするもの
+	std::ifstream file(directoryPath + "/" + filename); // ファイルを開く
+	assert(file.is_open()); // とりあえず開けなかったら止める
 
+	while (std::getline(file, line)) {
+		std::string identifier;
+		std::istringstream s(line);
+		s >> identifier;
 
+		// identiferに応じた処理
+		if (identifier == "map_Kd") {
+			std::string textureFilename;
+			s >> textureFilename;
+			// 連結してファイルパスにする
+			materialData.textureFilePath = directoryPath + "/" + textureFilename;
+		}
+		
+	}
 
-ID3D12Resource* Mesh::CreateBufferResource(ID3D12Device* device, size_t sizeInBytes) {
-	
-	//頂点リソース用のヒープの設定
-	D3D12_HEAP_PROPERTIES uploadHeapProperties{};
-	uploadHeapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;// Uploadheapを使う
-	D3D12_RESOURCE_DESC resourceDesc{};
-	// バッファリソース。テクスチャの場合はまた別の設定をする
-	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resourceDesc.Width = sizeInBytes;// リソースのサイズ。今回はVector4を3頂点分
-	//バッファの場合はこれらは1にする決まり
-	resourceDesc.Height = 1;
-	resourceDesc.DepthOrArraySize = 1;
-	resourceDesc.MipLevels = 1;
-	resourceDesc.SampleDesc.Count = 1;
-	// バッファに場合はこれにする決まり
-	resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	ID3D12Resource* resource = nullptr;
-	HRESULT hr = device->CreateCommittedResource(&uploadHeapProperties, D3D12_HEAP_FLAG_NONE,
-		&resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-		IID_PPV_ARGS(&resource));
-	assert(SUCCEEDED(hr));
-
-	return resource;
+		return materialData;
 };
 
-D3D12_VERTEX_BUFFER_VIEW Mesh::CreateBufferView() {
-	D3D12_VERTEX_BUFFER_VIEW view{};
-
-	//リソースの先頭のアドレスから使う
-	view.BufferLocation = vertexResource->GetGPUVirtualAddress();
-	// 使用するリソースのサイズは頂点3つ分のサイズ
-	view.SizeInBytes = sizeof(VertexData) * 6;
-	// 1頂点あたりのサイズ
-	view.StrideInBytes = sizeof(VertexData);
-	
-
-	return view;
-};
-
-
-	//ID3D12Resource* CreateBufferResourceDesc(ID3D12Device* device, size_t sizeInBytes);
-
-void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
-
+void Model::Initialize(const std::string& directoryPath, const std::string& filename) {
 	WinApp* sWinApp = WinApp::GetInstance();
-	sDirectXCommon_ = DirectXCommon::GetInstance();
+	directXCommon_ = DirectXCommon::GetInstance();
 
 	descriptionRootSignature.Flags =
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
@@ -101,7 +153,7 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	descriptionRootSignature.NumParameters = _countof(rootParamerters); // 配列の長さ
 	descriptionRootSignature.pStaticSamplers = staticSamplers;
 	descriptionRootSignature.NumStaticSamplers = _countof(staticSamplers);
-	
+
 	errorBlob = nullptr;
 	hr = D3D12SerializeRootSignature(&descriptionRootSignature,
 		D3D_ROOT_SIGNATURE_VERSION_1, &signatureBlob, &errorBlob);
@@ -111,7 +163,7 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	}
 	// バイナリを元に生成
 	rootSignature = nullptr;
-	hr = sDirectXCommon_->GetDevice()->CreateRootSignature(0, signatureBlob->GetBufferPointer(),
+	hr = directXCommon_->GetDevice()->CreateRootSignature(0, signatureBlob->GetBufferPointer(),
 		signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(hr));
 
@@ -135,18 +187,18 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 		D3D12_COLOR_WRITE_ENABLE_ALL;
 
 
-	// 裏面（時計回り）を表示しない
+	 //裏面（時計回り）を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
 	// 三角形の中を塗りつぶす
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 
 	// Shaderをコンパイルする
 	vertexShaderBlob = CompileShader(L"Object3d.VS.hlsl",
-		L"vs_6_0", sDirectXCommon_->GetDxcUtils(), sDirectXCommon_->GetDxcCompiler(), sDirectXCommon_->GetIncludeHandler());
+		L"vs_6_0", directXCommon_->GetDxcUtils(), directXCommon_->GetDxcCompiler(), directXCommon_->GetIncludeHandler());
 	assert(vertexShaderBlob != nullptr);
 
 	pixelShaderBlob = CompileShader(L"Object3d.PS.hlsl",
-		L"ps_6_0", sDirectXCommon_->GetDxcUtils(), sDirectXCommon_->GetDxcCompiler(), sDirectXCommon_->GetIncludeHandler());
+		L"ps_6_0", directXCommon_->GetDxcUtils(), directXCommon_->GetDxcCompiler(), directXCommon_->GetIncludeHandler());
 	assert(pixelShaderBlob != nullptr);
 
 	graphicsPipelineStateDesc.pRootSignature = rootSignature; // RootSignature
@@ -168,88 +220,51 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 
 	// DeptjStencilの設定
-	graphicsPipelineStateDesc.DepthStencilState = sDirectXCommon_->GetDepthStencilDesc();
+	graphicsPipelineStateDesc.DepthStencilState = directXCommon_->GetDepthStencilDesc();
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 
 
 	//実際に生成
 	graphicsPipelineState = nullptr;
-	hr = sDirectXCommon_->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
+	hr = directXCommon_->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
 		IID_PPV_ARGS(&graphicsPipelineState));
 	assert(SUCCEEDED(hr));
 
-	
-	//バッファリソース
-	
-	// 実際に頂点リソースを作る
-	vertexResource = CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(VertexData) * 6);
+	// モデル読み込み
+	modelData_ = LoadObjFile(directoryPath, filename);
 
-	vertexBufferView = CreateBufferView();
-	
+	// 頂点リソースを作る
+	vertexResource_ = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(VertexData) * modelData_.vertices.size());
+	// 頂点バッファビューを作成する
+	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress(); // リソースの先頭のアドレスから使う
+	vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size()); // 使用するリソースのサイズは頂点のサイズ
+	vertexBufferView_.StrideInBytes = sizeof(VertexData); // 1頂点当たりのサイズ
 
 	// 頂点リソースにデータを書き込む
 	vertexData_ = nullptr;
-	// 書き込むためのアドレスを取得
-	vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
-	 
-	//左下
-	vertexData_[0].position = vertexDataA[0].position;
-	vertexData_[0].texcorrd = vertexDataA[0].texcorrd;
-	//上
-	vertexData_[1].position = vertexDataA[1].position;
-	vertexData_[1].texcorrd = vertexDataA[1].texcorrd;
-	//右下
-	vertexData_[2].position= vertexDataA[2].position;
-	vertexData_[2].texcorrd = vertexDataA[2].texcorrd;
-
-	//左下
-	vertexData_[3].position = vertexDataA[3].position;
-	vertexData_[3].texcorrd = vertexDataA[3].texcorrd;
-	//上
-	vertexData_[4].position = vertexDataA[4].position;
-	vertexData_[4].texcorrd = vertexDataA[4].texcorrd;
-	//右下
-	vertexData_[5].position = vertexDataA[5].position;
-	vertexData_[5].texcorrd = vertexDataA[5].texcorrd;
-
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+	std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
 
 	// 実際に頂点リソースを作る
-	materialResource = CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Vector4));
+	materialResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(Vector4));
 
-	materialBufferView = CreateBufferView();;
+	/*materialBufferView = CreateBufferView();;*/
 	// 頂点リソースにデータを書き込む
 	materialData = nullptr;
 	// 書き込むためのアドレスを取得
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
-	*materialData = DrawColor;
-
-
+	*materialData = {1.0f,1.0f,1.0f,1.0f};
 	//バッファリソース
 	// データを書き込む
 	wvpData = nullptr;
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	wvpResource = CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Matrix4x4));
+	wvpResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(Matrix4x4));
 	// 書き込むためのアドレスを取得
 	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
 	//単位行列を書き込んでいく
 	*wvpData = MakeIdentity4x4();
-
-
-
-
-
-	////左下
-	//vertexData[0] = { -0.5f,-0.5f,0.0f,1.0f };
-	////上
-	//vertexData[1] = { 0.0f,0.5f,0.0f,1.0f };
-	////右下
-	//vertexData[2] = { 0.5f,-0.5f,0.0f,1.0f };
-	
-	
-	//マテリアルにデータを書き込む
-	
 
 	//クライアント領域のサイズと一緒にして画面全体に表示
 	viewport.Width = (float)sWinApp->GetKClientWidth();
@@ -266,37 +281,32 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	scissorRect.top = 0;
 	scissorRect.bottom = sWinApp->GetKClientHeight();
 
-	
 };
 
-void Mesh::Update(Vector4 DrawColor) {
-	// 色のデータを変数から読み込み
-	*materialData = DrawColor;
-	sDirectXCommon_->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
-	sDirectXCommon_->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
-	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
-	sDirectXCommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature);
-	sDirectXCommon_->GetCommandList()->SetPipelineState(graphicsPipelineState);    //PSOを設定
-	sDirectXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView);    //VBVを設定
-	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
-	sDirectXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	// マテリアルCBufferの場所を設定
-	sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
-	sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
-	
-	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
-	sDirectXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_);
-	// 描画！（DrawCall/ドローコール）・3頂点で1つのインスタンス。インスタンスについては今後
-	sDirectXCommon_->GetCommandList()->DrawInstanced(6, 1, 0, 0);
+void Model::Update() {
+
 };
-void Mesh::Draw() {
-	
-	sDirectXCommon_->GetCommandList()->DrawInstanced(3, 1, 0, 0);
+
+
+void Model::Draw() {
+	// 色のデータを変数から読み込み
+	*materialData = {1.0f,1.0f,1.0f,1.0f};
+	directXCommon_->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
+	directXCommon_->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
+	directXCommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature);
+	directXCommon_->GetCommandList()->SetPipelineState(graphicsPipelineState);    //PSOを設定
+	directXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);    //VBVを設定
+	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
+	directXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// マテリアルCBufferの場所を設定
+	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
+	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
+
+	directXCommon_->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }
 
-
-void Mesh::Release() {
-	vertexResource->Release();
+void Model ::Release() {
+	vertexResource_->Release();
 	materialResource->Release();
 	wvpResource->Release();
 	graphicsPipelineState->Release();
@@ -307,4 +317,5 @@ void Mesh::Release() {
 	rootSignature->Release();
 	pixelShaderBlob->Release();
 	vertexShaderBlob->Release();
-};
+
+}

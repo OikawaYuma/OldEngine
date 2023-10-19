@@ -1,48 +1,46 @@
-﻿#pragma once
+#pragma once
+
+#include "Mesh.h"
+#include "TextureManager.h"
+
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
+#include "vertexData.h"
+#include "ModelData.h"
+#include "MaterialData.h"
+#include "mathFunction.h"
+
 #include<Windows.h>
 #include<d3d12.h>
 #include<dxgi1_6.h>
-#include<cassert>
 #include <dxcapi.h>
-
-//#include"DirectXCommon.h"
-#include "VertexData.h"
-#include "Vector4.h"
-#include"Vector3.h"
-#include"Vector2.h"
-#include"Matrix4x4.h"
+#include <fstream>
+#include <sstream>
+#include <cassert>
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
-
 class DirectXCommon;
 class WinApp;
 class TextureManager;
-
-class Mesh
+class Model
 {
 public:
-	Mesh();
-	~Mesh();
-	
-
-	static ID3D12Resource* CreateBufferResource(ID3D12Device* device,size_t sizeInBytes);
-	D3D12_RESOURCE_DESC  CreateBufferResourceDesc(size_t sizeInBytes);
-	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
-
-	void Initialize( VertexData* vertexDataA,Vector4 DrawColor);
-	void Update( Vector4 DrawColor);
+	ModelData modelData_;
+	Matrix4x4* wvpData;
+	ModelData GetModelData() { return modelData_; }
+	Model();
+	~Model();
+	void Initialize(const std::string& directoryPath, const std::string& filename);
+	void Update();
 	void Draw();
 	void Release();
+	ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
+	MaterialData LoadMaterialTemplateFile(const std::string& directoryPath,const std::string& filename);
+private:
 	HRESULT hr;
-
-	void SetTextureManager(TextureManager *textureManager) {
-		textureManager_ = textureManager;
-	}
-	
-
-
 	// RootSignature作成
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
 	// シリアライズしてバイナリにする
@@ -67,21 +65,28 @@ public:
 	ID3D12PipelineState* graphicsPipelineState;
 	// RootParmeter作成。複数でっていできるので配列。今回は結果１つだけなので長さ1の配列
 	D3D12_ROOT_PARAMETER rootParamerters[3] = {};
-	
-	
 
-	/*頂点用*/
-	// 実際に頂点リソースを作る
-	ID3D12Resource* vertexResource;
-	// 頂点バッファビューを作成する
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferView{};
-	// 頂点リソースにデータを書き込む
+
+	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
+
+
+
+	D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
+
+
+
+	DirectXCommon* directXCommon_;
+	WinApp* sWinApp_;
+
+	
+	ID3D12Resource* vertexResource_;
+	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
+
 	VertexData* vertexData_;
 
-
 	/*色用*/
-	//頂点リソースの設定
-	// 実際に頂点リソースを作る
+//頂点リソースの設定
+// 実際に頂点リソースを作る
 	ID3D12Resource* materialResource;
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
@@ -92,28 +97,14 @@ public:
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
 	ID3D12Resource* wvpResource;
 	// データを書き込む
-	Matrix4x4* wvpData;
+	
 
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW wvpBufferView{};
-
-	
-
-	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
-
-
-
-	D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
-
-	
-
-	
 	//ビューポート
 	D3D12_VIEWPORT viewport{};
 	// シザー矩形
 	D3D12_RECT scissorRect{};
 
-private:
-	DirectXCommon* sDirectXCommon_ = nullptr;
 };
 

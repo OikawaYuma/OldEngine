@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "Sprite.h"
 #include "Sphere.h"
+#include "Model.h"
 
 #include "VertexData.h"
 #include "Vector4.h"
@@ -111,15 +112,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Sprite* sprite = new Sprite();
 	Sprite* sprite2 = new Sprite();
 	Sphere* sphere = new Sphere();
-	
 
+	Model* model = new Model();
+	model->Initialize("Resources","multiMaterial.obj");
+	
+	Model* model2 = new Model();
+	model2->Initialize("Resources", "axis.obj");
 	
 	TextureManager* textureManager = new TextureManager;
-	
-
 	TextureManager* textureManager2 = new TextureManager;
+	TextureManager* textureManager3 = new TextureManager;
+	TextureManager* textureManager4 = new TextureManager;
+
 	textureManager2->Initialize("Resources/uvChecker.png",1);
 	textureManager->Initialize("Resources/monsterBall.png",2);
+	textureManager3->Initialize(model->modelData_.material.textureFilePath, 3);
+	textureManager4->Initialize(model2->modelData_.material.textureFilePath, 4);
 	
 
 	for (int i = 0; i < 20; i++) {
@@ -181,7 +189,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				//mesh_[i]->Draw();
 
 			}
+			*model->wvpData = camera->worldViewProjectionMatrix;
+			model->Draw();
 
+			*model2->wvpData = camera->worldViewProjectionMatrix;
+			model2->Draw();
 
 			if (useMonsterBall) {
 				sphere->SetTextureManager(textureManager);
@@ -189,9 +201,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			else{
 				sphere->SetTextureManager(textureManager2);
 			}
-			sphere->Draw();
-			sprite->Draw();
-			sprite2->Draw();
+			/*sphere->Draw();
+			sprite->Draw();*/
+			//sprite2->Draw();
+			
 
 			ImGui::Begin("Debug");
 			ImGui::Text("TransformS : x %2.2f : y %2.2f : z %2.2f", transform.scale.x, transform.scale.y, transform.scale.z);
@@ -256,9 +269,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	imGuiCommon->Release();
 	textureManager->Release();
 	textureManager2->Release();
+	textureManager3->Release();
+	textureManager4->Release();
+
 	sprite->Release();
 	sprite2->Release();
 	sphere->Release();
+	model->Release();
+	model2->Release();
 	sDirctX->Release();
 	
 	CoUninitialize();
