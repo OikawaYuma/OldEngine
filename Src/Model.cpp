@@ -1,5 +1,6 @@
 #include "Model.h"
 #include "DirectXCommon.h"
+#include "Camera.h"
 
 
 Model::Model() {};
@@ -111,10 +112,10 @@ MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, c
 		return materialData;
 };
 
-void Model::Initialize(const std::string& directoryPath, const std::string& filename) {
+void Model::Initialize(const std::string& directoryPath, const std::string& filename,Camera * camera) {
 	WinApp* sWinApp = WinApp::GetInstance();
 	directXCommon_ = DirectXCommon::GetInstance();
-
+	camera_ = camera;
 	descriptionRootSignature.Flags =
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
@@ -288,7 +289,10 @@ void Model::Update() {
 };
 
 
-void Model::Draw() {
+void Model::Draw(Transform transform) {
+	Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
+	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix, camera_->projectionMatrix));
+	*wvpData = worldViewProjectionMatrix;
 	// 色のデータを変数から読み込み
 	*materialData = {1.0f,1.0f,1.0f,1.0f};
 	directXCommon_->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
@@ -301,6 +305,9 @@ void Model::Draw() {
 	// マテリアルCBufferの場所を設定
 	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
 	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
+
+	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
+	directXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_);
 
 	directXCommon_->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }

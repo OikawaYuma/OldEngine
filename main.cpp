@@ -1,6 +1,7 @@
 ﻿#include <Windows.h>
 #include "WinApp.h"
 #include "DirectXCommon.h"
+#include "Input.h"
 #include "Mesh.h"
 #include "ImGuiCommon.h"
 #include "TextureManager.h"
@@ -26,6 +27,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Vector4 color[20] = { 0.0f,0.0f,0.0f,1.0f };
 	// Transform変数の初期化
 	Transform transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	Transform transformA{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	Camera* camera = new Camera;
 	camera->Initialize();
 
@@ -89,8 +91,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	////DirectXCommon* dirX = new DirectXCommon();
 
 	DirectXCommon* sDirctX = DirectXCommon::GetInstance();
-
+	Input* input = new Input();
+	
 	sDirctX->Initialize();
+	input->Initialize();
 	ImGuiCommon* imGuiCommon = new ImGuiCommon;
 
 	
@@ -114,10 +118,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Sphere* sphere = new Sphere();
 
 	Model* model = new Model();
-	model->Initialize("Resources","multiMaterial.obj");
+	model->Initialize("Resources","multiMaterial.obj",camera);
 	
 	Model* model2 = new Model();
-	model2->Initialize("Resources", "axis.obj");
+	model2->Initialize("Resources", "floor.obj",camera);
 	
 	TextureManager* textureManager = new TextureManager;
 	TextureManager* textureManager2 = new TextureManager;
@@ -135,19 +139,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		mesh_[i]->SetTextureManager(textureManager2);
 
 	}
-	sprite->SetTextureManager(textureManager);
+	sprite->SetTextureManager(textureManager3);
 	sprite->Initialize();
 
-	sprite2->SetTextureManager(textureManager2);
+	sprite2->SetTextureManager(textureManager4);
 	sprite2->Initialize();
 
+	model->SetTextureManager(textureManager3);
+	model2->SetTextureManager(textureManager4);
 	
 
-	sphere->SetMesh(mesh_[0]); 
-	sphere->SetTextureManager(textureManager2);
-	sphere->Initialize();
+	/*sphere->SetMesh(mesh_[0]); 
+	sphere->SetTextureManager(textureManager3);
+	sphere->Initialize();*/
 
-
+	int num = 5;
 
 	// 
 	bool useMonsterBall = true;
@@ -156,7 +162,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	MSG msg{};
 	imGuiCommon->Initialize();
-
+	
 
 	//ウィンドウの×ボタンが押されるまでループ
 	while (msg.message != WM_QUIT) {
@@ -164,10 +170,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+
+			
 		}
 		else {
+			
+			input->Update();
 			// ゲームの処理の開始
 			sDirctX->BeginFrame();
+			
 			imGuiCommon->UICreate();
 			//ImGuiの更新
 			imGuiCommon->Update();
@@ -175,32 +186,41 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 			//カメラの更新
-			camera->Update(transform);
-			sprite->Update();
-			sprite2->Update();
+			//camera->Update();
+			/*sprite->Update();
+			sprite2->Update();*/
 			
 			if (Reset) {
 				transform.rotate.y += 0.03f;
+				transform.translate.z += 0.03f;
 			}
-			for (int i = 0; i < 20; i++) {
+			/*for (int i = 0; i < 20; i++) {
 				*mesh_[i]->wvpData = camera->worldViewProjectionMatrix;
 				mesh_[i]->Update( color[i]);
 			
-				//mesh_[i]->Draw();
+				mesh_[i]->Draw();
 
+			}*/
+			
+			if (input->PushKey(DIK_1)) {
+				num++;
 			}
-			*model->wvpData = camera->worldViewProjectionMatrix;
-			model->Draw();
 
-			*model2->wvpData = camera->worldViewProjectionMatrix;
-			model2->Draw();
+			if (input->PushKey(DIK_2)) {
+				num--;
+			}
+			//*model->wvpData = camera->worldViewProjectionMatrix;
+			model->Draw(transform);
 
-			if (useMonsterBall) {
-				sphere->SetTextureManager(textureManager);
+			//*model2->wvpData = camera->worldViewProjectionMatrix;
+			model2->Draw(transformA);
+
+			/*if (useMonsterBall) {
+				sphere->SetTextureManager(textureManager3);
 			} 
 			else{
-				sphere->SetTextureManager(textureManager2);
-			}
+				sphere->SetTextureManager(textureManager3);
+			}*/
 			/*sphere->Draw();
 			sprite->Draw();*/
 			//sprite2->Draw();
@@ -242,6 +262,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			
 
 			ImGui::Checkbox("useMonsterBall", &useMonsterBall);
+			ImGui::Text("%d", num);
 
 			ImGui::End();
 
@@ -263,9 +284,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	-------------------------------------------------------------*/
 	sWinApp->Release();
 
-	for (int i = 0; i < 20; i++) {
+	/*for (int i = 0; i < 20; i++) {
 		mesh_[i]->Release();
-	}
+	}*/
 	imGuiCommon->Release();
 	textureManager->Release();
 	textureManager2->Release();

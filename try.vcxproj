@@ -99,6 +99,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Src\Model.cpp" />
     <ClCompile Include="Scene\gameScene.cpp" />
     <ClCompile Include="Src\Sphere.cpp" />
@@ -121,6 +122,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Src\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Lib\math\MaterialData.h" />
     <ClInclude Include="Src\Model.h" />
     <ClInclude Include="Scene\gameScene.h" />

@@ -2,6 +2,7 @@
 
 #include "Mesh.h"
 #include "TextureManager.h"
+#include "Transform.h"
 
 #include "Vector2.h"
 #include "Vector3.h"
@@ -25,6 +26,7 @@
 class DirectXCommon;
 class WinApp;
 class TextureManager;
+class Camera;
 class Model
 {
 public:
@@ -33,10 +35,14 @@ public:
 	ModelData GetModelData() { return modelData_; }
 	Model();
 	~Model();
-	void Initialize(const std::string& directoryPath, const std::string& filename);
+	void Initialize(const std::string& directoryPath, const std::string& filename,Camera* camera);
 	void Update();
-	void Draw();
+	void Draw(Transform transform);
 	void Release();
+
+	void SetTextureManager(TextureManager* textureManager) {
+		textureManager_ = textureManager;
+	}
 	ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
 	MaterialData LoadMaterialTemplateFile(const std::string& directoryPath,const std::string& filename);
 private:
@@ -105,6 +111,6 @@ private:
 	D3D12_VIEWPORT viewport{};
 	// シザー矩形
 	D3D12_RECT scissorRect{};
-
+	Camera* camera_ = nullptr;
 };
 

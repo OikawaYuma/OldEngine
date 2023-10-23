@@ -40,6 +40,8 @@ public:
 
 	 HWND GetHwnd() { return hwnd_; }
 
+	 WNDCLASS GetWc() { return wc_; }
+
 	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 	// ウィンドウの生成

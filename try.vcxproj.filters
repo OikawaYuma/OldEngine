@@ -68,6 +68,7 @@
     <ClCompile Include="Src\Sprite.cpp" />
     <ClCompile Include="Src\Sphere.cpp" />
     <ClCompile Include="Src\Model.cpp" />
+    <ClCompile Include="Input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Externals\imgui\imconfig.h">
@@ -134,6 +135,7 @@
     <ClInclude Include="Src\Model.h" />
     <ClInclude Include="Lib\math\ModelData.h" />
     <ClInclude Include="Lib\math\MaterialData.h" />
+    <ClInclude Include="Input.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
