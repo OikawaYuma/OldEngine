@@ -118,10 +118,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Sphere* sphere = new Sphere();
 
 	Model* model = new Model();
-	model->Initialize("Resources","multiMaterial.obj",camera);
+	model->Initialize("Resources/multiMaterial","multiMaterial.obj",camera);
 	
 	Model* model2 = new Model();
-	model2->Initialize("Resources", "floor.obj",camera);
+	model2->Initialize("Resources/floor", "floor.obj",camera);
 	
 	TextureManager* textureManager = new TextureManager;
 	TextureManager* textureManager2 = new TextureManager;
@@ -149,9 +149,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	model2->SetTextureManager(textureManager4);
 	
 
-	/*sphere->SetMesh(mesh_[0]); 
+	sphere->SetMesh(mesh_[0]); 
 	sphere->SetTextureManager(textureManager3);
-	sphere->Initialize();*/
+	sphere->Initialize(camera);
 
 	int num = 5;
 
@@ -192,7 +192,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			
 			if (Reset) {
 				transform.rotate.y += 0.03f;
-				transform.translate.z += 0.03f;
+				//transform.translate.z += 0.03f;
 			}
 			/*for (int i = 0; i < 20; i++) {
 				*mesh_[i]->wvpData = camera->worldViewProjectionMatrix;
@@ -210,19 +210,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				num--;
 			}
 			//*model->wvpData = camera->worldViewProjectionMatrix;
-			model->Draw(transform);
+			//model->Draw(transform);
 
 			//*model2->wvpData = camera->worldViewProjectionMatrix;
-			model2->Draw(transformA);
+			//model2->Draw(transformA);
 
-			/*if (useMonsterBall) {
+			if (useMonsterBall) {
 				sphere->SetTextureManager(textureManager3);
 			} 
 			else{
 				sphere->SetTextureManager(textureManager3);
-			}*/
-			/*sphere->Draw();
-			sprite->Draw();*/
+			}
+			sphere->Draw(transform);
+			//sprite->Draw();
 			//sprite2->Draw();
 			
 
@@ -284,9 +284,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	-------------------------------------------------------------*/
 	sWinApp->Release();
 
-	/*for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 20; i++) {
 		mesh_[i]->Release();
-	}*/
+	}
 	imGuiCommon->Release();
 	textureManager->Release();
 	textureManager2->Release();

@@ -11,6 +11,7 @@
 #include"Vector3.h"
 #include"Vector2.h"
 #include"Matrix4x4.h"
+#include "Transform.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -20,14 +21,15 @@ class DirectXCommon;
 class WinApp;
 class TextureManager;
 class Mesh;
+class Camera;
 class Sphere
 {
 public :
 	Sphere();
 	~Sphere();
-	void Initialize();
+	void Initialize(Camera* camera);
 	void Update();
-	void Draw();
+	void Draw(Transform transform);
 	void Release();
 	
 	void SetMesh(Mesh* mesh) {
@@ -107,7 +109,7 @@ private:
 
 
 
-
+	Camera* camera_ = nullptr;
 
 
 

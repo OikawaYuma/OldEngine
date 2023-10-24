@@ -3,6 +3,7 @@
 #include "DirectXCommon.h"
 #include "Mesh.h"
 #include "mathFunction.h"
+#include "Camera.h"
 
 Sphere::Sphere() {
 
@@ -12,10 +13,10 @@ Sphere::~Sphere() {
 
 }
 
-void Sphere::Initialize() {
+void Sphere::Initialize(Camera* camera) {
 sWinApp = WinApp::GetInstance();
 	sDirectXCommon_ = DirectXCommon::GetInstance();
-	
+	camera_ = camera;
 
 	HRESULT hr;
 	descriptionRootSignature.Flags =
@@ -334,9 +335,11 @@ void Sphere::Update(){
 	
 }
 
-void Sphere::Draw() {
+void Sphere::Draw(Transform transform) {
 	//// 色のデータを変数から読み込み
-
+	Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
+	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix, camera_->projectionMatrix));
+	*wvpData = worldViewProjectionMatrix;
 	sDirectXCommon_->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
 	sDirectXCommon_->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
@@ -348,7 +351,7 @@ void Sphere::Draw() {
 	sDirectXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// マテリアルCBufferの場所を設定
 	sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
-	//sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
+	sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
 
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	sDirectXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_);

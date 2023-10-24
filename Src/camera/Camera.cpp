@@ -3,7 +3,7 @@
 
 void Camera::Initialize() {
 	WinApp* sWinApp = WinApp::GetInstance();
-	cameraTransform={ {1.0f,1.0f,1.0f},{-6.0f,0.0f,0.0f},{0.0f,20.0f,-60.0f} };
+	cameraTransform={ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,00.0f,-5.0f} };
 	//WinApp* sWinApp = WinApp::GetInstance();
 
 	cameraMatrix = MakeAffineMatrix(cameraTransform.scale, cameraTransform.rotate, cameraTransform.translate);
