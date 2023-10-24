@@ -141,6 +141,11 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	rootParamerters[2].DescriptorTable.pDescriptorRanges = descriptorRange_; // Tableの中身の配列を指定
 	rootParamerters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange_); // Tableで利用する数
 
+	rootParamerters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParamerters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParamerters[3].Descriptor.ShaderRegister = 1;
+
+
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイナリフィルタ
 	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
 	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
@@ -178,9 +183,15 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	inputElementDescs[1].SemanticIndex = 0;
 	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
 	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-
+	inputElementDescs[2].SemanticName = "NORMAL";
+	inputElementDescs[2].SemanticIndex = 0;
+	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	inputElementDescs[2].AlignedByteOffset =
+		D3D12_APPEND_ALIGNED_ELEMENT;
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
+
+
 
 	// blendStateの設定
 	//すべての色要素を書き込む
@@ -248,7 +259,7 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
 
 	// 実際に頂点リソースを作る
-	materialResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(Vector4));
+	materialResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(Material));
 
 	/*materialBufferView = CreateBufferView();;*/
 	// 頂点リソースにデータを書き込む
@@ -256,16 +267,28 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	// 書き込むためのアドレスを取得
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
-	*materialData = {1.0f,1.0f,1.0f,1.0f};
+	materialData->color = {1.0f,1.0f,1.0f,1.0f};
 	//バッファリソース
 	// データを書き込む
 	wvpData = nullptr;
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	wvpResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(Matrix4x4));
+	wvpResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(TransformationMatrix));
 	// 書き込むためのアドレスを取得
 	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
 	//単位行列を書き込んでいく
-	*wvpData = MakeIdentity4x4();
+	wvpData->WVP = MakeIdentity4x4();
+
+	directionalLightData = nullptr;
+	directionalLightResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(DirectionalLight));
+	// 書き込むためのアドレスを取得
+	directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
+
+	// デフォルト値はとりあえず以下のようにしておく
+	directionalLightData->color = { 1.0f,1.0f,1.0f,1.0f };
+	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
+	directionalLightData->intensity = 1.0f;
+
+
 
 	//クライアント領域のサイズと一緒にして画面全体に表示
 	viewport.Width = (float)sWinApp->GetKClientWidth();
@@ -292,9 +315,9 @@ void Model::Update() {
 void Model::Draw(Transform transform) {
 	Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix, camera_->projectionMatrix));
-	*wvpData = worldViewProjectionMatrix;
+	wvpData->WVP = worldViewProjectionMatrix;
 	// 色のデータを変数から読み込み
-	*materialData = {1.0f,1.0f,1.0f,1.0f};
+	materialData->color = {1.0f,1.0f,1.0f,1.0f};
 	directXCommon_->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
 	directXCommon_->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	directXCommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature);
@@ -324,5 +347,5 @@ void Model ::Release() {
 	rootSignature->Release();
 	pixelShaderBlob->Release();
 	vertexShaderBlob->Release();
-
+	directionalLightResource->Release();
 }

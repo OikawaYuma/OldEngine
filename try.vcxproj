@@ -122,8 +122,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Src\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectionLight.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Lib\math\MaterialData.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Src\Model.h" />
     <ClInclude Include="Scene\gameScene.h" />
     <ClInclude Include="Src\Sphere.h" />
@@ -151,6 +153,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Lib\math\Vector2.h" />
     <ClInclude Include="Lib\math\VertexData.h" />
     <ClInclude Include="Lib\math\ModelData.h" />
+    <ClInclude Include="TransformationMatrix.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

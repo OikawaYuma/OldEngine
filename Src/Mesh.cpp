@@ -88,6 +88,11 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	rootParamerters[2].DescriptorTable.pDescriptorRanges = descriptorRange_; // Tableの中身の配列を指定
 	rootParamerters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange_); // Tableで利用する数
 
+	rootParamerters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParamerters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParamerters[3].Descriptor.ShaderRegister = 1;
+
+
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイナリフィルタ
 	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
 	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
@@ -125,7 +130,11 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	inputElementDescs[1].SemanticIndex = 0;
 	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
 	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-
+	inputElementDescs[2].SemanticName = "NORMAL";
+	inputElementDescs[2].SemanticIndex = 0;
+	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	inputElementDescs[2].AlignedByteOffset =
+		D3D12_APPEND_ALIGNED_ELEMENT;
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
 
@@ -195,27 +204,51 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	 
 	//左下
 	vertexData_[0].position = vertexDataA[0].position;
+	vertexData_[0].normal = {
+		vertexData_[0].position.x,
+		vertexData_[0].position.y, 
+		vertexData_[0].position.z };
 	vertexData_[0].texcorrd = vertexDataA[0].texcorrd;
 	//上
 	vertexData_[1].position = vertexDataA[1].position;
+	vertexData_[1].normal = {
+		vertexData_[1].position.x,
+		vertexData_[1].position.y,
+		vertexData_[1].position.z };
 	vertexData_[1].texcorrd = vertexDataA[1].texcorrd;
 	//右下
 	vertexData_[2].position= vertexDataA[2].position;
+	vertexData_[2].normal = {
+		vertexData_[2].position.x,
+		vertexData_[2].position.y,
+		vertexData_[2].position.z };
 	vertexData_[2].texcorrd = vertexDataA[2].texcorrd;
 
 	//左下
 	vertexData_[3].position = vertexDataA[3].position;
+	vertexData_[3].normal = {
+		vertexData_[3].position.x,
+		vertexData_[3].position.y,
+		vertexData_[3].position.z };
 	vertexData_[3].texcorrd = vertexDataA[3].texcorrd;
 	//上
 	vertexData_[4].position = vertexDataA[4].position;
+	vertexData_[4].normal = {
+		vertexData_[4].position.x,
+		vertexData_[4].position.y,
+		vertexData_[4].position.z };
 	vertexData_[4].texcorrd = vertexDataA[4].texcorrd;
 	//右下
 	vertexData_[5].position = vertexDataA[5].position;
+	vertexData_[5].normal = {
+		vertexData_[5].position.x,
+		vertexData_[5].position.y,
+		vertexData_[5].position.z };
 	vertexData_[5].texcorrd = vertexDataA[5].texcorrd;
 
 
 	// 実際に頂点リソースを作る
-	materialResource = CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Vector4));
+	materialResource = CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Material));
 
 	materialBufferView = CreateBufferView();;
 	// 頂点リソースにデータを書き込む
@@ -223,18 +256,28 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 	// 書き込むためのアドレスを取得
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
-	*materialData = DrawColor;
+	materialData->color = DrawColor;
 
 
 	//バッファリソース
 	// データを書き込む
-	wvpData = nullptr;
+	TransformationData = nullptr;
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	wvpResource = CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Matrix4x4));
+	wvpResource = CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(TransformationMatrix));
 	// 書き込むためのアドレスを取得
-	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
+	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&TransformationData));
 	//単位行列を書き込んでいく
-	*wvpData = MakeIdentity4x4();
+	TransformationData->World = MakeIdentity4x4();
+
+	directionalLightData = nullptr;
+	directionalLightResource = CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(DirectionalLight));
+	// 書き込むためのアドレスを取得
+	directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
+
+	// デフォルト値はとりあえず以下のようにしておく
+	directionalLightData->color = { 1.0f,1.0f,1.0f,1.0f };
+	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
+	directionalLightData->intensity = 1.0f;
 
 
 
@@ -271,7 +314,7 @@ void Mesh::Initialize(  VertexData* vertexDataA, Vector4 DrawColor) {
 
 void Mesh::Update(Vector4 DrawColor) {
 	// 色のデータを変数から読み込み
-	*materialData = DrawColor;
+	materialData->color = DrawColor;
 	sDirectXCommon_->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
 	sDirectXCommon_->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
@@ -307,4 +350,5 @@ void Mesh::Release() {
 	rootSignature->Release();
 	pixelShaderBlob->Release();
 	vertexShaderBlob->Release();
+	directionalLightResource->Release();
 };

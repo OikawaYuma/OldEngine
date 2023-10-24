@@ -12,6 +12,9 @@
 #include"Vector2.h"
 #include"Matrix4x4.h"
 #include "Transform.h"
+#include "Material.h"
+#include "TransformationMatrix.h"
+#include "DirectionLight.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -39,7 +42,8 @@ public :
 		textureManager_ = textureManager;
 	}
 	void DrawSphere(const Sphere& sphere, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportmatrix, int color);
-
+	// データを書き込む
+	DirectionalLight* directionalLightData;
 	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
 private:
 	
@@ -71,7 +75,7 @@ private:
 	//実際に生成
 	ID3D12PipelineState* graphicsPipelineState;
 	// RootParmeter作成。複数でっていできるので配列。今回は結果１つだけなので長さ1の配列
-	D3D12_ROOT_PARAMETER rootParamerters[3] = {};
+	D3D12_ROOT_PARAMETER rootParamerters[4] = {};
 
 	/*頂点用*/
 	// 実際に頂点リソースを作る
@@ -89,13 +93,17 @@ private:
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
 	// 頂点リソースにデータを書き込む
-	Vector4* materialData;
+	Material* materialData;
+
+	// 平行光源用
+	ID3D12Resource* directionalLightResource;
+	
 
 	/*移動用*/
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
 	ID3D12Resource* wvpResource;
 	// データを書き込む
-	Matrix4x4* wvpData;
+	TransformationMatrix* wvpData;
 
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW wvpBufferView{};

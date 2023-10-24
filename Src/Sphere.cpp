@@ -44,6 +44,11 @@ sWinApp = WinApp::GetInstance();
 	rootParamerters[2].DescriptorTable.pDescriptorRanges = descriptorRange_; // Tableの中身の配列を指定
 	rootParamerters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange_); // Tableで利用する数
 
+	rootParamerters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParamerters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParamerters[3].Descriptor.ShaderRegister = 1;
+
+
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイナリフィルタ
 	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
 	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
@@ -277,7 +282,7 @@ sWinApp = WinApp::GetInstance();
 	
 	
 	// 実際に頂点リソースを作る
-	materialResource = mesh_->CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Vector4));
+	materialResource = mesh_->CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Material));
 
 	materialBufferView = CreateBufferView();;
 	// 頂点リソースにデータを書き込む
@@ -285,7 +290,8 @@ sWinApp = WinApp::GetInstance();
 	// 書き込むためのアドレスを取得
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
-	*materialData = {1.0f,1.0f,1.0f,1.0f};
+	materialData->color = {1.0f,1.0f,1.0f,1.0f};
+	materialData->enableLighting = true;
 
 \
 
@@ -293,13 +299,22 @@ sWinApp = WinApp::GetInstance();
 	// データを書き込む
 	wvpData = nullptr;
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	wvpResource = mesh_->CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Matrix4x4));
+	wvpResource = mesh_->CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(TransformationMatrix));
 	// 書き込むためのアドレスを取得
 	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
 	//単位行列を書き込んでいく
-	*wvpData = MakeIdentity4x4();
+	wvpData->WVP = MakeIdentity4x4();
+	wvpData->World = MakeIdentity4x4();
 
-	
+	directionalLightData = nullptr;
+	directionalLightResource = Mesh::CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(DirectionalLight));
+	// 書き込むためのアドレスを取得
+	directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
+
+	// デフォルト値はとりあえず以下のようにしておく
+	directionalLightData->color = { 1.0f,1.0f,1.0f,1.0f };
+	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
+	directionalLightData->intensity = 1.0f;
 
 
 	////左下
@@ -339,7 +354,7 @@ void Sphere::Draw(Transform transform) {
 	//// 色のデータを変数から読み込み
 	Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix, camera_->projectionMatrix));
-	*wvpData = worldViewProjectionMatrix;
+	wvpData->WVP = worldViewProjectionMatrix;
 	sDirectXCommon_->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
 	sDirectXCommon_->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
@@ -352,9 +367,9 @@ void Sphere::Draw(Transform transform) {
 	// マテリアルCBufferの場所を設定
 	sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
 	sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
-
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	sDirectXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_);
+	sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(3, directionalLightResource->GetGPUVirtualAddress());
 	// 描画！（DrawCall/ドローコール）・3頂点で1つのインスタンス。インスタンスについては今後
 	sDirectXCommon_->GetCommandList()->DrawInstanced(1536, 1, 0, 0);
 	//
@@ -372,6 +387,7 @@ void Sphere::Release() {
 	rootSignature->Release();
 	pixelShaderBlob->Release();
 	vertexShaderBlob->Release();
+	directionalLightResource->Release();
 }
 
 D3D12_VERTEX_BUFFER_VIEW  Sphere::CreateBufferView() {
