@@ -22,3 +22,8 @@ Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float botto
 
 // 1. 透視投影行列
 Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip);
+
+// 2. 拡大縮小行列
+Matrix4x4 MakeScaleMatrix(const Vector3& scale);
+
+Matrix4x4 MakeTranslateMatrix(const Vector3& translate);

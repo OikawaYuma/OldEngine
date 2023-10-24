@@ -44,6 +44,7 @@ public :
 	void DrawSphere(const Sphere& sphere, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportmatrix, int color);
 	// データを書き込む
 	DirectionalLight* directionalLightData;
+	Transform transformUv;
 	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
 private:
 	

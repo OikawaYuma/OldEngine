@@ -139,6 +139,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="DirectionLight.h" />
     <ClInclude Include="TransformationMatrix.h" />
+    <ClInclude Include="Lib\math\Matrix3x3.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

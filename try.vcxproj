@@ -126,6 +126,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Input.h" />
     <ClInclude Include="Lib\math\MaterialData.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="Lib\math\Matrix3x3.h" />
     <ClInclude Include="Src\Model.h" />
     <ClInclude Include="Scene\gameScene.h" />
     <ClInclude Include="Src\Sphere.h" />

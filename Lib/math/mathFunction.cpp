@@ -258,3 +258,47 @@ Matrix4x4 MakeOrthographicMatrix(float left, float top, float right, float botto
 
 	return m4;
 };
+
+// 2. 拡大縮小行列
+Matrix4x4 MakeScaleMatrix(const Vector3& scale) {
+
+	Matrix4x4 m4;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			m4.m[i][j] = 0;
+		}
+	}
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			if (i == j) {
+				m4.m[i][j] = 1.0f;
+			}
+		}
+	}
+	m4.m[0][0] = scale.x;
+	m4.m[1][1] = scale.y;
+	m4.m[2][2] = scale.z;
+	return m4;
+
+};
+
+Matrix4x4 MakeTranslateMatrix(const Vector3& translate) {
+	Matrix4x4 m4;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			m4.m[i][j] = 0;
+		}
+	}
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			if (i == j) {
+				m4.m[i][j] = 1.0f;
+			}
+		}
+	}
+	m4.m[3][0] = translate.x;
+	m4.m[3][1] = translate.y;
+	m4.m[3][2] = translate.z;
+	return m4;
+
+};

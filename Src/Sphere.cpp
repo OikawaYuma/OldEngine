@@ -292,6 +292,18 @@ sWinApp = WinApp::GetInstance();
 	// 色のデータを変数から読み込み
 	materialData->color = {1.0f,1.0f,1.0f,1.0f};
 	materialData->enableLighting = true;
+	materialData->uvTransform = MakeIdentity4x4();
+
+	transformUv = {
+		{1.0f,1.0f,1.0f},
+		{0.0f,0.0f,0.0f},
+		{0.0f,0.0f,0.0f}
+	};
+
+	Matrix4x4 uvTransformMatrix = MakeScaleMatrix(transformUv.scale);
+	uvTransformMatrix = Multiply(uvTransformMatrix, MakeRotateZMatrix(transformUv.rotate.z));
+	uvTransformMatrix = Multiply(uvTransformMatrix, MakeTranslateMatrix(transformUv.translate));
+	materialData->uvTransform = uvTransformMatrix;
 
 \
 
@@ -351,6 +363,11 @@ void Sphere::Update(){
 }
 
 void Sphere::Draw(Transform transform) {
+
+	Matrix4x4 uvTransformMatrix = MakeScaleMatrix(transformUv.scale);
+	uvTransformMatrix = Multiply(uvTransformMatrix, MakeRotateZMatrix(transformUv.rotate.z));
+	uvTransformMatrix = Multiply(uvTransformMatrix, MakeTranslateMatrix(transformUv.translate));
+	materialData->uvTransform = uvTransformMatrix;
 	//// 色のデータを変数から読み込み
 	Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
 	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix, camera_->projectionMatrix));
