@@ -261,7 +261,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			ImGui::DragFloat3("spriteT : ", &sprite->transform_.translate.x, 0.1f);
 
 			ImGui::DragFloat4("cT : ", &sphere->directionalLightData->color.x, 0.1f);
-			ImGui::DragFloat3("caR : ", &sphere->directionalLightData->direction.x, 0.1f);
+			ImGui::DragFloat3("caR : ", &sphere->directionalLightData->direction.x, 0.01f);
 			ImGui::DragFloat("caS : ", &sphere->directionalLightData->intensity, 0.1f);
 			ImGui::DragFloat3("uvs : ", &sphere->transformUv.scale.x, 0.1f);
 			ImGui::DragFloat3("uvr : ", &sphere->transformUv.rotate.x, 0.1f);
