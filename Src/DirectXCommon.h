@@ -6,6 +6,7 @@
 #include"function.h"
 #include<string>
 #include<format>
+#include <wrl.h>
 
 #include"WinApp.h"
 #include<dxcapi.h>
@@ -37,13 +38,13 @@ public:
 	ID3D12DescriptorHeap* CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors,bool shaderVisible);
 	ID3D12Resource* CreateDepthStencilTextureResource(ID3D12Device* device, int32_t width, int32_t height);
 	// Accessor
-	ID3D12Device* GetDevice() { return device_; };
+	ID3D12Device* GetDevice() { return device_.Get(); };
 	IDxcUtils* GetDxcUtils() { return dxcUtils_; };
 	IDxcCompiler3* GetDxcCompiler() { return dxcCompiler_; };
 	IDxcIncludeHandler* GetIncludeHandler() { return includeHandler_; };
-	ID3D12GraphicsCommandList* GetCommandList() { return commandList_; };
+	ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); };
 	DXGI_SWAP_CHAIN_DESC1 GetSwapChainDesc() { return swapChainDesc_; };
-	ID3D12DescriptorHeap* GetSrvDescriptorHeap() { return srvDescriptorHeap_; };
+	ID3D12DescriptorHeap* GetSrvDescriptorHeap() { return srvDescriptorHeap_.Get(); };
 	D3D12_RENDER_TARGET_VIEW_DESC GetrtvDesc() { return rtvDesc_; };
 	D3D12_DEPTH_STENCIL_DESC GetDepthStencilDesc() { return depthStencilDesc_; };
 
@@ -61,26 +62,26 @@ public:
 
 private:
 	// DXGIファクトリーの生成
-	IDXGIFactory7* dxgiFactory;
+	Microsoft::WRL::ComPtr < IDXGIFactory7> dxgiFactory;
 	// HRESULTはWindows系のエラーコードであり、
 	// 関数が成功したかどうかをSUCCEEDEDマクロで判定できる
 	HRESULT hr_;
 	
 	// 使用するアダプタ用の変数
-	IDXGIAdapter4* useAdapter_;
-	ID3D12Device* device_;
-	ID3D12CommandQueue* commandQueue_;
-	ID3D12CommandAllocator* commandAllocator_;
-	ID3D12GraphicsCommandList* commandList_;
+	Microsoft::WRL::ComPtr < IDXGIAdapter4> useAdapter_;
+	Microsoft::WRL::ComPtr < ID3D12Device> device_;
+	Microsoft::WRL::ComPtr < ID3D12CommandQueue> commandQueue_;
+	Microsoft::WRL::ComPtr < ID3D12CommandAllocator> commandAllocator_;
+	Microsoft::WRL::ComPtr < ID3D12GraphicsCommandList> commandList_;
 
 	//スワップチェーン
-	IDXGISwapChain4* swapChain_;
+	Microsoft::WRL::ComPtr < IDXGISwapChain4> swapChain_;
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_{};
 
 	// ディスクリプタヒープの生成
-	ID3D12DescriptorHeap* rtvDescriptorHeap_ = nullptr;
-	ID3D12DescriptorHeap* srvDescriptorHeap_ = nullptr;
-	ID3D12Resource* swapChainResources_[2] = {nullptr};
+	Microsoft::WRL::ComPtr < ID3D12DescriptorHeap> rtvDescriptorHeap_ = nullptr;
+	Microsoft::WRL::ComPtr < ID3D12DescriptorHeap> srvDescriptorHeap_ = nullptr;
+	Microsoft::WRL::ComPtr < ID3D12Resource> swapChainResources_[2] = {nullptr};
 
 	//RTVの設定
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc_{};
@@ -95,7 +96,7 @@ private:
 	D3D12_RESOURCE_BARRIER barrier_{};
 
 	// 初期値0でFenceを作る
-	ID3D12Fence* fence_;
+	Microsoft::WRL::ComPtr < ID3D12Fence> fence_;
 	uint64_t fenceValue_;
 	HANDLE fenceEvent_;
 
@@ -109,10 +110,10 @@ private:
 
 
 	// DepthStencilTextureをウィンドウのサイズで作成
-	ID3D12Resource* depthStencilResource_;
+	Microsoft::WRL::ComPtr < ID3D12Resource> depthStencilResource_;
 
 	// DSVようのヒープでディスクリプタの数は1。DSVはShader内で触るものではないので、ShaderVisibleはfalse
-	ID3D12DescriptorHeap* dsvDescriptorHeap_;
+	Microsoft::WRL::ComPtr < ID3D12DescriptorHeap> dsvDescriptorHeap_;
 	// DepthStencilStateの設定
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc_{};
 

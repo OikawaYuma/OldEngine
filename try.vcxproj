@@ -100,6 +100,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="ResourceObject.cpp" />
     <ClCompile Include="Src\Model.cpp" />
     <ClCompile Include="Scene\gameScene.cpp" />
     <ClCompile Include="Src\Sphere.cpp" />
@@ -127,6 +128,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Lib\math\MaterialData.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Lib\math\Matrix3x3.h" />
+    <ClInclude Include="ResourceObject.h" />
     <ClInclude Include="Src\Model.h" />
     <ClInclude Include="Scene\gameScene.h" />
     <ClInclude Include="Src\Sphere.h" />
