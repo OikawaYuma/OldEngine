@@ -312,19 +312,19 @@ void DirectXCommon::Release() {
 
 
 	CloseHandle(fenceEvent_);
-	fence_->Release();
-	rtvDescriptorHeap_->Release();
-	srvDescriptorHeap_->Release();
-	swapChainResources_[0]->Release();
-	swapChainResources_[1]->Release();
-	depthStencilResource_->Release();
-	dsvDescriptorHeap_->Release();
-	swapChain_->Release();
-	commandList_->Release();
-	commandAllocator_->Release();
-	commandQueue_->Release();
-	device_->Release();
-	useAdapter_->Release();
+	//fence_->Release();
+	//rtvDescriptorHeap_->Release();
+	//srvDescriptorHeap_->Release();
+	//swapChainResources_[0]->Release();
+	//swapChainResources_[1]->Release();
+	//depthStencilResource_->Release();
+	//dsvDescriptorHeap_->Release();
+	//swapChain_->Release();
+	//commandList_->Release();
+	//commandAllocator_->Release();
+	//commandQueue_->Release();
+	//device_->Release();
+	//useAdapter_->Release();
 
 
 	//#ifdef _DEBUG
