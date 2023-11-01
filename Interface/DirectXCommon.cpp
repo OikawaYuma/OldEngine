@@ -144,6 +144,7 @@ void DirectXCommon::Initialize() {
 
 	// スワップチェーンを生成する
 	swapChain_ = nullptr;
+
 	swapChainDesc_.Width = sWinApp_->GetKClientWidth();
 	swapChainDesc_.Height = sWinApp_->GetKClientHeight();
 	swapChainDesc_.Format = DXGI_FORMAT_R8G8B8A8_UNORM;

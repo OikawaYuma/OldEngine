@@ -15,6 +15,7 @@
 #include "Material.h"
 #include "TransformationMatrix.h"
 #include "DirectionLight.h"
+#include "Mesh.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -23,7 +24,6 @@
 class DirectXCommon;
 class WinApp;
 class TextureManager;
-class Mesh;
 class Camera;
 class Sphere
 {
@@ -35,9 +35,7 @@ public :
 	void Draw(Transform transform);
 	void Release();
 	
-	void SetMesh(Mesh* mesh) {
-		mesh_ = mesh;
-	}
+	
 	void SetTextureManager(TextureManager* textureManager) {
 		textureManager_ = textureManager;
 	}
@@ -50,7 +48,7 @@ private:
 	
 	WinApp* sWinApp = nullptr;
 	DirectXCommon* sDirectXCommon_ = nullptr;
-	Mesh* mesh_ = nullptr;
+	
 	TextureManager* textureManager_ = nullptr;
 
 	// RootSignature作成

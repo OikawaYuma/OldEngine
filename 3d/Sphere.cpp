@@ -1,9 +1,8 @@
 #include "Sphere.h"
 #include "WinApp.h"
 #include "DirectXCommon.h"
-#include "Mesh.h"
 #include "mathFunction.h"
-#include "Camera.h"
+#include "ViewProjection.h"
 
 Sphere::Sphere() {
 
@@ -148,7 +147,7 @@ sWinApp = WinApp::GetInstance();
 	//バッファリソース
 
 	// 実際に頂点リソースを作る
-	vertexResource = mesh_->CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(VertexData) * 1536);
+	vertexResource = Mesh::CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(VertexData) * 1536);
 
 	vertexBufferView = CreateBufferView();
 
@@ -282,7 +281,7 @@ sWinApp = WinApp::GetInstance();
 	
 	
 	// 実際に頂点リソースを作る
-	materialResource = mesh_->CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Material));
+	materialResource = Mesh::CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Material));
 
 	materialBufferView = CreateBufferView();;
 	// 頂点リソースにデータを書き込む
@@ -311,7 +310,7 @@ sWinApp = WinApp::GetInstance();
 	// データを書き込む
 	wvpData = nullptr;
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	wvpResource = mesh_->CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(TransformationMatrix));
+	wvpResource = Mesh::CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(TransformationMatrix));
 	// 書き込むためのアドレスを取得
 	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
 	//単位行列を書き込んでいく

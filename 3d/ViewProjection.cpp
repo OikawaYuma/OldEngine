@@ -1,4 +1,4 @@
-#include "Camera.h"
+#include "ViewProjection.h"
 #include"WinApp.h"
 
 void Camera::Initialize() {

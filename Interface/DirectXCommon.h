@@ -29,20 +29,48 @@ public:
 
 	DirectXCommon() = default;
 	~DirectXCommon() = default;
+	const DirectXCommon& operator=(const DirectXCommon&) = delete;
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize();
+
+	/// <summary>
+	/// 描画前処理、フレーム開始
+	/// </summary>
 	void BeginFrame();
+
+	/// <summary>
+	/// 描画後処理
+	/// </summary>
 	void ViewChange();
+
+	/// <summary>
+	/// 解放処理
+	/// </summary>
 	void Release();
+
+	/// <summary>
+	/// デバイスの取得
+	/// </summary>
+	/// <returns>デバイス</returns>
+	ID3D12Device* GetDevice() { return device_.Get(); };
+
+	/// <summary>
+	/// 描画コマンドの取得
+	/// </summary>
+	/// <returns>描画コマンドリスト</returns>
+	ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); };
+
 
 	ID3D12DescriptorHeap* CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors,bool shaderVisible);
 	ID3D12Resource* CreateDepthStencilTextureResource(ID3D12Device* device, int32_t width, int32_t height);
 	// Accessor
-	ID3D12Device* GetDevice() { return device_.Get(); };
 	IDxcUtils* GetDxcUtils() { return dxcUtils_; };
 	IDxcCompiler3* GetDxcCompiler() { return dxcCompiler_; };
 	IDxcIncludeHandler* GetIncludeHandler() { return includeHandler_; };
-	ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); };
+	
 	DXGI_SWAP_CHAIN_DESC1 GetSwapChainDesc() { return swapChainDesc_; };
 	ID3D12DescriptorHeap* GetSrvDescriptorHeap() { return srvDescriptorHeap_.Get(); };
 	D3D12_RENDER_TARGET_VIEW_DESC GetrtvDesc() { return rtvDesc_; };
@@ -63,6 +91,7 @@ public:
 private:
 	// DXGIファクトリーの生成
 	Microsoft::WRL::ComPtr < IDXGIFactory7> dxgiFactory;
+
 	// HRESULTはWindows系のエラーコードであり、
 	// 関数が成功したかどうかをSUCCEEDEDマクロで判定できる
 	HRESULT hr_;
@@ -85,8 +114,10 @@ private:
 
 	//RTVの設定
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc_{};
+
 	// ディスクリプタヒープの先頭を取得する
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvStartHandle_;
+
 	// RTVを2つ作るのでディスクリプタを2つ用意
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles_[2];
 

@@ -5,7 +5,7 @@
 #include "Mesh.h"
 #include "ImGuiCommon.h"
 #include "TextureManager.h"
-#include "Camera.h"
+#include "ViewProjection.h"
 #include "Sprite.h"
 #include "Sphere.h"
 #include "Model.h"
@@ -98,24 +98,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	ImGuiCommon* imGuiCommon = new ImGuiCommon;
 
 	
-	Mesh* mesh_[20];
-	// 実験用
-	Mesh* mesh2 = new Mesh();
+	//Mesh* mesh_[20];
+	//// 実験用
+	//Mesh* mesh2 = new Mesh();
 
 	
 	bool Reset = true;
 
 
-	for (int i = 0; i < 20; i++) {
-		color[i] = { 1.0f,1.0f,1.0f,1.0f, };
-		mesh_[i] = new Mesh();
-		mesh_[i]->Initialize( triangle[i], color[i]);
-		
-		
-	}
-	Sprite* sprite = new Sprite();
-	Sprite* sprite2 = new Sprite();
-	Sphere* sphere = new Sphere();
+	//for (int i = 0; i < 20; i++) {
+	//	color[i] = { 1.0f,1.0f,1.0f,1.0f, };
+	//	mesh_[i] = new Mesh();
+	//	mesh_[i]->Initialize( triangle[i], color[i]);
+	//	
+	//	
+	//}
+	/*Sprite* sprite = new Sprite();
+	Sprite* sprite2 = new Sprite();*/
+	//Sphere* sphere = new Sphere();
 
 	Model* model = new Model();
 	model->Initialize("Resources/multiMaterial","multiMaterial.obj",camera);
@@ -134,24 +134,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	textureManager4->Initialize(model2->modelData_.material.textureFilePath, 4);
 	
 
-	for (int i = 0; i < 20; i++) {
+	/*for (int i = 0; i < 20; i++) {
 	
 		mesh_[i]->SetTextureManager(textureManager2);
 
-	}
-	sprite->SetTextureManager(textureManager3);
+	}*/
+	/*sprite->SetTextureManager(textureManager3);
 	sprite->Initialize();
 
 	sprite2->SetTextureManager(textureManager4);
-	sprite2->Initialize();
+	sprite2->Initialize();*/
 
 	model->SetTextureManager(textureManager3);
 	model2->SetTextureManager(textureManager4);
 	
 
-	sphere->SetMesh(mesh_[0]); 
-	sphere->SetTextureManager(textureManager3);
-	sphere->Initialize(camera);
+	 
+	/*sphere->SetTextureManager(textureManager3);
+	sphere->Initialize(camera);*/
 
 	int num = 5;
 
@@ -209,19 +209,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (input->PushKey(DIK_2)) {
 				num--;
 			}
-			//*model->wvpData = camera->worldViewProjectionMatrix;
-			//model->Draw(transform);
+			model->wvpData->WVP = camera->worldViewProjectionMatrix;
+			model->Draw(transform);
 
-			//*model2->wvpData = camera->worldViewProjectionMatrix;
-			//model2->Draw(transformA);
+			model2->wvpData->WVP = camera->worldViewProjectionMatrix;
+			model2->Draw(transformA);
 
-			if (useMonsterBall) {
+			/*if (useMonsterBall) {
 				sphere->SetTextureManager(textureManager3);
 			} 
 			else{
 				sphere->SetTextureManager(textureManager3);
 			}
-			sphere->Draw(transform);
+			sphere->Draw(transform);*/
 			//sprite->Draw();
 			//sprite2->Draw();
 			
@@ -258,14 +258,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			ImGui::DragFloat3("cameraR : ", &camera->cameraTransform.rotate.x, 0.1f);
 			ImGui::DragFloat3("cameraS : ", &camera->cameraTransform.scale.x, 0.1f);
 
-			ImGui::DragFloat3("spriteT : ", &sprite->transform_.translate.x, 0.1f);
+			//ImGui::DragFloat3("spriteT : ", &sprite->transform_.translate.x, 0.1f);
 
-			ImGui::DragFloat4("cT : ", &sphere->directionalLightData->color.x, 0.1f);
-			ImGui::DragFloat3("caR : ", &sphere->directionalLightData->direction.x, 0.01f);
-			ImGui::DragFloat("caS : ", &sphere->directionalLightData->intensity, 0.1f);
-			ImGui::DragFloat3("uvs : ", &sphere->transformUv.scale.x, 0.1f);
-			ImGui::DragFloat3("uvr : ", &sphere->transformUv.rotate.x, 0.1f);
-			ImGui::DragFloat3("uvt : ", &sphere->transformUv.translate.x, 0.1f);
+			//ImGui::DragFloat4("cT : ", &sphere->directionalLightData->color.x, 0.1f);
+			//ImGui::DragFloat3("caR : ", &sphere->directionalLightData->direction.x, 0.01f);
+			//ImGui::DragFloat("caS : ", &sphere->directionalLightData->intensity, 0.1f);
+			//ImGui::DragFloat3("uvs : ", &sphere->transformUv.scale.x, 0.1f);
+			//ImGui::DragFloat3("uvr : ", &sphere->transformUv.rotate.x, 0.1f);
+			//ImGui::DragFloat3("uvt : ", &sphere->transformUv.translate.x, 0.1f);
 
 			ImGui::Checkbox("useMonsterBall", &useMonsterBall);
 			ImGui::Text("%d", num);
@@ -290,18 +290,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	-------------------------------------------------------------*/
 	sWinApp->Release();
 
-	for (int i = 0; i < 20; i++) {
+	/*for (int i = 0; i < 20; i++) {
 		mesh_[i]->Release();
-	}
+	}*/
 	imGuiCommon->Release();
-	textureManager->Release();
-	textureManager2->Release();
+	/*textureManager->Release();
+	textureManager2->Release();*/
 	textureManager3->Release();
 	textureManager4->Release();
 
-	sprite->Release();
-	sprite2->Release();
-	sphere->Release();
+	/*sprite->Release();
+	sprite2->Release();*/
+	//sphere->Release();
 	model->Release();
 	model2->Release();
 	sDirctX->Release();

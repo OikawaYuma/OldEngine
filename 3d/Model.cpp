@@ -1,6 +1,6 @@
 #include "Model.h"
 #include "DirectXCommon.h"
-#include "Camera.h"
+#include "ViewProjection.h"
 
 
 Model::Model() {};
@@ -277,6 +277,7 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
 	//単位行列を書き込んでいく
 	wvpData->WVP = MakeIdentity4x4();
+	wvpData->World = MakeIdentity4x4();
 
 	directionalLightData = nullptr;
 	directionalLightResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(DirectionalLight));
@@ -331,7 +332,7 @@ void Model::Draw(Transform transform) {
 
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	directXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_);
-
+	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(3, directionalLightResource->GetGPUVirtualAddress());
 	directXCommon_->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }
 

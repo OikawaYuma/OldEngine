@@ -1,7 +1,7 @@
 #include "Sprite.h"
 #include "WinApp.h"
 #include "DirectXCommon.h"
-#include "Camera.h"
+#include "ViewProjection.h"
 #include "mathFunction.h"
 #include "Mesh.h"
 
