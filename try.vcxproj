@@ -100,7 +100,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Input\Input.cpp" />
-    <ClCompile Include="3d\ResourceObject.cpp" />
     <ClCompile Include="3d\Model.cpp" />
     <ClCompile Include="Interface\PSO.cpp" />
     <ClCompile Include="Scene\gameScene.cpp" />
@@ -115,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="Externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="3d\Triangle.cpp" />
     <ClCompile Include="Utility\function.cpp" />
     <ClCompile Include="2d\ImGuiCommon.cpp" />
     <ClCompile Include="main.cpp" />
@@ -146,6 +146,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Externals\imgui\imstb_rectpack.h" />
     <ClInclude Include="Externals\imgui\imstb_textedit.h" />
     <ClInclude Include="Externals\imgui\imstb_truetype.h" />
+    <ClInclude Include="3d\Triangle.h" />
     <ClInclude Include="Utility\function.h" />
     <ClInclude Include="2d\ImGuiCommon.h" />
     <ClInclude Include="Lib\math\mathFunction.h" />

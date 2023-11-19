@@ -1,54 +1,50 @@
 #pragma once
-#include<Windows.h>
-#include<d3d12.h>
-#include<dxgi1_6.h>
-#include<cassert>
+#include <Windows.h>
+#include <d3d12.h>
+#include <dxgi1_6.h>
+#include <cassert>
 #include <dxcapi.h>
 
-//#include"DirectXCommon.h"
-#include "VertexData.h"
-#include "Vector4.h"
-#include"Vector3.h"
-#include"Vector2.h"
-#include"Matrix4x4.h"
-#include "Transform.h"
-#include "Material.h"
-#include "TransformationMatrix.h"
-#include "DirectionLight.h"
+#include "WinApp.h"
+#include "DirectXCommon.h"
 #include "Mesh.h"
 #include "PSO.h"
+#include "VertexData.h"
+#include "Vector4.h"
+#include "Vector3.h"
+#include "Vector2.h"
+#include "Matrix4x4.h"
+#include "Material.h"
+#include "DirectionLight.h"
+#include "TransformationMatrix.h"
+#include "Transform.h"
+#include "WorldTransform.h"
+#include "ViewProjection.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
 
-class DirectXCommon;
-class WinApp;
+
 class TextureManager;
-class ViewProjection;
-class Sphere
+
+class Triangle
 {
-public :
-	Sphere();
-	~Sphere();
-	void Initialize(ViewProjection* camera);
-	void Update();
-	void Draw(Transform transform);
+
+public:
+
+	void Initialize(ViewProjection* viewProjection, Vector4 DrawColor);
+	void Update(ViewProjection viewProjection, Vector4 DrawColor);
+	void Draw(WorldTransform worlsTransform, ViewProjection* viewProjection, Vector4 DrawColor);
+	void Release();
+	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
+	D3D12_RESOURCE_DESC  CreateBufferResourceDesc(size_t sizeInBytes);
 	void SetTextureManager(TextureManager* textureManager) {
 		textureManager_ = textureManager;
 	}
-	void DrawSphere(const Sphere& sphere, const Matrix4x4& viewProjectionMatrix, const Matrix4x4& viewportmatrix, int color);
-	// データを書き込む
-	DirectionalLight* directionalLightData;
-	Transform transformUv;
-	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
-private:
-	PSO* pso_ = nullptr;
-	WinApp* sWinApp = nullptr;
-	DirectXCommon* sDirectXCommon_ = nullptr;
-	
-	TextureManager* textureManager_ = nullptr;
 
+
+	HRESULT hr;
 	/*頂点用*/
 	// 実際に頂点リソースを作る
 	Microsoft::WRL::ComPtr < ID3D12Resource> vertexResource;
@@ -67,34 +63,28 @@ private:
 	// 頂点リソースにデータを書き込む
 	Material* materialData;
 
-	// 平行光源用
-	Microsoft::WRL::ComPtr < ID3D12Resource> directionalLightResource;
-	
-
 	/*移動用*/
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
 	Microsoft::WRL::ComPtr < ID3D12Resource> wvpResource;
 	// データを書き込む
-	TransformationMatrix* wvpData;
+	TransformationMatrix* TransformationData;
 
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW wvpBufferView{};
-	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
-	D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
+
+	// 平行光源用
+	Microsoft::WRL::ComPtr < ID3D12Resource> directionalLightResource;
+	// データを書き込む
+	DirectionalLight* directionalLightData;
+
+	DirectXCommon* sDirectXCommon_ = nullptr;
+	TextureManager* textureManager_ = nullptr;
+	PSO* pso_ = nullptr;
+	ViewProjection *viewProjection_ = nullptr;
+
 	//ビューポート
 	D3D12_VIEWPORT viewport{};
 	// シザー矩形
 	D3D12_RECT scissorRect{};
-
-
-
-
-	ViewProjection* camera_ = nullptr;
-
-
-
-	
-
-
 };
 

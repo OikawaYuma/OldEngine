@@ -69,9 +69,9 @@
     <ClCompile Include="3d\Sphere.cpp" />
     <ClCompile Include="3d\Model.cpp" />
     <ClCompile Include="Input\Input.cpp" />
-    <ClCompile Include="3d\ResourceObject.cpp" />
     <ClCompile Include="3d\WorldTransform.cpp" />
     <ClCompile Include="Interface\PSO.cpp" />
+    <ClCompile Include="3d\Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Externals\imgui\imconfig.h">
@@ -146,6 +146,7 @@
     <ClInclude Include="3d\ResourceObject.h" />
     <ClInclude Include="3d\WorldTransform.h" />
     <ClInclude Include="Interface\PSO.h" />
+    <ClInclude Include="3d\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

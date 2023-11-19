@@ -15,10 +15,10 @@ void ImGuiCommon::Initialize() {
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
 	ImGui_ImplWin32_Init(sWinApp_->GetHwnd());
-	ImGui_ImplDX12_Init(sDirectXCommon_->GetDevice(),
+	ImGui_ImplDX12_Init(sDirectXCommon_->GetDevice().Get(),
 		sDirectXCommon_->GetSwapChainDesc().BufferCount,
 		sDirectXCommon_->GetrtvDesc().Format,
-		sDirectXCommon_->GetSrvDescriptorHeap(),
+		sDirectXCommon_->GetSrvDescriptorHeap().Get(),
 		sDirectXCommon_->GetSrvDescriptorHeap()->GetCPUDescriptorHandleForHeapStart(),
 		sDirectXCommon_->GetSrvDescriptorHeap()->GetGPUDescriptorHandleForHeapStart());
 
@@ -39,14 +39,14 @@ void ImGuiCommon::Draw() {
 	////描画用のDescriptorの設定
 	//ID3D12DescriptorHeap* descriptorHeaps[] = { sDirectXCommon_->GetSrvDescriptorHeap()};
 	//sDirectXCommon_->GetCommandList()->SetDescriptorHeaps(1, descriptorHeaps);
-	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), sDirectXCommon_->GetCommandList());
+	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), sDirectXCommon_->GetCommandList().Get());
 }
 
 
 void ImGuiCommon::UICreate() {
 	//ImGui::Render();
 	//描画用のDescriptorの設定
-	ID3D12DescriptorHeap* descriptorHeaps[] = { sDirectXCommon_->GetSrvDescriptorHeap() };
+	ID3D12DescriptorHeap* descriptorHeaps[] = { sDirectXCommon_->GetSrvDescriptorHeap().Get()};
 	sDirectXCommon_->GetCommandList()->SetDescriptorHeaps(1, descriptorHeaps);
 }
 

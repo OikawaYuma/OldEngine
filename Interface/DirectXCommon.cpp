@@ -21,9 +21,9 @@
    このクラスはシングルトンパターンのを元に設計する
 --------------------------------------------------------------*/
 
-ID3D12DescriptorHeap* DirectXCommon::CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible) {
+Microsoft::WRL::ComPtr < ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHeap(Microsoft::WRL::ComPtr < ID3D12Device> device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible) {
 	// ディスクリプタヒープの生成
-	ID3D12DescriptorHeap* descriptorHeap = nullptr;
+	Microsoft::WRL::ComPtr <ID3D12DescriptorHeap> descriptorHeap = nullptr;
 	D3D12_DESCRIPTOR_HEAP_DESC descriptorHeapDesc{};
 	descriptorHeapDesc.Type = heapType; //レンダーターゲットビュー用
 	descriptorHeapDesc.NumDescriptors = numDescriptors; //ダブルバッファように2つ。多くても構わない
@@ -310,42 +310,11 @@ void DirectXCommon::ViewChange() {
 
 
 void DirectXCommon::Release() {
-
-
 	CloseHandle(fenceEvent_);
-	//fence_->Release();
-	//rtvDescriptorHeap_->Release();
-	//srvDescriptorHeap_->Release();
-	//swapChainResources_[0]->Release();
-	//swapChainResources_[1]->Release();
-	//depthStencilResource_->Release();
-	//dsvDescriptorHeap_->Release();
-	//swapChain_->Release();
-	//commandList_->Release();
-	//commandAllocator_->Release();
-	//commandQueue_->Release();
-	//device_->Release();
-	//useAdapter_->Release();
-
-
-	//#ifdef _DEBUG
-	//	textureManager_->Release();
-	//#endif // _DEBUG
-		CloseWindow(sWinApp_->GetHwnd());
-
-
-		// リソースリークチェック
-	IDXGIDebug1* debug;
-	if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debug)))) {
-		debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
-		debug->ReportLiveObjects(DXGI_DEBUG_APP, DXGI_DEBUG_RLO_ALL);
-		debug->ReportLiveObjects(DXGI_DEBUG_D3D12, DXGI_DEBUG_RLO_ALL);
-		debug->Release();
-	}
-
+	CloseWindow(sWinApp_->GetHwnd());
 }
 
-ID3D12Resource* DirectXCommon::CreateDepthStencilTextureResource(ID3D12Device* device, int32_t width, int32_t height) {
+Microsoft::WRL::ComPtr <ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResource(Microsoft::WRL::ComPtr < ID3D12Device> device, int32_t width, int32_t height) {
 	// 生成するResourceの設定
 
 	D3D12_RESOURCE_DESC resourceDesc{};
@@ -367,7 +336,7 @@ ID3D12Resource* DirectXCommon::CreateDepthStencilTextureResource(ID3D12Device* d
 	depthClearValue.DepthStencil.Depth = 1.0f; // 1.0f（最大値）でクリア
 	depthClearValue.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // フォーマットResourceと合わせる
 
-	ID3D12Resource* resource = nullptr;
+	Microsoft::WRL::ComPtr <ID3D12Resource> resource = nullptr;
 	HRESULT hr = device->CreateCommittedResource(
 		&heapProperties, //Heapの設定
 		D3D12_HEAP_FLAG_NONE, // Heapの特殊な設定。特になし。

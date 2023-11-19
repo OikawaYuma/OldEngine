@@ -1,16 +1,17 @@
 ﻿#pragma once
 #include <Windows.h>
-#include<d3d12.h>
-#include<dxgi1_6.h>
-#include<cassert>
-#include"function.h"
-#include<string>
-#include<format>
+#include <d3d12.h>
+#include <dxgi1_6.h>
+#include <cassert>
+#include "function.h"
+#include <string>
+#include <format>
 #include <wrl.h>
 
-#include"WinApp.h"
-#include<dxcapi.h>
-#include"TextureManager.h"
+#include "WinApp.h"
+#include <dxcapi.h>
+#include "TextureManager.h"
+#include "ResourceObject.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -55,24 +56,38 @@ public:
 	/// デバイスの取得
 	/// </summary>
 	/// <returns>デバイス</returns>
-	ID3D12Device* GetDevice() { return device_.Get(); };
+	Microsoft::WRL::ComPtr <ID3D12Device> GetDevice() { return device_.Get(); };
 
 	/// <summary>
 	/// 描画コマンドの取得
 	/// </summary>
 	/// <returns>描画コマンドリスト</returns>
-	ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); };
+	Microsoft::WRL::ComPtr <ID3D12GraphicsCommandList> GetCommandList() { return commandList_.Get(); };
+
+	//ReleaseCheck
+	struct D3DResourceLeakChecker {
+		~D3DResourceLeakChecker()
+		{
+			// リソースリークチェック
+			Microsoft::WRL::ComPtr <IDXGIDebug1> debug;
+			if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debug)))) {
+				debug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
+				debug->ReportLiveObjects(DXGI_DEBUG_APP, DXGI_DEBUG_RLO_ALL);
+				debug->ReportLiveObjects(DXGI_DEBUG_D3D12, DXGI_DEBUG_RLO_ALL);
+			}
+		}
+	};
 
 
-	ID3D12DescriptorHeap* CreateDescriptorHeap(ID3D12Device* device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors,bool shaderVisible);
-	ID3D12Resource* CreateDepthStencilTextureResource(ID3D12Device* device, int32_t width, int32_t height);
+	Microsoft::WRL::ComPtr <ID3D12DescriptorHeap> CreateDescriptorHeap(Microsoft::WRL::ComPtr < ID3D12Device> device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors,bool shaderVisible);
+	Microsoft::WRL::ComPtr < ID3D12Resource> CreateDepthStencilTextureResource(Microsoft::WRL::ComPtr < ID3D12Device> device, int32_t width, int32_t height);
 	// Accessor
 	IDxcUtils* GetDxcUtils() { return dxcUtils_; };
 	IDxcCompiler3* GetDxcCompiler() { return dxcCompiler_; };
 	IDxcIncludeHandler* GetIncludeHandler() { return includeHandler_; };
 	
 	DXGI_SWAP_CHAIN_DESC1 GetSwapChainDesc() { return swapChainDesc_; };
-	ID3D12DescriptorHeap* GetSrvDescriptorHeap() { return srvDescriptorHeap_.Get(); };
+	Microsoft::WRL::ComPtr <ID3D12DescriptorHeap> GetSrvDescriptorHeap() { return srvDescriptorHeap_.Get(); };
 	D3D12_RENDER_TARGET_VIEW_DESC GetrtvDesc() { return rtvDesc_; };
 	D3D12_DEPTH_STENCIL_DESC GetDepthStencilDesc() { return depthStencilDesc_; };
 

@@ -1,6 +1,7 @@
 ﻿#include <Windows.h>
 #include "WinApp.h"
 #include "DirectXCommon.h"
+#include "PSO.h"
 #include "Input.h"
 #include "Mesh.h"
 #include "ImGuiCommon.h"
@@ -9,6 +10,7 @@
 #include "Sprite.h"
 #include "Sphere.h"
 #include "Model.h"
+#include "Triangle.h"
 
 #include "VertexData.h"
 #include "Vector4.h"
@@ -21,68 +23,19 @@
 
 // Windowsアプリでのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+	DirectXCommon::D3DResourceLeakChecker leakCheck;
 	CoInitializeEx(0, COINIT_MULTITHREADED);
-	VertexData triangle[20][6];
-	VertexData triangle1[6];
 	Vector4 color[20] = { 0.0f,0.0f,0.0f,1.0f };
 	// Transform変数の初期化
 	Transform transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	Transform transformA{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
-	Camera* camera = new Camera;
-	camera->Initialize();
 
-	for (int i = 0; i < 20; i++) {
-		triangle[i][0].position = { -0.9f ,0.70f + (i * -0.10f),0.0f,1.0f };
-		triangle[i][0].texcorrd = { 0.0f,1.0f };
+	Transform transformTriangle{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	ViewProjection* viewProjection = new ViewProjection;
+	viewProjection->Initialize();
 
-		triangle[i][1].position = { -0.85f,0.80f + (i * -0.10f),0.0f,1.0f },
-		triangle[i][1].texcorrd = { 0.5f,0.0f };
-
-		triangle[i][2].position = { -0.80f,0.70f + (i * -0.10f),0.0f,1.0f };
-		triangle[i][2].texcorrd = { 1.0f,1.0f };
-	}
-
-	triangle[0][0].position = { -1.0f,-1.0f ,0.0f,1.0f };
-	triangle[0][0].texcorrd = { 0.0f,1.0f };
-	triangle[0][1].position = { 0.0f,1.0f ,0.0f,1.0f };
-	triangle[0][1].texcorrd = { 0.5f,0.0f };
-	triangle[0][2].position = { 1.0f,-1.0f,0.0f,1.0f };
-	triangle[0][2].texcorrd = { 1.0f,1.0f };
-
-
-	triangle1[0].position = { -0.5f,-0.5f ,0.0f,1.0f };
-	triangle1[0].texcorrd = { 0.0f,1.0f };
-	triangle1[1].position = { 0.0f,0.5f ,0.0f,1.0f };
-	triangle1[1].texcorrd = { 0.5f,0.0f };
-	triangle1[2].position = { 0.5f,-0.5f,0.0f,1.0f };
-	triangle1[2].texcorrd = { 1.0f,1.0f };
-
-	for (int i = 0; i < 20; i++) {
-		triangle[i][3].position = { -0.9f ,0.70f + (i * -0.10f),0.0f,1.0f };
-		triangle[i][3].texcorrd = { 0.0f,1.0f };
-
-		triangle[i][4].position = { -0.85f,0.80f + (i * -0.10f),0.0f,1.0f },
-		triangle[i][4].texcorrd = { 0.5f,0.0f };
-
-		triangle[i][5].position = { -0.80f,0.70f + (i * -0.10f),0.0f,1.0f };
-		triangle[i][5].texcorrd = { 1.0f,1.0f };
-	}
-
-	triangle[0][3].position = { -1.0f,-1.0f ,1.0f,1.0f };
-	triangle[0][3].texcorrd = { 0.0f,1.0f };
-	triangle[0][4].position = { 0.0f,0.0f ,0.0f,1.0f };
-	triangle[0][4].texcorrd = { 0.5f,0.0f };
-	triangle[0][5].position = { 1.0f,-1.0f,-1.0f,1.0f };
-	triangle[0][5].texcorrd = { 1.0f,1.0f };
-
-
-	triangle1[3].position = { -0.5f,-0.5f ,0.5f,1.0f };
-	triangle1[3].texcorrd = { 0.0f,1.0f };
-	triangle1[4].position = { 0.0f,0.0f ,0.0f,1.0f };
-	triangle1[4].texcorrd = { 0.5f,0.0f };
-	triangle1[5].position = { 0.5f,-0.5f,-0.5f,1.0f };
-	triangle1[5].texcorrd = { 1.0f,1.0f };
-
+	WorldTransform worldTransform;
+	worldTransform.Initialize();
 	
 
 	
@@ -96,32 +49,34 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	sDirctX->Initialize();
 	input->Initialize();
 	ImGuiCommon* imGuiCommon = new ImGuiCommon;
-
+	PSO* pso = PSO::GatInstance();
+	pso->CreatePipelineStateObject();
 	
-	//Mesh* mesh_[20];
-	//// 実験用
-	//Mesh* mesh2 = new Mesh();
+	
+	Triangle* mesh_[20];
+	// 実験用
+	Triangle* mesh2 = new Triangle();
 
 	
 	bool Reset = true;
 
 
-	//for (int i = 0; i < 20; i++) {
-	//	color[i] = { 1.0f,1.0f,1.0f,1.0f, };
-	//	mesh_[i] = new Mesh();
-	//	mesh_[i]->Initialize( triangle[i], color[i]);
-	//	
-	//	
-	//}
+	for (int i = 0; i < 20; i++) {
+		color[i] = { 1.0f,1.0f,1.0f,1.0f, };
+		mesh_[i] = new Triangle();
+		mesh_[i]->Initialize(viewProjection,color[i]);
+		
+		
+	}
 	/*Sprite* sprite = new Sprite();
 	Sprite* sprite2 = new Sprite();*/
-	//Sphere* sphere = new Sphere();
+	Sphere* sphere = new Sphere();
 
-	Model* model = new Model();
+	/*Model* model = new Model();
 	model->Initialize("Resources/multiMaterial","multiMaterial.obj",camera);
 	
 	Model* model2 = new Model();
-	model2->Initialize("Resources/floor", "floor.obj",camera);
+	model2->Initialize("Resources/axis", "axis.obj",camera);*/
 	
 	TextureManager* textureManager = new TextureManager;
 	TextureManager* textureManager2 = new TextureManager;
@@ -130,28 +85,27 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	textureManager2->Initialize("Resources/uvChecker.png",1);
 	textureManager->Initialize("Resources/monsterBall.png",2);
-	textureManager3->Initialize(model->modelData_.material.textureFilePath, 3);
-	textureManager4->Initialize(model2->modelData_.material.textureFilePath, 4);
+	/*textureManager3->Initialize(model->modelData_.material.textureFilePath, 3);
+	textureManager4->Initialize(model2->modelData_.material.textureFilePath, 4);*/
 	
 
-	/*for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 20; i++) {
 	
 		mesh_[i]->SetTextureManager(textureManager2);
 
-	}*/
-	/*sprite->SetTextureManager(textureManager3);
-	sprite->Initialize();
+	}
+	/*sprite->Initialize();
+	sprite2->SetTextureManager(textureManager2);
+	sprite2->Initialize();
+	sprite->SetTextureManager(textureManager);*/
 
-	sprite2->SetTextureManager(textureManager4);
-	sprite2->Initialize();*/
-
-	model->SetTextureManager(textureManager3);
-	model2->SetTextureManager(textureManager4);
+	/*model->SetTextureManager(textureManager);
+	model2->SetTextureManager(textureManager2);*/
 	
 
 	 
-	/*sphere->SetTextureManager(textureManager3);
-	sphere->Initialize(camera);*/
+	sphere->SetTextureManager(textureManager2);
+	sphere->Initialize(viewProjection);
 
 	int num = 5;
 
@@ -186,21 +140,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 			//カメラの更新
-			//camera->Update();
-			/*sprite->Update();
+			viewProjection->Update();
+		/*	sprite->Update();
 			sprite2->Update();*/
 			
 			if (Reset) {
 				transform.rotate.y += 0.03f;
 				//transform.translate.z += 0.03f;
 			}
-			/*for (int i = 0; i < 20; i++) {
-				*mesh_[i]->wvpData = camera->worldViewProjectionMatrix;
-				mesh_[i]->Update( color[i]);
-			
-				mesh_[i]->Draw();
+			for (int i = 0; i < 20; i++) {
+				mesh_[i]->Draw(worldTransform,viewProjection,color[i]);
 
-			}*/
+			}
 			
 			if (input->PushKey(DIK_1)) {
 				num++;
@@ -209,21 +160,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (input->PushKey(DIK_2)) {
 				num--;
 			}
-			model->wvpData->WVP = camera->worldViewProjectionMatrix;
+			/*model->wvpData->WVP = camera->worldViewProjectionMatrix;
 			model->Draw(transform);
 
 			model2->wvpData->WVP = camera->worldViewProjectionMatrix;
-			model2->Draw(transformA);
+			model2->Draw(transformA);*/
 
-			/*if (useMonsterBall) {
-				sphere->SetTextureManager(textureManager3);
+			if (useMonsterBall) {
+				sphere->SetTextureManager(textureManager2);
 			} 
 			else{
-				sphere->SetTextureManager(textureManager3);
+				sphere->SetTextureManager(textureManager);
 			}
-			sphere->Draw(transform);*/
-			//sprite->Draw();
-			//sprite2->Draw();
+			sphere->Draw(transform);
+			/*sprite->Draw();
+			sprite2->Draw();*/
 			
 
 			ImGui::Begin("Debug");
@@ -254,18 +205,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			ImGui::SliderFloat3("coler : RGB", &color[0].x, 0.0f, 1.0f);
 			ImGui::ColorEdit3("color", &color[0].x);
-			ImGui::DragFloat3("cameraT : ", &camera->cameraTransform.translate.x, 0.1f);
-			ImGui::DragFloat3("cameraR : ", &camera->cameraTransform.rotate.x, 0.1f);
-			ImGui::DragFloat3("cameraS : ", &camera->cameraTransform.scale.x, 0.1f);
+			ImGui::DragFloat3("cameraT : ", &viewProjection->cameraTransform.translate.x, 0.1f);
+			ImGui::DragFloat3("cameraR : ", &viewProjection->cameraTransform.rotate.x, 0.1f);
+			ImGui::DragFloat3("cameraS : ", &viewProjection->cameraTransform.scale.x, 0.1f);
 
 			//ImGui::DragFloat3("spriteT : ", &sprite->transform_.translate.x, 0.1f);
 
-			//ImGui::DragFloat4("cT : ", &sphere->directionalLightData->color.x, 0.1f);
-			//ImGui::DragFloat3("caR : ", &sphere->directionalLightData->direction.x, 0.01f);
-			//ImGui::DragFloat("caS : ", &sphere->directionalLightData->intensity, 0.1f);
-			//ImGui::DragFloat3("uvs : ", &sphere->transformUv.scale.x, 0.1f);
-			//ImGui::DragFloat3("uvr : ", &sphere->transformUv.rotate.x, 0.1f);
-			//ImGui::DragFloat3("uvt : ", &sphere->transformUv.translate.x, 0.1f);
+			ImGui::DragFloat4("cT : ", &sphere->directionalLightData->color.x, 0.1f);
+			ImGui::DragFloat3("caR : ", &sphere->directionalLightData->direction.x, 0.01f);
+			ImGui::DragFloat("caS : ", &sphere->directionalLightData->intensity, 0.1f);
+			ImGui::DragFloat3("uvs : ", &sphere->transformUv.scale.x, 0.1f);
+			ImGui::DragFloat3("uvr : ", &sphere->transformUv.rotate.x, 0.1f);
+			ImGui::DragFloat3("uvt : ", &sphere->transformUv.translate.x, 0.1f);
 
 			ImGui::Checkbox("useMonsterBall", &useMonsterBall);
 			ImGui::Text("%d", num);
@@ -289,23 +240,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	-------------------------------------------------------------*/
 	sWinApp->Release();
-
-	/*for (int i = 0; i < 20; i++) {
-		mesh_[i]->Release();
-	}*/
 	imGuiCommon->Release();
-	/*textureManager->Release();
-	textureManager2->Release();*/
-	textureManager3->Release();
+	textureManager->Release();
+	textureManager2->Release();
 	textureManager4->Release();
-
-	/*sprite->Release();
-	sprite2->Release();*/
-	//sphere->Release();
-	model->Release();
-	model2->Release();
+	textureManager3->Release();
 	sDirctX->Release();
-	
 	CoUninitialize();
 	return 0;
 }

@@ -4,7 +4,7 @@
 #include"Transform.h"
 #include"mathFunction.h"
 class WinApp;
-class Camera
+class ViewProjection
 {
 public:
 	Transform cameraTransform;
@@ -15,7 +15,7 @@ public:
 	Matrix4x4 worldViewProjectionMatrix;
 
 	void Initialize();
-	void Update(Transform transform);
+	void Update();
 	void Draw();
 };
 

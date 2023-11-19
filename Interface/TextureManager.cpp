@@ -6,10 +6,11 @@ void TextureManager::Initialize(  const std::string& filePath,int num) {
 	sDirectXCommon_ = DirectXCommon::GetInstance();
 	sWinApp_ = WinApp::GetInstance();
 	// Textureを読んで転送する
+	// Textureを読んで転送する
 	mipImages_ = LoadTexture(filePath);
 	const DirectX::TexMetadata& metadata = mipImages_.GetMetadata();
-	textureResource_ = CreateTextureResource(sDirectXCommon_->GetDevice(), metadata);
-	UploadTextureData(textureResource_, mipImages_);
+	textureResource_ = CreateTextureResource(sDirectXCommon_->GetDevice().Get(), metadata);
+	UploadTextureData(textureResource_.Get(), mipImages_);
 
 	// metaDataを基にSRVの設定
 	srvDesc_.Format = metadata.format;
@@ -24,52 +25,12 @@ void TextureManager::Initialize(  const std::string& filePath,int num) {
 	textureSrvHandleCPU_.ptr += sDirectXCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * num;
 	textureSrvHandleGPU_.ptr += sDirectXCommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)* num;
 	// SRVの生成
-	sDirectXCommon_->GetDevice()->CreateShaderResourceView(textureResource_, &srvDesc_, textureSrvHandleCPU_);
-	
-	
-
-	
-	
-
-
+	sDirectXCommon_->GetDevice()->CreateShaderResourceView(textureResource_.Get(), &srvDesc_, textureSrvHandleCPU_);
 };
 
-void TextureManager::Update() {
-	
-	
-
-}
-
-
 void TextureManager::Release() {
-	resource_->Release();
-	textureResource_->Release();
 	mipImages_.Release();
-	
 }
-
-//void TextureManager::Update(Mesh* mesh) {
-//	descriptorRange_[0].BaseShaderRegister = 0; // 0から始まる
-//	descriptorRange_[0].NumDescriptors = 1; // 数は1つ
-//	descriptorRange_[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
-//	descriptorRange_[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
-//
-//	mesh->rootParamerters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescripterTableを使う
-//	mesh->rootParamerters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
-//	mesh->rootParamerters[2].DescriptorTable.pDescriptorRanges = descriptorRange_; // Tableの中身の配列を指定
-//	mesh->rootParamerters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange_); // Tableで利用する数
-//
-//	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイナリフィルタ
-//	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
-//	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-//	staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-//	staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER; // 比較しない
-//	staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX; // ありったけのMipmapを使う
-//	staticSamplers[0].ShaderRegister = 0; // レジスタ番号0を使う
-//	staticSamplers[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
-//	mesh->descriptionRootSignature.pStaticSamplers = staticSamplers;
-//	mesh->descriptionRootSignature.NumStaticSamplers = _countof(staticSamplers);
-//};
 
 
 void TextureManager::SetTexture() {
@@ -81,7 +42,7 @@ DirectX::ScratchImage TextureManager::LoadTexture(const std::string& filePath) {
 	////// テクスチャファイルを呼んでプログラムを使えるようにする
 	std::wstring filePathW = ConvertString(filePath);
 	// テクスチャファイルを呼んでプログラムを使えるようにする
-	DirectX::ScratchImage image{};
+	 DirectX::ScratchImage image{};
 	// エラー検知用変数
 	HRESULT hr_ = DirectX::LoadFromWICFile(filePathW.c_str(), DirectX::WIC_FLAGS_FORCE_SRGB, nullptr, image);
 
@@ -94,8 +55,9 @@ DirectX::ScratchImage TextureManager::LoadTexture(const std::string& filePath) {
 	return mipImages;
 }
 
-ID3D12Resource* TextureManager::CreateTextureResource(ID3D12Device* device, const DirectX::TexMetadata& metadata)
+Microsoft::WRL::ComPtr <ID3D12Resource> TextureManager::CreateTextureResource(Microsoft::WRL::ComPtr <ID3D12Device> device, const DirectX::TexMetadata& metadata)
 {
+	Microsoft::WRL::ComPtr <ID3D12Resource> resource_;
 	// metadataを基にResourceの設定
 	resourceDesc_.Width = UINT(metadata.width); // Textureの幅
 	resourceDesc_.Height = UINT(metadata.height); // Textureの高さ
@@ -120,12 +82,14 @@ ID3D12Resource* TextureManager::CreateTextureResource(ID3D12Device* device, cons
 		nullptr, // Clear最適地。使わないのでnullptr
 		IID_PPV_ARGS(&resource_));
 	assert(SUCCEEDED(hr));
+
+	resource_->SetName(L"AAAAAAA");
 	return resource_;
 
 }
 
 
-void TextureManager::UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages) {
+void TextureManager::UploadTextureData(Microsoft::WRL::ComPtr <ID3D12Resource> texture, const DirectX::ScratchImage& mipImages) {
 	// Meta情報を取得
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
 	// 全MipMapについて
