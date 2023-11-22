@@ -1,12 +1,12 @@
 #pragma once
-#include "WinApp.h"
+#include "WinAPI.h"
 #include "DirectXCommon.h"
 #include "PSO.h"
 #include "Mesh.h"
 #include "TextureManager.h"
 
 #include "Transform.h"
-#include "ViewProjection.h"
+#include "Camera.h"
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
@@ -29,9 +29,9 @@
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
 class DirectXCommon;
-class WinApp;
+class WinAPI;
 class TextureManager;
-class ViewProjection;
+class Camera;
 class PSO;
 class Model
 {
@@ -41,7 +41,7 @@ public:
 	ModelData GetModelData() { return modelData_; }
 	Model();
 	~Model();
-	void Initialize(const std::string& directoryPath, const std::string& filename,ViewProjection* camera);
+	void Initialize(const std::string& directoryPath, const std::string& filename,Camera* camera);
 	void Update();
 	void Draw(Transform transform);
 
@@ -56,7 +56,7 @@ private:
 	// RootSignature作成
 	
 	DirectXCommon* directXCommon_;
-	WinApp* sWinApp_;
+	WinAPI* sWinAPI_;
 	TextureManager* textureManager_ = nullptr;
 	PSO* pso_ = nullptr;
 	
@@ -90,6 +90,6 @@ private:
 	D3D12_VIEWPORT viewport{};
 	// シザー矩形
 	D3D12_RECT scissorRect{};
-	ViewProjection* viewProjection_ = nullptr;
+	Camera* camera_ = nullptr;
 };
 

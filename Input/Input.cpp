@@ -1,15 +1,15 @@
 #include "Input.h"
-#include "WinApp.h"
+#include "WinAPI.h"
 
 Input::Input() {
 
 }
 
 void Input::Initialize() {
-	sWinApp = WinApp::GetInstance();
+	sWinAPI = WinAPI::GetInstance();
 	
 	result = DirectInput8Create(
-		sWinApp->GetWc().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
+		sWinAPI->GetWc().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
 		(void**)&directInput, nullptr);
 	assert(SUCCEEDED(result));
 	
@@ -23,7 +23,7 @@ void Input::Initialize() {
 
 	// 排他制御レベルのセット
 	result = keyboard->SetCooperativeLevel(
-		sWinApp->GetHwnd(),DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+		sWinAPI->GetHwnd(),DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
 
 }

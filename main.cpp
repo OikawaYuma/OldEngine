@@ -1,12 +1,12 @@
 ﻿#include <Windows.h>
-#include "WinApp.h"
+#include "WinAPI.h"
 #include "DirectXCommon.h"
 #include "PSO.h"
 #include "Input.h"
 #include "Mesh.h"
 #include "ImGuiCommon.h"
 #include "TextureManager.h"
-#include "ViewProjection.h"
+#include "Camera.h"
 #include "Sprite.h"
 #include "Sphere.h"
 #include "Model.h"
@@ -24,23 +24,24 @@
 // Windowsアプリでのエントリーポイント（main関数）
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	DirectXCommon::D3DResourceLeakChecker leakCheck;
-	CoInitializeEx(0, COINIT_MULTITHREADED);
+	WinAPI* sWinAPI = WinAPI::GetInstance();
+	sWinAPI->Initialize(L"CG2");
+	
 	Vector4 color[20] = { 0.0f,0.0f,0.0f,1.0f };
 	// Transform変数の初期化
 	Transform transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	Transform transformA{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 
 	Transform transformTriangle{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
-	ViewProjection* viewProjection = new ViewProjection;
-	viewProjection->Initialize();
+	Camera* camera = new Camera;
+	camera->Initialize();
 
 	WorldTransform worldTransform;
 	worldTransform.Initialize();
 	
 
 	
-	WinApp* sWinApp = WinApp::GetInstance();
-	sWinApp->Initialize(L"CG2");
+	
 	////DirectXCommon* dirX = new DirectXCommon();
 
 	DirectXCommon* sDirctX = DirectXCommon::GetInstance();
@@ -55,16 +56,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	
 	Triangle* mesh_[20];
 	// 実験用
-	Triangle* mesh2 = new Triangle();
-
-	
 	bool Reset = true;
 
 
 	for (int i = 0; i < 20; i++) {
 		color[i] = { 1.0f,1.0f,1.0f,1.0f, };
 		mesh_[i] = new Triangle();
-		mesh_[i]->Initialize(viewProjection,color[i]);
+		mesh_[i]->Initialize(camera,color[i]);
 		
 		
 	}
@@ -105,7 +103,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	 
 	sphere->SetTextureManager(textureManager2);
-	sphere->Initialize(viewProjection);
+	sphere->Initialize(camera);
 
 	int num = 5;
 
@@ -140,7 +138,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 			//カメラの更新
-			viewProjection->Update();
+			camera->Update();
 		/*	sprite->Update();
 			sprite2->Update();*/
 			
@@ -149,7 +147,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				//transform.translate.z += 0.03f;
 			}
 			for (int i = 0; i < 20; i++) {
-				mesh_[i]->Draw(worldTransform,viewProjection,color[i]);
+				mesh_[i]->Draw(worldTransform,camera,color[i]);
 
 			}
 			
@@ -205,9 +203,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			ImGui::SliderFloat3("coler : RGB", &color[0].x, 0.0f, 1.0f);
 			ImGui::ColorEdit3("color", &color[0].x);
-			ImGui::DragFloat3("cameraT : ", &viewProjection->cameraTransform.translate.x, 0.1f);
-			ImGui::DragFloat3("cameraR : ", &viewProjection->cameraTransform.rotate.x, 0.1f);
-			ImGui::DragFloat3("cameraS : ", &viewProjection->cameraTransform.scale.x, 0.1f);
+			ImGui::DragFloat3("cameraT : ", &camera->cameraTransform.translate.x, 0.1f);
+			ImGui::DragFloat3("cameraR : ", &camera->cameraTransform.rotate.x, 0.1f);
+			ImGui::DragFloat3("cameraS : ", &camera->cameraTransform.scale.x, 0.1f);
 
 			//ImGui::DragFloat3("spriteT : ", &sprite->transform_.translate.x, 0.1f);
 
@@ -239,13 +237,27 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	/*------------------------------------------------------------
 
 	-------------------------------------------------------------*/
-	sWinApp->Release();
+	delete sphere;
+	for (int i = 0; i < 20; i++) {
+		delete mesh_[i];
+
+	}	
+	
 	imGuiCommon->Release();
 	textureManager->Release();
 	textureManager2->Release();
 	textureManager4->Release();
 	textureManager3->Release();
+	
+	delete textureManager;
+	delete textureManager2;
+	delete textureManager3;
+	delete textureManager4;
+	delete imGuiCommon;
+	delete camera;
+	sWinAPI->Finalize();
+	delete sWinAPI;
+
 	sDirctX->Release();
-	CoUninitialize();
 	return 0;
 }

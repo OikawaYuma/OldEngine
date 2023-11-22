@@ -1,7 +1,7 @@
 #include "Sprite.h"
-#include "WinApp.h"
+#include "WinAPI.h"
 #include "DirectXCommon.h"
-#include "ViewProjection.h"
+#include "Camera.h"
 #include "mathFunction.h"
 #include "Mesh.h"
 
@@ -9,7 +9,7 @@
 
 Sprite::Sprite() {};
 void Sprite::Initialize() {
-	sWinApp = WinApp::GetInstance();
+	sWinAPI = WinAPI::GetInstance();
 	sDirectXCommon = DirectXCommon::GetInstance();
 
 	//rootParamerters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescripterTableを使う
@@ -100,8 +100,8 @@ void Sprite::Initialize() {
 	};
 
 	//クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = (float)sWinApp->GetKClientWidth();
-	viewport.Height = (float)sWinApp->GetKClientHeight();
+	viewport.Width = (float)sWinAPI->GetKClientWidth();
+	viewport.Height = (float)sWinAPI->GetKClientHeight();
 	viewport.TopLeftX = 1;
 	viewport.TopLeftY = 1;
 	viewport.MinDepth = 0.0f;
@@ -110,9 +110,9 @@ void Sprite::Initialize() {
 
 	// 基本的にビューポートと同じ矩形が構成されるようにする
 	scissorRect.left = 0;
-	scissorRect.right = sWinApp->GetKClientWidth();
+	scissorRect.right = sWinAPI->GetKClientWidth();
 	scissorRect.top = 0;
-	scissorRect.bottom = sWinApp->GetKClientHeight();
+	scissorRect.bottom = sWinAPI->GetKClientHeight();
 
 };
 //void Sprite::Update() {
@@ -124,7 +124,7 @@ void Sprite::Draw() {
 	// Sprite用のWorldViewProjectMatrixを作る
 	Matrix4x4 worldMatrixSprite = MakeAffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
 	Matrix4x4 viewMatrixSprite = MakeIdentity4x4();
-	Matrix4x4 projectionMatrixSprite = MakeOrthographicMatrix(0.0f, 0.0f, float(sWinApp->GetKClientWidth()), float(sWinApp->GetKClientHeight()), 0.0f, 100.0f);
+	Matrix4x4 projectionMatrixSprite = MakeOrthographicMatrix(0.0f, 0.0f, float(sWinAPI->GetKClientWidth()), float(sWinAPI->GetKClientHeight()), 0.0f, 100.0f);
 	Matrix4x4 worldViewProjectionMatrixSprite = Multiply(worldMatrixSprite, Multiply(viewMatrixSprite, projectionMatrixSprite));
 	*transformationMatrixDataSprite = worldViewProjectionMatrixSprite;
 	sDirectXCommon->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定

@@ -109,10 +109,10 @@ MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, c
 		return materialData;
 };
 
-void Model::Initialize(const std::string& directoryPath, const std::string& filename,ViewProjection * camera) {
-	WinApp* sWinApp = WinApp::GetInstance();
+void Model::Initialize(const std::string& directoryPath, const std::string& filename,Camera * camera) {
+	WinAPI* sWinAPI = WinAPI::GetInstance();
 	directXCommon_ = DirectXCommon::GetInstance();
-	viewProjection_ = camera;
+	camera_ = camera;
 	
 
 	// モデル読み込み
@@ -173,8 +173,8 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 
 
 	//クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = (float)sWinApp->GetKClientWidth();
-	viewport.Height = (float)sWinApp->GetKClientHeight();
+	viewport.Width = (float)sWinAPI->GetKClientWidth();
+	viewport.Height = (float)sWinAPI->GetKClientHeight();
 	viewport.TopLeftX = 1;
 	viewport.TopLeftY = 1;
 	viewport.MinDepth = 0.0f;
@@ -183,9 +183,9 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 
 	// 基本的にビューポートと同じ矩形が構成されるようにする
 	scissorRect.left = 0;
-	scissorRect.right = sWinApp->GetKClientWidth();
+	scissorRect.right = sWinAPI->GetKClientWidth();
 	scissorRect.top = 0;
-	scissorRect.bottom = sWinApp->GetKClientHeight();
+	scissorRect.bottom = sWinAPI->GetKClientHeight();
 
 };
 
@@ -197,7 +197,7 @@ void Model::Update() {
 void Model::Draw(Transform transform) {
 	pso_ = PSO::GatInstance();
 	Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
-	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(viewProjection_->viewMatrix, viewProjection_->projectionMatrix));
+	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix, camera_->projectionMatrix));
 	wvpData->WVP = worldViewProjectionMatrix;
 	// 色のデータを変数から読み込み
 	materialData->color = {1.0f,1.0f,1.0f,1.0f};

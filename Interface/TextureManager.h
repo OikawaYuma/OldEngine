@@ -14,7 +14,7 @@
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
 class DirectXCommon;
-class WinApp;
+class WinAPI;
 class TextureManager
 {
 public:
@@ -84,7 +84,7 @@ public:
 	
 private:
 	DirectXCommon* sDirectXCommon_ = nullptr;
-	WinApp* sWinApp_ = nullptr;
+	WinAPI* sWinAPI_ = nullptr;
 
 };
 

@@ -8,7 +8,8 @@
 #include <format>
 #include <wrl.h>
 
-#include "WinApp.h"
+#include "WinAPI.h"
+#include "Mesh.h"
 #include <dxcapi.h>
 #include "TextureManager.h"
 #include "ResourceObject.h"
@@ -19,8 +20,6 @@
 /*----------------------------------------------------------
    このクラスはシングルトンパターンのを元に設計する
 --------------------------------------------------------------*/
-class Mesh;
-class WinApp;
 class ImGuiCommon;
 class TextureManager;
 
@@ -151,7 +150,7 @@ private:
 	IDxcCompiler3* dxcCompiler_;
 
 	IDxcIncludeHandler* includeHandler_;
-	WinApp* sWinApp_ = nullptr;
+	WinAPI* sWinAPI_ = nullptr;
 	TextureManager* textureManager_ = nullptr;
 
 

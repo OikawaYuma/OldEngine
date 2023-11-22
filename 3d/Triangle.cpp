@@ -1,9 +1,9 @@
 #include "Triangle.h"
 #include <mathFunction.h>
 
-void Triangle::Initialize(ViewProjection* viewProjection, Vector4 DrawColor) {
+void Triangle::Initialize(Camera* camera, Vector4 DrawColor) {
 
-	WinApp* sWinApp = WinApp::GetInstance();
+	WinAPI* sWinAPI = WinAPI::GetInstance();
 	sDirectXCommon_ = DirectXCommon::GetInstance();
 	//バッファリソース
 
@@ -62,7 +62,7 @@ void Triangle::Initialize(ViewProjection* viewProjection, Vector4 DrawColor) {
 		vertexData_[5].position.z };
 	vertexData_[5].texcorrd = { 1.0f,1.0f };
 
-	viewProjection_ = viewProjection;
+	camera_ = camera;
 	// 実際に頂点リソースを作る
 	materialResource = Mesh::CreateBufferResource(sDirectXCommon_->GetDevice(), sizeof(Material));
 
@@ -107,8 +107,8 @@ void Triangle::Initialize(ViewProjection* viewProjection, Vector4 DrawColor) {
 
 
 	//クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = (float)sWinApp->GetKClientWidth();
-	viewport.Height = (float)sWinApp->GetKClientHeight();
+	viewport.Width = (float)sWinAPI->GetKClientWidth();
+	viewport.Height = (float)sWinAPI->GetKClientHeight();
 	viewport.TopLeftX = 1;
 	viewport.TopLeftY = 1;
 	viewport.MinDepth = 0.0f;
@@ -117,19 +117,19 @@ void Triangle::Initialize(ViewProjection* viewProjection, Vector4 DrawColor) {
 
 	// 基本的にビューポートと同じ矩形が構成されるようにする
 	scissorRect.left = 0;
-	scissorRect.right = sWinApp->GetKClientWidth();
+	scissorRect.right = sWinAPI->GetKClientWidth();
 	scissorRect.top = 0;
-	scissorRect.bottom = sWinApp->GetKClientHeight();
+	scissorRect.bottom = sWinAPI->GetKClientHeight();
 };
 
 
-void Triangle::Draw(WorldTransform worlsTransform, ViewProjection* viewProjection, Vector4 DrawColor) {
+void Triangle::Draw(WorldTransform worlsTransform, Camera* camera, Vector4 DrawColor) {
 	pso_ = PSO::GatInstance();
 
-	viewProjection_ = viewProjection;
+	camera_ = camera;
 
 	Matrix4x4 worldMatrix = worlsTransform.matWorld_;
-	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(viewProjection_->viewMatrix, viewProjection_->projectionMatrix));
+	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix, camera_->projectionMatrix));
 	TransformationData->WVP = worldViewProjectionMatrix;
 	TransformationData->World = MakeIdentity4x4();
 	// 色のデータを変数から読み込み

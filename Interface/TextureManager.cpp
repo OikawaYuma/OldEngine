@@ -1,10 +1,10 @@
 ﻿#include "TextureManager.h"
 #include "DirectXCommon.h"
-#include "WinApp.h"
+#include "WinAPI.h"
 //DirectXCommon dirX;
 void TextureManager::Initialize(  const std::string& filePath,int num) {
 	sDirectXCommon_ = DirectXCommon::GetInstance();
-	sWinApp_ = WinApp::GetInstance();
+	sWinAPI_ = WinAPI::GetInstance();
 	// Textureを読んで転送する
 	// Textureを読んで転送する
 	mipImages_ = LoadTexture(filePath);

@@ -5,7 +5,7 @@
 
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
-class WinApp;
+class WinAPI;
 class Input
 {
 public:
@@ -35,6 +35,6 @@ private:
 	// キーボードデバイスの生成
 	IDirectInputDevice8* keyboard = nullptr;
 
-	WinApp* sWinApp = nullptr;
+	WinAPI* sWinAPI = nullptr;
 };
 

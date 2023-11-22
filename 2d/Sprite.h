@@ -23,9 +23,9 @@
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
-class WinApp;
+class WinAPI;
 class DirectXCommon;
-class ViewProjection;
+class Camera;
 class Mesh;
 class TextureManager;
 class Sprite
@@ -50,7 +50,7 @@ public:
 private:
 	PSO* pso_ = nullptr;
 	Microsoft::WRL::ComPtr < ID3D12Resource> vertexResourceSprite_ =nullptr;
-	WinApp* sWinApp;
+	WinAPI* sWinAPI;
 	DirectXCommon* sDirectXCommon;
 	Mesh* mesh_;
 	TextureManager* textureManager_ = nullptr;

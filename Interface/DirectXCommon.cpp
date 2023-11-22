@@ -7,8 +7,6 @@
 #include <string>
 #include <format>
 #include <dxgidebug.h>
-#include "WinApp.h"
-#include "Mesh.h"
 #include "ImGuiCommon.h"
 #include "imgui.h"
 #include "imgui_impl_win32.h"
@@ -37,7 +35,7 @@ Microsoft::WRL::ComPtr < ID3D12DescriptorHeap> DirectXCommon::CreateDescriptorHe
 
 
 void DirectXCommon::Initialize() {
-	sWinApp_ = WinApp::GetInstance();
+	sWinAPI_ = WinAPI::GetInstance();
 
 	//DXGIファクトリーの生成
 	dxgiFactory = nullptr;
@@ -145,15 +143,15 @@ void DirectXCommon::Initialize() {
 	// スワップチェーンを生成する
 	swapChain_ = nullptr;
 
-	swapChainDesc_.Width = sWinApp_->GetKClientWidth();
-	swapChainDesc_.Height = sWinApp_->GetKClientHeight();
+	swapChainDesc_.Width = sWinAPI_->GetKClientWidth();
+	swapChainDesc_.Height = sWinAPI_->GetKClientHeight();
 	swapChainDesc_.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapChainDesc_.SampleDesc.Count = 1; //マルチサンプルしない
 	swapChainDesc_.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; //描画のターゲットとして利用する
 	swapChainDesc_.BufferCount = 2; //ダブルバッファ
 	swapChainDesc_.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD; //モニタにうつしたら中身を破棄lkjhgvc
 	//コマンドキュー、ウィンドウハンドル設定を渡して生成する
-	hr_ = dxgiFactory->CreateSwapChainForHwnd(commandQueue_.Get(), sWinApp_->GetHwnd(), &swapChainDesc_, nullptr, nullptr, reinterpret_cast<IDXGISwapChain1**>(swapChain_.GetAddressOf()));
+	hr_ = dxgiFactory->CreateSwapChainForHwnd(commandQueue_.Get(), sWinAPI_->GetHwnd(), &swapChainDesc_, nullptr, nullptr, reinterpret_cast<IDXGISwapChain1**>(swapChain_.GetAddressOf()));
 	assert(SUCCEEDED(hr_));
 
 	// ディスクリプタヒープの生成
@@ -207,7 +205,7 @@ void DirectXCommon::Initialize() {
 	assert(SUCCEEDED(hr_));
 
 	// DepthStencilTextureをウィンドウのサイズで作成
-	depthStencilResource_ = CreateDepthStencilTextureResource(device_.Get(), sWinApp_->GetKClientWidth(), sWinApp_->GetKClientHeight());
+	depthStencilResource_ = CreateDepthStencilTextureResource(device_.Get(), sWinAPI_->GetKClientWidth(), sWinAPI_->GetKClientHeight());
 
 	// DSVようのヒープでディスクリプタの数は1。DSVはShader内で触るものではないので、ShaderVisibleはfalse
 	dsvDescriptorHeap_ = CreateDescriptorHeap(device_.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
@@ -311,7 +309,7 @@ void DirectXCommon::ViewChange() {
 
 void DirectXCommon::Release() {
 	CloseHandle(fenceEvent_);
-	CloseWindow(sWinApp_->GetHwnd());
+	CloseWindow(sWinAPI_->GetHwnd());
 }
 
 Microsoft::WRL::ComPtr <ID3D12Resource> DirectXCommon::CreateDepthStencilTextureResource(Microsoft::WRL::ComPtr < ID3D12Device> device, int32_t width, int32_t height) {

@@ -5,13 +5,6 @@
 #include<cassert>
 #include <dxcapi.h>
 
-//#include"DirectXCommon.h"
-#include "VertexData.h"
-#include "Vector4.h"
-#include"Vector3.h"
-#include"Vector2.h"
-#include"Matrix4x4.h"
-#include "Material.h"
 #include "DirectionLight.h"
 #include "TransformationMatrix.h"
 #include "wrl.h"
@@ -21,7 +14,7 @@
 #pragma comment(lib,"dxcompiler.lib")
 
 class DirectXCommon;
-class WinApp;
+class WinAPI;
 class TextureManager;
 
 class Mesh

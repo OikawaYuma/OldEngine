@@ -23,15 +23,15 @@
 #pragma comment(lib,"dxcompiler.lib")
 
 class DirectXCommon;
-class WinApp;
+class WinAPI;
 class TextureManager;
-class ViewProjection;
+class Camera;
 class Sphere
 {
 public :
 	Sphere();
 	~Sphere();
-	void Initialize(ViewProjection* camera);
+	void Initialize(Camera* camera);
 	void Update();
 	void Draw(Transform transform);
 	void SetTextureManager(TextureManager* textureManager) {
@@ -44,7 +44,7 @@ public :
 	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
 private:
 	PSO* pso_ = nullptr;
-	WinApp* sWinApp = nullptr;
+	WinAPI* sWinAPI = nullptr;
 	DirectXCommon* sDirectXCommon_ = nullptr;
 	
 	TextureManager* textureManager_ = nullptr;
@@ -89,7 +89,7 @@ private:
 
 
 
-	ViewProjection* camera_ = nullptr;
+	Camera* camera_ = nullptr;
 
 
 

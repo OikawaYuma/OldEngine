@@ -3,8 +3,8 @@
 #include"Matrix4x4.h"
 #include"Transform.h"
 #include"mathFunction.h"
-class WinApp;
-class ViewProjection
+class WinAPI;
+class Camera
 {
 public:
 	Transform cameraTransform;

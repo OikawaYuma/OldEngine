@@ -1,8 +1,8 @@
 #include "Sphere.h"
-#include "WinApp.h"
+#include "WinAPI.h"
 #include "DirectXCommon.h"
 #include "mathFunction.h"
-#include "ViewProjection.h"
+#include "Camera.h"
 
 Sphere::Sphere() {
 
@@ -12,8 +12,8 @@ Sphere::~Sphere() {
 
 }
 
-void Sphere::Initialize(ViewProjection* camera) {
-sWinApp = WinApp::GetInstance();
+void Sphere::Initialize(Camera* camera) {
+sWinAPI = WinAPI::GetInstance();
 	sDirectXCommon_ = DirectXCommon::GetInstance();
 	camera_ = camera;
 
@@ -216,8 +216,8 @@ sWinApp = WinApp::GetInstance();
 
 
 	//クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = (float)sWinApp->GetKClientWidth();
-	viewport.Height = (float)sWinApp->GetKClientHeight();
+	viewport.Width = (float)sWinAPI->GetKClientWidth();
+	viewport.Height = (float)sWinAPI->GetKClientHeight();
 	viewport.TopLeftX = 1;
 	viewport.TopLeftY = 1;
 	viewport.MinDepth = 0.0f;
@@ -226,9 +226,9 @@ sWinApp = WinApp::GetInstance();
 
 	// 基本的にビューポートと同じ矩形が構成されるようにする
 	scissorRect.left = 0;
-	scissorRect.right = sWinApp->GetKClientWidth();
+	scissorRect.right = sWinAPI->GetKClientWidth();
 	scissorRect.top = 0;
-	scissorRect.bottom = sWinApp->GetKClientHeight();
+	scissorRect.bottom = sWinAPI->GetKClientHeight();
 
 
 }

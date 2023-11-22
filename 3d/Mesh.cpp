@@ -1,9 +1,6 @@
 ﻿#include "Mesh.h"
-#include"function.h"
-#include"WinApp.h"
+#include"WinAPI.h"
 #include"DirectXCommon.h"
-#include"mathFunction.h"
-#include"ImGuiCommon.h"
 #include "TextureManager.h"
 
 Mesh::Mesh() {

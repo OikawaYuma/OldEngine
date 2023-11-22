@@ -49,7 +49,7 @@
     <ClCompile Include="Interface\DirectXCommon.cpp">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="Interface\WinApp.cpp">
+    <ClCompile Include="Interface\WinAPI.cpp">
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="2d\ImGuiCommon.cpp">
@@ -62,7 +62,7 @@
     <ClCompile Include="3d\Mesh.cpp">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="3d\ViewProjection.cpp" />
+    <ClCompile Include="3d\Camera.cpp" />
     <ClCompile Include="Scene\gameScene.cpp" />
     <ClCompile Include="Interface\TextureManager.cpp" />
     <ClCompile Include="2d\Sprite.cpp" />
@@ -107,7 +107,7 @@
     <ClInclude Include="2d\ImGuiCommon.h">
       <Filter>Src</Filter>
     </ClInclude>
-    <ClInclude Include="Interface\WinApp.h">
+    <ClInclude Include="Interface\WinAPI.h">
       <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="Lib\math\mathFunction.h">
@@ -128,7 +128,7 @@
     <ClInclude Include="3d\Mesh.h">
       <Filter>Src</Filter>
     </ClInclude>
-    <ClInclude Include="3d\ViewProjection.h" />
+    <ClInclude Include="3d\Camera.h" />
     <ClInclude Include="Scene\gameScene.h" />
     <ClInclude Include="Interface\TextureManager.h" />
     <ClInclude Include="Lib\math\VertexData.h" />

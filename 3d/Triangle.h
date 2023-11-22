@@ -5,7 +5,7 @@
 #include <cassert>
 #include <dxcapi.h>
 
-#include "WinApp.h"
+#include "WinAPI.h"
 #include "DirectXCommon.h"
 #include "Mesh.h"
 #include "PSO.h"
@@ -19,7 +19,7 @@
 #include "TransformationMatrix.h"
 #include "Transform.h"
 #include "WorldTransform.h"
-#include "ViewProjection.h"
+#include "Camera.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -33,9 +33,9 @@ class Triangle
 
 public:
 
-	void Initialize(ViewProjection* viewProjection, Vector4 DrawColor);
-	void Update(ViewProjection viewProjection, Vector4 DrawColor);
-	void Draw(WorldTransform worlsTransform, ViewProjection* viewProjection, Vector4 DrawColor);
+	void Initialize(Camera* camera, Vector4 DrawColor);
+	void Update(Camera camera, Vector4 DrawColor);
+	void Draw(WorldTransform worlsTransform, Camera* camera, Vector4 DrawColor);
 	void Release();
 	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
 	D3D12_RESOURCE_DESC  CreateBufferResourceDesc(size_t sizeInBytes);
@@ -80,7 +80,7 @@ public:
 	DirectXCommon* sDirectXCommon_ = nullptr;
 	TextureManager* textureManager_ = nullptr;
 	PSO* pso_ = nullptr;
-	ViewProjection *viewProjection_ = nullptr;
+	Camera *camera_ = nullptr;
 
 	//ビューポート
 	D3D12_VIEWPORT viewport{};

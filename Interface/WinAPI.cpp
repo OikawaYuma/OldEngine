@@ -1,4 +1,4 @@
-﻿#include "WinApp.h"
+﻿#include "WinAPI.h"
 #include <Windows.h>
 #include<string>
 
@@ -16,7 +16,8 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg
 --------------------------------------------------------------*/
 
 // 初期化
-void WinApp::Initialize(const wchar_t* label) {
+void WinAPI::Initialize(const wchar_t* label) {
+	CoInitializeEx(0, COINIT_MULTITHREADED);
 	// ウィンドウプロシージャ
 	wc_.lpfnWndProc = WindowProc;
 	// ウィンドウクラス名（なんでも良い）
@@ -64,24 +65,23 @@ void WinApp::Initialize(const wchar_t* label) {
 };
 
 // 解放処理
-void WinApp::Release() {
+void WinAPI::Finalize() {
 	
 #ifdef _DEBUG
 	debugController_->Release();
 #endif
 	CloseWindow(hwnd_);
-
-	
+	CoUninitialize();
 }
 
 /*-----Accessor-----*/
-WinApp* WinApp::GetInstance() {
-	static WinApp instance;
+WinAPI* WinAPI::GetInstance() {
+	static WinAPI instance;
 	return &instance;
 }
 
 
-LRESULT CALLBACK  WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+LRESULT CALLBACK  WinAPI::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) {
 		return true;
 	}

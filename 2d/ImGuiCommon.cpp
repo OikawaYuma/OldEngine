@@ -1,5 +1,5 @@
 ﻿#include "ImGuiCommon.h"
-#include"WinApp.h"
+#include"WinAPI.h"
 #include"DirectXCommon.h"
 #include "imgui.h"
 #include "imgui_impl_dx12.h"
@@ -7,14 +7,14 @@
 
 
 void ImGuiCommon::Initialize() {
-	sWinApp_ = WinApp::GetInstance();
+	sWinAPI_ = WinAPI::GetInstance();
 	sDirectXCommon_ = DirectXCommon::GetInstance();
 	//ImGuiの初期化。詳細はさして重要ではないので省略する。
 	//こういうもんである
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
-	ImGui_ImplWin32_Init(sWinApp_->GetHwnd());
+	ImGui_ImplWin32_Init(sWinAPI_->GetHwnd());
 	ImGui_ImplDX12_Init(sDirectXCommon_->GetDevice().Get(),
 		sDirectXCommon_->GetSwapChainDesc().BufferCount,
 		sDirectXCommon_->GetrtvDesc().Format,
