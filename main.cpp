@@ -253,6 +253,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	delete textureManager2;
 	delete textureManager3;
 	delete textureManager4;
+
 	delete imGuiCommon;
 	delete camera;
 	sWinAPI->Finalize();
