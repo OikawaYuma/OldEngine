@@ -31,7 +31,7 @@ void ImGuiCommon::Update() {
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 };
 
 void ImGuiCommon::Draw() {

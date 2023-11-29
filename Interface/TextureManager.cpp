@@ -6,8 +6,8 @@ void TextureManager::Initialize(  const std::string& filePath,int num) {
 	sDirectXCommon_ = DirectXCommon::GetInstance();
 	sWinAPI_ = WinAPI::GetInstance();
 	// Textureを読んで転送する
-	// Textureを読んで転送する
-	mipImages_ = LoadTexture(filePath);
+	// ミップマップの作成
+	DirectX::ScratchImage mipImages_ = LoadTexture(filePath);
 	const DirectX::TexMetadata& metadata = mipImages_.GetMetadata();
 	textureResource_ = CreateTextureResource(sDirectXCommon_->GetDevice().Get(), metadata);
 	UploadTextureData(textureResource_.Get(), mipImages_);
@@ -29,7 +29,6 @@ void TextureManager::Initialize(  const std::string& filePath,int num) {
 };
 
 void TextureManager::Release() {
-	mipImages_.Release();
 }
 
 

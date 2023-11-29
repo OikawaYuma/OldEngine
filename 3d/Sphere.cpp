@@ -245,7 +245,7 @@ void Sphere::Draw(Transform transform) {
 	materialData->uvTransform = uvTransformMatrix;
 	//// 色のデータを変数から読み込み
 	Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
-	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix, camera_->projectionMatrix));
+	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix_, camera_->projectionMatrix_));
 	wvpData->WVP = worldViewProjectionMatrix;
 	sDirectXCommon_->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
 	sDirectXCommon_->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:

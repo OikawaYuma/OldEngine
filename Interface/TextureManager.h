@@ -42,8 +42,7 @@ public:
 
 
 	DirectX::ScratchImage LoadTexture(const std::string& filePath);
-	// ミップマップの作成
-	DirectX::ScratchImage mipImages_{};
+	
 	
 
 	

@@ -3,16 +3,16 @@
 #include"Matrix4x4.h"
 #include"Transform.h"
 #include"mathFunction.h"
-class WinAPI;
+
 class Camera
 {
 public:
-	Transform cameraTransform;
-	Matrix4x4 worldmatrix;
-	Matrix4x4 cameraMatrix;
-	Matrix4x4 viewMatrix;
-	Matrix4x4 projectionMatrix;
-	Matrix4x4 worldViewProjectionMatrix;
+	Transform cameraTransform_;
+	Matrix4x4 worldmatrix_;
+	Matrix4x4 cameraMatrix_;
+	Matrix4x4 viewMatrix_;
+	Matrix4x4 projectionMatrix_;
+	Matrix4x4 worldViewProjectionMatrix_;
 
 	void Initialize();
 	void Update();

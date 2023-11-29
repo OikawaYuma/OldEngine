@@ -129,7 +129,7 @@ void Triangle::Draw(WorldTransform worlsTransform, Camera* camera, Vector4 DrawC
 	camera_ = camera;
 
 	Matrix4x4 worldMatrix = worlsTransform.matWorld_;
-	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix, camera_->projectionMatrix));
+	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix_, camera_->projectionMatrix_));
 	TransformationData->WVP = worldViewProjectionMatrix;
 	TransformationData->World = MakeIdentity4x4();
 	// 色のデータを変数から読み込み

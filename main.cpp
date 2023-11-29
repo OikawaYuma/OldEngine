@@ -31,7 +31,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// Transform変数の初期化
 	Transform transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	Transform transformA{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
-
 	Transform transformTriangle{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	Camera* camera = new Camera;
 	camera->Initialize();
@@ -39,11 +38,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	WorldTransform worldTransform;
 	worldTransform.Initialize();
 	
-
-	
-	
-	////DirectXCommon* dirX = new DirectXCommon();
-
 	DirectXCommon* sDirctX = DirectXCommon::GetInstance();
 	Input* input = new Input();
 	
@@ -62,9 +56,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	for (int i = 0; i < 20; i++) {
 		color[i] = { 1.0f,1.0f,1.0f,1.0f, };
 		mesh_[i] = new Triangle();
-		mesh_[i]->Initialize(camera,color[i]);
-		
-		
+		mesh_[i]->Initialize(camera,color[i]);	
 	}
 	/*Sprite* sprite = new Sprite();
 	Sprite* sprite2 = new Sprite();*/
@@ -99,10 +91,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	/*model->SetTextureManager(textureManager);
 	model2->SetTextureManager(textureManager2);*/
-	
-
 	 
-	sphere->SetTextureManager(textureManager2);
+	//sphere->SetTextureManager(textureManager2);
 	sphere->Initialize(camera);
 
 	int num = 5;
@@ -203,9 +193,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			ImGui::SliderFloat3("coler : RGB", &color[0].x, 0.0f, 1.0f);
 			ImGui::ColorEdit3("color", &color[0].x);
-			ImGui::DragFloat3("cameraT : ", &camera->cameraTransform.translate.x, 0.1f);
-			ImGui::DragFloat3("cameraR : ", &camera->cameraTransform.rotate.x, 0.1f);
-			ImGui::DragFloat3("cameraS : ", &camera->cameraTransform.scale.x, 0.1f);
+			ImGui::DragFloat3("cameraT : ", &camera->cameraTransform_.translate.x, 0.1f);
+			ImGui::DragFloat3("cameraR : ", &camera->cameraTransform_.rotate.x, 0.1f);
+			ImGui::DragFloat3("cameraS : ", &camera->cameraTransform_.scale.x, 0.1f);
 
 			//ImGui::DragFloat3("spriteT : ", &sprite->transform_.translate.x, 0.1f);
 
@@ -257,7 +247,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	delete imGuiCommon;
 	delete camera;
 	sWinAPI->Finalize();
-	delete sWinAPI;
+	//delete sWinAPI;
 
 	sDirctX->Release();
 	return 0;

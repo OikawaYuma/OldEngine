@@ -197,7 +197,7 @@ void Model::Update() {
 void Model::Draw(Transform transform) {
 	pso_ = PSO::GatInstance();
 	Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
-	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix, camera_->projectionMatrix));
+	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix_, camera_->projectionMatrix_));
 	wvpData->WVP = worldViewProjectionMatrix;
 	// 色のデータを変数から読み込み
 	materialData->color = {1.0f,1.0f,1.0f,1.0f};
