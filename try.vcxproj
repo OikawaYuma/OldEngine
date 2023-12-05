@@ -102,6 +102,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Input\Input.cpp" />
     <ClCompile Include="3d\Model.cpp" />
     <ClCompile Include="Interface\PSO.cpp" />
+    <ClCompile Include="Scene\IScene.cpp" />
     <ClCompile Include="Scene\gameScene.cpp" />
     <ClCompile Include="3d\Sphere.cpp" />
     <ClCompile Include="2d\Sprite.cpp" />
@@ -127,6 +128,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="3d\DirectionLight.h" />
     <ClInclude Include="Input\Input.h" />
+    <ClInclude Include="Scene\IScene.h" />
     <ClInclude Include="Lib\math\MaterialData.h" />
     <ClInclude Include="3d\Material.h" />
     <ClInclude Include="Lib\math\Matrix3x3.h" />

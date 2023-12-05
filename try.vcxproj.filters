@@ -72,6 +72,7 @@
     <ClCompile Include="3d\WorldTransform.cpp" />
     <ClCompile Include="Interface\PSO.cpp" />
     <ClCompile Include="3d\Triangle.cpp" />
+    <ClCompile Include="Scene\IScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Externals\imgui\imconfig.h">
@@ -147,6 +148,7 @@
     <ClInclude Include="3d\WorldTransform.h" />
     <ClInclude Include="Interface\PSO.h" />
     <ClInclude Include="3d\Triangle.h" />
+    <ClInclude Include="Scene\IScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
