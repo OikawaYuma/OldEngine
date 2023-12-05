@@ -43,7 +43,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	
 	sDirctX->Initialize();
 	input->Initialize();
-	ImGuiCommon* imGuiCommon = new ImGuiCommon;
+	
 	PSO* pso = PSO::GatInstance();
 	pso->CreatePipelineStateObject();
 	
@@ -102,31 +102,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 
-	MSG msg{};
-	imGuiCommon->Initialize();
+	
+	
 	
 
 	//ウィンドウの×ボタンが押されるまでループ
-	while (msg.message != WM_QUIT) {
-		// Windowにメッセージが来てたら最優先で処理させる
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-
-			
+	while (true)  // ゲームループ
+	{
+		// Windowsのメッセージ処理
+		if (sWinAPI->ProcessMessage()) {
+			// ゲームループを抜ける
+			break;
 		}
-		else {
+		
 			
 			input->Update();
 			// ゲームの処理の開始
 			sDirctX->BeginFrame();
-			
-			imGuiCommon->UICreate();
-			//ImGuiの更新
-			imGuiCommon->Update();
-			
-
-
+		
 			//カメラの更新
 			camera->Update();
 		/*	sprite->Update();
@@ -212,12 +205,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			ImGui::End();
 
 
-			//ImGuiの描画
-			imGuiCommon->Draw();
+			
 
 			//スワップチェーン
 			sDirctX->ViewChange();
-		}
+		
 	}
 
 	//出力ウィンドウへの文字出力
@@ -233,7 +225,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	}	
 	
-	imGuiCommon->Release();
+	
 	textureManager->Release();
 	textureManager2->Release();
 	textureManager4->Release();
@@ -243,12 +235,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	delete textureManager2;
 	delete textureManager3;
 	delete textureManager4;
-
-	delete imGuiCommon;
 	delete camera;
 	sWinAPI->Finalize();
 	//delete sWinAPI;
-
 	sDirctX->Release();
 	return 0;
 }

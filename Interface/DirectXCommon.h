@@ -51,6 +51,58 @@ public:
 	/// </summary>
 	void Release();
 
+
+	/// <summary>
+	/// deviceの生成
+	/// </summary>
+	void CreateDevice();
+
+	/// <summary>
+	/// command関連の初期化
+	/// </summary>
+	void CreateCommand();
+
+	/// <summary>
+	/// SeapChain生成
+	/// </summary>
+	void CreateSwapChain();
+
+	/// <summary>
+	/// DepthBufferの生成
+	/// </summary>
+	void CreateDepth();
+
+	/// <summary>
+	/// 各種Descriptorの生成
+	/// </summary>
+	void CreateDescriptorHeap();
+
+	/// <summary>
+	/// RTVの初期化
+	/// </summary>
+	void RTVInit();
+
+	/// <summary>
+	/// fenceの生成
+	/// </summary>
+	void CreateFence();
+
+	/// <summary>
+	/// Viewportの初期化
+	/// </summary>
+	void ViewportInit();
+
+	/// <summary>
+	/// scissorRectの初期化
+	/// </summary>
+	void ScissorRectInit();
+
+	/// <summary>
+	/// DXCコンパイラの生成
+	/// </summary>
+	void CreateDXCCompilier();
+
+
 	/// <summary>
 	/// デバイスの取得
 	/// </summary>
@@ -78,7 +130,7 @@ public:
 	};
 
 
-	Microsoft::WRL::ComPtr <ID3D12DescriptorHeap> CreateDescriptorHeap(Microsoft::WRL::ComPtr < ID3D12Device> device, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors,bool shaderVisible);
+	Microsoft::WRL::ComPtr <ID3D12DescriptorHeap> CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors,bool shaderVisible);
 	Microsoft::WRL::ComPtr < ID3D12Resource> CreateDepthStencilTextureResource(Microsoft::WRL::ComPtr < ID3D12Device> device, int32_t width, int32_t height);
 	// Accessor
 	IDxcUtils* GetDxcUtils() { return dxcUtils_; };
@@ -108,7 +160,7 @@ private:
 
 	// HRESULTはWindows系のエラーコードであり、
 	// 関数が成功したかどうかをSUCCEEDEDマクロで判定できる
-	HRESULT hr_;
+	
 	
 	// 使用するアダプタ用の変数
 	Microsoft::WRL::ComPtr < IDXGIAdapter4> useAdapter_;
@@ -120,11 +172,18 @@ private:
 	//スワップチェーン
 	Microsoft::WRL::ComPtr < IDXGISwapChain4> swapChain_;
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_{};
+	Microsoft::WRL::ComPtr < ID3D12Resource> swapChainResources_[2] = { nullptr };
+
 
 	// ディスクリプタヒープの生成
 	Microsoft::WRL::ComPtr < ID3D12DescriptorHeap> rtvDescriptorHeap_ = nullptr;
 	Microsoft::WRL::ComPtr < ID3D12DescriptorHeap> srvDescriptorHeap_ = nullptr;
-	Microsoft::WRL::ComPtr < ID3D12Resource> swapChainResources_[2] = {nullptr};
+	Microsoft::WRL::ComPtr < ID3D12DescriptorHeap> dsvDescriptorHeap_ = nullptr; // DSVようのヒープでディスクリプタの数は1。DSVはShader内で触るものではないので、ShaderVisibleはfalse
+	
+	// ディスクリプターヒープのサイズをあらかじめ設定
+	uint32_t rtvDescriptorSize_;
+	uint32_t srvDescriptorSize_;
+	uint32_t dsvDescriptorSize_;
 
 	//RTVの設定
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc_{};
@@ -136,7 +195,7 @@ private:
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles_[2];
 
 	// これから書き込むバックバッファのインデックスを取得
-	UINT backBufferIndex_;
+	//UINT backBufferIndex_;
 	// TransitionBarrierの設定
 	D3D12_RESOURCE_BARRIER barrier_{};
 
@@ -150,19 +209,26 @@ private:
 	IDxcCompiler3* dxcCompiler_;
 
 	IDxcIncludeHandler* includeHandler_;
+
+
 	WinAPI* sWinAPI_ = nullptr;
 	TextureManager* textureManager_ = nullptr;
+	ImGuiCommon* imGuiCommon_ = nullptr;
 
 
 	// DepthStencilTextureをウィンドウのサイズで作成
 	Microsoft::WRL::ComPtr < ID3D12Resource> depthStencilResource_;
 
-	// DSVようのヒープでディスクリプタの数は1。DSVはShader内で触るものではないので、ShaderVisibleはfalse
-	Microsoft::WRL::ComPtr < ID3D12DescriptorHeap> dsvDescriptorHeap_;
+	
 	// DepthStencilStateの設定
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc_{};
 
 	// 描画先のRTVを設定する
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle;
+
+	//ビューポート
+	D3D12_VIEWPORT viewport{};
+	// シザー矩形
+	D3D12_RECT scissorRect{};
 };
 

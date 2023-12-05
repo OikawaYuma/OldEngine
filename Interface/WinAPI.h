@@ -21,6 +21,7 @@ public: // メンバ関数
 	WinAPI() = default;
 	//デストラクタ
 	~WinAPI() = default;
+
 	/*-----Default Method-----*/
 	// 初期化
 	void Initialize(const wchar_t* label);
@@ -28,7 +29,6 @@ public: // メンバ関数
 	void Finalize();
 
 	/*-----User Method-----*/
-
 	// シングルトンパターンの実装
 	// コピーコンストラクタを無効にする
 	WinAPI(const WinAPI& obj) = delete;
@@ -51,13 +51,15 @@ public: // メンバ関数
 
 	//ウィンドウクラス
 	WNDCLASS wc_{};
+
+	// メッセージの処理
+	bool ProcessMessage();
+
 public: // 定数
 	// クライアント領域のサイズ
 	const static  int32_t kClientWidth_ = 1280;
 	const static  int32_t kClientHeight_ = 720;
 private:
-
-	
 
 	Microsoft::WRL::ComPtr<ID3D12Debug1> debugController_;
 	
