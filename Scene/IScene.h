@@ -1,24 +1,26 @@
 #pragma once
-//�V�[������񋓌^(Enum)�Œ�`
+//シーン名を列挙型(Enum)で定義
 enum SCENE { TITLE, STAGE, CLEAR };
 
-// �V�[�����ł̏������s�����N���X
+// シーン内での処理を行う基底クラス
 class IScene{
 protected:
-	// �V�[���ԍ����Ǘ�����ϐ�
+	// シーン番号を管理する変数
 	static int sceneNo;
 public:
-	// �p����Ŏ��������֐�
-	/// ���ۃN���X�Ȃ̂ŏ������z�֐��Ƃ���
+	// 継承先で実装される関数
+	/// 抽象クラスなので純粋仮想関数とする
 	virtual void Init() = 0;
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
+	virtual void Release() = 0;
+	virtual int GameClose() = 0;
 
-	// ���z�f�X�g���N�^��p�ӂ��Ȃ��ƌx�������
+	// 仮想デストラクタを用意しないと警告される
 	virtual ~IScene();
 
-	// �V�[���ԍ��̃Q�b�^�[
-	int GetSceneNo();
+	// シーン番号のゲッター
+	static int GetSceneNo();
 
 	
 };

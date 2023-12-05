@@ -53,7 +53,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\imgui;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Scene;$(ProjectDir)SubDir;$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)Input;$(ProjectDir)Interface;$(ProjectDir)Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Scene;$(ProjectDir)SubDir;$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)Input;$(ProjectDir)Interface;$(ProjectDir)Adapter;$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,7 +80,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\imgui;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Scene;$(ProjectDir)SubDir;$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)Input;$(ProjectDir)Interface;$(ProjectDir)Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Externals\DirectXTex;$(ProjectDir)Math;$(ProjectDir);$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)Resources\shaders;$(ProjectDir)Externals\imgui;$(ProjectDir)Scene;$(ProjectDir)SubDir;$(ProjectDir)2d;$(ProjectDir)3d;$(ProjectDir)Input;$(ProjectDir)Interface;$(ProjectDir)Adapter;$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -99,11 +99,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Adapter\Engine.cpp" />
+    <ClCompile Include="Scene\GameScene.cpp" />
+    <ClCompile Include="Scene\ClearScene.cpp" />
+    <ClCompile Include="Scene\GameManager.cpp" />
     <ClCompile Include="Input\Input.cpp" />
     <ClCompile Include="3d\Model.cpp" />
     <ClCompile Include="Interface\PSO.cpp" />
     <ClCompile Include="Scene\IScene.cpp" />
-    <ClCompile Include="Scene\gameScene.cpp" />
     <ClCompile Include="3d\Sphere.cpp" />
     <ClCompile Include="2d\Sprite.cpp" />
     <ClCompile Include="3d\Camera.cpp" />
@@ -116,7 +119,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Externals\imgui\imgui_tables.cpp" />
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="3d\Triangle.cpp" />
-    <ClCompile Include="Utility\function.cpp" />
+    <ClCompile Include="Scene\TitleScene.cpp" />
+    <ClCompile Include="Lib\utility\function.cpp" />
     <ClCompile Include="2d\ImGuiCommon.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="3d\Mesh.cpp" />
@@ -127,6 +131,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\DirectionLight.h" />
+    <ClInclude Include="Adapter\Engine.h" />
+    <ClInclude Include="Scene\GameScene.h" />
+    <ClInclude Include="Scene\ClearScene.h" />
+    <ClInclude Include="Scene\GameManager.h" />
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Scene\IScene.h" />
     <ClInclude Include="Lib\math\MaterialData.h" />
@@ -135,7 +143,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="3d\ResourceObject.h" />
     <ClInclude Include="3d\Model.h" />
     <ClInclude Include="Interface\PSO.h" />
-    <ClInclude Include="Scene\gameScene.h" />
     <ClInclude Include="3d\Sphere.h" />
     <ClInclude Include="2d\Sprite.h" />
     <ClInclude Include="3d\Camera.h" />
@@ -149,7 +156,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Externals\imgui\imstb_textedit.h" />
     <ClInclude Include="Externals\imgui\imstb_truetype.h" />
     <ClInclude Include="3d\Triangle.h" />
-    <ClInclude Include="Utility\function.h" />
+    <ClInclude Include="Scene\TitleScene.h" />
+    <ClInclude Include="Lib\utility\function.h" />
     <ClInclude Include="2d\ImGuiCommon.h" />
     <ClInclude Include="Lib\math\mathFunction.h" />
     <ClInclude Include="Lib\Math\Matrix4x4.h" />

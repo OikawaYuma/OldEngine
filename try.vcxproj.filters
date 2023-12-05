@@ -43,7 +43,7 @@
     <ClCompile Include="Externals\imgui\imgui_widgets.cpp">
       <Filter>Include\Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Utility\function.cpp">
+    <ClCompile Include="Lib\utility\function.cpp">
       <Filter>Func</Filter>
     </ClCompile>
     <ClCompile Include="Interface\DirectXCommon.cpp">
@@ -63,7 +63,6 @@
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="3d\Camera.cpp" />
-    <ClCompile Include="Scene\gameScene.cpp" />
     <ClCompile Include="Interface\TextureManager.cpp" />
     <ClCompile Include="2d\Sprite.cpp" />
     <ClCompile Include="3d\Sphere.cpp" />
@@ -73,6 +72,11 @@
     <ClCompile Include="Interface\PSO.cpp" />
     <ClCompile Include="3d\Triangle.cpp" />
     <ClCompile Include="Scene\IScene.cpp" />
+    <ClCompile Include="Scene\GameManager.cpp" />
+    <ClCompile Include="Scene\TitleScene.cpp" />
+    <ClCompile Include="Scene\ClearScene.cpp" />
+    <ClCompile Include="Scene\GameScene.cpp" />
+    <ClCompile Include="Adapter\Engine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Externals\imgui\imconfig.h">
@@ -99,7 +103,7 @@
     <ClInclude Include="Externals\imgui\imstb_truetype.h">
       <Filter>Include\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Utility\function.h">
+    <ClInclude Include="Lib\utility\function.h">
       <Filter>Func</Filter>
     </ClInclude>
     <ClInclude Include="Interface\DirectXCommon.h">
@@ -130,7 +134,6 @@
       <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="3d\Camera.h" />
-    <ClInclude Include="Scene\gameScene.h" />
     <ClInclude Include="Interface\TextureManager.h" />
     <ClInclude Include="Lib\math\VertexData.h" />
     <ClInclude Include="Lib\math\Vector2.h" />
@@ -149,6 +152,11 @@
     <ClInclude Include="Interface\PSO.h" />
     <ClInclude Include="3d\Triangle.h" />
     <ClInclude Include="Scene\IScene.h" />
+    <ClInclude Include="Scene\GameManager.h" />
+    <ClInclude Include="Scene\TitleScene.h" />
+    <ClInclude Include="Scene\ClearScene.h" />
+    <ClInclude Include="Scene\GameScene.h" />
+    <ClInclude Include="Adapter\Engine.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
