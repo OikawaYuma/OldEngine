@@ -1,26 +1,27 @@
 #include "TitleScene.h"
 #include "ImGuiCommon.h"
 
+
 void TitleScene::Init()
 {
-	//Vector4 color[20] = { 0.0f,0.0f,0.0f,1.0f };
+	
 	//// Transform変数の初期化
 	//Transform transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	//Transform transformA{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
-	//Transform transformTriangle{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
-	//Camera* camera = new Camera;
-	//camera->Initialize();
-
-	//Triangle* mesh_[20];
+	transformTriangle = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,10.0f} };
+	camera = new Camera;
+	camera->Initialize();
+	worldTransform.translation_ = transformTriangle.translate;
+	worldTransform.UpdateMatrix();
 	//// 実験用
 	//bool Reset = true;
 
 
-	//for (int i = 0; i < 20; i++) {
-	//	color[i] = { 1.0f,1.0f,1.0f,1.0f, };
-	//	mesh_[i] = new Triangle();
-	//	mesh_[i]->Initialize(camera, color[i]);
-	//}
+	for (int i = 0; i < 20; i++) {
+		color[i] = { 1.0f,1.0f,1.0f,1.0f, };
+		mesh_[i] = new Triangle();
+		mesh_[i]->Initialize(camera, color[i]);
+	}
 	///*Sprite* sprite = new Sprite();
 	//Sprite* sprite2 = new Sprite();*/
 	//Sphere* sphere = new Sphere();
@@ -31,22 +32,22 @@ void TitleScene::Init()
 	//Model* model2 = new Model();
 	//model2->Initialize("Resources/axis", "axis.obj",camera);*/
 
-	//TextureManager* textureManager = new TextureManager;
+	TextureManager* textureManager = new TextureManager;
 	//TextureManager* textureManager2 = new TextureManager;
 	//TextureManager* textureManager3 = new TextureManager;
 	//TextureManager* textureManager4 = new TextureManager;
 
 	//textureManager2->Initialize("Resources/uvChecker.png", 1);
-	//textureManager->Initialize("Resources/monsterBall.png", 2);
+	TriangleTex = textureManager->Initialize("Resources/monsterBall.png");
 	///*textureManager3->Initialize(model->modelData_.material.textureFilePath, 3);
 	//textureManager4->Initialize(model2->modelData_.material.textureFilePath, 4);*/
 
 
-	//for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 20; i++) {
 
-	//	mesh_[i]->SetTextureManager(textureManager2);
+		mesh_[i]->SetTextureManager(textureManager);
 
-	//}
+	}
 	///*sprite->Initialize();
 	//sprite2->SetTextureManager(textureManager2);
 	//sprite2->Initialize();
@@ -78,7 +79,7 @@ void TitleScene::Update()
 
 
 	////カメラの更新
-	//camera->Update();
+	camera->Update();
 	///*	sprite->Update();
 	//	sprite2->Update();*/
 
@@ -86,10 +87,10 @@ void TitleScene::Update()
 	//	transform.rotate.y += 0.03f;
 	//	//transform.translate.z += 0.03f;
 	//}
-	//for (int i = 0; i < 20; i++) {
-	//	mesh_[i]->Draw(worldTransform, camera, color[i]);
+	for (int i = 0; i < 20; i++) {
+		mesh_[i]->Draw(worldTransform, camera, TriangleTex, color[i]);
 
-	//}
+	}
 
 	//if (input->PushKey(DIK_1)) {
 	//	num++;

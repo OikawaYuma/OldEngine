@@ -35,7 +35,7 @@ public:
 
 	void Initialize(Camera* camera, Vector4 DrawColor);
 	void Update(Camera camera, Vector4 DrawColor);
-	void Draw(WorldTransform worlsTransform, Camera* camera, Vector4 DrawColor);
+	void Draw(WorldTransform worlsTransform, Camera* camera, uint32_t texture, Vector4 DrawColor);
 	void Release();
 	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
 	D3D12_RESOURCE_DESC  CreateBufferResourceDesc(size_t sizeInBytes);
@@ -79,7 +79,6 @@ public:
 
 	DirectXCommon* sDirectXCommon_ = nullptr;
 	TextureManager* textureManager_ = nullptr;
-	PSO* pso_ = nullptr;
 	Camera *camera_ = nullptr;
 
 	//ビューポート

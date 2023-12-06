@@ -35,7 +35,7 @@ public:
 	//	std::string name;
 	//};
 	
-	void Initialize(const std::string& filePath,int num);
+	int Initialize(const std::string& filePath);
 	void Release();
 	void SetTexture();
 	void SetDirectXCommon();
@@ -59,6 +59,7 @@ public:
 	
 	Microsoft::WRL::ComPtr <ID3D12Resource> textureResource_;
 
+	int index_ = 1;
 	
 
 	// metaDataを基にSRVの設定
@@ -72,8 +73,8 @@ public:
 	D3D12_RESOURCE_DESC resourceDesc_{};
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 	
-	D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU_;
-	D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU_;
+	D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU_[128];
+	D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU_[128];
 
 	
 	D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};

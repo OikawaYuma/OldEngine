@@ -36,7 +36,7 @@ public:
 
 	void Initialize();
 	//void Update();
-	void Draw();
+	void Draw(uint32_t texture);
 	void Release();
 	void SetTextureManager(TextureManager* textureManager) {
 		textureManager_ = textureManager;

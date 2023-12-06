@@ -16,7 +16,7 @@ private:
 	int prevSceneNo_ = 0;
 
 	//Input* input_ = nullptr;
-
+	PSO* pso = nullptr;
 public:
 	GameManager();
 	~GameManager();

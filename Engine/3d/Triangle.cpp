@@ -73,6 +73,8 @@ void Triangle::Initialize(Camera* camera, Vector4 DrawColor) {
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
 	materialData->color = DrawColor;
+	materialData->enableLighting = false;
+	materialData->uvTransform = MakeIdentity4x4();
 
 
 	//バッファリソース
@@ -123,8 +125,8 @@ void Triangle::Initialize(Camera* camera, Vector4 DrawColor) {
 };
 
 
-void Triangle::Draw(WorldTransform worlsTransform, Camera* camera, Vector4 DrawColor) {
-	pso_ = PSO::GatInstance();
+void Triangle::Draw(WorldTransform worlsTransform, Camera* camera,uint32_t texture, Vector4 DrawColor) {
+	PSO *pso = PSO::GatInstance();
 
 	camera_ = camera;
 
@@ -137,8 +139,8 @@ void Triangle::Draw(WorldTransform worlsTransform, Camera* camera, Vector4 DrawC
 	sDirectXCommon_->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
 	sDirectXCommon_->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	// RootSignatureを設定。PSOに設定しているけど別途設定が必要
-	sDirectXCommon_->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
-	sDirectXCommon_->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定
+	sDirectXCommon_->GetCommandList()->SetGraphicsRootSignature(pso->GetProperty().rootSignature.Get());
+	sDirectXCommon_->GetCommandList()->SetPipelineState(pso->GetProperty().graphicsPipelineState.Get());    //PSOを設定
 	sDirectXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView);    //VBVを設定
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	sDirectXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -147,7 +149,7 @@ void Triangle::Draw(WorldTransform worlsTransform, Camera* camera, Vector4 DrawC
 	sDirectXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
 
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
-	sDirectXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_);
+	sDirectXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_[texture]);
 	// 描画！（DrawCall/ドローコール）・3頂点で1つのインスタンス。インスタンスについては今後
 	sDirectXCommon_->GetCommandList()->DrawInstanced(6, 1, 0, 0);
 };

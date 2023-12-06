@@ -51,8 +51,9 @@ int GameManager::Run() {
 	sDirctX->Initialize();
 	input->Initialize();
 
-	PSO* pso = PSO::GatInstance();
+	pso = PSO::GatInstance();
 	pso->CreatePipelineStateObject();
+	sceneArr_[currentSceneNo_]->Init();
 	// ウィンドウの×ボタンが押されるまでループ
 	//ウィンドウの×ボタンが押されるまでループ
 	while (true)  // ゲームループ

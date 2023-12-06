@@ -43,7 +43,7 @@ public:
 	~Model();
 	void Initialize(const std::string& directoryPath, const std::string& filename,Camera* camera);
 	void Update();
-	void Draw(Transform transform);
+	void Draw(Transform transform, uint32_t texture);
 
 
 	void SetTextureManager(TextureManager* textureManager) {

@@ -33,7 +33,7 @@ public :
 	~Sphere();
 	void Initialize(Camera* camera);
 	void Update();
-	void Draw(Transform transform);
+	void Draw(Transform transform, uint32_t texture);
 	void SetTextureManager(TextureManager* textureManager) {
 		textureManager_ = textureManager;
 	}
