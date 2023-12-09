@@ -67,7 +67,7 @@ public:
 
 
 	// Resourceの生成
-	static const Microsoft::WRL::ComPtr <ID3D12Resource> textureResource_;
+	static Microsoft::WRL::ComPtr <ID3D12Resource> textureResource_;
 
 	static int index_ ;
 	
@@ -82,8 +82,8 @@ public:
 	
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 	
-	static const D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU_[128];
-	static const D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU_[128];
+	static D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU_[128];
+	static D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU_[128];
 
 	
 	D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
