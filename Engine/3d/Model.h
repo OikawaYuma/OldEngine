@@ -6,6 +6,7 @@
 #include "TextureManager.h"
 
 #include "Transform.h"
+#include "WorldTransform.h"
 #include "Camera.h"
 #include "Vector2.h"
 #include "Vector3.h"
@@ -41,9 +42,9 @@ public:
 	ModelData GetModelData() { return modelData_; }
 	Model();
 	~Model();
-	void Initialize(const std::string& directoryPath, const std::string& filename,Camera* camera);
+	void Initialize(const std::string& directoryPath, const std::string& filename);
 	void Update();
-	void Draw(Transform transform, uint32_t texture);
+	void Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera);
 
 
 	void SetTextureManager(TextureManager* textureManager) {

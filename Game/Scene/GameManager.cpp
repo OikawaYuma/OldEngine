@@ -51,6 +51,8 @@ int GameManager::Run() {
 	sDirctX->Initialize();
 	input->Initialize();
 
+	TextureManager* textureManager = TextureManager::GetInstance();
+
 	pso = PSO::GatInstance();
 	pso->CreatePipelineStateObject();
 	sceneArr_[currentSceneNo_]->Init();

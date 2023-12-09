@@ -2,6 +2,7 @@
 #include "IScene.h"
 #include "Triangle.h"
 #include "WorldTransform.h"
+#include "Player.h"
 class TitleScene : public IScene
 {
 public:
@@ -19,5 +20,6 @@ private:
 	Transform transformTriangle;
 	WorldTransform worldTransform;
 	uint32_t TriangleTex;
+	Player* player_ = nullptr;
 };
 

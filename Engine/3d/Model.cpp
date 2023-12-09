@@ -109,10 +109,10 @@ MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, c
 		return materialData;
 };
 
-void Model::Initialize(const std::string& directoryPath, const std::string& filename,Camera * camera) {
+void Model::Initialize(const std::string& directoryPath, const std::string& filename) {
 	WinAPI* sWinAPI = WinAPI::GetInstance();
 	directXCommon_ = DirectXCommon::GetInstance();
-	camera_ = camera;
+	
 	
 
 	// モデル読み込み
@@ -194,10 +194,10 @@ void Model::Update() {
 };
 
 
-void Model::Draw(Transform transform, uint32_t texture) {
+void Model::Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera) {
+	camera_ = camera;
 	pso_ = PSO::GatInstance();
-	Matrix4x4 worldMatrix = MakeAffineMatrix(transform.scale, transform.rotate, transform.translate);
-	Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera_->viewMatrix_, camera_->projectionMatrix_));
+	Matrix4x4 worldViewProjectionMatrix = Multiply(worldTransform.matWorld_, Multiply(camera_->viewMatrix_, camera_->projectionMatrix_));
 	wvpData->WVP = worldViewProjectionMatrix;
 	// 色のデータを変数から読み込み
 	materialData->color = {1.0f,1.0f,1.0f,1.0f};

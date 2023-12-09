@@ -15,6 +15,8 @@ void TitleScene::Init()
 	worldTransform.UpdateMatrix();
 	//// 実験用
 	//bool Reset = true;
+	player_ = new Player();
+	player_->Init();
 
 
 	for (int i = 0; i < 20; i++) {
@@ -32,22 +34,22 @@ void TitleScene::Init()
 	//Model* model2 = new Model();
 	//model2->Initialize("Resources/axis", "axis.obj",camera);*/
 
-	TextureManager* textureManager = new TextureManager;
+	
 	//TextureManager* textureManager2 = new TextureManager;
 	//TextureManager* textureManager3 = new TextureManager;
 	//TextureManager* textureManager4 = new TextureManager;
 
 	//textureManager2->Initialize("Resources/uvChecker.png", 1);
-	TriangleTex = textureManager->Initialize("Resources/monsterBall.png");
+	
 	///*textureManager3->Initialize(model->modelData_.material.textureFilePath, 3);
 	//textureManager4->Initialize(model2->modelData_.material.textureFilePath, 4);*/
 
 
-	for (int i = 0; i < 20; i++) {
+	/*for (int i = 0; i < 20; i++) {
 
 		mesh_[i]->SetTextureManager(textureManager);
 
-	}
+	}*/
 	///*sprite->Initialize();
 	//sprite2->SetTextureManager(textureManager2);
 	//sprite2->Initialize();
@@ -80,6 +82,8 @@ void TitleScene::Update()
 
 	////カメラの更新
 	camera->Update();
+
+	player_->Update();
 	///*	sprite->Update();
 	//	sprite2->Update();*/
 
@@ -87,10 +91,10 @@ void TitleScene::Update()
 	//	transform.rotate.y += 0.03f;
 	//	//transform.translate.z += 0.03f;
 	//}
-	for (int i = 0; i < 20; i++) {
+	/*for (int i = 0; i < 20; i++) {
 		mesh_[i]->Draw(worldTransform, camera, TriangleTex, color[i]);
 
-	}
+	}*/
 
 	//if (input->PushKey(DIK_1)) {
 	//	num++;
@@ -166,7 +170,7 @@ void TitleScene::Update()
 }
 void TitleScene::Draw()
 {
-
+	//player_->Draw(camera);
 }
 
 void TitleScene::Release() {
