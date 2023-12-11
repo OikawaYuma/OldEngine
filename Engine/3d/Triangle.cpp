@@ -129,7 +129,7 @@ void Triangle::Draw(WorldTransform worlsTransform, Camera* camera,uint32_t textu
 	PSO *pso = PSO::GatInstance();
 
 	camera_ = camera;
-
+	textureManager_ = TextureManager::GetInstance();
 	
 	Matrix4x4 worldViewProjectionMatrix = Multiply(worlsTransform.matWorld_, Multiply(camera_->viewMatrix_, camera_->projectionMatrix_));
 	TransformationData->WVP = worldViewProjectionMatrix;

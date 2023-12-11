@@ -1,5 +1,6 @@
 #pragma once
 #include "IScene.h"
+#include "Input.h"
 class ClearScene : public IScene
 {
 public:
@@ -10,6 +11,7 @@ public:
 	int GameClose()override;
 private:
 	int sceneTime = 0;
+	Input* input = nullptr;
 };
 ;
 

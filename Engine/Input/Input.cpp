@@ -1,13 +1,10 @@
 #include "Input.h"
 #include "WinAPI.h"
 
-Input::Input() {
-
-}
-
 void Input::Initialize() {
-	sWinAPI = WinAPI::GetInstance();
-	
+	WinAPI *sWinAPI = WinAPI::GetInstance();
+	// DirectInputの初期化
+	ComPtr<IDirectInput8> directInput = nullptr;
 	result = DirectInput8Create(
 		sWinAPI->GetWc().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8,
 		(void**)&directInput, nullptr);
@@ -17,7 +14,7 @@ void Input::Initialize() {
 	result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
 	assert(SUCCEEDED(result));
 
-	// 乳直データ形式のセット
+	// 入力データ形式のセット
 	result = keyboard->SetDataFormat(&c_dfDIKeyboard); // 標準形式
 	assert(SUCCEEDED(result));
 
@@ -29,8 +26,12 @@ void Input::Initialize() {
 }
 
 void Input::Update() {
+	// 前回のキー入力を保存
+	memcpy(preKeys, keys, sizeof(keys));
+
 	// キーボード情報の取得開始
 	keyboard->Acquire();
+
 	keyboard->GetDeviceState(sizeof(keys), keys);
 }
 
@@ -41,3 +42,17 @@ bool Input::PushKey(BYTE keyNumber)
 	}
 	return false;
 }
+
+bool Input::TriggerKey(BYTE keyNumber)
+{
+	if (keys[keyNumber] && preKeys[keyNumber] == 0) {
+		return true;
+	}
+	return false;
+}
+Input* Input::GetInstance() {
+	static Input instance;
+	return &instance;
+}
+
+

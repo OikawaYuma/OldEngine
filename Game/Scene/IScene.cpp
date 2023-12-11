@@ -9,3 +9,6 @@ IScene::~IScene(){}
 
 // シーン番号のゲッター
 int IScene::GetSceneNo() { return sceneNo; }
+void IScene::SetSceneNo(int sceneno) {
+	sceneNo = sceneno;
+}

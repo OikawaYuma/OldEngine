@@ -7,6 +7,14 @@
 // ImGuiが0に格納されているため1から格納する
 int TextureManager::index_ = 1;
 
+// ソースで静的メンバ変数を定義
+Microsoft::WRL::ComPtr <ID3D12Resource> TextureManager::textureResource_[SRVSizes];
+
+D3D12_CPU_DESCRIPTOR_HANDLE TextureManager::textureSrvHandleCPU_[SRVSizes];
+D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::textureSrvHandleGPU_[SRVSizes];
+
+D3D12_SHADER_RESOURCE_VIEW_DESC TextureManager::srvDesc_[SRVSizes]{};
+
 int TextureManager::StoreTexture(const std::string& filePath) {
 	DirectXCommon *sDirectXCommon = DirectXCommon::GetInstance();
 	WinAPI* sWinAPI = WinAPI::GetInstance();
@@ -14,17 +22,18 @@ int TextureManager::StoreTexture(const std::string& filePath) {
 	// ミップマップの作成
 	DirectX::ScratchImage mipImages_ = LoadTexture(filePath);
 	const DirectX::TexMetadata& metadata = mipImages_.GetMetadata();
-	textureResource_ = CreateTextureResource(sDirectXCommon->GetDevice().Get(), metadata);
-	UploadTextureData(textureResource_.Get(), mipImages_);
 
-	// metaDataを基にSRVの設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc_{};
+	
 
+	textureResource_[index_] = CreateTextureResource(sDirectXCommon->GetDevice().Get(), metadata);
+	UploadTextureData(textureResource_[index_].Get(), mipImages_);
+
+	
 	// metaDataを基にSRVの設定
-	srvDesc_.Format = metadata.format;
-	srvDesc_.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc_.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャfi
-	srvDesc_.Texture2D.MipLevels = UINT(metadata.mipLevels);
+	srvDesc_[index_].Format = metadata.format;
+	srvDesc_[index_].Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc_[index_].ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャfi
+	srvDesc_[index_].Texture2D.MipLevels = UINT(metadata.mipLevels);
 	
 	// SRVを作成するDescriptorHeapの場所を決める
 	textureSrvHandleCPU_[index_] = sDirectXCommon->GetSrvDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
@@ -33,7 +42,7 @@ int TextureManager::StoreTexture(const std::string& filePath) {
 	textureSrvHandleCPU_[index_].ptr += sDirectXCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * index_;
 	textureSrvHandleGPU_[index_].ptr += sDirectXCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * index_;
 	// SRVの生成
-	sDirectXCommon->GetDevice()->CreateShaderResourceView(textureResource_.Get(), &srvDesc_, textureSrvHandleCPU_[index_]);
+	sDirectXCommon->GetDevice()->CreateShaderResourceView(textureResource_[index_].Get(), &srvDesc_[index_], textureSrvHandleCPU_[index_]);
 	uint32_t returnIndex = index_;
 	index_++;
 	return returnIndex;
@@ -72,6 +81,7 @@ DirectX::ScratchImage TextureManager::LoadTexture(const std::string& filePath) {
 Microsoft::WRL::ComPtr <ID3D12Resource> TextureManager::CreateTextureResource(Microsoft::WRL::ComPtr <ID3D12Device> device, const DirectX::TexMetadata& metadata)
 {
 	Microsoft::WRL::ComPtr <ID3D12Resource> resource_;
+	
 	D3D12_RESOURCE_DESC resourceDesc_{};
 	// metadataを基にResourceの設定
 	resourceDesc_.Width = UINT(metadata.width); // Textureの幅

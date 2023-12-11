@@ -2,13 +2,13 @@
 
 void ClearScene::Init()
 {
-
+	input = Input::GetInstance();
 }
 
 void ClearScene::Update()
 {
 	sceneTime++;
-	if (sceneTime >= 120) {
+	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNo = TITLE;
 		sceneTime = 0;
 	}

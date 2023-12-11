@@ -2,7 +2,7 @@
 
 void GameScene::Init()
 {
-
+	input = Input::GetInstance();
 
 }
 
@@ -10,7 +10,7 @@ void GameScene::Update()
 {
 
 	sceneTime++;
-	if (sceneTime >= 120) {
+	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNo = CLEAR;
 		sceneTime = 0;
 	}

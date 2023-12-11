@@ -3,6 +3,7 @@
 #include "Triangle.h"
 #include "WorldTransform.h"
 #include "Player.h"
+#include "Input.h"
 class TitleScene : public IScene
 {
 public:
@@ -14,12 +15,8 @@ public:
 
 private:
 	int sceneTime = 0;
-	Triangle* mesh_[20];
-	Vector4 color[20] = { 0.0f,0.0f,0.0f,1.0f };
 	Camera* camera = nullptr;
-	Transform transformTriangle;
-	WorldTransform worldTransform;
-	uint32_t TriangleTex;
 	Player* player_ = nullptr;
+	Input* input = nullptr;
 };
 

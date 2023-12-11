@@ -21,6 +21,7 @@ public:
 
 	// シーン番号のゲッター
 	static int GetSceneNo();
+	static void SetSceneNo(int sceneno);
 
 	
 };

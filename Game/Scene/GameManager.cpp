@@ -46,16 +46,18 @@ int GameManager::Run() {
 	worldTransform.Initialize();
 
 	DirectXCommon* sDirctX = DirectXCommon::GetInstance();
-	Input* input = new Input();
 
 	sDirctX->Initialize();
-	input->Initialize();
 
 	TextureManager* textureManager = TextureManager::GetInstance();
 
-	pso = PSO::GatInstance();
+	PSO* pso = PSO::GatInstance();
 	pso->CreatePipelineStateObject();
+
 	sceneArr_[currentSceneNo_]->Init();
+
+	Input* sInput = Input::GetInstance();
+	sInput->Initialize();
 	// ウィンドウの×ボタンが押されるまでループ
 	//ウィンドウの×ボタンが押されるまでループ
 	while (true)  // ゲームループ
@@ -67,7 +69,7 @@ int GameManager::Run() {
 		}
 		// ゲームの処理の開始
 		sDirctX->BeginFrame();
-
+		sInput->Update();
 		ImGui::Begin("kakunin");
 		ImGui::Text("%d", IScene::GetSceneNo());
 		ImGui::End();
@@ -111,6 +113,7 @@ int GameManager::Run() {
 
 		// ESCキーが押されたらループを抜ける
 		if (sceneArr_[currentSceneNo_]->GameClose()) {
+			sceneArr_[currentSceneNo_]->Release();
 			break;
 		}
 	}
@@ -122,7 +125,6 @@ int GameManager::Run() {
 	/*------------------------------------------------------------
 
 	-------------------------------------------------------------*/
-
 	sWinAPI->Finalize();
 	//delete sWinAPI;
 	sDirctX->Release();

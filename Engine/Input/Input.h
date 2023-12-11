@@ -2,15 +2,20 @@
 #define DIRECTINPUT_VERSION 0x0800 // DirectInputのバージョン指定
 #include <dinput.h>
 #include <cassert>
+#include <wrl.h>
+
 
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
-class WinAPI;
-class Input
+
+class Input 
 {
 public:
-	Input();
-	~Input();
+	static Input* GetInstance();
+	Input() = default;
+	~Input() = default;
+
+	const Input& operator=(const Input&) = delete;
 
 	void Initialize();
 	void Update();
@@ -24,17 +29,16 @@ public:
 	/// <returns></returns>
 	bool PushKey(BYTE keyNumber);
 
+	bool TriggerKey(BYTE keyNumber);
+
+	// namespace省略
+	template <class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
 private:
-
-	
-	BYTE keys[256] = {};
-	// DirectInputの初期化
-	IDirectInput8* directInput = nullptr;
 	HRESULT result;
-
 	// キーボードデバイスの生成
-	IDirectInputDevice8* keyboard = nullptr;
-
-	WinAPI* sWinAPI = nullptr;
+	ComPtr <IDirectInputDevice8> keyboard = nullptr;
+	BYTE keys[256];
+	BYTE preKeys[256];
+	
 };
 

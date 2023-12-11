@@ -1,10 +1,11 @@
 #pragma once
 #include "WorldTransform.h"
 #include "Model.h"
-#include "TextureManager.h"
 #include "Camera.h"
-
-class Player
+#include "Input.h"
+#include "IScene.h"
+#include "TextureManager.h"
+class Player 
 {
 public:
 	Player();
@@ -16,6 +17,8 @@ private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
 	uint32_t texture_ =1;
+	uint32_t texture2_ = 1;
+	Input* input =nullptr;
 	
 };
 

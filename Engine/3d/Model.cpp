@@ -199,6 +199,7 @@ void Model::Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera
 	pso_ = PSO::GatInstance();
 	Matrix4x4 worldViewProjectionMatrix = Multiply(worldTransform.matWorld_, Multiply(camera_->viewMatrix_, camera_->projectionMatrix_));
 	wvpData->WVP = worldViewProjectionMatrix;
+	textureManager_ = TextureManager::GetInstance();
 	// 色のデータを変数から読み込み
 	materialData->color = {1.0f,1.0f,1.0f,1.0f};
 	directXCommon_->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
