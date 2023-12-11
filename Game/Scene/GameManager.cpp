@@ -37,19 +37,15 @@ GameManager::~GameManager() {}
 const char kWindowTitle[] = "LE2B_05_オイカワユウマ";
 
 int GameManager::Run() {
-	
 	DirectXCommon::D3DResourceLeakChecker leakCheck;
+
 	WinAPI* sWinAPI = WinAPI::GetInstance();
 	sWinAPI->Initialize(L"CG2");
 
-	WorldTransform worldTransform;
-	worldTransform.Initialize();
-
 	DirectXCommon* sDirctX = DirectXCommon::GetInstance();
-
 	sDirctX->Initialize();
 
-	TextureManager* textureManager = TextureManager::GetInstance();
+	TextureManager* sTextureManager = TextureManager::GetInstance();
 
 	PSO* pso = PSO::GatInstance();
 	pso->CreatePipelineStateObject();
@@ -59,7 +55,6 @@ int GameManager::Run() {
 	Input* sInput = Input::GetInstance();
 	sInput->Initialize();
 	// ウィンドウの×ボタンが押されるまでループ
-	//ウィンドウの×ボタンが押されるまでループ
 	while (true)  // ゲームループ
 	{
 		// Windowsのメッセージ処理
@@ -70,13 +65,10 @@ int GameManager::Run() {
 		// ゲームの処理の開始
 		sDirctX->BeginFrame();
 		sInput->Update();
+
 		ImGui::Begin("kakunin");
 		ImGui::Text("%d", IScene::GetSceneNo());
 		ImGui::End();
-
-		//// キー入力を受け取る
-		//memcpy(preKeys, keys, 256);
-		//Novice::GetHitKeyStateAll(keys);
 
 		// シーンのチェック
 		prevSceneNo_ = currentSceneNo_;

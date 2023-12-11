@@ -113,8 +113,6 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	WinAPI* sWinAPI = WinAPI::GetInstance();
 	directXCommon_ = DirectXCommon::GetInstance();
 	
-	
-
 	// モデル読み込み
 	modelData_ = LoadObjFile(directoryPath, filename);
 
