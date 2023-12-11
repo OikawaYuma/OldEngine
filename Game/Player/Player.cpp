@@ -25,5 +25,5 @@ void Player::Update() {
 }
 
 void Player::Draw(Camera *camera) {
-	model_->Draw(worldTransform_, texture_, camera);
+	model_->Draw(worldTransform_, 1, camera);
 }

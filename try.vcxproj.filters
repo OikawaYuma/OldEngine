@@ -79,6 +79,7 @@
     <ClCompile Include="Engine\Adapter\Engine.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
     <ClCompile Include="Engine\Input\InputManager.cpp" />
+    <ClCompile Include="Audio.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Externals\imgui\imconfig.h">
@@ -161,6 +162,7 @@
     <ClInclude Include="Engine\Adapter\Engine.h" />
     <ClInclude Include="Game\Player\Player.h" />
     <ClInclude Include="Engine\Input\InputManager.h" />
+    <ClInclude Include="Audio.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
