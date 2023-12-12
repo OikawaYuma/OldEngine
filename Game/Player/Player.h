@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "IScene.h"
 #include "TextureManager.h"
+#include "Audio.h"
 class Player 
 {
 public:
@@ -19,6 +20,7 @@ private:
 	uint32_t texture_ =1;
 	uint32_t texture2_ = 1;
 	Input* input =nullptr;
-	
+	Audio* audio_;
+	SoundData soundData;
 };
 
