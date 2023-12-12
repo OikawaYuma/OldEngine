@@ -18,7 +18,7 @@ void Audio::Initialize()
 
 }
 
-Audio::SoundData Audio::SoundLoadWave(const char* filename)
+SoundData Audio::SoundLoadWave(const char* filename)
 {
 	// ファイル入力ストリームのインスタンス
 	std::ifstream file;
@@ -45,6 +45,7 @@ Audio::SoundData Audio::SoundLoadWave(const char* filename)
 	// チャンク本体の読み込み
 	assert(format.chunk.size <= sizeof(format.fmt));
 	file.read((char*)&format.fmt, format.chunk.size);
+	
 	// Dataチャンクの読み込み
 	ChunkHeader data;
 	file.read((char*)&data, sizeof(data));
@@ -55,6 +56,7 @@ Audio::SoundData Audio::SoundLoadWave(const char* filename)
 		// 再読み込み
 		file.read((char*)&data, sizeof(data));
 	}
+
 	if (strncmp(data.id, "data", 4) != 0) {
 		assert(0);
 	}
@@ -83,4 +85,24 @@ void Audio::SoundUnload(SoundData* soundData) {
 	soundData->pBuffer = 0;
 	soundData->bufferSize = 0;
 	soundData->wfek = {};
+}
+
+void Audio::SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData)
+{
+	HRESULT result;
+
+	// 波形フォーマットを元にSorceVoiceの生成
+	IXAudio2SourceVoice* pSourceVoice = nullptr;
+	result = xAudio2->CreateSourceVoice(&pSourceVoice, &soundData.wfek);
+	assert(SUCCEEDED(result));
+
+	// 再生する波形データの設定
+	XAUDIO2_BUFFER buf{};
+	buf.pAudioData = soundData.pBuffer;
+	buf.AudioBytes = soundData.bufferSize;
+	buf.Flags = XAUDIO2_END_OF_STREAM;
+
+	// 波形データの再生
+	result = pSourceVoice->SubmitSourceBuffer(&buf);
+	result = pSourceVoice->Start();
 }

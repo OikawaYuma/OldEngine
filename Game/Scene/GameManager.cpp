@@ -7,6 +7,7 @@
 #include "Mesh.h"
 #include "ImGuiCommon.h"
 #include "TextureManager.h"
+#include "Audio.h"
 #include "Camera.h"
 #include "Sprite.h"
 #include "Sphere.h"
@@ -44,6 +45,10 @@ int GameManager::Run() {
 
 	DirectXCommon* sDirctX = DirectXCommon::GetInstance();
 	sDirctX->Initialize();
+
+	Audio* sAudio = Audio::GetInstance();
+	sAudio->Initialize();
+
 
 	TextureManager* sTextureManager = TextureManager::GetInstance();
 

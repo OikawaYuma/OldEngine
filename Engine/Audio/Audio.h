@@ -4,7 +4,16 @@
 #include <wrl.h>
 
 #pragma comment(lib,"xaudio2.lib")
+// 音声データ
+struct SoundData {
+	// 波形フォーマット
+	WAVEFORMATEX wfek;
+	// バッファの先頭アドレス
+	BYTE* pBuffer;
+	// バッファのサイズ
+	unsigned int bufferSize;
 
+};
 class Audio
 {
 public:
@@ -37,20 +46,16 @@ public:
 		WAVEFORMATEX fmt; // 波形フォーマット
 	};
 
-	// 音声データ
-	struct SoundData {
-		// 波形フォーマット
-		WAVEFORMATEX wfek;
-		// バッファの先頭アドレス
-		BYTE* pBuffer;
-		// バッファのサイズ
-		unsigned int bufferSize;
-
-	};
+	
 
 	SoundData SoundLoadWave(const char* filename);
 
 	void SoundUnload(SoundData* soundData);
+
+	// 音声再生
+	void SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData);
+
+	Microsoft::WRL::ComPtr<IXAudio2> GetIXAudio() { return xAudio2_; };
 
 private:
 	// namespace省略
