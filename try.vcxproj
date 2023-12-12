@@ -107,7 +107,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="Engine\Interface\Audio.cpp" />
     <ClCompile Include="Engine\Adapter\Engine.cpp" />
     <ClCompile Include="Game\Scene\GameScene.cpp" />
     <ClCompile Include="Game\Scene\ClearScene.cpp" />
@@ -141,7 +141,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Player\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Audio.h" />
+    <ClInclude Include="Engine\Interface\Audio.h" />
     <ClInclude Include="Engine\3d\DirectionLight.h" />
     <ClInclude Include="Engine\Adapter\Engine.h" />
     <ClInclude Include="Game\Scene\GameScene.h" />
