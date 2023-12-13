@@ -107,7 +107,7 @@ int GameManager::Run() {
 		// フレームの終了
 		//スワップチェーン
 		sDirctX->ViewChange();
-
+		sAudio->GetIXAudio().Reset();
 		// ESCキーが押されたらループを抜ける
 		if (sceneArr_[currentSceneNo_]->GameClose()) {
 			sceneArr_[currentSceneNo_]->Release();

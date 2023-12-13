@@ -7,6 +7,7 @@
 #include <string>
 #include <format>
 #include <wrl.h>
+#include <chrono>
 
 #include "WinAPI.h"
 #include "Mesh.h"
@@ -155,6 +156,15 @@ public:
 	}*/
 
 private:
+	// FPS固定初期化
+	void InitializeFixFPS();
+
+	// FPS固定更新
+	void UpdateFixFPS();
+
+	// 記録時間（FPS固定用）
+	std::chrono::steady_clock::time_point reference_;
+
 	// DXGIファクトリーの生成
 	Microsoft::WRL::ComPtr < IDXGIFactory7> dxgiFactory;
 

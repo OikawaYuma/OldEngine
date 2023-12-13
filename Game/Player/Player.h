@@ -14,13 +14,14 @@ public:
 	void Init();
 	void Update();
 	void Draw(Camera *camera);
+	void Release();
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
 	uint32_t texture_ =1;
 	uint32_t texture2_ = 1;
 	Input* input =nullptr;
-	Audio* audio_;
-	SoundData soundData;
+	uint32_t soundData;
+	uint32_t soundData2;
 };
 
