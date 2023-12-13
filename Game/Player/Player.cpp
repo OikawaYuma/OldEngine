@@ -15,8 +15,11 @@ void Player::Init() {
 	texture2_ = TextureManager::StoreTexture("Resources/monsterBall.png");
 	soundData = Audio::SoundLoadWave("Resources/fanfare.wav");
 	soundData2 = Audio::SoundLoadWave("Resources/fanfare.wav");
-	model_ = new Model();
-	model_->Initialize("Resources/multiMaterial","multiMaterial.obj");
+	/*model_ = new Model();
+	model_->Initialize("Resources/multiMaterial","multiMaterial.obj");*/
+
+	sprite_ = new Sprite;
+	sprite_->Initialize();
 }
 
 void Player::Update() {
@@ -38,7 +41,8 @@ void Player::Update() {
 }
 
 void Player::Draw(Camera *camera) {
-	model_->Draw(worldTransform_, texture2_, camera);
+	//model_->Draw(worldTransform_, texture2_, camera);
+	sprite_->Draw(texture_);
 }
 
 void Player::Release()

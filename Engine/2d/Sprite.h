@@ -1,5 +1,5 @@
 #pragma once
-#include "PSO.h"
+#include "PSOSprite.h"
 
 #include <DirectXTex.h>
 #include <string>
@@ -48,7 +48,7 @@ public:
 	Transform transform_;
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
 private:
-	PSO* pso_ = nullptr;
+	PSOSprite* pso_ = nullptr;
 	Microsoft::WRL::ComPtr < ID3D12Resource> vertexResourceSprite_ =nullptr;
 	WinAPI* sWinAPI;
 	DirectXCommon* sDirectXCommon;

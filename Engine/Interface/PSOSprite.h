@@ -3,16 +3,16 @@
 #include "DirectXCommon.h"
 #include "PSOProperty.h"
 
+	
 
-
-class PSO
+	class PSOSprite
 {
 public:
-	static PSO* GatInstance();
+	static PSOSprite* GatInstance();
 
-	PSO() = default;
-	~PSO() = default;
-	const PSO& operator=(const PSO&) = delete;
+	PSOSprite() = default;
+	~PSOSprite() = default;
+	const PSOSprite& operator=(const PSOSprite&) = delete;
 
 
 	/// <summary>
@@ -44,7 +44,7 @@ public:
 	/// Release
 	/// </summary>
 	/// <returns></returns>
-	
+
 
 
 	PSOProperty GetProperty() { return property; }
@@ -59,14 +59,14 @@ private:
 	// バイナリを元に生成
 	//ID3D12RootSignature* rootSignature;
 	// RootParmeter作成。複数でっていできるので配列。今回は結果１つだけなので長さ1の配列
-	D3D12_ROOT_PARAMETER rootParamerters[4] = {};
+	D3D12_ROOT_PARAMETER rootParamerters[3] = {};
 
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 
 	D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
 
 	// InputLayout
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	D3D12_INPUT_LAYOUT_DESC  inputLayoutDesc{};
 
 	// blendStateの設定

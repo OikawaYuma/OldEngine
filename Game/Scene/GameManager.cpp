@@ -3,6 +3,7 @@
 #include "WinAPI.h"
 #include "DirectXCommon.h"
 #include "PSO.h"
+#include "PSOSprite.h"
 #include "Input.h"
 #include "Mesh.h"
 #include "ImGuiCommon.h"
@@ -52,8 +53,11 @@ int GameManager::Run() {
 
 	TextureManager* sTextureManager = TextureManager::GetInstance();
 
-	PSO* pso = PSO::GatInstance();
-	pso->CreatePipelineStateObject();
+	/*PSO* pso = PSO::GatInstance();
+	pso->CreatePipelineStateObject();*/
+
+	PSOSprite* psoSprite = PSOSprite::GatInstance();
+	psoSprite->CreatePipelineStateObject();
 
 	sceneArr_[currentSceneNo_]->Init();
 

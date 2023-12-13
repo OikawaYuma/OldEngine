@@ -6,6 +6,8 @@
 #include "IScene.h"
 #include "TextureManager.h"
 #include "Audio.h"
+
+#include "Sprite.h"
 class Player 
 {
 public:
@@ -23,5 +25,7 @@ private:
 	Input* input =nullptr;
 	uint32_t soundData;
 	uint32_t soundData2;
+
+	Sprite* sprite_ = nullptr;
 };
 

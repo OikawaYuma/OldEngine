@@ -50,7 +50,6 @@ void Sprite::Initialize() {
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
 	materialData->color = { 1.0f,1.0f,1.0f,1.0f };
-	materialData->enableLighting = false;
 	materialData->uvTransform = MakeIdentity4x4();
 
 
@@ -83,16 +82,6 @@ void Sprite::Initialize() {
 	indexDataSprite[4] = 3;
 	indexDataSprite[5] = 2;
 
-	directionalLightData = nullptr;
-	directionalLightResource = Mesh::CreateBufferResource(sDirectXCommon->GetDevice(), sizeof(DirectionalLight));
-	// 書き込むためのアドレスを取得
-	directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
-
-	// デフォルト値はとりあえず以下のようにしておく
-	directionalLightData->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
-	directionalLightData->intensity = 1.0f;
-
 	transformUv = {
 		{1.0f,1.0f,1.0f},
 		{0.0f,0.0f,0.0f},
@@ -107,7 +96,7 @@ void Sprite::Initialize() {
 //};
 
 void Sprite::Draw(uint32_t texture) {
-	pso_ = PSO::GatInstance();
+	pso_ = PSOSprite::GatInstance();
 	// Sprite用のWorldViewProjectMatrixを作る
 	Matrix4x4 worldMatrixSprite = MakeAffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
 	Matrix4x4 viewMatrixSprite = MakeIdentity4x4();
@@ -124,10 +113,8 @@ void Sprite::Draw(uint32_t texture) {
 	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
 	// TransformationmatrixCBufferの場所を設定
 	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResouceSprite->GetGPUVirtualAddress());
-
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_[texture]);
-	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, directionalLightResource->GetGPUVirtualAddress());
 	// 描画（DrawCall/ドローコール）
 	//sDirectXCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
 	sDirectXCommon->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
