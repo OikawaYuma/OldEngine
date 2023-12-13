@@ -1,6 +1,14 @@
 #include "Audio.h"
 #include <cassert>
 
+Audio::ComPtr<IXAudio2> Audio::xAudio2_;
+
+IXAudio2SourceVoice* Audio::pSourceVoice[soundDataMaxSize];
+
+SoundData Audio::soundData[soundDataMaxSize];
+
+uint32_t Audio::soundHandle = 0u;
+
 Audio* Audio::GetInstance()
 {
 	static Audio instance;
@@ -18,7 +26,12 @@ void Audio::Initialize()
 
 }
 
-SoundData Audio::SoundLoadWave(const char* filename)
+void Audio::Release()
+{
+	xAudio2_.Reset();
+}
+
+uint32_t Audio::SoundLoadWave(const char* filename)
 {
 	// ファイル入力ストリームのインスタンス
 	std::ifstream file;
@@ -69,40 +82,73 @@ SoundData Audio::SoundLoadWave(const char* filename)
 	file.close();
 	
 	// returnするための音声データ
-	SoundData soundData = {};
+	soundData[soundHandle];
 
-	soundData.wfek = format.fmt;
-	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
-	soundData.bufferSize = data.size;
-	return soundData;
+	soundData[soundHandle].wfek = format.fmt;
+	soundData[soundHandle].pBuffer = reinterpret_cast<BYTE*>(pBuffer);
+	soundData[soundHandle].bufferSize = data.size;
+	uint32_t returnSoundHandle = soundHandle;
+	soundHandle++;
+
+	return returnSoundHandle;
 }
 
-void Audio::SoundUnload(SoundData* soundData) {
+void Audio::SoundUnload(uint32_t audioHandle) {
 
 	// バッファのメモリを解放
-	delete[] soundData->pBuffer;
+	delete[] soundData[audioHandle].pBuffer;
 
-	soundData->pBuffer = 0;
-	soundData->bufferSize = 0;
-	soundData->wfek = {};
+	soundData[audioHandle].pBuffer = 0;
+	soundData[audioHandle].bufferSize = 0;
+	soundData[audioHandle].wfek = {};
 }
 
-void Audio::SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData)
+void Audio::SoundPlayWave(IXAudio2* xAudio2,uint32_t audioHandle,bool loopFlag)
 {
 	HRESULT result;
 
 	// 波形フォーマットを元にSorceVoiceの生成
-	IXAudio2SourceVoice* pSourceVoice = nullptr;
-	result = xAudio2->CreateSourceVoice(&pSourceVoice, &soundData.wfek);
+	pSourceVoice[audioHandle] = nullptr;
+	result = xAudio2->CreateSourceVoice(&pSourceVoice[audioHandle], &soundData[audioHandle].wfek);
 	assert(SUCCEEDED(result));
 
 	// 再生する波形データの設定
 	XAUDIO2_BUFFER buf{};
-	buf.pAudioData = soundData.pBuffer;
-	buf.AudioBytes = soundData.bufferSize;
+	buf.pAudioData = soundData[audioHandle].pBuffer;
+	buf.AudioBytes = soundData[audioHandle].bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
+	if (loopFlag) {
+		// 無限ループ
+		buf.LoopCount = XAUDIO2_LOOP_INFINITE;
+	}
 
 	// 波形データの再生
-	result = pSourceVoice->SubmitSourceBuffer(&buf);
-	result = pSourceVoice->Start();
+	result = pSourceVoice[audioHandle]->SubmitSourceBuffer(&buf);
+	result = pSourceVoice[audioHandle]->Start();
+}
+
+void Audio::SoundStopWave(IXAudio2* xAudio2, uint32_t audioHandle)
+{
+	HRESULT result;
+	
+
+	// 波形データの再生
+	//result = pSourceVoice->SubmitSourceBuffer(&buf);
+	// 波形フォーマットを元にSorceVoiceの生成
+	result = pSourceVoice[audioHandle]->Stop();
+	
+
+}
+
+void Audio::SoundLoopWave(IXAudio2* xAudio2, const SoundData& soundData)
+{
+	//HRESULT result;
+
+
+	// 波形データの再生
+	//result = pSourceVoice->SubmitSourceBuffer(&buf);
+	// 波形フォーマットを元にSorceVoiceの生成
+	
+
+
 }

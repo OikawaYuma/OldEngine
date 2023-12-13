@@ -48,19 +48,30 @@ public:
 
 	
 
-	SoundData SoundLoadWave(const char* filename);
+	static uint32_t SoundLoadWave(const char* filename);
 
-	void SoundUnload(SoundData* soundData);
+	static void SoundUnload(uint32_t audioHandle);
 
 	// 音声再生
-	void SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData);
+	static void SoundPlayWave(IXAudio2* xAudio2, uint32_t audioHandle, bool loopFlag);
 
-	Microsoft::WRL::ComPtr<IXAudio2> GetIXAudio() { return xAudio2_; };
+	// 音声再生
+	static void SoundStopWave(IXAudio2* xAudio2, uint32_t audioHandle);
+	static void SoundLoopWave(IXAudio2* xAudio2, const SoundData& soundData);
+
+	static Microsoft::WRL::ComPtr<IXAudio2> GetIXAudio() { return xAudio2_; };
 
 private:
+	static uint32_t soundHandle;
+
+	const static uint32_t soundDataMaxSize = 100;
 	// namespace省略
 	template <class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
-	ComPtr<IXAudio2> xAudio2_;
+	static ComPtr<IXAudio2> xAudio2_;
 	IXAudio2MasteringVoice* masterVoice_;
+
+	static IXAudio2SourceVoice* pSourceVoice[soundDataMaxSize];
+	static SoundData soundData[soundDataMaxSize];
+
 };
 
