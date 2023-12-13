@@ -75,10 +75,6 @@ private:
 	Microsoft::WRL::ComPtr < ID3D12Resource> indexResourceSprite;
 	D3D12_INDEX_BUFFER_VIEW indexBufferViewSprite{};
 
-	//ビューポート
-	D3D12_VIEWPORT viewport{};
-	// シザー矩形
-	D3D12_RECT scissorRect{};
 
 	// 実際に頂点リソースを作る
 	Microsoft::WRL::ComPtr <ID3D12Resource> materialResource;

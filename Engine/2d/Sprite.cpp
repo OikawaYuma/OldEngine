@@ -99,20 +99,7 @@ void Sprite::Initialize() {
 		{0.0f,0.0f,0.0f}
 	};
 
-	//クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = (float)sWinAPI->GetKClientWidth();
-	viewport.Height = (float)sWinAPI->GetKClientHeight();
-	viewport.TopLeftX = 1;
-	viewport.TopLeftY = 1;
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-
-
-	// 基本的にビューポートと同じ矩形が構成されるようにする
-	scissorRect.left = 0;
-	scissorRect.right = sWinAPI->GetKClientWidth();
-	scissorRect.top = 0;
-	scissorRect.bottom = sWinAPI->GetKClientHeight();
+	
 
 };
 //void Sprite::Update() {
@@ -127,8 +114,6 @@ void Sprite::Draw(uint32_t texture) {
 	Matrix4x4 projectionMatrixSprite = MakeOrthographicMatrix(0.0f, 0.0f, float(sWinAPI->GetKClientWidth()), float(sWinAPI->GetKClientHeight()), 0.0f, 100.0f);
 	Matrix4x4 worldViewProjectionMatrixSprite = Multiply(worldMatrixSprite, Multiply(viewMatrixSprite, projectionMatrixSprite));
 	*transformationMatrixDataSprite = worldViewProjectionMatrixSprite;
-	sDirectXCommon->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
-	sDirectXCommon->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	sDirectXCommon->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
 	sDirectXCommon->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定
 	sDirectXCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferViewSprite_); // VBVを設定
