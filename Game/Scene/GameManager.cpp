@@ -53,8 +53,8 @@ int GameManager::Run() {
 
 	TextureManager* sTextureManager = TextureManager::GetInstance();
 
-	/*PSO* pso = PSO::GatInstance();
-	pso->CreatePipelineStateObject();*/
+	PSO* pso = PSO::GatInstance();
+	pso->CreatePipelineStateObject();
 
 	PSOSprite* psoSprite = PSOSprite::GatInstance();
 	psoSprite->CreatePipelineStateObject();
