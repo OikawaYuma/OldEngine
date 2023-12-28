@@ -126,6 +126,8 @@ void DirectXCommon::BeginFrame() {
 	imGuiCommon_->UICreate();
 	//ImGuiの更新
 	imGuiCommon_->Update();
+	commandList_->RSSetViewports(1, &viewport);  //viewportを設定
+	commandList_->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 }
 
 // 実際のcoomandListのImguiの描画コマンドを積む

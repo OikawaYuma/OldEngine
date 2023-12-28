@@ -87,10 +87,6 @@ private:
 	Transform transformUv;
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW wvpBufferView{};
-	//ビューポート
-	D3D12_VIEWPORT viewport{};
-	// シザー矩形
-	D3D12_RECT scissorRect{};
 	Camera* camera_ = nullptr;
 };
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "PSO.h"
+#include "PSOSprite.h"
 
 #include <DirectXTex.h>
 #include <string>
@@ -48,7 +48,7 @@ public:
 	Transform transform_;
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
 private:
-	PSO* pso_ = nullptr;
+	PSOSprite* pso_ = nullptr;
 	Microsoft::WRL::ComPtr < ID3D12Resource> vertexResourceSprite_ =nullptr;
 	WinAPI* sWinAPI;
 	DirectXCommon* sDirectXCommon;
@@ -62,7 +62,7 @@ private:
 	// Sprite用のTransformationMatrix用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
 	Microsoft::WRL::ComPtr < ID3D12Resource> transformationMatrixResouceSprite;
 	// データを書き込む
-	Matrix4x4* transformationMatrixDataSprite = nullptr;
+	TransformationMatrix* transformationMatrixDataSprite = nullptr;
 
 	Transform transformSprite_;
 	
@@ -75,10 +75,6 @@ private:
 	Microsoft::WRL::ComPtr < ID3D12Resource> indexResourceSprite;
 	D3D12_INDEX_BUFFER_VIEW indexBufferViewSprite{};
 
-	//ビューポート
-	D3D12_VIEWPORT viewport{};
-	// シザー矩形
-	D3D12_RECT scissorRect{};
 
 	// 実際に頂点リソースを作る
 	Microsoft::WRL::ComPtr <ID3D12Resource> materialResource;

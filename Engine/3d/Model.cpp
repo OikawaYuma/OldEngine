@@ -1,3 +1,4 @@
+
 #include "Model.h"
 
 Model::Model() {};
@@ -168,23 +169,6 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
 	directionalLightData->intensity = 1.0f;
 
-
-
-	//クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = (float)sWinAPI->GetKClientWidth();
-	viewport.Height = (float)sWinAPI->GetKClientHeight();
-	viewport.TopLeftX = 1;
-	viewport.TopLeftY = 1;
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-
-
-	// 基本的にビューポートと同じ矩形が構成されるようにする
-	scissorRect.left = 0;
-	scissorRect.right = sWinAPI->GetKClientWidth();
-	scissorRect.top = 0;
-	scissorRect.bottom = sWinAPI->GetKClientHeight();
-
 };
 
 void Model::Update() {
@@ -200,8 +184,6 @@ void Model::Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera
 	textureManager_ = TextureManager::GetInstance();
 	// 色のデータを変数から読み込み
 	materialData->color = {1.0f,1.0f,1.0f,1.0f};
-	directXCommon_->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
-	directXCommon_->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 	directXCommon_->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
 	directXCommon_->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定
 	directXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);    //VBVを設定

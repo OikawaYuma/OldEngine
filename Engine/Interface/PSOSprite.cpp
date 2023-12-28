@@ -1,20 +1,20 @@
-#include "PSO.h"
+#include "PSOSprite.h"
 
-void PSO::CreatePipelineStateObject() {
+void PSOSprite::CreatePipelineStateObject() {
 	// DirectXCommonのインスタンスを取得
 	DirectXCommon* sDirectXCommon = DirectXCommon::GetInstance();
 
-	PSO::CreateRootSignature();
-	PSO::SetInputLayout();
-	PSO::SetBlendState();
-	PSO::SetRasterrizerState();
+	PSOSprite::CreateRootSignature();
+	PSOSprite::SetInputLayout();
+	PSOSprite::SetBlendState();
+	PSOSprite::SetRasterrizerState();
 
 	// Shaderをコンパイルする
-	property.vertexShaderBlob = CompileShader(L"Object3d.VS.hlsl",
+	property.vertexShaderBlob = CompileShader(L"Sprite.VS.hlsl",
 		L"vs_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.vertexShaderBlob != nullptr);
 
-	property.pixelShaderBlob = CompileShader(L"Object3d.PS.hlsl",
+	property.pixelShaderBlob = CompileShader(L"Sprite.PS.hlsl",
 		L"ps_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.pixelShaderBlob != nullptr);
 
@@ -39,7 +39,9 @@ void PSO::CreatePipelineStateObject() {
 	// DeptjStencilの設定
 	graphicsPipelineStateDesc.DepthStencilState = sDirectXCommon->GetDepthStencilDesc();
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	
+
+
+
 	//実際に生成
 	property.graphicsPipelineState = nullptr;
 	hr_ = sDirectXCommon->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
@@ -47,16 +49,17 @@ void PSO::CreatePipelineStateObject() {
 	assert(SUCCEEDED(hr_));
 }
 
-void PSO::CreateRootSignature() {
+void PSOSprite::CreateRootSignature() {
 	// DirectXCommonのインスタンスを取得
 	DirectXCommon* sDirectXCommon = DirectXCommon::GetInstance();
 
 	descriptionRootSignature.Flags =
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 
+
 	// シリアライズしてバイナリにする
 	property.signatureBlob = nullptr;
-	
+
 	// RootParmeter作成。複数でっていできるので配列。今回は結果１つだけなので長さ1の配列
 	rootParamerters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  // CBVを使う
 	rootParamerters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;  // PixelShaderで使う
@@ -76,9 +79,6 @@ void PSO::CreateRootSignature() {
 	rootParamerters[2].DescriptorTable.pDescriptorRanges = descriptorRange_; // Tableの中身の配列を指定
 	rootParamerters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange_); // Tableで利用する数
 
-	rootParamerters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	rootParamerters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-	rootParamerters[3].Descriptor.ShaderRegister = 1;
 
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイナリフィルタ
 	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
@@ -108,7 +108,7 @@ void PSO::CreateRootSignature() {
 	assert(SUCCEEDED(hr_));
 }
 
-void PSO::SetInputLayout() {
+void PSOSprite::SetInputLayout() {
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
 	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -117,23 +117,18 @@ void PSO::SetInputLayout() {
 	inputElementDescs[1].SemanticIndex = 0;
 	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
 	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[2].SemanticName = "NORMAL";
-	inputElementDescs[2].SemanticIndex = 0;
-	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	inputElementDescs[2].AlignedByteOffset =
-		D3D12_APPEND_ALIGNED_ELEMENT;
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
 }
 
-void PSO::SetBlendState() {
+void PSOSprite::SetBlendState() {
 	// blendStateの設定
 	//すべての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask =
 		D3D12_COLOR_WRITE_ENABLE_ALL;
 }
 
-void PSO::SetRasterrizerState() {
+void PSOSprite::SetRasterrizerState() {
 	//裏面（時計回り）を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
 	// 三角形の中を塗りつぶす
@@ -141,7 +136,7 @@ void PSO::SetRasterrizerState() {
 }
 
 
-PSO* PSO::GatInstance() {
-	static PSO instance;
+PSOSprite* PSOSprite::GatInstance() {
+	static PSOSprite instance;
 	return &instance;
 }

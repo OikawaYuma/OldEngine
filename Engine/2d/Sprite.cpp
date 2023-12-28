@@ -50,7 +50,6 @@ void Sprite::Initialize() {
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
 	materialData->color = { 1.0f,1.0f,1.0f,1.0f };
-	materialData->enableLighting = false;
 	materialData->uvTransform = MakeIdentity4x4();
 
 
@@ -60,10 +59,10 @@ void Sprite::Initialize() {
 	// 書き込むためのアドレスを取得
 	transformationMatrixResouceSprite->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixDataSprite));
 	// 単位行列を書き込んでおく
-	*transformationMatrixDataSprite = MakeIdentity4x4();
+	transformationMatrixDataSprite->WVP = MakeIdentity4x4();
 
 	// Transform変数の初期化
-	transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	transform_ = { {1.0f,1.0f,0.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 
 	indexResourceSprite = Mesh::CreateBufferResource(sDirectXCommon->GetDevice(), sizeof(uint32_t) * 6);
 	// リソースの先頭のアドレスから使う
@@ -83,36 +82,13 @@ void Sprite::Initialize() {
 	indexDataSprite[4] = 3;
 	indexDataSprite[5] = 2;
 
-	directionalLightData = nullptr;
-	directionalLightResource = Mesh::CreateBufferResource(sDirectXCommon->GetDevice(), sizeof(DirectionalLight));
-	// 書き込むためのアドレスを取得
-	directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
-
-	// デフォルト値はとりあえず以下のようにしておく
-	directionalLightData->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
-	directionalLightData->intensity = 1.0f;
-
 	transformUv = {
 		{1.0f,1.0f,1.0f},
 		{0.0f,0.0f,0.0f},
 		{0.0f,0.0f,0.0f}
 	};
 
-	//クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = (float)sWinAPI->GetKClientWidth();
-	viewport.Height = (float)sWinAPI->GetKClientHeight();
-	viewport.TopLeftX = 1;
-	viewport.TopLeftY = 1;
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-
-
-	// 基本的にビューポートと同じ矩形が構成されるようにする
-	scissorRect.left = 0;
-	scissorRect.right = sWinAPI->GetKClientWidth();
-	scissorRect.top = 0;
-	scissorRect.bottom = sWinAPI->GetKClientHeight();
+	
 
 };
 //void Sprite::Update() {
@@ -120,15 +96,13 @@ void Sprite::Initialize() {
 //};
 
 void Sprite::Draw(uint32_t texture) {
-	pso_ = PSO::GatInstance();
+	pso_ = PSOSprite::GatInstance();
 	// Sprite用のWorldViewProjectMatrixを作る
 	Matrix4x4 worldMatrixSprite = MakeAffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
 	Matrix4x4 viewMatrixSprite = MakeIdentity4x4();
-	Matrix4x4 projectionMatrixSprite = MakeOrthographicMatrix(0.0f, 0.0f, float(sWinAPI->GetKClientWidth()), float(sWinAPI->GetKClientHeight()), 0.0f, 100.0f);
+	Matrix4x4 projectionMatrixSprite = MakeOrthographicMatrix(0.0f, 0.0f, float(WinAPI::kClientWidth_), float(WinAPI::kClientHeight_), 0.0f, 100.0f);
 	Matrix4x4 worldViewProjectionMatrixSprite = Multiply(worldMatrixSprite, Multiply(viewMatrixSprite, projectionMatrixSprite));
-	*transformationMatrixDataSprite = worldViewProjectionMatrixSprite;
-	sDirectXCommon->GetCommandList()->RSSetViewports(1, &viewport);  //viewportを設定
-	sDirectXCommon->GetCommandList()->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
+	transformationMatrixDataSprite->WVP = worldViewProjectionMatrixSprite;
 	sDirectXCommon->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
 	sDirectXCommon->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定
 	sDirectXCommon->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferViewSprite_); // VBVを設定
@@ -139,10 +113,8 @@ void Sprite::Draw(uint32_t texture) {
 	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
 	// TransformationmatrixCBufferの場所を設定
 	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResouceSprite->GetGPUVirtualAddress());
-
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_[texture]);
-	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, directionalLightResource->GetGPUVirtualAddress());
 	// 描画（DrawCall/ドローコール）
 	//sDirectXCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
 	sDirectXCommon->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
