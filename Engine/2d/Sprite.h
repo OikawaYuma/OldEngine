@@ -34,9 +34,9 @@ public:
 	Sprite();
 	~Sprite();
 
-	void Initialize();
+	void Initialize(const Vector4& color);
 	//void Update();
-	void Draw(uint32_t texture);
+	void Draw(uint32_t texture, const Vector4& color);
 	void Release();
 	void SetTextureManager(TextureManager* textureManager) {
 		textureManager_ = textureManager;
