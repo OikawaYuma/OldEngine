@@ -5,7 +5,7 @@
 
 	
 
-	class PSOSprite
+class PSOSprite : public PSOProperty
 {
 public:
 	static PSOSprite* GatInstance();

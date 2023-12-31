@@ -140,6 +140,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3d\WorldTransform.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
     <ClCompile Include="Engine\Interface\PSOSprite.cpp" />
+    <ClCompile Include="Engine\Interface\PSOProperty.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Audio\Audio.h" />

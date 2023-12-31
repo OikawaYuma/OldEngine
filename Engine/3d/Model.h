@@ -42,9 +42,9 @@ public:
 	ModelData GetModelData() { return modelData_; }
 	Model();
 	~Model();
-	void Initialize(const std::string& directoryPath, const std::string& filename);
+	void Initialize(const std::string& directoryPath, const std::string& filename, const Vector4& color);
 	void Update();
-	void Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera);
+	void Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera,const Vector4 &color);
 
 
 	void SetTextureManager(TextureManager* textureManager) {
