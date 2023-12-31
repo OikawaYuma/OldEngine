@@ -110,7 +110,7 @@ MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, c
 		return materialData;
 };
 
-void Model::Initialize(const std::string& directoryPath, const std::string& filename) {
+void Model::Initialize(const std::string& directoryPath, const std::string& filename, const Vector4& color) {
 	WinAPI* sWinAPI = WinAPI::GetInstance();
 	directXCommon_ = DirectXCommon::GetInstance();
 	
@@ -138,7 +138,7 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	// 書き込むためのアドレスを取得
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
-	materialData->color = {1.0f,1.0f,1.0f,1.0f};
+	materialData->color = color;
 	materialData->enableLighting = true;
 	materialData->uvTransform = MakeIdentity4x4();
 
@@ -176,14 +176,14 @@ void Model::Update() {
 };
 
 
-void Model::Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera) {
+void Model::Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera, const Vector4& color) {
 	camera_ = camera;
 	pso_ = PSO::GatInstance();
 	Matrix4x4 worldViewProjectionMatrix = Multiply(worldTransform.matWorld_, Multiply(camera_->viewMatrix_, camera_->projectionMatrix_));
 	wvpData->WVP = worldViewProjectionMatrix;
 	textureManager_ = TextureManager::GetInstance();
 	// 色のデータを変数から読み込み
-	materialData->color = {1.0f,1.0f,1.0f,1.0f};
+	materialData->color = color;
 	directXCommon_->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
 	directXCommon_->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定
 	directXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);    //VBVを設定

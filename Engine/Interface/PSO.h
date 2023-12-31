@@ -5,7 +5,7 @@
 
 
 
-class PSO
+class PSO : public PSOProperty
 {
 public:
 	static PSO* GatInstance();
