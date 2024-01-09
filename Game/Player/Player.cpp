@@ -17,7 +17,8 @@ void Player::Init() {
 	soundData2 = Audio::SoundLoadWave("Resources/fanfare.wav");
 	model_ = new Model();
 	model_->Initialize("Resources/axis","axis.obj",color);
-
+	particle = new Particle();
+	particle->Initialize({ 1.0f, 1.0f, 1.0f, 1.0f });
 	sprite_ = new Sprite;
 	sprite_->Initialize(color);
 }
@@ -49,8 +50,9 @@ void Player::Update() {
 }
 
 void Player::Draw(Camera *camera) {
-	model_->Draw(worldTransform_, texture2_, camera,color);
-	sprite_->Draw(texture_,color);
+	//model_->Draw(worldTransform_, texture2_, camera,color);
+	//sprite_->Draw(texture_,color);
+	particle->Draw(texture_, color, camera);
 }
 
 void Player::Release()

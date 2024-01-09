@@ -4,6 +4,7 @@
 #include "WorldTransform.h"
 #include "Player.h"
 #include "Input.h"
+#include "Particle.h"
 class TitleScene : public IScene
 {
 public:
@@ -18,5 +19,6 @@ private:
 	Camera* camera = nullptr;
 	Player* player_ = nullptr;
 	Input* input = nullptr;
+	
 };
 

@@ -47,7 +47,11 @@ int TextureManager::StoreTexture(const std::string& filePath) {
 	index_++;
 	return returnIndex;
 };
-
+int  TextureManager::PlusIndex() {
+	int  returnIndex = index_;
+	index_++;
+	return returnIndex;
+}
 void TextureManager::Release() {
 }
 

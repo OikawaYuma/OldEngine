@@ -82,6 +82,8 @@
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Interface\PSOSprite.cpp" />
     <ClCompile Include="Engine\Interface\PSOProperty.cpp" />
+    <ClCompile Include="Engine\Interface\PSOParticle.cpp" />
+    <ClCompile Include="Engine\3d\Particle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Externals\imgui\imconfig.h">
@@ -167,6 +169,8 @@
     <ClInclude Include="Engine\Audio\Audio.h" />
     <ClInclude Include="Engine\Interface\PSOSprite.h" />
     <ClInclude Include="Engine\Interface\PSOProperty.h" />
+    <ClInclude Include="Engine\Interface\PSOParticle.h" />
+    <ClInclude Include="Engine\3d\Particle.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

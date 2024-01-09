@@ -2,7 +2,7 @@
 //{
 //	return float4(1.0f, 1.0f, 1.0f, 1.0f);
 //}
-#include "Object3d.hlsli"
+#include "Particle.hlsli"
 
 struct Material {
 	float32_t4 color;
@@ -14,6 +14,7 @@ struct DirectionalLight {
 	float32_t3 direction; //!< ライトの向き
 	float intensity; //!< 輝度
 };
+
 ConstantBuffer<Material> gMaterial : register(b0);
 ConstantBuffer<DirectionalLight> gDirectionalLight : register(b1);
 Texture2D<float32_t4> gTexture : register(t0);
@@ -30,7 +31,7 @@ PixelShaderOutput main(VertexShaderOutput input)
 	float4 transformedUV = mul(float32_t4(input.texcoord,0.0f, 1.0f), gMaterial.uvTransform);
 	float32_t4 textureColor = gTexture.Sample(gSampler, transformedUV.xy);
 	output.color = gMaterial.color * textureColor;
-	if (gMaterial.enableLighting != 0) {
+	/*if (gMaterial.enableLighting != 0) {
 		float NdotL = dot(normalize(input.normal), -gDirectionalLight.direction);
 		float cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
 		output.color.rgb = gMaterial.color.rgb * textureColor.rgb * gDirectionalLight.color.rgb * cos * gDirectionalLight.intensity;
@@ -38,10 +39,10 @@ PixelShaderOutput main(VertexShaderOutput input)
 	}
 	else {
 		output.color = gMaterial.color * textureColor;
-	}
-	if (textureColor.a == 0.0) {
+	}*/
+	/*if (textureColor.a == 0.0) {
 		discard;
-	}
+	}*/
 	if (output.color.a == 0.0) {
 		discard;
 	}
