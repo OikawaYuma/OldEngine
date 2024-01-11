@@ -31,14 +31,14 @@ void Particle::Initialize(const Vector4& color) {
 	vertexResourceSprite_->Map(0, nullptr, reinterpret_cast<void**>(&vertexDataSprite_));
 
 	// 1枚目の三角形
-	vertexDataSprite_[0].position = { -1.0f,1.0f,0.0f,1.0f };//左下
+	vertexDataSprite_[0].position = { -1.0f,-1.0f,0.0f,1.0f };//左下
 	vertexDataSprite_[0].texcorrd = { 0.0f,1.0f };
-	vertexDataSprite_[1].position = { -1.0f,-1.0f,0.0f,1.0f }; // 左上
+	vertexDataSprite_[1].position = { -1.0f,1.0f,0.0f,1.0f }; // 左上
 	vertexDataSprite_[1].texcorrd = { 0.0f,0.0f };
-	vertexDataSprite_[2].position = { 1.0f,1.0f,0.0f,1.0f }; // 右下
+	vertexDataSprite_[2].position = { 1.0f,-1.0f,0.0f,1.0f }; // 右下
 	vertexDataSprite_[2].texcorrd = { 1.0f,1.0f };
 
-	vertexDataSprite_[3].position = { 1.0f,-1.0f,0.0f,1.0f }; // 右上
+	vertexDataSprite_[3].position = { 1.0f,1.0f,0.0f,1.0f }; // 右上
 	vertexDataSprite_[3].texcorrd = { 1.0f,0.0f };
 
 	//vertexDataSprite_[0].normal = {
@@ -115,7 +115,7 @@ void Particle::Initialize(const Vector4& color) {
 
 	for (uint32_t index = 0; index < kNumInstance; ++index) {
 		transforms_[index].scale = { 1.0f,1.0f,1.0f };
-		transforms_[index].rotate = { 1.0f,0.0f,0.0f };
+		transforms_[index].rotate = { 0.0f,0.0f,0.0f };
 		transforms_[index].translate = { index * 0.1f, index * 0.1f , index * 0.1f };
 
 	}
@@ -160,7 +160,7 @@ void Particle::Draw(uint32_t texture, const Vector4& color, Camera* camera) {
 	// Sprite用のWorldViewProjectMatrixを作る
 	for (uint32_t index = 0; index < kNumInstance; ++index) {
 
-		transforms_[index].rotate.x += 0.1f;
+		//transforms_[index].rotate.x += 0.1f;
 		Matrix4x4 worldMatrix = MakeAffineMatrix(transforms_[index].scale, transforms_[index].rotate, transforms_[index].translate);
 		//Matrix4x4 worldViewProjectionMatrixSprite = Multiply(worldMatrixSprite, Multiply(viewMatrixSprite, projectionMatrixSprite));
 		Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera->viewMatrix_, camera->projectionMatrix_));
