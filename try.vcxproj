@@ -50,7 +50,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>$(ProjectDir)\Engine\Externals\imgui;$(ProjectDir)\Engine\Externals\DirectXTex;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\Engine\Externals\imgui;$(ProjectDir)\Engine\Externals\DirectXTex;$(SolutionDir)\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -62,6 +62,7 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Interface;$(ProjectDir)Engine\Adapter;$(ProjectDir)Engine\Include;$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)\Game\Player;$(ProjectDir)Game\Scene;$(ProjectDir)Resources\shaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -89,6 +90,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Interface;$(ProjectDir)Engine\Adapter;$(ProjectDir)Engine\Include;$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)\Game\Player;$(ProjectDir)Game\Scene;$(ProjectDir)Resources\shaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -120,16 +122,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\2d\Sprite.cpp" />
     <ClCompile Include="Engine\3d\Camera.cpp" />
     <ClCompile Include="Engine\Interface\DirectXCommon.cpp" />
-    <ClCompile Include="Engine\Externals\imgui\imgui.cpp" />
-    <ClCompile Include="Engine\Externals\imgui\imgui_demo.cpp" />
-    <ClCompile Include="Engine\Externals\imgui\imgui_draw.cpp" />
-    <ClCompile Include="Engine\Externals\imgui\imgui_impl_dx12.cpp" />
-    <ClCompile Include="Engine\Externals\imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="Engine\Externals\imgui\imgui_tables.cpp" />
-    <ClCompile Include="Engine\Externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\3d\Triangle.cpp" />
     <ClCompile Include="Game\Scene\TitleScene.cpp" />
     <ClCompile Include="Engine\Input\InputManager.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Lib\utility\function.cpp" />
     <ClCompile Include="Engine\2d\ImGuiCommon.cpp" />
     <ClCompile Include="main.cpp" />
@@ -154,6 +156,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Input\Input.h" />
     <ClInclude Include="Game\Scene\IScene.h" />
     <ClInclude Include="Engine\Input\InputManager.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_impl_dx12.h" />
+    <ClInclude Include="imgui\imgui_impl_win32.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Lib\math\MaterialData.h" />
     <ClInclude Include="Engine\3d\Material.h" />
     <ClInclude Include="Lib\math\Matrix3x3.h" />
@@ -164,14 +174,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\2d\Sprite.h" />
     <ClInclude Include="Engine\3d\Camera.h" />
     <ClInclude Include="Engine\Interface\DirectXCommon.h" />
-    <ClInclude Include="Engine\Externals\imgui\imconfig.h" />
-    <ClInclude Include="Engine\Externals\imgui\imgui.h" />
-    <ClInclude Include="Engine\Externals\imgui\imgui_impl_dx12.h" />
-    <ClInclude Include="Engine\Externals\imgui\imgui_impl_win32.h" />
-    <ClInclude Include="Engine\Externals\imgui\imgui_internal.h" />
-    <ClInclude Include="Engine\Externals\imgui\imstb_rectpack.h" />
-    <ClInclude Include="Engine\Externals\imgui\imstb_textedit.h" />
-    <ClInclude Include="Engine\Externals\imgui\imstb_truetype.h" />
     <ClInclude Include="Engine\3d\Triangle.h" />
     <ClInclude Include="Game\Scene\TitleScene.h" />
     <ClInclude Include="Lib\utility\function.h" />
@@ -230,9 +232,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Engine\Externals\imgui\LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="imgui\imgui.ini" />
     <None Include="Object3d.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
@@ -248,6 +248,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ProjectReference Include="Engine\Externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
+    <ProjectReference Include="imgui\imgui.vcxproj">
+      <Project>{03e6e164-2080-4629-bda9-76df9ed2f75f}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="imgui\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -22,27 +22,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Externals\imgui\imgui.cpp">
-      <Filter>Include\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Externals\imgui\imgui_demo.cpp">
-      <Filter>Include\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Externals\imgui\imgui_draw.cpp">
-      <Filter>Include\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Externals\imgui\imgui_impl_dx12.cpp">
-      <Filter>Include\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Externals\imgui\imgui_impl_win32.cpp">
-      <Filter>Include\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Externals\imgui\imgui_tables.cpp">
-      <Filter>Include\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Externals\imgui\imgui_widgets.cpp">
-      <Filter>Include\Imgui</Filter>
-    </ClCompile>
     <ClCompile Include="Lib\utility\function.cpp">
       <Filter>Func</Filter>
     </ClCompile>
@@ -84,32 +63,15 @@
     <ClCompile Include="Engine\Interface\PSOProperty.cpp" />
     <ClCompile Include="Engine\Interface\PSOParticle.cpp" />
     <ClCompile Include="Engine\3d\Particle.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\Externals\imgui\imconfig.h">
-      <Filter>Include\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Externals\imgui\imgui.h">
-      <Filter>Include\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Externals\imgui\imgui_impl_dx12.h">
-      <Filter>Include\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Externals\imgui\imgui_impl_win32.h">
-      <Filter>Include\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Externals\imgui\imgui_internal.h">
-      <Filter>Include\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Externals\imgui\imstb_rectpack.h">
-      <Filter>Include\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Externals\imgui\imstb_textedit.h">
-      <Filter>Include\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Externals\imgui\imstb_truetype.h">
-      <Filter>Include\Imgui</Filter>
-    </ClInclude>
     <ClInclude Include="Lib\utility\function.h">
       <Filter>Func</Filter>
     </ClInclude>
@@ -171,6 +133,14 @@
     <ClInclude Include="Engine\Interface\PSOProperty.h" />
     <ClInclude Include="Engine\Interface\PSOParticle.h" />
     <ClInclude Include="Engine\3d\Particle.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_impl_dx12.h" />
+    <ClInclude Include="imgui\imgui_impl_win32.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
@@ -185,13 +155,12 @@
     <FxCompile Include="Particle.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Engine\Externals\imgui\LICENSE.txt">
-      <Filter>Include\Imgui</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Object3d.hlsli" />
     <None Include="Sprite.hlsli" />
     <None Include="Particle.hlsli" />
+    <None Include="imgui\imgui.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="imgui\LICENSE.txt" />
   </ItemGroup>
 </Project>
