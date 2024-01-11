@@ -32,6 +32,7 @@ class TextureManager;
 class Particle
 {
 public:
+	
 	Particle();
 	~Particle();
 
