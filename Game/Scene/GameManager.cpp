@@ -4,6 +4,7 @@
 #include "DirectXCommon.h"
 #include "PSO.h"
 #include "PSOSprite.h"
+#include "PSOParticle.h"
 #include "Input.h"
 #include "Mesh.h"
 #include "ImGuiCommon.h"
@@ -58,6 +59,9 @@ int GameManager::Run() {
 
 	PSOSprite* psoSprite = PSOSprite::GatInstance();
 	psoSprite->CreatePipelineStateObject();
+
+	PSOParticle* psoParticle = PSOParticle::GatInstance();
+	psoParticle->CreatePipelineStateObject();
 
 	sceneArr_[currentSceneNo_]->Init();
 

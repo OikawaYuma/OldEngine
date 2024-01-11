@@ -6,7 +6,7 @@
 #include "IScene.h"
 #include "TextureManager.h"
 #include "Audio.h"
-
+#include "Particle.h"
 #include "Sprite.h"
 class Player 
 {
@@ -27,5 +27,7 @@ private:
 	uint32_t soundData2;
 	Vector4 color = {1.0f,1.0f,1.0f,1.0f};
 	Sprite* sprite_ = nullptr;
+
+	Particle* particle = nullptr;
 };
 

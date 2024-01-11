@@ -8,7 +8,7 @@
 
 
 Sprite::Sprite() {};
-void Sprite::Initialize() {
+void Sprite::Initialize(const Vector4& color) {
 	sWinAPI = WinAPI::GetInstance();
 	sDirectXCommon = DirectXCommon::GetInstance();
 
@@ -49,7 +49,7 @@ void Sprite::Initialize() {
 	// 書き込むためのアドレスを取得
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
-	materialData->color = { 1.0f,1.0f,1.0f,1.0f };
+	materialData->color = color;
 	materialData->uvTransform = MakeIdentity4x4();
 
 
@@ -95,8 +95,9 @@ void Sprite::Initialize() {
 //
 //};
 
-void Sprite::Draw(uint32_t texture) {
+void Sprite::Draw(uint32_t texture, const Vector4& color) {
 	pso_ = PSOSprite::GatInstance();
+	materialData->color = color;
 	// Sprite用のWorldViewProjectMatrixを作る
 	Matrix4x4 worldMatrixSprite = MakeAffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
 	Matrix4x4 viewMatrixSprite = MakeIdentity4x4();

@@ -16,10 +16,11 @@ void Player::Init() {
 	soundData = Audio::SoundLoadWave("Resources/fanfare.wav");
 	soundData2 = Audio::SoundLoadWave("Resources/fanfare.wav");
 	model_ = new Model();
-	model_->Initialize("Resources/multiMaterial","multiMaterial.obj",color);
-
+	model_->Initialize("Resources/axis","axis.obj",color);
+	particle = new Particle();
+	particle->Initialize({ 1.0f, 1.0f, 1.0f, 1.0f });
 	sprite_ = new Sprite;
-	sprite_->Initialize();
+	sprite_->Initialize(color);
 }
 
 void Player::Update() {
@@ -43,14 +44,15 @@ void Player::Update() {
 	worldTransform_.UpdateMatrix();
 
 	ImGui::Begin("Color");
-	ImGui::DragFloat4("color",&color.x);
+	ImGui::DragFloat4("color",&color.x,0.01f);
 	ImGui::End();
 	//Audio::SoundLoopWave(Audio::GetIXAudio().Get(), soundData);
 }
 
 void Player::Draw(Camera *camera) {
-	model_->Draw(worldTransform_, texture2_, camera,color);
-	sprite_->Draw(texture_);
+	//model_->Draw(worldTransform_, texture2_, camera,color);
+	//sprite_->Draw(texture_,color);
+	particle->Draw(texture_, color, camera);
 }
 
 void Player::Release()

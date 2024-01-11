@@ -25,7 +25,7 @@ public:
 	TextureManager() = default;
 	~TextureManager() = default;
 	const TextureManager& operator=(const TextureManager&) = delete;
-
+	static int PlusIndex();
 	// デスクリプタ―の数
 	static const size_t kNumDescriptors = 256;
 
