@@ -11,7 +11,7 @@ Player::~Player() {
 void Player::Init() {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
-	texture_ = TextureManager::StoreTexture("Resources/uvChecker.png");
+	texture_ = TextureManager::StoreTexture("Resources/circle.png");
 	texture2_ = TextureManager::StoreTexture("Resources/monsterBall.png");
 	soundData = Audio::SoundLoadWave("Resources/fanfare.wav");
 	soundData2 = Audio::SoundLoadWave("Resources/fanfare.wav");

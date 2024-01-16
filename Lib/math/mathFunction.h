@@ -27,3 +27,5 @@ Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip
 Matrix4x4 MakeScaleMatrix(const Vector3& scale);
 
 Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
+
+Vector3 Add(const Vector3& posa, const Vector3& posb);

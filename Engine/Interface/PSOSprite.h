@@ -45,6 +45,10 @@ public:
 	/// </summary>
 	/// <returns></returns>
 
+	/// <summary>
+	/// DepthBufferの生成
+	/// </summary>
+	void CreateDepth();
 
 
 	PSOProperty GetProperty() { return property; }
@@ -80,7 +84,12 @@ private:
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
 	//実際に生成
 	//ID3D12PipelineState* graphicsPipelineState;
+	
+	// DepthStencilStateの設定
+	D3D12_DEPTH_STENCIL_DESC depthStencilDesc_{};
 
+	// 描画先のRTVを設定する
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle;
 
 	PSOProperty property;
 

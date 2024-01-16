@@ -302,3 +302,14 @@ Matrix4x4 MakeTranslateMatrix(const Vector3& translate) {
 	return m4;
 
 };
+
+Vector3 Add(const Vector3& posa, const Vector3& posb) {
+	Vector3 AddPos;
+
+	AddPos.x = posa.x +
+		posb.x;
+	AddPos.y = posa.y + posb.y;
+	AddPos.z = posa.z + posb.z;
+
+	return AddPos;
+}
