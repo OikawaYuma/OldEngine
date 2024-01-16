@@ -9,6 +9,7 @@
 #include <dxgi1_6.h>
 #include <cassert>
 #include <dxcapi.h>
+#include <random>
 
 #include "function.h"
 #include <wrl.h>
@@ -29,9 +30,24 @@ class Camera;
 class Mesh;
 class TextureManager;
 
+struct ParticleForGPU {
+	Matrix4x4 WVP;
+	Matrix4x4 World;
+	Vector4 color;
+};
+
 class Particle
 {
 public:
+	struct ParticlePro { // プロパティ
+		Transform transform;
+		Vector3 velocity;
+		Vector4 color;
+		float lifeTime;
+		float currentTime;
+	};
+	
+
 	Particle();
 	~Particle();
 
@@ -42,10 +58,11 @@ public:
 	void SetTextureManager(TextureManager* textureManager) {
 		textureManager_ = textureManager;
 	}
+	ParticlePro MakeNewParticle(std::mt19937& randomEngine);
 
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
 private:
-	const static uint32_t kNumInstance = 10; // インスタンス数
+	const static uint32_t kNumMaxInstance = 10; // インスタンス数
 	// Instancing用のTransformMatrixリソースを作る
 	Microsoft::WRL::ComPtr<ID3D12Resource> instancingResorce = nullptr;
 	PSOParticle* pso_ = nullptr;
@@ -86,13 +103,19 @@ private:
 	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
 	// 頂点リソースにデータを書き込む
 	Material* materialData;
-
-	Transform transforms_[kNumInstance];
-	TransformationMatrix* instancingData = nullptr;
+	ParticlePro particles_[kNumMaxInstance];
+	Transform transforms_[kNumMaxInstance];
+	ParticleForGPU* instancingData = nullptr;
 	// 平行光源用
 	Microsoft::WRL::ComPtr < ID3D12Resource> directionalLightResource;
 	// データを書き込む
 	DirectionalLight* directionalLightData;
 	Transform transformUv;
+
+	// Δtを定義。とりあえず60fps固定してあるが、
+	//実時間を計測して可変fpsで動かせるようにしておくとなお良い
+	const float kDeltaTime = 1.0f / 60.0f;
+
+
 };
 

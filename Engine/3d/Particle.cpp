@@ -8,6 +8,7 @@
 
 
 
+
 Particle::Particle() {};
 void Particle::Initialize(const Vector4& color) {
 	sWinAPI = WinAPI::GetInstance();
@@ -77,14 +78,15 @@ void Particle::Initialize(const Vector4& color) {
 	// Transform変数の初期化
 	
 	// Sprite用のTransformationMatrix用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	transformationMatrixResouceSprite = Mesh::CreateBufferResource(sDirectXCommon->GetDevice(), sizeof(TransformationMatrix) * 10);
+	transformationMatrixResouceSprite = Mesh::CreateBufferResource(sDirectXCommon->GetDevice(), sizeof(ParticleForGPU) * 10);
 	// 書き込むためのアドレスを取得
 	transformationMatrixResouceSprite->Map(0, nullptr, reinterpret_cast<void**>(&instancingData));
 	// 単位行列を書き込んでおく
 	
-	for (uint32_t index = 0; index < kNumInstance; ++index) {
+	for (uint32_t index = 0; index < kNumMaxInstance; ++index) {
 		instancingData[index].WVP = MakeIdentity4x4();
 		instancingData[index].World = MakeIdentity4x4();
+		instancingData[index].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	
@@ -112,12 +114,11 @@ void Particle::Initialize(const Vector4& color) {
 		{0.0f,0.0f,0.0f},
 		{0.0f,0.0f,0.0f}
 	};
-
-	for (uint32_t index = 0; index < kNumInstance; ++index) {
-		transforms_[index].scale = { 1.0f,1.0f,1.0f };
-		transforms_[index].rotate = { 0.0f,0.0f,0.0f };
-		transforms_[index].translate = { index * 0.1f, index * 0.1f , index * 0.1f };
-
+	std::random_device seedGenerator;
+	std::mt19937 randomEngine(seedGenerator());
+	//std::uniform_real_distribution<float> distribution(-1.0f, 1.0f);
+	for (uint32_t index = 0; index < kNumMaxInstance; ++index) {
+		particles_[index] = MakeNewParticle(randomEngine);
 	}
 
 	instancingSrvDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -125,8 +126,8 @@ void Particle::Initialize(const Vector4& color) {
 	instancingSrvDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
 	instancingSrvDesc.Buffer.FirstElement = 0;
 	instancingSrvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
-	instancingSrvDesc.Buffer.NumElements = kNumInstance;
-	instancingSrvDesc.Buffer.StructureByteStride = sizeof(TransformationMatrix);
+	instancingSrvDesc.Buffer.NumElements = kNumMaxInstance;
+	instancingSrvDesc.Buffer.StructureByteStride = sizeof(ParticleForGPU);
 
 	//// SRVを作成するDescriptorHeapの場所を決める
 	//instancingSrvHandleCPU = sDirectXCommon->GetSrvDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
@@ -149,6 +150,8 @@ void Particle::Initialize(const Vector4& color) {
 	directionalLightData->color = { 1.0f,1.0f,1.0f,1.0f };
 	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
 	directionalLightData->intensity = 1.0f;
+
+
 };
 //void Sprite::Update() {
 //
@@ -157,15 +160,29 @@ void Particle::Initialize(const Vector4& color) {
 void Particle::Draw(uint32_t texture, const Vector4& color, Camera* camera) {
 	pso_ = PSOParticle::GatInstance();
 	materialData->color = color;
-	// Sprite用のWorldViewProjectMatrixを作る
-	for (uint32_t index = 0; index < kNumInstance; ++index) {
 
+	uint32_t numInstance = 0;// 描画すべきインスタンス数
+	// Sprite用のWorldViewProjectMatrixを作る
+	for (uint32_t index = 0; index < kNumMaxInstance; ++index) {
+		if (particles_[index].lifeTime <= particles_[index].currentTime) {
+			continue;
+		}
+	
+		particles_[index].transform.translate.x += particles_[index].velocity.x * kDeltaTime;
+		particles_[index].transform.translate.y += particles_[index].velocity.y * kDeltaTime;
+		particles_[index].transform.translate.z += particles_[index].velocity.z * kDeltaTime;
+		particles_[index].currentTime += kDeltaTime;
+		float alpha = 1.0f - (particles_[index].currentTime / particles_[index].lifeTime);
 		//transforms_[index].rotate.x += 0.1f;
-		Matrix4x4 worldMatrix = MakeAffineMatrix(transforms_[index].scale, transforms_[index].rotate, transforms_[index].translate);
+		Matrix4x4 worldMatrix = MakeAffineMatrix(particles_[index].transform.scale, particles_[index].transform.rotate, particles_[index].transform.translate);
 		//Matrix4x4 worldViewProjectionMatrixSprite = Multiply(worldMatrixSprite, Multiply(viewMatrixSprite, projectionMatrixSprite));
 		Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera->viewMatrix_, camera->projectionMatrix_));
 		instancingData[index].WVP = worldViewProjectionMatrix;
 		instancingData[index].World = worldMatrix;
+		instancingData[index].color = particles_[index].color;
+		instancingData[index].color.w = alpha;
+		++numInstance; // 生きているparticluの数を1使うんとする
+
 	}
 	textureManager_ = TextureManager::GetInstance();
 	sDirectXCommon->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
@@ -183,11 +200,29 @@ void Particle::Draw(uint32_t texture, const Vector4& color, Camera* camera) {
 	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, directionalLightResource->GetGPUVirtualAddress());
 	// 描画（DrawCall/ドローコール）
 	//sDirectXCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
-	sDirectXCommon->GetCommandList()->DrawIndexedInstanced(6, kNumInstance, 0, 0, 0);
+	sDirectXCommon->GetCommandList()->DrawIndexedInstanced(6, numInstance, 0, 0, 0);
 }
 
 
 
+
+Particle::ParticlePro Particle::MakeNewParticle(std::mt19937& randomEngine)
+{
+	std::uniform_real_distribution<float> distribution(-1.0f, 1.0f);
+	std::uniform_real_distribution<float> distColor(0.0f, 1.0f);
+	std::uniform_real_distribution<float> distTime(0.0f, 3.0f);
+
+	Particle::ParticlePro particle;
+	particle.transform.scale = { 1.0f,1.0f,1.0f };
+	particle.transform.rotate = { 0.0f,0.0f,0.0f };
+	// 位置と速度を[-1,1]でランダムに初期化
+	particle.transform.translate = { distribution(randomEngine), distribution(randomEngine) , distribution(randomEngine) };
+	particle.velocity = { distribution(randomEngine),distribution(randomEngine),distribution(randomEngine) };
+	particle.color = { distColor(randomEngine),distColor(randomEngine) ,distColor(randomEngine) ,1.0f };
+	particle.lifeTime = distTime(randomEngine);
+	particle.currentTime = 0;
+	return particle;
+}
 
 D3D12_VERTEX_BUFFER_VIEW Particle::CreateBufferView() {
 	D3D12_VERTEX_BUFFER_VIEW view{};
