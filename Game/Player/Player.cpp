@@ -16,7 +16,7 @@ void Player::Init() {
 	soundData = Audio::SoundLoadWave("Resources/fanfare.wav");
 	soundData2 = Audio::SoundLoadWave("Resources/fanfare.wav");
 	model_ = new Model();
-	model_->Initialize("Resources/axis","axis.obj",color);
+	model_->Initialize("Resources/car","car.obj",color);
 	particle = new Particle();
 	particle->Initialize({ 1.0f, 1.0f, 1.0f, 1.0f });
 	sprite_ = new Sprite;
@@ -39,7 +39,7 @@ void Player::Update() {
 	}
 
 	if (input->PushKey(DIK_J)) {
-		worldTransform_.translation_.x++;
+		worldTransform_.translation_.y--;
 	}
 	worldTransform_.UpdateMatrix();
 
@@ -50,7 +50,7 @@ void Player::Update() {
 }
 
 void Player::Draw(Camera *camera) {
-	//model_->Draw(worldTransform_, texture2_, camera,color);
+	model_->Draw(worldTransform_, texture2_, camera,color);
 	//sprite_->Draw(texture_,color);
 	particle->Draw(texture_, color, camera);
 }

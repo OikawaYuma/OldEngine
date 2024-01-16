@@ -37,7 +37,7 @@ void PSOParticle::CreatePipelineStateObject() {
 	graphicsPipelineStateDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
 
 	// DeptjStencilの設定
-	graphicsPipelineStateDesc.DepthStencilState = sDirectXCommon->GetDepthStencilDesc();
+	graphicsPipelineStateDesc.DepthStencilState = depthStencilDesc_;
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	//実際に生成
@@ -149,9 +149,20 @@ void PSOParticle::SetBlendState() {
 
 void PSOParticle::SetRasterrizerState() {
 	//裏面（時計回り）を表示しない
-	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
+	rasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
 	// 三角形の中を塗りつぶす
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
+}
+
+void PSOParticle::CreateDepth()
+{
+
+	// Depthの機能を有効化する
+	depthStencilDesc_.DepthEnable = true;
+	// 書き込みします
+	depthStencilDesc_.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+	// 比較関数はLessEqual。つまり、近づければ描画される
+	depthStencilDesc_.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 }
 
 

@@ -3,6 +3,7 @@
 #include"Matrix4x4.h"
 #include"Transform.h"
 #include"mathFunction.h"
+#include <numbers>
 
 class Camera
 {

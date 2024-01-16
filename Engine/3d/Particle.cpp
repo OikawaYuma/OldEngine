@@ -6,6 +6,7 @@
 #include "mathFunction.h"
 #include "Mesh.h"
 
+#include <numbers>
 
 
 
@@ -160,6 +161,11 @@ void Particle::Initialize(const Vector4& color) {
 void Particle::Draw(uint32_t texture, const Vector4& color, Camera* camera) {
 	pso_ = PSOParticle::GatInstance();
 	materialData->color = color;
+	Matrix4x4 backToFrontMatrix = MakeRotateYMatrix(std::numbers::pi_v<float>);
+	Matrix4x4 billboardMatrix = Multiply(backToFrontMatrix,camera->cameraMatrix_);
+	billboardMatrix.m[3][0] = 0.0f;
+	billboardMatrix.m[3][1] = 0.0f;
+	billboardMatrix.m[3][2] = 0.0f;
 
 	uint32_t numInstance = 0;// 描画すべきインスタンス数
 	// Sprite用のWorldViewProjectMatrixを作る
@@ -174,7 +180,7 @@ void Particle::Draw(uint32_t texture, const Vector4& color, Camera* camera) {
 		particles_[index].currentTime += kDeltaTime;
 		float alpha = 1.0f - (particles_[index].currentTime / particles_[index].lifeTime);
 		//transforms_[index].rotate.x += 0.1f;
-		Matrix4x4 worldMatrix = MakeAffineMatrix(particles_[index].transform.scale, particles_[index].transform.rotate, particles_[index].transform.translate);
+		Matrix4x4 worldMatrix = Multiply(MakeScaleMatrix(particles_[index].transform.scale), Multiply(billboardMatrix, MakeTranslateMatrix(particles_[index].transform.translate)));
 		//Matrix4x4 worldViewProjectionMatrixSprite = Multiply(worldMatrixSprite, Multiply(viewMatrixSprite, projectionMatrixSprite));
 		Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera->viewMatrix_, camera->projectionMatrix_));
 		instancingData[index].WVP = worldViewProjectionMatrix;
@@ -215,6 +221,7 @@ Particle::ParticlePro Particle::MakeNewParticle(std::mt19937& randomEngine)
 	Particle::ParticlePro particle;
 	particle.transform.scale = { 1.0f,1.0f,1.0f };
 	particle.transform.rotate = { 0.0f,0.0f,0.0f };
+
 	// 位置と速度を[-1,1]でランダムに初期化
 	particle.transform.translate = { distribution(randomEngine), distribution(randomEngine) , distribution(randomEngine) };
 	particle.velocity = { distribution(randomEngine),distribution(randomEngine),distribution(randomEngine) };
