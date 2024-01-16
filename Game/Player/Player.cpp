@@ -41,16 +41,19 @@ void Player::Update() {
 	if (input->PushKey(DIK_J)) {
 		worldTransform_.translation_.y--;
 	}
-	worldTransform_.UpdateMatrix();
+	
 
 	ImGui::Begin("Color");
-	ImGui::DragFloat4("color",&color.x,0.01f);
+	ImGui::DragFloat4("s",&worldTransform_.scale_.x,0.01f);
+	ImGui::DragFloat4("r", &worldTransform_.rotation_.x,  0.01f);
+	ImGui::DragFloat4("t", &worldTransform_.translation_.x,  0.01f);
 	ImGui::End();
 	//Audio::SoundLoopWave(Audio::GetIXAudio().Get(), soundData);
+	worldTransform_.UpdateMatrix();
 }
 
 void Player::Draw(Camera *camera) {
-	model_->Draw(worldTransform_, texture2_, camera,color);
+	model_->Draw(worldTransform_, texture_, camera,color);
 	//sprite_->Draw(texture_,color);
 	particle->Draw(texture_, color, camera);
 }
