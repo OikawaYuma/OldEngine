@@ -46,11 +46,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>$(ProjectDir)\Engine\Externals\imgui;$(ProjectDir)\Engine\Externals\DirectXTex;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\Engine\Externals\DirectXTex;$(SolutionDir)\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>$(ProjectDir)\imgui;$(ProjectDir)\Engine\Externals\DirectXTex;$(SolutionDir)\imgui;$(IncludePath)</IncludePath>
+
+    <IncludePath>$(ProjectDir)\Engine\Externals\DirectXTex;$(SolutionDir)\imgui;$(IncludePath)</IncludePath>
+
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

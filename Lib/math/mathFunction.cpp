@@ -88,6 +88,42 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Ve
 	return m4;
 };
 
+// 3次元アフィン変換行列
+Matrix4x4 MakeAffineMatrixBillboard(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
+	Matrix4x4 m4;
+	Matrix4x4 m1 = MakeRotateXMatrix(rotate.x);
+
+	Matrix4x4 m2 = MakeRotateYMatrix(rotate.y);
+
+	Matrix4x4 m3 = MakeRotateZMatrix(rotate.z);
+
+	Matrix4x4 xyz = Multiply(m1, Multiply(m2, m3));
+
+
+	m4.m[0][0] = xyz.m[0][0] * scale.x;
+	m4.m[0][1] = xyz.m[0][1] * scale.x;
+	m4.m[0][2] = xyz.m[0][2] * scale.x;
+
+	m4.m[1][0] = xyz.m[1][0] * scale.y;
+	m4.m[1][1] = xyz.m[1][1] * scale.y;
+	m4.m[1][2] = xyz.m[1][2] * scale.y;
+
+	m4.m[2][0] = xyz.m[2][0] * scale.z;
+	m4.m[2][1] = xyz.m[2][1] * scale.z;
+	m4.m[2][2] = xyz.m[2][2] * scale.z;
+
+
+	m4.m[3][0] = translate.x;
+	m4.m[3][1] = translate.y;
+	m4.m[3][2] = translate.z;
+	m4.m[0][3] = 0;
+	m4.m[1][3] = 0;
+	m4.m[2][3] = 0;
+	m4.m[3][3] = 1.0f;
+
+	return m4;
+};
+
 // 1. X軸回転行列
 Matrix4x4 MakeRotateXMatrix(float radian) {
 	Matrix4x4 m4;
@@ -302,3 +338,14 @@ Matrix4x4 MakeTranslateMatrix(const Vector3& translate) {
 	return m4;
 
 };
+
+Vector3 Add(const Vector3& posa, const Vector3& posb) {
+	Vector3 AddPos;
+
+	AddPos.x = posa.x +
+		posb.x;
+	AddPos.y = posa.y + posb.y;
+	AddPos.z = posa.z + posb.z;
+
+	return AddPos;
+}

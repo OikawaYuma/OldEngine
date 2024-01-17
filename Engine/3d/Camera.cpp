@@ -2,7 +2,7 @@
 #include"WinAPI.h"
 
 void Camera::Initialize() {
-	cameraTransform_={ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,00.0f,-15.0f} };
+	cameraTransform_={ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,-10.0f} };
 	//WinAPI* sWinAPI = WinAPI::GetInstance();
 
 	cameraMatrix_ = MakeAffineMatrix(cameraTransform_.scale, cameraTransform_.rotate, cameraTransform_.translate);
