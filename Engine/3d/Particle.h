@@ -36,6 +36,13 @@ struct ParticleForGPU {
 	Vector4 color;
 };
 
+struct Emitter {
+	Transform transform; //!< エミッタのTransform
+	uint32_t count; //!< 発生数
+	float frequency; //!< 発生頻度
+	float frequencyTime; //!< 頻度用時刻
+};
+
 class Particle
 {
 public:
@@ -60,6 +67,7 @@ public:
 	}
 	ParticlePro MakeNewParticle(std::mt19937& randomEngine);
 
+	std::list<ParticlePro> Emission(const Emitter& emitter, std::mt19937& randEngine);
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
 private:
 	const static uint32_t kNumMaxInstance = 10; // インスタンス数
@@ -103,14 +111,17 @@ private:
 	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
 	// 頂点リソースにデータを書き込む
 	Material* materialData;
-	ParticlePro particles_[kNumMaxInstance];
-	Transform transforms_[kNumMaxInstance];
+	std::list<ParticlePro> particles_;
+	//ParticlePro particles_[kNumMaxInstance];
+	std::list<Transform>  transforms_;
 	ParticleForGPU* instancingData = nullptr;
 	// 平行光源用
 	Microsoft::WRL::ComPtr < ID3D12Resource> directionalLightResource;
 	// データを書き込む
 	DirectionalLight* directionalLightData;
 	Transform transformUv;
+
+	
 
 	// Δtを定義。とりあえず60fps固定してあるが、
 	//実時間を計測して可変fpsで動かせるようにしておくとなお良い

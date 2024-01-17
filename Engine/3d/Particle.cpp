@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "mathFunction.h"
 #include "Mesh.h"
+#include "ImGuiCommon.h"
 
 #include <numbers>
 
@@ -115,12 +116,15 @@ void Particle::Initialize(const Vector4& color) {
 		{0.0f,0.0f,0.0f},
 		{0.0f,0.0f,0.0f}
 	};
-	std::random_device seedGenerator;
-	std::mt19937 randomEngine(seedGenerator());
+	
 	//std::uniform_real_distribution<float> distribution(-1.0f, 1.0f);
-	for (uint32_t index = 0; index < kNumMaxInstance; ++index) {
-		particles_[index] = MakeNewParticle(randomEngine);
-	}
+	//for (uint32_t index = 0; index < kNumMaxInstance; ++index) {
+	//	//particles_[index] = MakeNewParticle(randomEngine);
+	//	
+	//}
+
+	
+	
 
 	instancingSrvDesc.Format = DXGI_FORMAT_UNKNOWN;
 	instancingSrvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
@@ -166,28 +170,38 @@ void Particle::Draw(uint32_t texture, const Vector4& color, Camera* camera) {
 	billboardMatrix.m[3][0] = 0.0f;
 	billboardMatrix.m[3][1] = 0.0f;
 	billboardMatrix.m[3][2] = 0.0f;
-
+	std::random_device seedGenerator;
+	std::mt19937 randomEngine(seedGenerator());
+	ImGui::Begin("Particle Add");
+	if (ImGui::Button("Add pa")) {
+		particles_.push_back(MakeNewParticle(randomEngine));
+	}
+	ImGui::End();
 	uint32_t numInstance = 0;// 描画すべきインスタンス数
 	// Sprite用のWorldViewProjectMatrixを作る
-	for (uint32_t index = 0; index < kNumMaxInstance; ++index) {
-		if (particles_[index].lifeTime <= particles_[index].currentTime) {
+	for (std::list<ParticlePro>::iterator particleIterator = particles_.begin(); particleIterator != particles_.end();) {
+		if ((*particleIterator).lifeTime <= (*particleIterator).currentTime){
+			particleIterator = particles_.erase(particleIterator);
 			continue;
 		}
 	
-		particles_[index].transform.translate.x += particles_[index].velocity.x * kDeltaTime;
-		particles_[index].transform.translate.y += particles_[index].velocity.y * kDeltaTime;
-		particles_[index].transform.translate.z += particles_[index].velocity.z * kDeltaTime;
-		particles_[index].currentTime += kDeltaTime;
-		float alpha = 1.0f - (particles_[index].currentTime / particles_[index].lifeTime);
+		(*particleIterator).transform.translate.x += (*particleIterator).velocity.x * kDeltaTime;
+		(*particleIterator).transform.translate.y += (*particleIterator).velocity.y * kDeltaTime;
+		(*particleIterator).transform.translate.z += (*particleIterator).velocity.z * kDeltaTime;
+		(*particleIterator).currentTime += kDeltaTime;
+		float alpha = 1.0f - ((*particleIterator).currentTime / (*particleIterator).lifeTime);
 		//transforms_[index].rotate.x += 0.1f;
-		Matrix4x4 worldMatrix = Multiply(MakeScaleMatrix(particles_[index].transform.scale), Multiply(billboardMatrix, MakeTranslateMatrix(particles_[index].transform.translate)));
+		Matrix4x4 worldMatrix = Multiply(MakeScaleMatrix((*particleIterator).transform.scale), Multiply(billboardMatrix, MakeTranslateMatrix((*particleIterator).transform.translate)));
 		//Matrix4x4 worldViewProjectionMatrixSprite = Multiply(worldMatrixSprite, Multiply(viewMatrixSprite, projectionMatrixSprite));
 		Matrix4x4 worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(camera->viewMatrix_, camera->projectionMatrix_));
-		instancingData[index].WVP = worldViewProjectionMatrix;
-		instancingData[index].World = worldMatrix;
-		instancingData[index].color = particles_[index].color;
-		instancingData[index].color.w = alpha;
+		if (numInstance < kNumMaxInstance) {
+			instancingData[numInstance].WVP = worldViewProjectionMatrix;
+			instancingData[numInstance].World = worldMatrix;
+			instancingData[numInstance].color = (*particleIterator).color;
+			instancingData[numInstance].color.w = alpha;
+		}
 		++numInstance; // 生きているparticluの数を1使うんとする
+		++particleIterator;
 
 	}
 	textureManager_ = TextureManager::GetInstance();
@@ -229,6 +243,16 @@ Particle::ParticlePro Particle::MakeNewParticle(std::mt19937& randomEngine)
 	particle.lifeTime = distTime(randomEngine);
 	particle.currentTime = 0;
 	return particle;
+}
+
+std::list<Particle::ParticlePro> Particle::Emission(const Emitter& emitter, std::mt19937& randEngine)
+{
+	std::list<Particle::ParticlePro> particles;
+	for (uint32_t count = 0; count < emitter.count; ++count) {
+		particles.push_back(MakeNewParticle(randEngine));
+
+	}
+	return particles;
 }
 
 D3D12_VERTEX_BUFFER_VIEW Particle::CreateBufferView() {

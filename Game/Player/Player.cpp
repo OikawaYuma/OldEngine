@@ -24,18 +24,18 @@ void Player::Init() {
 }
 
 void Player::Update() {
-	if (input->TriggerKey(DIK_A)) {
-		IScene::SetSceneNo(STAGE) ;
+	if (input->PushKey(DIK_A)) {
+		worldTransform_.translation_.x-= 0.5f;
 	}
-	if (input->TriggerKey(DIK_B)) {
-		Audio::SoundPlayWave(Audio::GetIXAudio().Get(),soundData2,true);
+	if (input->PushKey(DIK_D)) {
+		worldTransform_.translation_.x+= 0.5f;
 	}
-	if (input->TriggerKey(DIK_N)) {
-		Audio::SoundPlayWave(Audio::GetIXAudio().Get(), soundData2,true);
+	if (input->PushKey(DIK_W)) {
+		worldTransform_.translation_.y+= 0.5f;
 	}
 
-	if (input->TriggerKey(DIK_O)) {
-		Audio::SoundStopWave(Audio::GetIXAudio().Get(), soundData2);
+	if (input->PushKey(DIK_S)) {
+		worldTransform_.translation_.y-= 0.5f;
 	}
 
 	if (input->PushKey(DIK_J)) {
