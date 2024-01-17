@@ -8,7 +8,7 @@ void PSO::CreatePipelineStateObject() {
 	PSO::SetInputLayout();
 	PSO::SetBlendState();
 	PSO::SetRasterrizerState();
-
+	PSO::CreateDepth();
 	// Shaderをコンパイルする
 	property.vertexShaderBlob = CompileShader(L"Object3d.VS.hlsl",
 		L"vs_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
