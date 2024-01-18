@@ -22,7 +22,6 @@ public:
 		return worldTransform_.translation_;
 	}
 private:
-	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
 	uint32_t texture_ = 1;
 	Input* input = nullptr;
@@ -30,10 +29,11 @@ private:
 	Sprite* sprite_ = nullptr;
 	Particle* particle = nullptr;
 	Camera* camera = nullptr;
-	float rotate_;
 public:
+	WorldTransform worldTransform_;
+	float rotate_;
 	float Speed = 0.0f;
-	float NormalSpeed = 0.1f;
-	float ShiftSpeed = 0.2f;
+	float NormalSpeed = 0.5f;
+	float ShiftSpeed = 1.0f;
 };
 

@@ -1,4 +1,6 @@
 #include "GameScene.h"
+#define _USE_MATH_DEFINES
+#include<math.h>
 
 void GameScene::Init()
 {
@@ -13,9 +15,12 @@ void GameScene::Init()
 
 void GameScene::Update()
 {
+	float theta = (car_->rotate_ / 2.0f) * (float)M_PI;
+	Vector2 move = { cosf(theta),sinf(theta) };
+	car_->worldTransform_.rotation_.y = theta;
 	sceneTime++;
 	if (input->PushKey(DIK_W)) {
-		camera->cameraTransform_.translate.z += car_->Speed;
+		camera->cameraTransform_.translate.z += car_->Speed * move.x;
 	}
 	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNo = CLEAR;
