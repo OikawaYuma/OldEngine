@@ -30,8 +30,12 @@ void Car::Update() {
 	{
 		Speed = NormalSpeed;
 	}
-
-
+	if (worldTransform_.translation_.x >= 25) {
+		worldTransform_.translation_.x = 25.0f;
+	}
+	if (worldTransform_.translation_.x <= -25) {
+		worldTransform_.translation_.x = -25.0f;
+	}
 	if (input->PushKey(DIK_A)) {
 		rotate_ -= 0.04f;
 	}
@@ -52,9 +56,9 @@ void Car::Update() {
 	if (input->PushKey(DIK_D)) {
 		worldTransform_.translation_.x += Speed;
 	}*/
-	if (input->PushKey(DIK_S)) {
+	/*if (input->PushKey(DIK_S)) {
 		worldTransform_.translation_.z -= Speed * 2;
-	}
+	}*/
 	worldTransform_.UpdateMatrix();
 	ImGui::Begin("Demo_Car");
 	ImGui::DragFloat3("translation_", (float*)&worldTransform_.translation_, 0.01f, -100.0f, 100.0f);
