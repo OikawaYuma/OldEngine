@@ -17,6 +17,10 @@ public:
 	void Update();
 	void Draw(Camera* camera);
 	void Release();
+
+	Vector3 GetWorldTransform() {
+		return worldTransform_.translation_;
+	}
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;

@@ -19,6 +19,9 @@ void GameScene::Update()
 		sceneNo = CLEAR;
 		sceneTime = 0;
 	}
+	
+	
+
 	if (input->PushKey(DIK_LSHIFT)) {
 		camera->cameraTransform_.scale.x = 1.2f;
 		camera->cameraTransform_.scale.y = 1.2f;
@@ -26,6 +29,7 @@ void GameScene::Update()
 	}
 	else
 	{
+		camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 20;
 		camera->cameraTransform_.scale.x = 1.0f;
 		camera->cameraTransform_.scale.y = 1.0f;
 		camera->cameraTransform_.scale.z = 1.0f;
