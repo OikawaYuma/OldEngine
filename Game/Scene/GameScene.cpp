@@ -19,6 +19,17 @@ void GameScene::Update()
 		sceneNo = CLEAR;
 		sceneTime = 0;
 	}
+	if (input->PushKey(DIK_LSHIFT)) {
+		camera->cameraTransform_.scale.x = 1.2f;
+		camera->cameraTransform_.scale.y = 1.2f;
+		camera->cameraTransform_.scale.z = 0.7f;
+	}
+	else
+	{
+		camera->cameraTransform_.scale.x = 1.0f;
+		camera->cameraTransform_.scale.y = 1.0f;
+		camera->cameraTransform_.scale.z = 1.0f;
+	}
 	camera->Update();
 	floor_->Update();
 	car_->Update();

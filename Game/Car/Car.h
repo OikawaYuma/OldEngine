@@ -25,7 +25,7 @@ private:
 	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
 	Sprite* sprite_ = nullptr;
 	Particle* particle = nullptr;
-
+	Camera* camera = nullptr;
 	float Speed = 0.0f;
 	float NormalSpeed = 0.05f;
 	float ShiftSpeed = 0.1f;
