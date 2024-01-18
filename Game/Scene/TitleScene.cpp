@@ -10,8 +10,6 @@ void TitleScene::Init()
 
 	player_ = new Player();
 	player_->Init();
-
-	
 }
 
 void TitleScene::Update()
