@@ -27,7 +27,7 @@ private:
 	uint32_t soundData2;
 	Vector4 color = {1.0f,1.0f,1.0f,1.0f};
 	Sprite* sprite_ = nullptr;
-
+	float rotate = 0.0f;
 	Particle* particle = nullptr;
 };
 
