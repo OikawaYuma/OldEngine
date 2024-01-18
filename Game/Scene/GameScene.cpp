@@ -26,6 +26,7 @@ void GameScene::Update()
 	}
 	else
 	{
+		camera->cameraTransform_.translate.y = 2.0f;
 		camera->cameraTransform_.scale.x = 1.0f;
 		camera->cameraTransform_.scale.y = 1.0f;
 		camera->cameraTransform_.scale.z = 1.0f;
