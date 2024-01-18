@@ -13,8 +13,10 @@ void GameScene::Init()
 
 void GameScene::Update()
 {
-
 	sceneTime++;
+	if (input->PushKey(DIK_W)) {
+		camera->cameraTransform_.translate.z += car_->Speed;
+	}
 	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNo = CLEAR;
 		sceneTime = 0;
@@ -26,7 +28,8 @@ void GameScene::Update()
 	}
 	else
 	{
-		camera->cameraTransform_.translate.y = 2.0f;
+		camera->cameraTransform_.translate.y = 5.0f;
+	    camera->cameraTransform_.rotate.x = 0.15f;
 		camera->cameraTransform_.scale.x = 1.0f;
 		camera->cameraTransform_.scale.y = 1.0f;
 		camera->cameraTransform_.scale.z = 1.0f;

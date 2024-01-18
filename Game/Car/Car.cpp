@@ -11,6 +11,7 @@ Car::~Car() {
 void Car::Init() {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
+	worldTransform_.translation_.z += 10.0f;
 	texture_ = TextureManager::StoreTexture("Resources/uvChecker.png");
 	model_ = new Model();
 	model_->Initialize("Resources/demo_car", "demo_car.obj", color);

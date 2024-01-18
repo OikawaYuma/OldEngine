@@ -26,6 +26,7 @@ private:
 	Sprite* sprite_ = nullptr;
 	Particle* particle = nullptr;
 	Camera* camera = nullptr;
+public:
 	float Speed = 0.0f;
 	float NormalSpeed = 0.1f;
 	float ShiftSpeed = 0.2f;

@@ -12,7 +12,7 @@ void Floor::Init() {
 	worldTransform_.Initialize();
 	texture_ = TextureManager::StoreTexture("Resources/uvChecker.png");
 	model_ = new Model();
-	model_->Initialize("Resources/demo_floor", "demo_floor2.obj", color);
+	model_->Initialize("Resources/demo_floor", "demo_floor.obj", color);
 }
 
 void Floor::Update() {
