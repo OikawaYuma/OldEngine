@@ -16,7 +16,7 @@ void Player::Init() {
 	soundData = Audio::SoundLoadWave("Resources/fanfare.wav");
 	soundData2 = Audio::SoundLoadWave("Resources/fanfare.wav");
 	model_ = new Model();
-	model_->Initialize("Resources/Car","demo_car.obj",color);
+	model_->Initialize("Resources/car","car.obj",color);
 	particle = new Particle();
 	particle->Initialize({ 1.0f, 1.0f, 1.0f, 1.0f });
 	sprite_ = new Sprite;
@@ -31,11 +31,11 @@ void Player::Update() {
 		worldTransform_.translation_.x+= 0.5f;
 	}
 	if (input->PushKey(DIK_W)) {
-		worldTransform_.translation_.y+= 0.5f;
+		worldTransform_.translation_.z+= 0.5f;
 	}
 
 	if (input->PushKey(DIK_S)) {
-		worldTransform_.translation_.y-= 0.5f;
+		worldTransform_.translation_.z-= 0.5f;
 	}
 
 	if (input->PushKey(DIK_J)) {
