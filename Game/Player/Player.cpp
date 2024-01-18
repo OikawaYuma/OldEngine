@@ -16,7 +16,7 @@ void Player::Init() {
 	soundData = Audio::SoundLoadWave("Resources/fanfare.wav");
 	soundData2 = Audio::SoundLoadWave("Resources/fanfare.wav");
 	model_ = new Model();
-	model_->Initialize("Resources/car","car.obj",color);
+	model_->Initialize("Resources/Car","demo_car.obj",color);
 	particle = new Particle();
 	particle->Initialize({ 1.0f, 1.0f, 1.0f, 1.0f });
 	sprite_ = new Sprite;
