@@ -17,6 +17,10 @@ public:
 	void Update();
 	void Draw(Camera* camera);
 	void Release();
+
+	Vector3 GetWorldTransform() {
+		return worldTransform_.translation_;
+	}
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
@@ -26,8 +30,9 @@ private:
 	Sprite* sprite_ = nullptr;
 	Particle* particle = nullptr;
 	Camera* camera = nullptr;
+	float rotate_;
 	float Speed = 0.0f;
-	float NormalSpeed = 0.05f;
+	float NormalSpeed = 0.5f;
 	float ShiftSpeed = 0.1f;
 };
 
