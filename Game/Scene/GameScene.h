@@ -2,6 +2,8 @@
 #include "IScene.h"
 #include "Input.h"
 #include "../Car/Car.h"
+#include "../Floor/Floor.h"
+#include "ImGuiCommon.h"
 class GameScene :public IScene
 {
 public:
@@ -15,6 +17,7 @@ private:
 	int sceneTime = 0;
 	Camera* camera = nullptr;
 	Car* car_ = nullptr;
+	Floor* floor_ = nullptr;
 	float Speed = 0.0f;
 	float NormalSpeed = 1.0f;
 	float ShiftSpeed = 2.0f;
