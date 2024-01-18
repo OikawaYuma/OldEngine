@@ -1,5 +1,8 @@
 #include "Car.h"
 #include "ImGuiCommon.h"
+
+#define _USE_MATH_DEFINES
+#include<math.h>
 Car::Car() {
 
 }
@@ -15,6 +18,7 @@ void Car::Init() {
 	texture_ = TextureManager::StoreTexture("Resources/uvChecker.png");
 	model_ = new Model();
 	model_->Initialize("Resources/demo_car", "demo_car.obj", color);
+	Speed = 10;
 }
 
 void Car::Update() {
@@ -26,15 +30,28 @@ void Car::Update() {
 	{
 		Speed = NormalSpeed;
 	}
-	if (input->PushKey(DIK_W)) {
-		worldTransform_.translation_.z += Speed;
-	}
+
+
 	if (input->PushKey(DIK_A)) {
+		rotate_ -= 0.04f;
+	}
+	if (input->PushKey(DIK_D)) {
+		rotate_ += 0.04f;
+	}
+
+	float theta = (rotate_ / 2.0f) * (float)M_PI;
+	Vector2 move = { cosf(theta),sinf(theta) };
+	worldTransform_.rotation_.y = theta;
+	if (input->PushKey(DIK_W)) {
+		worldTransform_.translation_.x += Speed * move.y;
+		worldTransform_.translation_.z += Speed * move.x;
+	}
+	/*if (input->PushKey(DIK_A)) {
 		worldTransform_.translation_.x -= Speed;
 	}
 	if (input->PushKey(DIK_D)) {
 		worldTransform_.translation_.x += Speed;
-	}
+	}*/
 	if (input->PushKey(DIK_S)) {
 		worldTransform_.translation_.z -= Speed * 2;
 	}
