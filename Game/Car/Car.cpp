@@ -11,6 +11,8 @@ Car::~Car() {
 void Car::Init() {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
+	camera = new Camera;
+	camera->Initialize();
 	texture_ = TextureManager::StoreTexture("Resources/uvChecker.png");
 	model_ = new Model();
 	model_->Initialize("Resources/demo_car", "demo_car.obj", color);
@@ -19,6 +21,9 @@ void Car::Init() {
 void Car::Update() {
 	if (input->PushKey(DIK_LSHIFT)) {
 		Speed = ShiftSpeed;
+		camera->cameraTransform_.scale.x = 1.2f;
+		camera->cameraTransform_.scale.y = 1.2f;
+		camera->cameraTransform_.scale.z = 0.7f;
 	}
 	else
 	{
