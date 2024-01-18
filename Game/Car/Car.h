@@ -27,7 +27,7 @@ private:
 	Particle* particle = nullptr;
 	Camera* camera = nullptr;
 	float Speed = 0.0f;
-	float NormalSpeed = 0.05f;
-	float ShiftSpeed = 0.1f;
+	float NormalSpeed = 0.1f;
+	float ShiftSpeed = 0.2f;
 };
 

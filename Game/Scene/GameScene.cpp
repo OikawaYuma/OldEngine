@@ -20,9 +20,9 @@ void GameScene::Update()
 		sceneTime = 0;
 	}
 	if (input->PushKey(DIK_LSHIFT)) {
-		camera->cameraTransform_.scale.x = 1.2f;
-		camera->cameraTransform_.scale.y = 1.2f;
-		camera->cameraTransform_.scale.z = 0.7f;
+		camera->cameraTransform_.scale.x = 2.0f;
+		camera->cameraTransform_.scale.y = 2.0f;
+		camera->cameraTransform_.scale.z = 0.6f;
 	}
 	else
 	{
