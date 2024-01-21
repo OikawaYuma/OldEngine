@@ -33,7 +33,7 @@ public:
 	WorldTransform worldTransform_;
 	float rotate_;
 	float Speed = 0.0f;
-	float NormalSpeed = 0.5f;
-	float ShiftSpeed = 1.0f;
+	float NormalSpeed = 1.5f;
+	float ShiftSpeed = 2.0f;
 };
 

@@ -30,11 +30,11 @@ void Car::Update() {
 	{
 		Speed = NormalSpeed;
 	}
-	if (worldTransform_.translation_.x >= 25) {
-		worldTransform_.translation_.x = 25.0f;
+	if (worldTransform_.translation_.x >= 50.0f) {
+		worldTransform_.translation_.x = 50.0f;
 	}
-	if (worldTransform_.translation_.x <= -25) {
-		worldTransform_.translation_.x = -25.0f;
+	if (worldTransform_.translation_.x <= -50.0f) {
+		worldTransform_.translation_.x = -50.0f;
 	}
 	if (input->PushKey(DIK_A)) {
 		rotate_ -= 0.04f;
