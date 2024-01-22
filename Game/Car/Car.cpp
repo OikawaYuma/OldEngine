@@ -14,8 +14,7 @@ Car::~Car() {
 void Car::Init() {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
-	camera = new Camera;
-	camera->Initialize();
+	worldTransform_.translation_.z += 10.0f;
 	texture_ = TextureManager::StoreTexture("Resources/uvChecker.png");
 	model_ = new Model();
 	model_->Initialize("Resources/demo_car", "demo_car.obj", color);
@@ -23,25 +22,33 @@ void Car::Init() {
 }
 
 void Car::Update() {
+	//worldTransform_.translation_.z += Speed;
 	if (input->PushKey(DIK_LSHIFT)) {
 		Speed = ShiftSpeed;
-		camera->cameraTransform_.scale.x = 1.2f;
-		camera->cameraTransform_.scale.y = 1.2f;
-		camera->cameraTransform_.scale.z = 0.7f;
 	}
 	else
 	{
 		Speed = NormalSpeed;
 	}
-
-
-	if (input->PushKey(DIK_A)) {
+	if (worldTransform_.translation_.x >= 100.0f) {
+		worldTransform_.translation_.x = 100.0f;
+	}
+	if (worldTransform_.translation_.x <= -100.0f) {
+		worldTransform_.translation_.x = -100.0f;
+	}
+	
+	if (input->PushKey(DIK_A) && worldTransform_.rotation_.y >= -1.5f) {
 		rotate_ -= 0.04f;
 	}
-	if (input->PushKey(DIK_D)) {
+	if (input->PushKey(DIK_D) && worldTransform_.rotation_.y <= 1.5f) {
 		rotate_ += 0.04f;
 	}
-
+	if (worldTransform_.rotation_.y >= 1.5f) {
+		worldTransform_.rotation_.y = 1.5f;
+	}
+	if (worldTransform_.rotation_.y <= -1.5f) {
+		worldTransform_.rotation_.y = -1.5f;
+	}
 	float theta = (rotate_ / 2.0f) * (float)M_PI;
 	Vector2 move = { cosf(theta),sinf(theta) };
 	worldTransform_.rotation_.y = theta;
@@ -55,9 +62,10 @@ void Car::Update() {
 	if (input->PushKey(DIK_D)) {
 		worldTransform_.translation_.x += Speed;
 	}*/
-	if (input->PushKey(DIK_S)) {
-		worldTransform_.translation_.z -= Speed;
-	}
+	/*if (input->PushKey(DIK_S)) {
+		worldTransform_.translation_.z -= Speed * 2;
+	}*/
+	
 	worldTransform_.UpdateMatrix();
 	ImGui::Begin("Demo_Car");
 	ImGui::DragFloat3("translation_", (float*)&worldTransform_.translation_, 0.01f, -100.0f, 100.0f);

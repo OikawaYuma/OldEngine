@@ -1,4 +1,6 @@
 #include "GameScene.h"
+#define _USE_MATH_DEFINES
+#include<math.h>
 
 void GameScene::Init()
 {
@@ -13,26 +15,59 @@ void GameScene::Init()
 
 void GameScene::Update()
 {
-
+	float theta = (car_->rotate_ / 2.0f) * (float)M_PI;
+	Vector2 move = { cosf(theta),sinf(theta) };
+	car_->worldTransform_.rotation_.y = theta;
+	camera->cameraTransform_.translate.x = car_->worldTransform_.translation_.x;
+	camera->cameraTransform_.rotate.y = car_->worldTransform_.rotation_.y / 10;
 	sceneTime++;
+	if (input->PushKey(DIK_W)) {
+		camera->cameraTransform_.translate.x += car_->Speed * move.y;
+		camera->cameraTransform_.translate.z += car_->Speed * move.x;
+	}
 	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNo = CLEAR;
 		sceneTime = 0;
 	}
-	
+	if (camera->cameraTransform_.rotate.y <= -0.15f) {
+		camera->cameraTransform_.rotate.y = -0.15f;
+	}
+	if (camera->cameraTransform_.rotate.y >= 0.15f) {
+		camera->cameraTransform_.rotate.y = 0.15f;
+	}
 	
 
 	if (input->PushKey(DIK_LSHIFT)) {
-		camera->cameraTransform_.scale.x = 1.2f;
-		camera->cameraTransform_.scale.y = 1.2f;
-		camera->cameraTransform_.scale.z = 0.7f;
+		if (camera->cameraTransform_.scale.x <= 2.0f) {
+			camera->cameraTransform_.scale.x += 0.05f;
+		}
+		if (camera->cameraTransform_.scale.y <= 2.0f) {
+			camera->cameraTransform_.scale.y += 0.05f;
+		}
+		if (camera->cameraTransform_.scale.z >= 0.6f) {
+			camera->cameraTransform_.scale.z -= 0.02f;
+		}
+			/*camera->cameraTransform_.scale.x = 2.0f;
+			camera->cameraTransform_.scale.y = 2.0f;
+		camera->cameraTransform_.scale.z = 0.6f;*/
 	}
 	else
 	{
-		camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 20;
-		camera->cameraTransform_.scale.x = 1.0f;
+		camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 25;
+		camera->cameraTransform_.translate.y = 6.0f;
+	    camera->cameraTransform_.rotate.x = 0.125f;
+		if (camera->cameraTransform_.scale.x >= 1.0f) {
+			camera->cameraTransform_.scale.x -= 0.05f;
+		}
+		if (camera->cameraTransform_.scale.y >= 1.0f) {
+			camera->cameraTransform_.scale.y -= 0.05f;
+		}
+		if (camera->cameraTransform_.scale.z <= 1.0f) {
+			camera->cameraTransform_.scale.z += 0.02f;
+		}
+		/*camera->cameraTransform_.scale.x = 1.0f;
 		camera->cameraTransform_.scale.y = 1.0f;
-		camera->cameraTransform_.scale.z = 1.0f;
+		camera->cameraTransform_.scale.z = 1.0f;*/
 	}
 	camera->Update();
 	floor_->Update();
