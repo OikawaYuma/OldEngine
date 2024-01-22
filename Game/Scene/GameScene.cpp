@@ -53,9 +53,9 @@ void GameScene::Update()
 	}
 	else
 	{
-		camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 30;
-		camera->cameraTransform_.translate.y = 8.0f;
-	    camera->cameraTransform_.rotate.x = 0.15f;
+		camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 25;
+		camera->cameraTransform_.translate.y = 6.0f;
+	    camera->cameraTransform_.rotate.x = 0.125f;
 		if (camera->cameraTransform_.scale.x >= 1.0f) {
 			camera->cameraTransform_.scale.x -= 0.05f;
 		}

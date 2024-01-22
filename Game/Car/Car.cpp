@@ -36,13 +36,19 @@ void Car::Update() {
 	if (worldTransform_.translation_.x <= -100.0f) {
 		worldTransform_.translation_.x = -100.0f;
 	}
-	if (input->PushKey(DIK_A)) {
+	
+	if (input->PushKey(DIK_A) && worldTransform_.rotation_.y >= -1.5f) {
 		rotate_ -= 0.04f;
 	}
-	if (input->PushKey(DIK_D)) {
+	if (input->PushKey(DIK_D) && worldTransform_.rotation_.y <= 1.5f) {
 		rotate_ += 0.04f;
 	}
-
+	if (worldTransform_.rotation_.y >= 1.5f) {
+		worldTransform_.rotation_.y = 1.5f;
+	}
+	if (worldTransform_.rotation_.y <= -1.5f) {
+		worldTransform_.rotation_.y = -1.5f;
+	}
 	float theta = (rotate_ / 2.0f) * (float)M_PI;
 	Vector2 move = { cosf(theta),sinf(theta) };
 	worldTransform_.rotation_.y = theta;
@@ -59,6 +65,7 @@ void Car::Update() {
 	/*if (input->PushKey(DIK_S)) {
 		worldTransform_.translation_.z -= Speed * 2;
 	}*/
+	
 	worldTransform_.UpdateMatrix();
 	ImGui::Begin("Demo_Car");
 	ImGui::DragFloat3("translation_", (float*)&worldTransform_.translation_, 0.01f, -100.0f, 100.0f);
