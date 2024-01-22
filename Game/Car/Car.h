@@ -35,5 +35,6 @@ public:
 	float Speed = 0.0f;
 	float NormalSpeed = 1.5f;
 	float ShiftSpeed = 2.0f;
+	bool moveFlag_ = false;
 };
 

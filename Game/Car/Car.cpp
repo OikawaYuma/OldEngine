@@ -55,7 +55,10 @@ void Car::Update() {
 	if (worldTransform_.rotation_.y <= -1.5f) {
 		worldTransform_.rotation_.y = -1.5f;
 	}
-	if (input->PushKey(DIK_W)) {
+	if (input->TriggerKey(DIK_W)) {
+		moveFlag_ = true;
+	}
+	if (moveFlag_) {
 		worldTransform_.translation_.x += Speed * move.y;
 		worldTransform_.translation_.z += Speed * move.x;
 

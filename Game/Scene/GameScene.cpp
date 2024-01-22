@@ -29,7 +29,10 @@ void GameScene::Update()
 	camera->cameraTransform_.translate.x = car_->worldTransform_.translation_.x;
 	camera->cameraTransform_.rotate.y = car_->worldTransform_.rotation_.y / 10;
 	sceneTime++;
-	if (input->PushKey(DIK_W)) {
+	if (input->TriggerKey(DIK_W)) {
+		moveFlag = true;
+	}
+	if (moveFlag) {
 		camera->cameraTransform_.translate.x += car_->Speed * move.y;
 		camera->cameraTransform_.translate.z += car_->Speed * move.x;
 	}
