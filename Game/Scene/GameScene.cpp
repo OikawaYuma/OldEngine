@@ -11,6 +11,14 @@ void GameScene::Init()
 	car_->Init();
 	floor_ = new Floor();
 	floor_->Init();
+	front_left_tire_ = new Front_left_tire();
+	front_left_tire_->Init();
+	front_right_tire_ = new Front_right_tire();
+	front_right_tire_->Init();
+	rear_left_tire_ = new Rear_left_tire();
+	rear_left_tire_->Init();
+	rear_right_tire_ = new Rear_right_tire();
+	rear_right_tire_->Init();
 }
 
 void GameScene::Update()
@@ -72,6 +80,10 @@ void GameScene::Update()
 	camera->Update();
 	floor_->Update();
 	car_->Update();
+	front_left_tire_->Update();
+	front_right_tire_->Update();
+	rear_left_tire_->Update();
+	rear_right_tire_->Update();
 	ImGui::Begin("Camera");
 	//ImGui::DragFloat3("Translate", &camera->cameraTransform_.translate.x, camera->cameraTransform_.translate.y, camera->cameraTransform_.translate.z, 1.0f);
 	ImGui::DragFloat3("Translate", (float*)&camera->cameraTransform_.translate, 0.01f, -100.0f, 100.0f);
@@ -83,10 +95,18 @@ void GameScene::Draw()
 {
 	floor_->Draw(camera);
 	car_->Draw(camera);
+	front_left_tire_->Draw(camera);
+	front_right_tire_->Draw(camera);
+	rear_left_tire_->Draw(camera);
+	rear_right_tire_->Draw(camera);
 }
 
 void GameScene::Release() {
 	delete floor_;
+	delete front_left_tire_;
+	delete front_right_tire_;
+	delete rear_left_tire_;
+	delete rear_right_tire_;
 	delete car_;
 }
 // ゲームを終了

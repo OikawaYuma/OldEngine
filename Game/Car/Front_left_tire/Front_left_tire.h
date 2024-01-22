@@ -8,11 +8,11 @@
 #include "Audio.h"
 #include "Particle.h"
 #include "Sprite.h"
-class Car
+class Front_left_tire
 {
 public:
-	Car();
-	~Car();
+	Front_left_tire();
+	~Front_left_tire();
 	void Init();
 	void Update();
 	void Draw(Camera* camera);
@@ -25,10 +25,8 @@ private:
 	uint32_t texture_ = 1;
 	Input* input = nullptr;
 	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
-	Sprite* sprite_ = nullptr;
 	Particle* particle = nullptr;
 	Camera* camera = nullptr;
-
 public:
 	WorldTransform worldTransform_;
 	float rotate_;

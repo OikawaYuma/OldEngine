@@ -1,29 +1,28 @@
-#include "Car.h"
+#include "Rear_left_tire.h"
 #include "ImGuiCommon.h"
-
 #define _USE_MATH_DEFINES
 #include<math.h>
-Car::Car() {
+
+Rear_left_tire::Rear_left_tire() {
 
 }
 
-Car::~Car() {
+Rear_left_tire::~Rear_left_tire() {
 
 }
 
-void Car::Init() {
+void Rear_left_tire::Init() {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
 	worldTransform_.translation_.y += 0.05f;
 	worldTransform_.translation_.z += 10.0f;
 	texture_ = TextureManager::StoreTexture("Resources/uvChecker.png");
 	model_ = new Model();
-	model_->Initialize("Resources/demo_car", "car.obj", color);
-	
+	model_->Initialize("Resources/demo_car", "rear_left_tire.obj", color);
+
 	Speed = 10;
 }
-
-void Car::Update() {
+void Rear_left_tire::Update() {
 
 	float theta = (rotate_ / 2.0f) * (float)M_PI;
 	Vector2 move = { cosf(theta),sinf(theta) };
@@ -58,26 +57,14 @@ void Car::Update() {
 	if (input->PushKey(DIK_W)) {
 		worldTransform_.translation_.x += Speed * move.y;
 		worldTransform_.translation_.z += Speed * move.x;
-
 	}
 	worldTransform_.UpdateMatrix();
-
-	ImGui::Begin("Demo_Car");
-	ImGui::DragFloat3("translation_", (float*)&worldTransform_.translation_, 0.01f, -100.0f, 100.0f);
-	ImGui::DragFloat3("rotation_", (float*)&worldTransform_.rotation_, 0.01f, -100.0f, 100.0f);
-	ImGui::DragFloat3("scale_", (float*)&worldTransform_.scale_, 0.01f, -100.0f, 100.0f);
-	ImGui::DragFloat4("color", &color.x, 0.01f);
-	ImGui::Text("Shift & WASD = Dash");
-	ImGui::End();
-	//Audio::SoundLoopWave(Audio::GetIXAudio().Get(), soundData);
 }
 
-void Car::Draw(Camera* camera) {
+void Rear_left_tire::Draw(Camera* camera) {
 	model_->Draw(worldTransform_, texture_, camera, color);
-	//sprite_->Draw(texture_,color);
 }
 
-void Car::Release()
+void Rear_left_tire::Release()
 {
-	
 }
