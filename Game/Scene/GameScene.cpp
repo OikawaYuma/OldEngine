@@ -19,26 +19,33 @@ void GameScene::Update()
 	Vector2 move = { cosf(theta),sinf(theta) };
 	car_->worldTransform_.rotation_.y = theta;
 	camera->cameraTransform_.translate.x = car_->worldTransform_.translation_.x;
+	camera->cameraTransform_.rotate.y = car_->worldTransform_.rotation_.y / 10;
 	sceneTime++;
 	if (input->PushKey(DIK_W)) {
+		camera->cameraTransform_.translate.x += car_->Speed * move.y;
 		camera->cameraTransform_.translate.z += car_->Speed * move.x;
 	}
 	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNo = CLEAR;
 		sceneTime = 0;
 	}
-	
+	if (camera->cameraTransform_.rotate.y <= -0.15f) {
+		camera->cameraTransform_.rotate.y = -0.15f;
+	}
+	if (camera->cameraTransform_.rotate.y >= 0.15f) {
+		camera->cameraTransform_.rotate.y = 0.15f;
+	}
 	
 
 	if (input->PushKey(DIK_LSHIFT)) {
 		if (camera->cameraTransform_.scale.x <= 2.0f) {
-			camera->cameraTransform_.scale.x += 0.1f;
+			camera->cameraTransform_.scale.x += 0.05f;
 		}
 		if (camera->cameraTransform_.scale.y <= 2.0f) {
-			camera->cameraTransform_.scale.y += 0.1f;
+			camera->cameraTransform_.scale.y += 0.05f;
 		}
 		if (camera->cameraTransform_.scale.z >= 0.6f) {
-			camera->cameraTransform_.scale.z -= 0.04f;
+			camera->cameraTransform_.scale.z -= 0.02f;
 		}
 			/*camera->cameraTransform_.scale.x = 2.0f;
 			camera->cameraTransform_.scale.y = 2.0f;
@@ -46,17 +53,17 @@ void GameScene::Update()
 	}
 	else
 	{
-		camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 20;
-		camera->cameraTransform_.translate.y = 5.0f;
+		camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 30;
+		camera->cameraTransform_.translate.y = 8.0f;
 	    camera->cameraTransform_.rotate.x = 0.15f;
 		if (camera->cameraTransform_.scale.x >= 1.0f) {
-			camera->cameraTransform_.scale.x -= 0.1f;
+			camera->cameraTransform_.scale.x -= 0.05f;
 		}
 		if (camera->cameraTransform_.scale.y >= 1.0f) {
-			camera->cameraTransform_.scale.y -= 0.1f;
+			camera->cameraTransform_.scale.y -= 0.05f;
 		}
 		if (camera->cameraTransform_.scale.z <= 1.0f) {
-			camera->cameraTransform_.scale.z += 0.04f;
+			camera->cameraTransform_.scale.z += 0.02f;
 		}
 		/*camera->cameraTransform_.scale.x = 1.0f;
 		camera->cameraTransform_.scale.y = 1.0f;
