@@ -8,11 +8,11 @@
 #include "Audio.h"
 #include "Particle.h"
 #include "Sprite.h"
-class Car
+class Rear_right_tire
 {
 public:
-	Car();
-	~Car();
+	Rear_right_tire();
+	~Rear_right_tire();
 	void Init();
 	void Update();
 	void Draw(Camera* camera);
@@ -36,4 +36,3 @@ public:
 	float NormalSpeed = 1.5f;
 	float ShiftSpeed = 2.0f;
 };
-

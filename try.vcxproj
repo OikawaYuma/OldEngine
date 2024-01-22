@@ -109,6 +109,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Car\Front_right_tire\Front_right_tire.cpp" />
+    <ClCompile Include="Game\Car\Front_left_tire\Front_left_tire.cpp" />
     <ClCompile Include="Game\Floor\Floor.cpp" />
     <ClCompile Include="Game\Car\Car.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
@@ -147,8 +149,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Interface\PSOProperty.cpp" />
     <ClCompile Include="Engine\Interface\PSOParticle.cpp" />
     <ClCompile Include="Engine\3d\Particle.cpp" />
+    <ClCompile Include="Game\Car\Rear_left_tire\Rear_left_tire.cpp" />
+    <ClCompile Include="Game\Car\Rear_right_tire\Rear_right_tire.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Car\Front_right_tire\Front_right_tire.h" />
+    <ClInclude Include="Game\Car\Front_left_tire\Front_left_tire.h" />
     <ClInclude Include="Game\Floor\Floor.h" />
     <ClInclude Include="Game\Car\Car.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />
@@ -200,6 +206,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Interface\PSOProperty.h" />
     <ClInclude Include="Engine\Interface\PSOParticle.h" />
     <ClInclude Include="Engine\3d\Particle.h" />
+    <ClInclude Include="Game\Car\Rear_left_tire\Rear_left_tire.h" />
+    <ClInclude Include="Game\Car\Rear_right_tire\Rear_right_tire.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
