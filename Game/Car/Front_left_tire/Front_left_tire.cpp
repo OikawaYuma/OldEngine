@@ -41,9 +41,9 @@ void Front_left_tire::Update() {
 	if (worldTransform_.translation_.x <= -100.0f) {
 		worldTransform_.translation_.x = -100.0f;
 	}
-
 	if (input->PushKey(DIK_A) && worldTransform_.rotation_.y >= -1.5f) {
 		rotate_ -= 0.04f;
+		
 	}
 	if (input->PushKey(DIK_D) && worldTransform_.rotation_.y <= 1.5f) {
 		rotate_ += 0.04f;
