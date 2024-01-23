@@ -73,6 +73,10 @@
     <ClCompile Include="Game\Car\Car.cpp" />
     <ClCompile Include="Game\Floor\Floor.cpp" />
     <ClCompile Include="SlectScene.cpp" />
+    <ClCompile Include="Stage1.cpp" />
+    <ClCompile Include="Stage2.cpp" />
+    <ClCompile Include="Stage3.cpp" />
+    <ClCompile Include="Slect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -147,6 +151,10 @@
     <ClInclude Include="Game\Car\Car.h" />
     <ClInclude Include="Game\Floor\Floor.h" />
     <ClInclude Include="SlectScene.h" />
+    <ClInclude Include="Stage1.h" />
+    <ClInclude Include="Stage2.h" />
+    <ClInclude Include="Stage3.h" />
+    <ClInclude Include="Slect.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

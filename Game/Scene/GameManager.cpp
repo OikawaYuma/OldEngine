@@ -27,8 +27,9 @@
 GameManager::GameManager() {
 	// 各シーンの排列
 	sceneArr_[TITLE] = std::make_unique<TitleScene>();
-	sceneArr_[SLECT] = std::make_unique<SlectScene>();
-	sceneArr_[STAGE] = std::make_unique<GameScene>();
+	sceneArr_[SLECT] = std::make_unique<Slect>();
+	sceneArr_[STSGE1] = std::make_unique<GameScene>();
+	sceneArr_[STAGE2] = std::make_unique<Stage2>();
 	sceneArr_[CLEAR] = std::make_unique<ClearScene>();
 
 	// 初期シーンの設定
