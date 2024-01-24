@@ -12,7 +12,7 @@
 
 
 Particle::Particle() {};
-void Particle::Initialize(const Vector4& color) {
+void Particle::Initialize() {
 	sWinAPI = WinAPI::GetInstance();
 	sDirectXCommon = DirectXCommon::GetInstance();
 
@@ -73,14 +73,14 @@ void Particle::Initialize(const Vector4& color) {
 	// 書き込むためのアドレスを取得
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
-	materialData->color = color;
+	materialData->color = {1.0f,1.0f,1.0f,1.0f};
 	materialData->uvTransform = MakeIdentity4x4();
-	materialData->enableLighting = true;
+	materialData->enableLighting = false;
 
 	// Transform変数の初期化
 	
 	// Sprite用のTransformationMatrix用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	transformationMatrixResouceSprite = Mesh::CreateBufferResource(sDirectXCommon->GetDevice(), sizeof(ParticleForGPU) * 10);
+	transformationMatrixResouceSprite = Mesh::CreateBufferResource(sDirectXCommon->GetDevice(), sizeof(ParticleForGPU) * kNumMaxInstance);
 	// 書き込むためのアドレスを取得
 	transformationMatrixResouceSprite->Map(0, nullptr, reinterpret_cast<void**>(&instancingData));
 	// 単位行列を書き込んでおく
@@ -90,8 +90,6 @@ void Particle::Initialize(const Vector4& color) {
 		instancingData[index].World = MakeIdentity4x4();
 		instancingData[index].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
-
-	
 
 	indexResourceSprite = Mesh::CreateBufferResource(sDirectXCommon->GetDevice(), sizeof(uint32_t) * 6);
 	// リソースの先頭のアドレスから使う
@@ -123,9 +121,6 @@ void Particle::Initialize(const Vector4& color) {
 	//	
 	//}
 
-	
-	
-
 	instancingSrvDesc.Format = DXGI_FORMAT_UNKNOWN;
 	instancingSrvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	instancingSrvDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
@@ -156,15 +151,18 @@ void Particle::Initialize(const Vector4& color) {
 	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
 	directionalLightData->intensity = 1.0f;
 
-
+	emitter_.count =6;
+	emitter_.frequency = 0.02f;// 0.5秒ごとに発生
+	emitter_.frequencyTime = 0.0f;// 発生頻度用の時刻、0で初期化
 };
 //void Sprite::Update() {
 //
 //};
 
-void Particle::Draw(uint32_t texture, const Vector4& color, Camera* camera) {
+void Particle::Draw(const Vector3& worldTransform, uint32_t texture,  Camera* camera) {
 	pso_ = PSOParticle::GatInstance();
-	materialData->color = color;
+	emitter_.transform = { {0.5f,0.5f,0.5f},{0.0f,0.0f,0.0f},worldTransform };
+	//materialData->color = {1.0f,1.0f,1.0f,1.0f};
 	Matrix4x4 backToFrontMatrix = MakeRotateYMatrix(std::numbers::pi_v<float>);
 	Matrix4x4 billboardMatrix = Multiply(backToFrontMatrix,camera->cameraMatrix_);
 	billboardMatrix.m[3][0] = 0.0f;
@@ -174,9 +172,21 @@ void Particle::Draw(uint32_t texture, const Vector4& color, Camera* camera) {
 	std::mt19937 randomEngine(seedGenerator());
 	ImGui::Begin("Particle Add");
 	if (ImGui::Button("Add pa")) {
-		particles_.push_back(MakeNewParticle(randomEngine));
+		particles_.push_back(MakeNewParticle(randomEngine,worldTransform));
+
+
 	}
+
+	ImGui::DragFloat4("Color ", &materialData->color.x, 0.01f);
 	ImGui::End();
+
+	emitter_.frequencyTime += kDeltaTime;// 時刻を進める
+	if (emitter_.frequency <= emitter_.frequencyTime) {// 頻度より大きいなら発生
+		particles_.splice(particles_.end(), particle->Emission(emitter_, randomEngine, worldTransform));
+		emitter_.frequencyTime -= emitter_.frequency;// 余計に過ぎた時間も加味して頻度計算する
+
+	}
+
 	uint32_t numInstance = 0;// 描画すべきインスタンス数
 	// Sprite用のWorldViewProjectMatrixを作る
 	for (std::list<ParticlePro>::iterator particleIterator = particles_.begin(); particleIterator != particles_.end();) {
@@ -188,7 +198,9 @@ void Particle::Draw(uint32_t texture, const Vector4& color, Camera* camera) {
 		(*particleIterator).transform.translate.x += (*particleIterator).velocity.x * kDeltaTime;
 		(*particleIterator).transform.translate.y += (*particleIterator).velocity.y * kDeltaTime;
 		(*particleIterator).transform.translate.z += (*particleIterator).velocity.z * kDeltaTime;
+		(*particleIterator).transform.scale = Add((*particleIterator).transform.scale, { 0.1f ,0.1f,0.1f });
 		(*particleIterator).currentTime += kDeltaTime;
+		// (*particleIterator).color = { 1.0f,1.0f,1.0f,1.0f };
 		float alpha = 1.0f - ((*particleIterator).currentTime / (*particleIterator).lifeTime);
 		//transforms_[index].rotate.x += 0.1f;
 		Matrix4x4 worldMatrix = Multiply(MakeScaleMatrix((*particleIterator).transform.scale), Multiply(billboardMatrix, MakeTranslateMatrix((*particleIterator).transform.translate)));
@@ -226,30 +238,34 @@ void Particle::Draw(uint32_t texture, const Vector4& color, Camera* camera) {
 
 
 
-Particle::ParticlePro Particle::MakeNewParticle(std::mt19937& randomEngine)
+Particle::ParticlePro Particle::MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate )
 {
-	std::uniform_real_distribution<float> distribution(-1.0f, 1.0f);
-	std::uniform_real_distribution<float> distColor(0.0f, 1.0f);
-	std::uniform_real_distribution<float> distTime(0.0f, 3.0f);
+	std::uniform_real_distribution<float> distribution(-0.8f, 0.8f);
+	std::uniform_real_distribution<float> distriposY(0.2f, 0.5f);
+	std::uniform_real_distribution<float> distriposX(-0.7f, -0.3f);
+	std::uniform_real_distribution<float> distriposZ(-0.5f, 0.3f);
+	//std::uniform_real_distribution<float> distColor(0.0f, 1.0f);
+	std::uniform_real_distribution<float> distTime(0.0f, 1.5f);
 
 	Particle::ParticlePro particle;
-	particle.transform.scale = { 1.0f,1.0f,1.0f };
+	particle.transform.scale = { 0.2f,0.2f,0.2f };
 	particle.transform.rotate = { 0.0f,0.0f,0.0f };
 
 	// 位置と速度を[-1,1]でランダムに初期化
-	particle.transform.translate = { distribution(randomEngine), distribution(randomEngine) , distribution(randomEngine) };
+	Vector3 randomTranslate = { distriposX(randomEngine), distriposY(randomEngine), distriposZ(randomEngine) };
+	particle.transform.translate = Add(translate,randomTranslate);
 	particle.velocity = { distribution(randomEngine),distribution(randomEngine),distribution(randomEngine) };
-	particle.color = { distColor(randomEngine),distColor(randomEngine) ,distColor(randomEngine) ,1.0f };
+	particle.color = { 1.0f,1.0f ,1.0f,0.7f };
 	particle.lifeTime = distTime(randomEngine);
 	particle.currentTime = 0;
 	return particle;
 }
 
-std::list<Particle::ParticlePro> Particle::Emission(const Emitter& emitter, std::mt19937& randEngine)
+std::list<Particle::ParticlePro> Particle::Emission(const Emitter& emitter, std::mt19937& randEngine, const Vector3& worldTransform)
 {
 	std::list<Particle::ParticlePro> particles;
 	for (uint32_t count = 0; count < emitter.count; ++count) {
-		particles.push_back(MakeNewParticle(randEngine));
+		particles.push_back(MakeNewParticle(randEngine, emitter.transform.translate));
 
 	}
 	return particles;

@@ -160,7 +160,7 @@ void PSOParticle::CreateDepth()
 	// Depthの機能を有効化する
 	depthStencilDesc_.DepthEnable = true;
 	// 書き込みします
-	depthStencilDesc_.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	depthStencilDesc_.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 	// 比較関数はLessEqual。つまり、近づければ描画される
 	depthStencilDesc_.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 }
