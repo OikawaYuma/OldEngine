@@ -42,6 +42,13 @@ void Player::Update() {
 		worldTransform_.translation_.y--;
 	}
 	
+	// キャラクター攻撃処理
+	Attack();
+
+	// 弾更新
+	if (bullet_) {
+		bullet_->Update();
+	}
 
 	ImGui::Begin("Color");
 	ImGui::DragFloat4("s",&worldTransform_.scale_.x,0.01f);
@@ -54,11 +61,30 @@ void Player::Update() {
 
 void Player::Draw(Camera *camera) {
 	model_->Draw(worldTransform_, texture_, camera,color);
+	if (bullet_) {
+		bullet_->Draw(camera);
+	}
 	//sprite_->Draw(texture_,color);
 	particle->Draw(texture_, color, camera);
+	
 }
 
 void Player::Release()
 {
 	Audio::SoundUnload(soundData2);
+}
+
+void Player::Attack()
+{
+	if (input->TriggerKey(DIK_SPACE)) {
+
+		// 弾を生成し、初期化
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Init(model_, worldTransform_.translation_);
+
+		// 弾を登録する
+		bullet_ = newBullet;
+
+
+	}
 }

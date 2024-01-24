@@ -8,6 +8,8 @@
 #include "Audio.h"
 #include "Particle.h"
 #include "Sprite.h"
+
+#include "PlayerBullet.h"
 class Player 
 {
 public:
@@ -17,6 +19,8 @@ public:
 	void Update();
 	void Draw(Camera *camera);
 	void Release();
+
+	void Attack();
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
@@ -27,7 +31,10 @@ private:
 	uint32_t soundData2;
 	Vector4 color = {1.0f,1.0f,1.0f,1.0f};
 	Sprite* sprite_ = nullptr;
-
 	Particle* particle = nullptr;
+
+	// 弾
+	PlayerBullet* bullet_ = nullptr;
+	
 };
 

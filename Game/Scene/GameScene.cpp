@@ -10,7 +10,7 @@ void GameScene::Update()
 {
 
 	sceneTime++;
-	if (input->TriggerKey(DIK_SPACE)) {
+	if (input->TriggerKey(DIK_I)) {
 		sceneNo = CLEAR;
 		sceneTime = 0;
 	}

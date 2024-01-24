@@ -17,7 +17,7 @@ void TitleScene::Init()
 void TitleScene::Update()
 {
 	sceneTime++;
-	if (input->TriggerKey(DIK_SPACE)) {
+	if (input->TriggerKey(DIK_I)) {
 		sceneNo = STAGE;
 		sceneTime = 0;
 	}
