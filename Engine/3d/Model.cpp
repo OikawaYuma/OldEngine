@@ -139,7 +139,7 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
 	materialData->color = color;
-	materialData->enableLighting = false;
+	materialData->enableLighting = true;
 	materialData->uvTransform = MakeIdentity4x4();
 
 	transformUv = {

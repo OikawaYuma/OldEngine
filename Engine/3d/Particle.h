@@ -21,6 +21,7 @@
 #include "Matrix4x4.h"
 #include "Material.h"
 #include "DirectionLight.h"
+#include "WorldTransform.h"
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
@@ -58,19 +59,19 @@ public:
 	Particle();
 	~Particle();
 
-	void Initialize(const Vector4& color);
+	void Initialize();
 	//void Update();
-	void Draw(uint32_t texture, const Vector4& color, Camera* camera);
+	void Draw(const Vector3& worldTransform,uint32_t texture, Camera* camera);
 	void Release();
 	void SetTextureManager(TextureManager* textureManager) {
 		textureManager_ = textureManager;
 	}
-	ParticlePro MakeNewParticle(std::mt19937& randomEngine);
+	ParticlePro MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate);
 
-	std::list<ParticlePro> Emission(const Emitter& emitter, std::mt19937& randEngine);
+	std::list<ParticlePro> Emission(const Emitter& emitter, std::mt19937& randEngine, const Vector3& worldTransform);
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
 private:
-	const static uint32_t kNumMaxInstance = 10; // インスタンス数
+	const static uint32_t kNumMaxInstance = 600; // インスタンス数
 	// Instancing用のTransformMatrixリソースを作る
 	Microsoft::WRL::ComPtr<ID3D12Resource> instancingResorce = nullptr;
 	PSOParticle* pso_ = nullptr;
@@ -93,6 +94,7 @@ private:
 	D3D12_CPU_DESCRIPTOR_HANDLE instancingSrvHandleCPU;
 	D3D12_GPU_DESCRIPTOR_HANDLE instancingSrvHandleGPU;
 
+	Particle* particle = nullptr;
 	
 
 	//D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
@@ -127,6 +129,6 @@ private:
 	//実時間を計測して可変fpsで動かせるようにしておくとなお良い
 	const float kDeltaTime = 1.0f / 60.0f;
 
-
+	Emitter emitter_{};
 };
 

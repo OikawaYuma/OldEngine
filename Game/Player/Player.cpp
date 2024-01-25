@@ -1,5 +1,7 @@
 #include "Player.h"
 #include "ImGuiCommon.h"
+#define _USE_MATH_DEFINES
+#include<math.h>
 Player::Player() {
 
 }
@@ -18,18 +20,16 @@ void Player::Init() {
 	model_ = new Model();
 	model_->Initialize("Resources/demo_car","demo_cube.obj",color);
 	particle = new Particle();
-	particle->Initialize({ 1.0f, 1.0f, 1.0f, 1.0f });
+	particle->Initialize();
 	sprite_ = new Sprite;
 	sprite_->Initialize(color);
 }
 
 void Player::Update() {
-	if (input->PushKey(DIK_A)) {
-		worldTransform_.translation_.x-= 0.5f;
-	}
-	if (input->PushKey(DIK_D)) {
-		worldTransform_.translation_.x+= 0.5f;
-	}
+	
+
+
+
 	if (input->PushKey(DIK_W)) {
 		worldTransform_.translation_.z+= 0.5f;
 	}
@@ -55,7 +55,7 @@ void Player::Update() {
 void Player::Draw(Camera *camera) {
 	model_->Draw(worldTransform_, texture_, camera,color);
 	//sprite_->Draw(texture_,color);
-	particle->Draw(texture_, color, camera);
+	//particle->Draw(texture_, color, camera);
 }
 
 void Player::Release()
