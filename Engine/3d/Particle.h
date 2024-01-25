@@ -44,6 +44,12 @@ struct Emitter {
 	float frequencyTime; //!< 頻度用時刻
 };
 
+struct RandRangePro {
+	Vector2 rangeX;
+	Vector2 rangeY;
+	Vector2 rangeZ;
+};
+
 class Particle
 {
 public:
@@ -61,14 +67,14 @@ public:
 
 	void Initialize();
 	//void Update();
-	void Draw(const Vector3& worldTransform,uint32_t texture, Camera* camera);
+	void Draw(const Vector3& worldTransform,uint32_t texture, Camera* camera, const RandRangePro& randRange);
 	void Release();
 	void SetTextureManager(TextureManager* textureManager) {
 		textureManager_ = textureManager;
 	}
-	ParticlePro MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate);
+	ParticlePro MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate, const RandRangePro& randRange);
 
-	std::list<ParticlePro> Emission(const Emitter& emitter, std::mt19937& randEngine, const Vector3& worldTransform);
+	std::list<ParticlePro> Emission(const Emitter& emitter, std::mt19937& randEngine, const Vector3& worldTransform, const RandRangePro& randRange);
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
 private:
 	const static uint32_t kNumMaxInstance = 600; // インスタンス数
@@ -94,7 +100,7 @@ private:
 	D3D12_CPU_DESCRIPTOR_HANDLE instancingSrvHandleCPU;
 	D3D12_GPU_DESCRIPTOR_HANDLE instancingSrvHandleGPU;
 
-	Particle* particle = nullptr;
+	Particle*particle = nullptr;
 	
 
 	//D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
@@ -128,7 +134,8 @@ private:
 	// Δtを定義。とりあえず60fps固定してあるが、
 	//実時間を計測して可変fpsで動かせるようにしておくとなお良い
 	const float kDeltaTime = 1.0f / 60.0f;
-
 	Emitter emitter_{};
+	RandRangePro randRange_;
+	
 };
 

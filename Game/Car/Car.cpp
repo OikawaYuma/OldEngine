@@ -20,9 +20,24 @@ void Car::Init() {
 	texture2_ = TextureManager::StoreTexture("Resources/circle.png");
 	model_ = new Model();
 	model_->Initialize("Resources/demo_car", "car.obj", color);
+	
+	Speed = 10;
+	rearLeft = {
+		{-0.9f,-0.7f},
+		{0.1f,0.4f},
+		{-0.5f,0.3f}
+	};
+
+	rearRight = {
+		{0.7f,0.9f},
+		{0.1f,0.4f},
+		{-0.5f,0.3f}
+	};
+
 	particle = new Particle();
 	particle->Initialize();
-	Speed = 10;
+	particle2 = new Particle();
+	particle2->Initialize();
 }
 
 void Car::Update() {
@@ -119,7 +134,11 @@ void Car::Update() {
 
 void Car::Draw(Camera* camera) {
 	model_->Draw(worldTransform_, texture_, camera, color);
-	particle->Draw({worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y,worldTransform_.translation_.z -3  * move.x }, texture2_, camera);
+	
+	
+		particle->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y,worldTransform_.translation_.z - 3 * move.x }, texture2_, camera, rearLeft);
+		particle2->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y,worldTransform_.translation_.z - 3 * move.x }, texture2_, camera, rearRight);
+	
 	//sprite_->Draw(texture_,color);
 }
 
