@@ -15,6 +15,8 @@ enum DriveMode {
 	Drift
 };
 
+
+
 //enum SpeedMode {
 //	Normal,
 //	Accel
@@ -41,6 +43,7 @@ private:
 	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
 	Sprite* sprite_ = nullptr;
 	Particle* particle = nullptr;
+	Particle* particle2 = nullptr;
 	Camera* camera = nullptr;
 
 public:
@@ -52,6 +55,8 @@ public:
 	float DriftSpeed = 1.2f;
 	bool moveFlag_ = false;
 	Vector2 move;
+	RandRangePro rearLeft;
+	RandRangePro rearRight;
 	//Particle* particle = nullptr;
 	//std::list<Particle::ParticlePro> particles_;
 

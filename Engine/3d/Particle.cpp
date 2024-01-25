@@ -16,6 +16,8 @@ void Particle::Initialize() {
 	sWinAPI = WinAPI::GetInstance();
 	sDirectXCommon = DirectXCommon::GetInstance();
 
+	
+
 	//rootParamerters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescripterTableを使う
 	//rootParamerters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
 	//rootParamerters[0].DescriptorTable.pDescriptorRanges = descriptorRange_; // Tableの中身の配列を指定
@@ -159,9 +161,17 @@ void Particle::Initialize() {
 //
 //};
 
-void Particle::Draw(const Vector3& worldTransform, uint32_t texture,  Camera* camera) {
+void Particle::Draw(const Vector3& worldTransform, uint32_t texture,  Camera* camera, const RandRangePro& randRange) {
 	pso_ = PSOParticle::GatInstance();
 	emitter_.transform = { {0.5f,0.5f,0.5f},{0.0f,0.0f,0.0f},worldTransform };
+	randRange_ = randRange;
+
+	randRange_ = 
+	{
+	{0.3f,0.7f},
+	{0.2f,0.5f},
+	{-0.5f,0.3f}
+	};
 	//materialData->color = {1.0f,1.0f,1.0f,1.0f};
 	Matrix4x4 backToFrontMatrix = MakeRotateYMatrix(std::numbers::pi_v<float>);
 	Matrix4x4 billboardMatrix = Multiply(backToFrontMatrix,camera->cameraMatrix_);
@@ -170,19 +180,11 @@ void Particle::Draw(const Vector3& worldTransform, uint32_t texture,  Camera* ca
 	billboardMatrix.m[3][2] = 0.0f;
 	std::random_device seedGenerator;
 	std::mt19937 randomEngine(seedGenerator());
-	ImGui::Begin("Particle Add");
-	if (ImGui::Button("Add pa")) {
-		particles_.push_back(MakeNewParticle(randomEngine,worldTransform));
-
-
-	}
-
-	ImGui::DragFloat4("Color ", &materialData->color.x, 0.01f);
-	ImGui::End();
+	
 
 	emitter_.frequencyTime += kDeltaTime;// 時刻を進める
 	if (emitter_.frequency <= emitter_.frequencyTime) {// 頻度より大きいなら発生
-		particles_.splice(particles_.end(), particle->Emission(emitter_, randomEngine, worldTransform));
+		particles_.splice(particles_.end(), particle->Emission(emitter_, randomEngine, worldTransform,randRange));
 		emitter_.frequencyTime -= emitter_.frequency;// 余計に過ぎた時間も加味して頻度計算する
 
 	}
@@ -238,12 +240,13 @@ void Particle::Draw(const Vector3& worldTransform, uint32_t texture,  Camera* ca
 
 
 
-Particle::ParticlePro Particle::MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate )
+Particle::ParticlePro Particle::MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate, const RandRangePro& randRange)
 {
+	RandRangePro ran = randRange;
 	std::uniform_real_distribution<float> distribution(-0.8f, 0.8f);
-	std::uniform_real_distribution<float> distriposY(0.2f, 0.5f);
-	std::uniform_real_distribution<float> distriposX(-0.7f, -0.3f);
-	std::uniform_real_distribution<float> distriposZ(-0.5f, 0.3f);
+	std::uniform_real_distribution<float> distriposX(ran.rangeX.x, ran.rangeX.y);//distriposX(-0.7f, -0.3
+	std::uniform_real_distribution<float> distriposY(ran.rangeY.x,ran.rangeY.y );//  distriposY(0.2f, 0.5f)
+	std::uniform_real_distribution<float> distriposZ(ran.rangeZ.x, ran.rangeZ.y);// distriposZ(-0.5f, 0.3f
 	//std::uniform_real_distribution<float> distColor(0.0f, 1.0f);
 	std::uniform_real_distribution<float> distTime(0.0f, 1.5f);
 
@@ -261,11 +264,11 @@ Particle::ParticlePro Particle::MakeNewParticle(std::mt19937& randomEngine, cons
 	return particle;
 }
 
-std::list<Particle::ParticlePro> Particle::Emission(const Emitter& emitter, std::mt19937& randEngine, const Vector3& worldTransform)
+std::list<Particle::ParticlePro> Particle::Emission(const Emitter& emitter, std::mt19937& randEngine, const Vector3& worldTransform, const RandRangePro& randRange)
 {
 	std::list<Particle::ParticlePro> particles;
 	for (uint32_t count = 0; count < emitter.count; ++count) {
-		particles.push_back(MakeNewParticle(randEngine, emitter.transform.translate));
+		particles.push_back(MakeNewParticle(randEngine, emitter.transform.translate,randRange));
 
 	}
 	return particles;
