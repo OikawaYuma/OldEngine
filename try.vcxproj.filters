@@ -72,6 +72,11 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Game\Car\Car.cpp" />
     <ClCompile Include="Game\Floor\Floor.cpp" />
+    <ClCompile Include="SlectScene.cpp" />
+    <ClCompile Include="Stage1.cpp" />
+    <ClCompile Include="Stage2.cpp" />
+    <ClCompile Include="Stage3.cpp" />
+    <ClCompile Include="Slect.cpp" />
     <ClCompile Include="Game\Car\Front_left_tire\Front_left_tire.cpp" />
     <ClCompile Include="Game\Car\Front_right_tire\Front_right_tire.cpp" />
     <ClCompile Include="Game\Car\Rear_left_tire\Rear_left_tire.cpp" />
@@ -149,6 +154,11 @@
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Game\Car\Car.h" />
     <ClInclude Include="Game\Floor\Floor.h" />
+    <ClInclude Include="SlectScene.h" />
+    <ClInclude Include="Stage1.h" />
+    <ClInclude Include="Stage2.h" />
+    <ClInclude Include="Stage3.h" />
+    <ClInclude Include="Slect.h" />
     <ClInclude Include="Game\Car\Front_left_tire\Front_left_tire.h" />
     <ClInclude Include="Game\Car\Front_right_tire\Front_right_tire.h" />
     <ClInclude Include="Game\Car\Rear_left_tire\Rear_left_tire.h" />

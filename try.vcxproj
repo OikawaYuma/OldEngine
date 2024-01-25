@@ -149,6 +149,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Interface\PSOProperty.cpp" />
     <ClCompile Include="Engine\Interface\PSOParticle.cpp" />
     <ClCompile Include="Engine\3d\Particle.cpp" />
+    <ClCompile Include="Slect.cpp" />
+    <ClCompile Include="SlectScene.cpp" />
+    <ClCompile Include="Stage1.cpp" />
+    <ClCompile Include="Stage2.cpp" />
+    <ClCompile Include="Stage3.cpp" />
     <ClCompile Include="Game\Car\Rear_left_tire\Rear_left_tire.cpp" />
     <ClCompile Include="Game\Car\Rear_right_tire\Rear_right_tire.cpp" />
   </ItemGroup>
@@ -206,6 +211,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Interface\PSOProperty.h" />
     <ClInclude Include="Engine\Interface\PSOParticle.h" />
     <ClInclude Include="Engine\3d\Particle.h" />
+    <ClInclude Include="Slect.h" />
+    <ClInclude Include="SlectScene.h" />
+    <ClInclude Include="Stage1.h" />
+    <ClInclude Include="Stage2.h" />
+    <ClInclude Include="Stage3.h" />
     <ClInclude Include="Game\Car\Rear_left_tire\Rear_left_tire.h" />
     <ClInclude Include="Game\Car\Rear_right_tire\Rear_right_tire.h" />
   </ItemGroup>
