@@ -25,8 +25,25 @@ void Rear_left_tire::Init() {
 void Rear_left_tire::Update() {
 
 	float theta = (rotate_ / 2.0f) * (float)M_PI;
-	Vector2 move = { cosf(theta),sinf(theta) };
-	worldTransform_.rotation_.y = theta;
+	move = { cosf(theta),sinf(theta) };
+	if (!input->PushKey(DIK_S)) {
+		float theta = (rotate_ / 2.0f) * (float)M_PI;
+		move = { cosf(theta),sinf(theta) };
+		worldTransform_.rotation_.y = theta;
+	}
+	else if (input->PushKey(DIK_S)) {
+		if (rotate_ > 0) {
+			float theta = (rotate_ + 0.1f / 2.0f) * (float)M_PI;
+			move = { cosf(theta),sinf(theta) };
+			worldTransform_.rotation_.y = theta;
+		}
+		else if (rotate_ < 0) {
+			float theta = (rotate_ - 0.1f / 2.0f) * (float)M_PI;
+			move = { cosf(theta),sinf(theta) };
+			worldTransform_.rotation_.y = theta;
+		}
+
+	}
 	//worldTransform_.translation_.z += Speed;
 	if (input->PushKey(DIK_LSHIFT)) {
 		Speed = ShiftSpeed;
@@ -45,7 +62,7 @@ void Rear_left_tire::Update() {
 	if (input->PushKey(DIK_A) && worldTransform_.rotation_.y >= -1.5f) {
 		rotate_ -= 0.04f;
 	}
-	if (input->PushKey(DIK_D) && worldTransform_.rotation_.y <= 1.5f) {
+	else  if (input->PushKey(DIK_D) && worldTransform_.rotation_.y <= 1.5f) {
 		rotate_ += 0.04f;
 	}
 	if (worldTransform_.rotation_.y >= 1.5f) {
@@ -54,9 +71,18 @@ void Rear_left_tire::Update() {
 	if (worldTransform_.rotation_.y <= -1.5f) {
 		worldTransform_.rotation_.y = -1.5f;
 	}
-	if (input->PushKey(DIK_W)) {
+	if (input->TriggerKey(DIK_W)) {
+		moveFlag_ = true;
+	}
+
+	if (moveFlag_ && input->PushKey(DIK_S)) {
+		worldTransform_.translation_.x += DriftSpeed * move.y;
+		worldTransform_.translation_.z += DriftSpeed * move.x;
+	}
+	else if (moveFlag_) {
 		worldTransform_.translation_.x += Speed * move.y;
 		worldTransform_.translation_.z += Speed * move.x;
+
 	}
 	worldTransform_.UpdateMatrix();
 }

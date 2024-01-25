@@ -33,4 +33,7 @@ public:
 	float Speed = 0.0f;
 	float NormalSpeed = 1.5f;
 	float ShiftSpeed = 2.0f;
+	float DriftSpeed = 1.2f;
+	bool moveFlag_ = false;
+	Vector2 move;
 };
