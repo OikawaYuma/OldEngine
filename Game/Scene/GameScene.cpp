@@ -37,7 +37,7 @@ void GameScene::Update()
 		camera->cameraTransform_.translate.z += car_->Speed * move.x;
 	}
 	if (input->TriggerKey(DIK_SPACE)) {
-		sceneNo = CLEAR;
+		sceneNo = TITLE;
 		sceneTime = 0;
 	}
 	if (camera->cameraTransform_.rotate.y <= -0.15f) {
