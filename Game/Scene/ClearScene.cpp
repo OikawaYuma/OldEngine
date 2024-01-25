@@ -14,13 +14,15 @@ void ClearScene::Init()
 	PushTexture_ = TextureManager::GetInstance()->StoreTexture("Resources/circle.png");
 	Stage1model_ = new Model();
 	Stage1model_->Initialize("Resources/box", "box.obj", color);
-
-	PushSprite_ = new Sprite;
+	//Pushmodel_->Initialize("Resources/")
 	SlectSprite_ = new Sprite;
 	SlectSprite_->Initialize(color);
 
-	SelectNumber = 0;
+	
+	
 
+	SelectNumber = 0;
+	PushSprite_ = new Sprite;
 	PushSprite_->Initialize(color);
 
 	PushTransform_.Initialize();
@@ -42,9 +44,9 @@ void ClearScene::Update()
 
 	if (input_->TriggerKey(DIK_SPACE))
 	{
-		//ステージ決定の処理
+		/*ステージ決定の処理
 		if (PushTransform_.translation_.x == worldTransform_.translation_.x &&
-			PushTransform_.translation_.y == worldTransform_.translation_.y)
+			PushTransform_.translation_.y == worldTransform_.translation_.y)*/
 		{
 			sceneNo = STSGE1;
 			sceneTime = 0;

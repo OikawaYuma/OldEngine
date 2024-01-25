@@ -28,6 +28,7 @@ private:
 	Floor* floor_ = nullptr;
 	Sprite* PushSprite_ = nullptr;
 	Sprite* SlectSprite_ = nullptr;
+	Model* Pushmodel_ = {};
 	Model* Stage1model_ = {};
 	Model* Stage2model_ = {};
 	Model* Stage3model_ = {};
