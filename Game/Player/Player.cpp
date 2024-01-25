@@ -46,7 +46,7 @@ void Player::Update() {
 	ImGui::Begin("Color");
 	ImGui::DragFloat4("s",&worldTransform_.scale_.x,0.01f);
 	ImGui::DragFloat4("r", &worldTransform_.rotation_.x,  0.01f);
-	ImGui::DragFloat4("t", &worldTransform_.translation_.x,  0.01f);
+	ImGui::DragFloat4("t", &worldTransform_.translation_.x, 0.01f);
 	ImGui::End();
 	//Audio::SoundLoopWave(Audio::GetIXAudio().Get(), soundData);
 	worldTransform_.UpdateMatrix();

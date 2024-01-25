@@ -136,9 +136,9 @@ void Car::Draw(Camera* camera) {
 	model_->Draw(worldTransform_, texture_, camera, color);
 	
 	
-		particle->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y,worldTransform_.translation_.z - 3 * move.x }, texture2_, camera, rearLeft);
+		/*particle->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y,worldTransform_.translation_.z - 3 * move.x }, texture2_, camera, rearLeft);
 		particle2->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y,worldTransform_.translation_.z - 3 * move.x }, texture2_, camera, rearRight);
-	
+	*/
 	//sprite_->Draw(texture_,color);
 }
 
