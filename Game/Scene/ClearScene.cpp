@@ -12,17 +12,12 @@ void ClearScene::Init()
 	texture_ = TextureManager::GetInstance()->StoreTexture("Resources/uvChecker.png");//画像読み込み
 
 	PushTexture_ = TextureManager::GetInstance()->StoreTexture("Resources/circle.png");
+	Stage1model_ = new Model();
+	Stage1model_->Initialize("Resources/box", "box.obj", color);
+
 	PushSprite_ = new Sprite;
 	SlectSprite_ = new Sprite;
 	SlectSprite_->Initialize(color);
-
-
-
-	/*worldTransform_[0].Initialize();
-	worldTransform_[0].scale_ = { 1,1,1 };
-	worldTransform_[0].translation_.x += 128.0f *Width;
-	worldTransform_[0].translation_.y += 64.0f * Height;
-	worldTransform_[0].UpdateMatrix();*/
 
 	SelectNumber = 0;
 
@@ -87,7 +82,8 @@ void ClearScene::Update()
 }
 void ClearScene::Draw()
 {
-	SlectSprite_->Draw(texture_, color);
+		Stage1model_->Draw(worldTransform_, texture_, camera_, color);
+		SlectSprite_->Draw(texture_, color);
 	PushSprite_->Draw(PushTexture_,color);
 }
 
