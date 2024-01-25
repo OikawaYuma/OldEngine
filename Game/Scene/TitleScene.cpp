@@ -16,7 +16,7 @@ void TitleScene::Update()
 {
 	sceneTime++;
 	if (input->TriggerKey(DIK_SPACE)) {
-		sceneNo = SLECT;
+		sceneNo = CLEAR;
 		sceneTime = 0;
 	}
 	////カメラの更新

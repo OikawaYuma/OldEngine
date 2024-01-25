@@ -5,7 +5,7 @@ void Slect::Init()
 	int Width = 0;
 	int Height = 0;
 
-	input_->GetInstance();
+	input_ = Input::GetInstance();
 	camera_ = new Camera;
 	camera_->Initialize();
 	texture_ = TextureManager::GetInstance()->StoreTexture("Resources/uvChecker.png");//画像読み込み
