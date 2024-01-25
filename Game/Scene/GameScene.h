@@ -19,6 +19,8 @@ public:
 private:
 	Input* input = nullptr;
 	int sceneTime = 0;
+	// Carが動く
+	bool moveFlag = false;
 	Camera* camera = nullptr;
 	Car* car_ = nullptr;
 	Floor* floor_ = nullptr;
