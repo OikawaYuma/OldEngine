@@ -46,8 +46,6 @@ void GameScene::Update()
 	if (camera->cameraTransform_.rotate.y >= 0.15f) {
 		camera->cameraTransform_.rotate.y = 0.15f;
 	}
-	
-
 	if (input->PushKey(DIK_LSHIFT)) {
 		if (camera->cameraTransform_.scale.x <= 2.0f) {
 			camera->cameraTransform_.scale.x += 0.05f;
