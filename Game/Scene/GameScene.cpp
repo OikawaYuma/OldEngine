@@ -19,6 +19,16 @@ void GameScene::Init()
 	rear_left_tire_->Init();
 	rear_right_tire_ = new Rear_right_tire();
 	rear_right_tire_->Init();
+
+	texture_ = TextureManager::GetInstance()->StoreTexture("Resources/tex.png");
+
+	collisionModel_ = new Model();
+	collisionModel_->Initialize("Resources/colision", "colisionCube.obj",color);
+
+	colisionTransform_.Initialize();
+	colisionTransform_.scale_ = { 10.0f,10.0f,1.0f };
+	colisionTransform_.translation_ = {0.0f,0.0f,207.0f};
+	color = { 1,1,1,1 };
 }
 
 void GameScene::Update()
@@ -78,6 +88,16 @@ void GameScene::Update()
 		camera->cameraTransform_.scale.y = 1.0f;
 		camera->cameraTransform_.scale.z = 1.0f;*/
 	}
+
+	colision_->cubeColision(colisionTransform_, car_->worldTransform_,isColision);
+	
+	if (isColision == true)
+	{
+		sceneNo = CLEAR;
+		sceneTime = 0;
+	}
+
+	colisionTransform_.UpdateMatrix();
 	camera->Update();
 	floor_->Update();
 	car_->Update();
@@ -91,15 +111,24 @@ void GameScene::Update()
 	ImGui::DragFloat3("Rotate", (float*)&camera->cameraTransform_.rotate, 0.01f, -100.0f, 100.0f);
 	ImGui::DragFloat3("Scale", (float*)&camera->cameraTransform_.scale, 0.01f, -100.0f, 100.0f);
 	ImGui::End();
+
+	ImGui::Begin("colision");
+	ImGui::DragFloat3("Translate", &colisionTransform_.translation_.x, colisionTransform_.translation_.y, colisionTransform_.translation_.z, 1.0f);
+	ImGui::DragFloat3("Translate", (float*)&colisionTransform_.translation_, 0.01f, -100.0f, 100.0f);
+	ImGui::DragFloat3("rotate", (float*)&colisionTransform_.rotation_, 0.01f, -100.0f, 100.0f);
+	ImGui::DragFloat3("scale", (float*)&colisionTransform_.scale_, 0.01f, -100.0f, 100.0f);
+	ImGui::End();
 }
 void GameScene::Draw()
 {
+	collisionModel_->Draw(colisionTransform_, texture_, camera, color);
 	floor_->Draw(camera);
 	car_->Draw(camera);
 	front_left_tire_->Draw(camera);
 	front_right_tire_->Draw(camera);
 	rear_left_tire_->Draw(camera);
 	rear_right_tire_->Draw(camera);
+	
 }
 
 void GameScene::Release() {

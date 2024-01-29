@@ -8,6 +8,7 @@
 #include "../Car/Rear_left_tire/Rear_left_tire.h"
 #include "../Car/Rear_right_tire/Rear_right_tire.h"
 #include "ImGuiCommon.h"
+#include"../../Colision.h"
 class GameScene :public IScene
 {
 public:
@@ -18,6 +19,7 @@ public:
 	int GameClose()override;
 private:
 	Input* input = nullptr;
+	bool isColision = false;
 	int sceneTime = 0;
 	// Carが動く
 	bool moveFlag = false;
@@ -28,5 +30,12 @@ private:
 	Front_right_tire* front_right_tire_ = nullptr;
 	Rear_left_tire* rear_left_tire_ = nullptr;
 	Rear_right_tire* rear_right_tire_ = nullptr;
+	Model* collisionModel_ = nullptr;
+	uint32_t texture_ = {};
+	Vector4 color;
+	WorldTransform colisionTransform_ = {};
+	Colision* colision_ = nullptr;
+
+
 };
 

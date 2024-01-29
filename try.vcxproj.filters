@@ -81,6 +81,7 @@
     <ClCompile Include="Game\Car\Front_right_tire\Front_right_tire.cpp" />
     <ClCompile Include="Game\Car\Rear_left_tire\Rear_left_tire.cpp" />
     <ClCompile Include="Game\Car\Rear_right_tire\Rear_right_tire.cpp" />
+    <ClCompile Include="Colision.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -163,6 +164,7 @@
     <ClInclude Include="Game\Car\Front_right_tire\Front_right_tire.h" />
     <ClInclude Include="Game\Car\Rear_left_tire\Rear_left_tire.h" />
     <ClInclude Include="Game\Car\Rear_right_tire\Rear_right_tire.h" />
+    <ClInclude Include="Colision.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
