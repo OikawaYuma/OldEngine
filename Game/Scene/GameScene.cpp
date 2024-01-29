@@ -25,9 +25,16 @@ void GameScene::Init()
 	collisionModel_ = new Model();
 	collisionModel_->Initialize("Resources/colision", "colisionCube.obj",color);
 
+	GreenModel = new Model();
+	GreenModel->Initialize("Resources/Green", "Green.obj", color);
+
 	colisionTransform_.Initialize();
 	colisionTransform_.scale_ = { 1.0f,2.50f,1.0f };
 	colisionTransform_.translation_ = {0.0f,2.0f,207.0f};
+
+	GreenWorldTransform_.Initialize();
+	GreenWorldTransform_.scale_={}
+
 	color = { 1,1,1,1 };
 }
 
