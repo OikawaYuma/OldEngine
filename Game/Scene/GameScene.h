@@ -35,7 +35,8 @@ private:
 	Vector4 color;
 	WorldTransform colisionTransform_ = {};
 	Colision* colision_ = nullptr;
-
+	Model* GreenModel = nullptr;
+	WorldTransform GreenWorldTransform_;
 
 };
 

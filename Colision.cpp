@@ -2,6 +2,8 @@
 
 void Colision::cubeColision(WorldTransform worldTransform1, WorldTransform worldTransform2,bool flag)
 {
+	flag = false;
+
 	float x1min = worldTransform1.translation_.x - worldTransform1.scale_.x / 2;
 	float x1max = worldTransform1.translation_.x + worldTransform1.scale_.x / 2;
 
@@ -25,9 +27,6 @@ void Colision::cubeColision(WorldTransform worldTransform1, WorldTransform world
 		z1min <= z2max && z1max >= z2min)
 	{
 		flag = true;
-	}
-	else {
-		flag = false;
 	}
 
 
