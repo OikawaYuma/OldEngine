@@ -16,7 +16,6 @@ void Floor::Init() {
 }
 
 void Floor::Update() {
-
 	worldTransform_.UpdateMatrix();
 	ImGui::Begin("Demo_Floor");
 	ImGui::DragFloat4("color", &color.x, 0.01f);
