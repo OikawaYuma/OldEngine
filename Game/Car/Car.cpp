@@ -120,9 +120,11 @@ void Car::Draw(Camera* camera) {
 			driftWT.rotation_.y = worldTransform_.rotation_.y - 0.2f;
 		}
 		driftWT.UpdateMatrix();
+		float theta = (rotate_ / 2.0f) * (float)M_PI;
+		Vector2 move2 = { cosf(theta),sinf(theta) };
 		model_->Draw(driftWT, texture_, camera, color);
-		particle->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y,worldTransform_.translation_.z - 3 * move.x }, texture2_, camera, rearLeft);
-		particle2->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y,worldTransform_.translation_.z - 3 * move.x }, texture2_, camera, rearRight);
+		particle->Draw({ driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y-0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearLeft);
+		particle2->Draw({ driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y-0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearRight);
 		break;
 	}
 	}
@@ -197,7 +199,7 @@ void Car::Move()
 			}*/
 
 
-			if (rotate_ >= 0.1f) {
+			if (rotate_ >= 0.05f) {
 				short leftStickX = joyState.Gamepad.sThumbLX;
 				if (leftStickX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
 					rotate_ += 0.01f;
@@ -208,11 +210,11 @@ void Car::Move()
 					//worldTransform_.translation_.z -= 1.5f * move.x;
 				}
 				
-				if (rotate_ < 0.1f) {
-					rotate_ = 0.1f;
+				if (rotate_ < 0.05f) {
+					rotate_ = 0.05f;
 				}
 			}
-			else if (rotate_ <= -0.1f) {
+			else if (rotate_ <= -0.05f) {
 
 				short leftStickX = joyState.Gamepad.sThumbLX;
 				if (leftStickX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
@@ -224,8 +226,8 @@ void Car::Move()
 					//worldTransform_.translation_.z -= 1.5f * move.x;
 				}
 				//rotate_ += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.06f;
-				if (rotate_ > -0.1f) {
-					rotate_ = -0.1f;
+				if (rotate_ > -0.05f) {
+					rotate_ = -0.05f;
 				}
 			}
 
@@ -261,7 +263,7 @@ void Car::Drift()
 
 		driveMode_ = NormalMode;
 	}
-	else if (input->PushKey(DIK_S) || (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
+	else if (input->PushKey(DIK_S) || (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) &&!(rotate_<0.05f&& rotate_>-0.05)) {
 		driveMode_ = DriftMode;
 		/*if (rotate_ > 0) {
 			float theta = (rotate_ + 0.1f / 2.0f) * (float)M_PI;
