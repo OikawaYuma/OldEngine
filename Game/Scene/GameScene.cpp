@@ -91,9 +91,9 @@ int GameScene::GameClose()
 void GameScene::Depart()
 {
 	XINPUT_STATE Gamepad{};
-	/*if (!Input::GetInstance()->GetJoystickState(Gamepad)) {
+	if (!Input::GetInstance()->GetJoystickState(Gamepad)) {
 		return;
-	}*/
+	}
 	if (Gamepad.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
 
 		moveFlag = true;
@@ -112,9 +112,9 @@ void GameScene::Depart()
 
 void GameScene::Accel(){
 	XINPUT_STATE joyState{};
-	/*if (!Input::GetInstance()->GetJoystickState(joyState)) {
+	if (!Input::GetInstance()->GetJoystickState(joyState)) {
 		return;
-	}*/
+	}
 
 	if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)|| input->PushKey(DIK_LSHIFT)) {
 		if (camera->cameraTransform_.scale.x <= 2.0f) {
