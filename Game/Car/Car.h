@@ -11,8 +11,8 @@
 #include "Particle.h"
 
 enum DriveMode {
-	Normal,
-	Drift
+	NormalMode,
+	DriftMode
 };
 
 
@@ -32,6 +32,12 @@ public:
 	void Update();
 	void Draw(Camera* camera);
 	void Release();
+
+	// 車の発車
+	void Depart();
+	void Move();
+	void Drift();
+	void Accel();
 	Vector3 GetWorldTransform() {
 		return worldTransform_.translation_;
 	}
@@ -46,6 +52,8 @@ private:
 	Particle* particle2 = nullptr;
 	Camera* camera = nullptr;
 
+	int driveMode_ = NormalMode;
+
 public:
 	WorldTransform worldTransform_;
 	float rotate_;
@@ -57,8 +65,22 @@ public:
 	Vector2 move;
 	RandRangePro rearLeft;
 	RandRangePro rearRight;
+
+
 	//Particle* particle = nullptr;
 	//std::list<Particle::ParticlePro> particles_;
 
 };
 
+//// 車の発車
+//void Car::Depart()
+//{
+//	XINPUT_STATE Gamepad;
+//	if (!input->GetJoystickState(0, Gamepad)) {
+//		return;
+//	}
+//	if (Gamepad.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+//		moveFlag_ = true;
+//	}
+//
+//}

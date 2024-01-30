@@ -46,38 +46,9 @@ void GameScene::Update()
 	if (camera->cameraTransform_.rotate.y >= 0.15f) {
 		camera->cameraTransform_.rotate.y = 0.15f;
 	}
-	if (input->PushKey(DIK_LSHIFT)) {
-		if (camera->cameraTransform_.scale.x <= 2.0f) {
-			camera->cameraTransform_.scale.x += 0.05f;
-		}
-		if (camera->cameraTransform_.scale.y <= 2.0f) {
-			camera->cameraTransform_.scale.y += 0.05f;
-		}
-		if (camera->cameraTransform_.scale.z >= 0.6f) {
-			camera->cameraTransform_.scale.z -= 0.02f;
-		}
-			/*camera->cameraTransform_.scale.x = 2.0f;
-			camera->cameraTransform_.scale.y = 2.0f;
-		camera->cameraTransform_.scale.z = 0.6f;*/
-	}
-	else
-	{
-		camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 25;
-		camera->cameraTransform_.translate.y = 6.0f;
-	    camera->cameraTransform_.rotate.x = 0.125f;
-		if (camera->cameraTransform_.scale.x >= 1.0f) {
-			camera->cameraTransform_.scale.x -= 0.05f;
-		}
-		if (camera->cameraTransform_.scale.y >= 1.0f) {
-			camera->cameraTransform_.scale.y -= 0.05f;
-		}
-		if (camera->cameraTransform_.scale.z <= 1.0f) {
-			camera->cameraTransform_.scale.z += 0.02f;
-		}
-		/*camera->cameraTransform_.scale.x = 1.0f;
-		camera->cameraTransform_.scale.y = 1.0f;
-		camera->cameraTransform_.scale.z = 1.0f;*/
-	}
+
+	Depart();
+	Accel();
 	camera->Update();
 	floor_->Update();
 	car_->Update();
@@ -96,10 +67,10 @@ void GameScene::Draw()
 {
 	floor_->Draw(camera);
 	car_->Draw(camera);
-	front_left_tire_->Draw(camera);
+	/*front_left_tire_->Draw(camera);
 	front_right_tire_->Draw(camera);
 	rear_left_tire_->Draw(camera);
-	rear_right_tire_->Draw(camera);
+	rear_right_tire_->Draw(camera);*/
 }
 
 void GameScene::Release() {
@@ -114,4 +85,68 @@ void GameScene::Release() {
 int GameScene::GameClose()
 {
 	return false;
+}
+
+// 車の発車
+void GameScene::Depart()
+{
+	XINPUT_STATE Gamepad{};
+	if (!Input::GetInstance()->GetJoystickState(Gamepad)) {
+		return;
+	}
+	if (Gamepad.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+
+		moveFlag = true;
+
+	}
+
+	else {
+
+	}
+
+
+
+}
+
+
+
+void GameScene::Accel(){
+	XINPUT_STATE joyState;
+	if (!Input::GetInstance()->GetJoystickState(joyState)) {
+		return;
+	}
+
+	if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)|| input->PushKey(DIK_LSHIFT)) {
+		if (camera->cameraTransform_.scale.x <= 2.0f) {
+			camera->cameraTransform_.scale.x += 0.05f;
+		}
+		if (camera->cameraTransform_.scale.y <= 2.0f) {
+			camera->cameraTransform_.scale.y += 0.05f;
+		}
+		if (camera->cameraTransform_.scale.z >= 0.6f) {
+			camera->cameraTransform_.scale.z -= 0.02f;
+		}
+		/*camera->cameraTransform_.scale.x = 2.0f;
+		camera->cameraTransform_.scale.y = 2.0f;
+	camera->cameraTransform_.scale.z = 0.6f;*/
+	}
+	else if(!(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)||!input->PushKey(DIK_LSHIFT))
+	{
+		camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 25;
+		camera->cameraTransform_.translate.y = 6.0f;
+		camera->cameraTransform_.rotate.x = 0.125f;
+		if (camera->cameraTransform_.scale.x >= 1.0f) {
+			camera->cameraTransform_.scale.x -= 0.05f;
+		}
+		if (camera->cameraTransform_.scale.y >= 1.0f) {
+			camera->cameraTransform_.scale.y -= 0.05f;
+		}
+		if (camera->cameraTransform_.scale.z <= 1.0f) {
+			camera->cameraTransform_.scale.z += 0.02f;
+		}
+		/*camera->cameraTransform_.scale.x = 1.0f;
+		camera->cameraTransform_.scale.y = 1.0f;
+		camera->cameraTransform_.scale.z = 1.0f;*/
+	}
+
 }
