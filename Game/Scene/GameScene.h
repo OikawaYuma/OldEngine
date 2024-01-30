@@ -32,11 +32,13 @@ private:
 	Rear_right_tire* rear_right_tire_ = nullptr;
 	Model* collisionModel_ = nullptr;
 	uint32_t texture_ = {};
+	uint32_t texture2_ = {};
 	Vector4 color;
 	WorldTransform colisionTransform_ = {};
 	Colision* colision_ = nullptr;
 	Model* GreenModel = nullptr;
 	WorldTransform GreenWorldTransform_;
+
 
 };
 

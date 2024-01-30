@@ -5,7 +5,9 @@ class Colision
 {
 public:
 
-	void cubeColision(WorldTransform worldTransform1, WorldTransform worldTransform2,bool flag);
+	bool cubeCollision(WorldTransform worldTransform1, WorldTransform worldTransform2,bool flag);
+
+	bool cllision(WorldTransform worldTransform1, WorldTransform worldTransform2, bool flag);
 private:
 	int isColision = 0;
 

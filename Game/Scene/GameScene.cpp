@@ -33,7 +33,8 @@ void GameScene::Init()
 	colisionTransform_.translation_ = {0.0f,2.0f,207.0f};
 
 	GreenWorldTransform_.Initialize();
-	GreenWorldTransform_.scale_={}
+	GreenWorldTransform_.scale_ = { 2.0f,1.0f,1.0f };
+	GreenWorldTransform_.translation_ = { 0.0f,2.0f,100.0f };
 
 	color = { 1,1,1,1 };
 }
@@ -45,7 +46,9 @@ void GameScene::Update()
 	car_->worldTransform_.rotation_.y = theta;
 	camera->cameraTransform_.translate.x = car_->worldTransform_.translation_.x;
 	camera->cameraTransform_.rotate.y = car_->worldTransform_.rotation_.y / 10;
-	
+
+	//GreenWorldTransform_.translation_ = car_->worldTransform_.translation_;
+
 	sceneTime++;
 	if (input->TriggerKey(DIK_W)) {
 		moveFlag = true;
@@ -98,7 +101,7 @@ void GameScene::Update()
 	}
 
 	//colision_->cubeColision(colisionTransform_, car_->worldTransform_,isColision);
-	colision_->cubeColision(car_->worldTransform_,colisionTransform_, isColision);
+	colision_->cubeCollision(GreenWorldTransform_,colisionTransform_, isColision);
 
 
 	if (isColision == true)
