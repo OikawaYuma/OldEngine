@@ -17,10 +17,10 @@ void Car::Init() {
 	worldTransform_.Initialize();
 	worldTransform_.translation_.y += 0.05f;
 	worldTransform_.translation_.z += 10.0f;
-	texture_ = TextureManager::StoreTexture("Resources/blue.png");
+	texture_ = TextureManager::StoreTexture("Resources/demo_car/CAR.png");
 	texture2_ = TextureManager::StoreTexture("Resources/circle.png");
 	model_ = new Model();
-	model_->Initialize("Resources/demo_car", "car.obj", color);
+	model_->Initialize("Resources/demo_car", "CAR.obj", color);
 
 	Speed = 10;
 	rearLeft = {
