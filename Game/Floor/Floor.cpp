@@ -10,9 +10,9 @@ Floor::~Floor() {
 void Floor::Init() {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
-	texture_ = TextureManager::StoreTexture("Resources/uvChecker.png");
+	texture_ = TextureManager::StoreTexture("Resources/demo_floor/floorimage.png");
 	model_ = new Model();
-	model_->Initialize("Resources/demo_floor", "demo_floor3.obj", color);
+	model_->Initialize("Resources/demo_floor", "FLOOR.obj", color);
 }
 
 void Floor::Update() {
