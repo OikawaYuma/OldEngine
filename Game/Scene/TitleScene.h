@@ -16,8 +16,6 @@ public:
 
 private:
 	int sceneTime = 0;
-	Camera* camera = nullptr;
-	Player* player_ = nullptr;
 	Input* input = nullptr;
 	
 };

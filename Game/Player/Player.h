@@ -8,7 +8,7 @@
 #include "Audio.h"
 #include "Particle.h"
 #include "Sprite.h"
-
+#include "list"
 #include "PlayerBullet.h"
 class Player 
 {
@@ -32,9 +32,10 @@ private:
 	Vector4 color = {1.0f,1.0f,1.0f,1.0f};
 	Sprite* sprite_ = nullptr;
 	Particle* particle = nullptr;
+	float rotate_;
 
 	// 弾
-	PlayerBullet* bullet_ = nullptr;
+	std::list<PlayerBullet*> bullets_ ;
 	
 };
 

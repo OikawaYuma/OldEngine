@@ -1,11 +1,11 @@
+#pragma once
 #include "Model.h"
 #include "Camera.h"
 #include "Vector3.h"
 #include "WorldTransform.h"
-
-class PlayerBullet {
+class EnemyBullet
+{
 public:
-
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -37,3 +37,4 @@ private:
 	int32_t deathTimer_ = kLifeTime;
 	bool isDead_ = false;
 };
+

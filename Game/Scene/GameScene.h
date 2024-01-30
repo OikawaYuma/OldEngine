@@ -1,6 +1,11 @@
 #pragma once
 #include "IScene.h"
+#include "Triangle.h"
+#include "WorldTransform.h"
+#include "Player.h"
+#include "Enemy.h"
 #include "Input.h"
+#include "Particle.h"
 class GameScene :public IScene
 {
 public:
@@ -12,5 +17,9 @@ public:
 private:
 	Input* input = nullptr;
 	int sceneTime = 0;
+	Camera* camera = nullptr;
+	Player* player_ = nullptr;
+	Enemy* enemy_ = nullptr;
+	
 };
 

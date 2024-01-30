@@ -1,12 +1,12 @@
-#include "PlayerBullet.h"
+#include "EnemyBullet.h"
 
-void PlayerBullet::Init(const Vector3& pos,const Vector3& velocity)
+void EnemyBullet::Init(const Vector3& pos, const Vector3& velocity)
 {
 	// NULLポインタチェック
 	//assert(model);
 
 	model_ = new Model();
-	model_->Initialize("Resources/box", "box.obj",color );
+	model_->Initialize("Resources/box", "box.obj", color);
 	// テクスチャ読み込み
 	//textureHandle_ = TextureManager::StoreTexture("Resources/uvChecker.png");
 
@@ -17,7 +17,7 @@ void PlayerBullet::Init(const Vector3& pos,const Vector3& velocity)
 	velocity_ = velocity;
 }
 
-void PlayerBullet::Update()
+void EnemyBullet::Update()
 {
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
@@ -27,7 +27,8 @@ void PlayerBullet::Update()
 
 }
 
-void PlayerBullet::Draw(Camera* camera)
+void EnemyBullet::Draw(Camera* camera)
 {
-	model_->Draw(worldtransform_, 1, camera, {1.0f,1.0f,1.0f,1.0f});
+	model_->Draw(worldtransform_, 1, camera, { 1.0f,1.0f,1.0f,1.0f });
 }
+
