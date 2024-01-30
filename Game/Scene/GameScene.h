@@ -16,6 +16,9 @@ public:
 	void Draw()override;
 	void Release()override;
 	int GameClose()override;
+
+	void Depart();
+	void Accel();
 private:
 	Input* input = nullptr;
 	int sceneTime = 0;

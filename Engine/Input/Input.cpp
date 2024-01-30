@@ -1,8 +1,6 @@
 #include "Input.h"
 #include "WinAPI.h"
-#include <Xinput.h>
-//Xinput.lib; Xinput9_1_0.lib
-#pragma comment(lib, "Xinput.lib")
+
 
 void Input::Initialize() {
 	WinAPI *sWinAPI = WinAPI::GetInstance();
@@ -26,24 +24,10 @@ void Input::Initialize() {
 		sWinAPI->GetHwnd(),DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
 	
-	DWORD dwResult;
-	for (DWORD i = 0; i < XUSER_MAX_COUNT; i++)
-	{
-		XINPUT_STATE state;
-		ZeroMemory(&state, sizeof(XINPUT_STATE));
+	//XInputEnable(true);
 
-		// Simply get the state of the controller from XInput.
-		dwResult = XInputGetState(i, &state);
 
-		if (dwResult == ERROR_SUCCESS)
-		{
-			// Controller is connected
-		}
-		else
-		{
-			// Controller is not connected
-		}
-	}
+	
 
 
 }
@@ -56,6 +40,39 @@ void Input::Update() {
 	keyboard->Acquire();
 
 	keyboard->GetDeviceState(sizeof(keys), keys);
+
+	//DWORD dwResult;
+	//for (DWORD i = 0; i < XUSER_MAX_COUNT; i++)
+	//{
+	//	
+	//	ZeroMemory(&state, sizeof(XINPUT_STATE));
+
+	//	// Simply get the state of the controller from XInput.
+	//	dwResult = XInputGetState(i, &state);
+
+	//	if (dwResult == ERROR_SUCCESS)
+	//	{
+	//		// Controller is connected
+	//	}
+	//	else
+	//	{
+	//		// Controller is not connected
+	//	}
+	//}
+
+}
+
+bool Input::GetJoystickState(XINPUT_STATE &state)
+{
+	ZeroMemory(&state, sizeof(XINPUT_STATE));
+
+	// コントローラーの状態を取得
+	result = XInputGetState(0,&state);
+
+	if (result == ERROR_SUCCESS) {
+		return true;
+	}
+	return false;
 }
 
 bool Input::PushKey(BYTE keyNumber)

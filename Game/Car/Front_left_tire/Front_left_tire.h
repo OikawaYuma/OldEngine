@@ -17,6 +17,9 @@ public:
 	void Update();
 	void Draw(Camera* camera);
 	void Release();
+	void Move();
+	void Accel();
+	void Depart();
 	Vector3 GetWorldTransform() {
 		return worldTransform_.translation_;
 	}
