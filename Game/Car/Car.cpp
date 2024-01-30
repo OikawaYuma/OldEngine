@@ -88,9 +88,9 @@ void Car::Update() {
 	if (input->TriggerKey(DIK_W)) {
 		moveFlag_ = true;
 	}
-	{
+	/*{
 		Depart();
-	}
+	}*/
 
 	worldTransform_.UpdateMatrix();
 
@@ -141,9 +141,9 @@ void Car::Release()
 void Car::Depart()
 {
 	XINPUT_STATE Gamepad{};
-	if (!Input::GetInstance()->GetJoystickState(Gamepad)) {
+	/*if (!Input::GetInstance()->GetJoystickState(Gamepad)) {
 		return;
-	}
+	}*/
 	if (Gamepad.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
 
 		moveFlag_ = true;
@@ -160,10 +160,10 @@ void Car::Depart()
 
 void Car::Move()
 {
-	XINPUT_STATE joyState;
+	XINPUT_STATE joyState{};
 	/*switch (driveMode_) {
 	}*/
-	if (Input::GetInstance()->GetJoystickState(joyState)) {
+	//if (Input::GetInstance()->GetJoystickState(joyState)) {
 
 		if (worldTransform_.rotation_.y > 1.5f) {
 			worldTransform_.rotation_.y = 1.5f;
@@ -248,15 +248,15 @@ void Car::Move()
 
 		//rotate_ += 0.04f;
 
-	}
+	//}
 }
 
 void Car::Drift()
 {
-	XINPUT_STATE joyState;
-	if (!Input::GetInstance()->GetJoystickState(joyState)) {
+	XINPUT_STATE joyState{};
+	/*if (!Input::GetInstance()->GetJoystickState(joyState)) {
 		return;
-	}
+	}*/
 	if (!input->PushKey(DIK_S) && !(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
 
 		driveMode_ = NormalMode;
@@ -285,10 +285,10 @@ void Car::Drift()
 
 void Car::Accel()
 {
-	XINPUT_STATE joyState;
-	if (!Input::GetInstance()->GetJoystickState(joyState)) {
+	XINPUT_STATE joyState{};
+	/*if (!Input::GetInstance()->GetJoystickState(joyState)) {
 		return;
-	}
+	}*/
 
 	if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || Input::GetInstance()->PushKey(DIK_LSHIFT)) {
 		Speed = ShiftSpeed;
