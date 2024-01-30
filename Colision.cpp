@@ -26,6 +26,9 @@ bool Colision::cubeCollision(WorldTransform worldTransform1, WorldTransform worl
 	{
 		flag = true;
 	}
+	else {
+		flag = false;
+	}
 
 	return flag;
 
@@ -52,5 +55,5 @@ bool Colision::cllision(WorldTransform worldTransform1, WorldTransform worldTran
 	}
 
 	// 上記の条件に当てはまらない場合は当たっている
-	return flag = true;
+	return true;
 }
