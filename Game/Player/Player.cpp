@@ -15,7 +15,7 @@ Player::~Player() {
 void Player::Init() {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
-	texture_ = TextureManager::StoreTexture("Resources/circle.png");
+	texture_ = TextureManager::StoreTexture("Resources/white.png");
 	texture2_ = TextureManager::StoreTexture("Resources/monsterBall.png");
 	soundData = Audio::SoundLoadWave("Resources/fanfare.wav");
 	soundData2 = Audio::SoundLoadWave("Resources/fanfare.wav");
@@ -25,6 +25,11 @@ void Player::Init() {
 	particle->Initialize({ 1.0f, 1.0f, 1.0f, 1.0f });
 	sprite_ = new Sprite;
 	sprite_->Initialize(color);
+	// 衝突属性を設定
+	SetCollisonAttribute(0);
+
+	// 衝突対象を自分の属性以外に設定
+	SetCollisionMask(1);
 }
 
 void Player::Update() {
@@ -56,9 +61,28 @@ void Player::Update() {
 	if (input->PushKey(DIK_RIGHTARROW)) {
 		rotate_ += 0.01f;
 	}
-	if (input->PushKey(DIK_LEFTARROW)) {
+	
 		rotate_ -= 0.01f;
-	}
+		if (red_ <=1.0f) {
+			red_ += 0.01f;
+			if (red_ > 1.0f) {
+				red_ = 0.1f;
+			}
+		}
+		if (blue_ <= 1.0f) {
+			blue_ += 0.01f;
+			if (blue_ > 1.0f) {
+				blue_ = 0.4f;
+			}
+		}
+		if (green_ <= 1.0f) {
+			green_ += 0.01f;
+			if (green_ > 1.0f) {
+				green_ = 0.6f;
+			}
+		}
+
+
 	
 	// キャラクター攻撃処理
 	Attack();
@@ -67,7 +91,7 @@ void Player::Update() {
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Update();
 	}
-
+	color = { red_,green_,blue_,1.0f };
 	ImGui::Begin("Color");
 	ImGui::DragFloat4("s",&worldTransform_.scale_.x,0.01f);
 	ImGui::DragFloat4("r", &worldTransform_.rotation_.x,  0.01f);
@@ -103,7 +127,7 @@ void Player::Attack()
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
 
-		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+		//velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Init(worldTransform_.translation_,velocity);
@@ -113,4 +137,20 @@ void Player::Attack()
 
 
 	}
+}
+
+void Player::OnCollision()
+{
+}
+
+Vector3 Player::GetWorldPosition() const
+{
+	// ワールド行列座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
 }

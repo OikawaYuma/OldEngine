@@ -15,7 +15,7 @@ public:
 	}
 private:
 	uint32_t time_;
-	bool isFinish_;
+	bool isFinish_ = false;
 	std::function<void()> pFunc_;
 };
 

@@ -13,12 +13,14 @@
 #include "EnemyBullet.h"
 
 #include "TimedCall.h"
-class Enemy
+#include "Collider.h"
+class GameScene;
+class Enemy : public Collider
 {
 public:
 	Enemy();
 	~Enemy();
-	void Init();
+	void Init(GameScene* gamescene);
 	void Update();
 	void Draw(Camera* camera);
 	void Release();
@@ -43,6 +45,13 @@ public:
 	const static int kFireInterval = 60;
 
 	void FireLoop();
+	int GetRadius() { return radius_; }
+	// 衝突を検出したらコールバック関数
+	void OnCollision() override;
+	Vector3 GetWorldPosition()const override;
+	// 弾リストを取得
+	const std::list<EnemyBullet*>& Getbullet() const { return bullets_; }
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
@@ -57,6 +66,8 @@ private:
 	float rotate_;
 	IEnemy* state;
 	Vector3 velocity_;
+	int radius_ = 1;
+	GameScene* gamescene_ = nullptr;
 
 private:
 	int32_t FireTimer = 0;

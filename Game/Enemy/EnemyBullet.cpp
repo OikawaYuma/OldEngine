@@ -15,6 +15,9 @@ void EnemyBullet::Init(const Vector3& pos, const Vector3& velocity)
 	worldtransform_.translation_ = pos;
 
 	velocity_ = velocity;
+	SetCollisonAttribute(1);
+
+	SetCollisionMask(0);
 }
 
 void EnemyBullet::Update()
@@ -30,5 +33,21 @@ void EnemyBullet::Update()
 void EnemyBullet::Draw(Camera* camera)
 {
 	model_->Draw(worldtransform_, 1, camera, { 1.0f,1.0f,1.0f,1.0f });
+}
+
+void EnemyBullet::OnCollision()
+{
+}
+
+Vector3 EnemyBullet::GetWorldPosition() const
+{
+	// ワールド行列座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldtransform_.matWorld_.m[3][0];
+	worldPos.y = worldtransform_.matWorld_.m[3][1];
+	worldPos.z = worldtransform_.matWorld_.m[3][2];
+
+	return worldPos;
 }
 

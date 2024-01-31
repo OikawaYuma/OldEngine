@@ -3,7 +3,9 @@
 #include "Vector3.h"
 #include "WorldTransform.h"
 
-class PlayerBullet {
+#include "Collider.h"
+
+class PlayerBullet : public Collider {
 public:
 
 	/// <summary>
@@ -23,7 +25,9 @@ public:
 	void Draw(Camera* camera);
 
 	bool IsDead()const { return isDead_; }
-
+	// 衝突を検出したらコールバック関数
+	void OnCollision()override;
+	Vector3 GetWorldPosition() const override;
 private:
 	WorldTransform worldtransform_;
 	Model* model_ = nullptr;

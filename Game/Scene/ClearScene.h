@@ -1,6 +1,8 @@
 #pragma once
 #include "IScene.h"
 #include "Input.h"
+#include "Sprite.h"
+#include "TextureManager.h"
 class ClearScene : public IScene
 {
 public:
@@ -12,6 +14,11 @@ public:
 private:
 	int sceneTime = 0;
 	Input* input = nullptr;
+	Sprite* sprite_ = nullptr;
+	float fadeColor_ = 1.0f;
+	uint32_t textureHandle_;
+	bool startFlag_ = false;
+	bool sceneChange = false;
 };
 ;
 

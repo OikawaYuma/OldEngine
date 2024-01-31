@@ -3,6 +3,7 @@
 #define _USE_MATH_DEFINES
 #include<math.h>
 #include"EnemyApproach.h"
+#include "GameScene.h"
 Enemy::Enemy() {
 
 }
@@ -13,7 +14,7 @@ Enemy::~Enemy() {
 	}*/
 }
 
-void Enemy::Init() {
+void Enemy::Init(GameScene * gamescene) {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
 	worldTransform_.translation_.z = 40;
@@ -31,13 +32,16 @@ void Enemy::Init() {
 	velocity_ = { 0,0,-0.5f };
 	state = new EnemyApproach();
 
+	gamescene_ = gamescene;
 	
 
 	//FazeInit();
 
 	FireLoop();
 
+	SetCollisonAttribute(1);
 
+	SetCollisionMask(0);
 }
 
 void Enemy::Update() {
@@ -161,4 +165,21 @@ void Enemy::FireLoop()
 
 	timedCalls_.push_back(timedCall);
 
+}
+
+void Enemy::OnCollision()
+{
+	gamescene_->SetChangeScene();
+}
+
+Vector3 Enemy::GetWorldPosition() const
+{
+	// ワールド行列座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
 }
