@@ -19,6 +19,7 @@ void Car::Init() {
 	worldTransform_.translation_.z += 10.0f;
 	texture_ = TextureManager::StoreTexture("Resources/demo_car/CAR.png");
 	texture2_ = TextureManager::StoreTexture("Resources/circle.png");
+	texture3_ = TextureManager::StoreTexture("Resources/circleRED.png");
 	model_ = new Model();
 	model_->Initialize("Resources/demo_car", "CAR.obj", color);
 
@@ -109,6 +110,10 @@ void Car::Draw(Camera* camera) {
 	switch (driveMode_) {
 	case NormalMode: {
 		model_->Draw(worldTransform_, texture_, camera, color);
+		if (input->PushKey(DIK_LSHIFT)) {
+			particle->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearLeft);
+			particle2->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearRight);
+		}
 		break;
 	}
 	case DriftMode: {
@@ -153,9 +158,6 @@ void Car::Depart()
 	else {
 
 	}
-
-
-
 }
 
 void Car::Move()
@@ -275,11 +277,6 @@ void Car::Drift()
 		}*/
 
 	}
-
-
-
-
-
 
 }
 
