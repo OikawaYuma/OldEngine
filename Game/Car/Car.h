@@ -41,6 +41,9 @@ public:
 	Vector3 GetWorldTransform() {
 		return worldTransform_.translation_;
 	}
+	int GetDriveMode() {
+		return driveMode_;
+	}
 private:
 	Model* model_ = nullptr;
 	uint32_t texture_ = 1;

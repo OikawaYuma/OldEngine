@@ -88,9 +88,9 @@ void Car::Update() {
 	if (input->TriggerKey(DIK_W)) {
 		moveFlag_ = true;
 	}
-	/*{
+	{
 		Depart();
-	}*/
+	}
 
 	worldTransform_.UpdateMatrix();
 
@@ -188,7 +188,8 @@ void Car::Move()
 				worldTransform_.translation_.z += Speed * move.x;
 
 			}
-
+			worldTransform_.rotation_.z = 0.0f; 
+			worldTransform_.rotation_.x = 0.0f;
 			break;
 		}
 		case DriftMode: {
@@ -203,16 +204,20 @@ void Car::Move()
 				short leftStickX = joyState.Gamepad.sThumbLX;
 				if (leftStickX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
 					rotate_ += 0.01f;
+					
 				}
 				else if (leftStickX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
 					rotate_ -= 0.005f;
 					worldTransform_.translation_.x -=1.5f * move.y;
+					
 					//worldTransform_.translation_.z -= 1.5f * move.x;
 				}
 				
 				if (rotate_ < 0.05f) {
 					rotate_ = 0.05f;
 				}
+				worldTransform_.rotation_.z = -0.05f;
+				worldTransform_.rotation_.x = -0.05f;
 			}
 			else if (rotate_ <= -0.05f) {
 
@@ -229,7 +234,10 @@ void Car::Move()
 				if (rotate_ > -0.05f) {
 					rotate_ = -0.05f;
 				}
+				worldTransform_.rotation_.z = 0.05f;
+				worldTransform_.rotation_.x = -0.05f;
 			}
+			
 
 
 
@@ -277,12 +285,6 @@ void Car::Drift()
 		}*/
 
 	}
-
-
-
-
-
-
 }
 
 void Car::Accel()
