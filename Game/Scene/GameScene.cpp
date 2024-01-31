@@ -58,6 +58,7 @@ void GameScene::Update()
 	ImGui::DragFloat3("Translate", (float*)&camera->cameraTransform_.translate, 0.01f, -100.0f, 100.0f);
 	ImGui::DragFloat3("Rotate", (float*)&camera->cameraTransform_.rotate, 0.01f, -100.0f, 100.0f);
 	ImGui::DragFloat3("Scale", (float*)&camera->cameraTransform_.scale, 0.01f, -100.0f, 100.0f);
+	ImGui::Checkbox("Aceel" )
 	ImGui::End();
 }
 void GameScene::Draw()
@@ -67,9 +68,7 @@ void GameScene::Draw()
 	/*front_left_tire_->Draw(camera);
 	front_right_tire_->Draw(camera);
 	rear_left_tire_->Draw(camera);
-	rear_right_tire_->Draw(camera);*/
-}
-
+	rear_right_tire_->Draw(camera);*/d
 void GameScene::Release() {
 	delete floor_;
 	delete front_left_tire_;
