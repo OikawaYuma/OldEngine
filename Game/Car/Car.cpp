@@ -17,10 +17,11 @@ void Car::Init() {
 	worldTransform_.Initialize();
 	worldTransform_.translation_.y += 0.05f;
 	worldTransform_.translation_.z += 10.0f;
-	texture_ = TextureManager::StoreTexture("Resources/blue.png");
+	texture_ = TextureManager::StoreTexture("Resources/demo_car/CAR.png");
 	texture2_ = TextureManager::StoreTexture("Resources/circle.png");
+	texture3_ = TextureManager::StoreTexture("Resources/cubeRED.png");
 	model_ = new Model();
-	model_->Initialize("Resources/demo_car", "car.obj", color);
+	model_->Initialize("Resources/demo_car", "CAR.obj", color);
 
 	Speed = 10;
 	rearLeft = {
@@ -39,6 +40,10 @@ void Car::Init() {
 	particle->Initialize();
 	particle2 = new Particle();
 	particle2->Initialize();
+	particle3 = new Particle();
+	particle3->Initialize();
+	particle4 = new Particle();
+	particle4->Initialize();
 }
 
 void Car::Update() {
@@ -75,10 +80,6 @@ void Car::Update() {
 	else if (input->PushKey(DIK_D) && worldTransform_.rotation_.y <= 1.5f) {
 		rotate_ += 0.04f;
 	}
-
-
-
-
 	if (worldTransform_.rotation_.y >= 1.5f) {
 		worldTransform_.rotation_.y = 1.5f;
 	}
@@ -109,6 +110,11 @@ void Car::Draw(Camera* camera) {
 	switch (driveMode_) {
 	case NormalMode: {
 		model_->Draw(worldTransform_, texture_, camera, color);
+		if (input->PushKey(DIK_LSHIFT)) {
+			particle3->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y+0.3f,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearLeft);
+			particle4->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y+0.3f,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearRight);
+		
+		}
 		break;
 	}
 	case DriftMode: {
@@ -128,9 +134,6 @@ void Car::Draw(Camera* camera) {
 		break;
 	}
 	}
-
-
-	
 	//sprite_->Draw(texture_,color);
 }
 
@@ -155,9 +158,6 @@ void Car::Depart()
 	else {
 
 	}
-
-
-
 }
 
 void Car::Move()
@@ -240,10 +240,6 @@ void Car::Move()
 			
 
 
-
-
-
-
 			// 移動
 			if (moveFlag_) {
 				worldTransform_.translation_.x += DriftSpeed * move.y;
@@ -253,9 +249,6 @@ void Car::Move()
 			break;
 		}
 		}
-
-
-
 		//rotate_ += 0.04f;
 
 	}
@@ -285,6 +278,7 @@ void Car::Drift()
 		}*/
 
 	}
+
 }
 
 void Car::Accel()

@@ -48,11 +48,14 @@ private:
 	Model* model_ = nullptr;
 	uint32_t texture_ = 1;
 	uint32_t texture2_ = 2;
+	uint32_t texture3_ = 3;
 	Input* input = nullptr;
 	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
 	Sprite* sprite_ = nullptr;
 	Particle* particle = nullptr;
 	Particle* particle2 = nullptr;
+	Particle* particle3 = nullptr;
+	Particle* particle4 = nullptr;
 	Camera* camera = nullptr;
 
 	int driveMode_ = NormalMode;

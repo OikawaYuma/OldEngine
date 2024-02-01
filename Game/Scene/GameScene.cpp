@@ -33,6 +33,7 @@ void GameScene::Update()
 	car_->worldTransform_.rotation_.y = theta;
 	camera->cameraTransform_.translate.x = car_->worldTransform_.translation_.x;
 	camera->cameraTransform_.rotate.y = car_->worldTransform_.rotation_.y / 10;
+	camera->cameraTransform_.rotate.z = camera->cameraTransform_.rotate.y;
 	sceneTime++;
 	if (input->TriggerKey(DIK_W)) {
 		moveFlag = true;
