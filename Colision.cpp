@@ -31,7 +31,6 @@ bool Colision::cubeCollision(WorldTransform worldTransform1, WorldTransform worl
 	}
 
 	return flag;
-
 }
 
 bool Colision::cllision(WorldTransform worldTransform1, WorldTransform worldTransform2, bool flag)
