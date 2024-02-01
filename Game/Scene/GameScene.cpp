@@ -111,9 +111,9 @@ int GameScene::GameClose()
 void GameScene::Depart()
 {
 	XINPUT_STATE Gamepad{};
-	if (!Input::GetInstance()->GetJoystickState(Gamepad)) {
+	/*if (!Input::GetInstance()->GetJoystickState(Gamepad)) {
 		return;
-	}
+	}*/
 	if (Gamepad.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
 
 		moveFlag = true;
@@ -134,9 +134,9 @@ void GameScene::Accel(){
 	XINPUT_STATE joyState{};
 	float theta = (car_->rotate_ / 2.0f) * (float)M_PI;
 	Vector2 move = { cosf(theta),sinf(theta) };
-	if (!Input::GetInstance()->GetJoystickState(joyState)) {
+	/*if (!Input::GetInstance()->GetJoystickState(joyState)) {
 		return;
-	}
+	}*/
 	switch (car_->GetDriveMode())
 	{
 	case NormalMode: {
