@@ -100,7 +100,7 @@ void GameScene::Update()
 	if (DriftFlag) {
 		car_->SetDriveMode(DriftMode);
 	}
-	else if (!DriftFlag || !moveFlag) {
+	else if (!DriftFlag && !moveFlag) {
 		car_->SetDriveMode(NormalMode);
 	}
 }
@@ -166,12 +166,39 @@ void GameScene::Accel(){
 		if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || input->PushKey(DIK_LSHIFT) || AccelFlag) {
 			if (camera->cameraTransform_.scale.x <= AccelCamera.scale.x) {
 				camera->cameraTransform_.scale.x += 0.05f;
+				if (camera->cameraTransform_.scale.x > AccelCamera.scale.x) {
+					camera->cameraTransform_.scale.x = AccelCamera.scale.x;
+				}
+			}
+			else if (camera->cameraTransform_.scale.x >= AccelCamera.scale.x) {
+				camera->cameraTransform_.scale.x -= 0.05f;
+				if (camera->cameraTransform_.scale.x < AccelCamera.scale.x) {
+					camera->cameraTransform_.scale.x = AccelCamera.scale.x;
+				}
 			}
 			if (camera->cameraTransform_.scale.y <= AccelCamera.scale.y) {
 				camera->cameraTransform_.scale.y += 0.05f;
+				if (camera->cameraTransform_.scale.y > AccelCamera.scale.y) {
+					camera->cameraTransform_.scale.y = AccelCamera.scale.y;
+				}
+			}
+			else if (camera->cameraTransform_.scale.y >= AccelCamera.scale.y) {
+				camera->cameraTransform_.scale.y -= 0.05f;
+				if (camera->cameraTransform_.scale.y < AccelCamera.scale.y) {
+					camera->cameraTransform_.scale.y = AccelCamera.scale.y;
+				}
 			}
 			if (camera->cameraTransform_.scale.z >= AccelCamera.scale.z) {
 				camera->cameraTransform_.scale.z -= 0.02f;
+				if (camera->cameraTransform_.scale.z < AccelCamera.scale.z) {
+					camera->cameraTransform_.scale.z = AccelCamera.scale.z;
+				}
+			}
+			else if (camera->cameraTransform_.scale.z <= AccelCamera.scale.z) {
+				camera->cameraTransform_.scale.z += 0.02f;
+				if (camera->cameraTransform_.scale.z > AccelCamera.scale.z) {
+					camera->cameraTransform_.scale.z = AccelCamera.scale.z;
+				}
 			}
 			/*camera->cameraTransform_.scale.x = 2.0f;
 			camera->cameraTransform_.scale.y = 2.0f;
@@ -190,12 +217,39 @@ void GameScene::Accel(){
 			camera->cameraTransform_.rotate.x = NormalCamera.rotate.x;
 			if (camera->cameraTransform_.scale.x >= NormalCamera.scale.x) {
 				camera->cameraTransform_.scale.x -= 0.05f;
+				if (camera->cameraTransform_.scale.x < NormalCamera.scale.x) {
+					camera->cameraTransform_.scale.x = NormalCamera.scale.x;
+				}
+			}
+			else if (camera->cameraTransform_.scale.x <= NormalCamera.scale.x) {
+				camera->cameraTransform_.scale.x += 0.05f;
+				if (camera->cameraTransform_.scale.x > NormalCamera.scale.x) {
+					camera->cameraTransform_.scale.x = NormalCamera.scale.x;
+				}
 			}
 			if (camera->cameraTransform_.scale.y >= NormalCamera.scale.y) {
 				camera->cameraTransform_.scale.y -= 0.05f;
+				if (camera->cameraTransform_.scale.y < NormalCamera.scale.y) {
+					camera->cameraTransform_.scale.y = NormalCamera.scale.y;
+				}
+			}
+			else if (camera->cameraTransform_.scale.y <= NormalCamera.scale.y) {
+				camera->cameraTransform_.scale.y += 0.05f;
+				if (camera->cameraTransform_.scale.y > NormalCamera.scale.y) {
+					camera->cameraTransform_.scale.y = NormalCamera.scale.y;
+				}
 			}
 			if (camera->cameraTransform_.scale.z <= NormalCamera.scale.z) {
 				camera->cameraTransform_.scale.z += 0.02f;
+				if (camera->cameraTransform_.scale.z > NormalCamera.scale.z) {
+					camera->cameraTransform_.scale.z = NormalCamera.scale.z;
+				}
+			}
+			else if (camera->cameraTransform_.scale.z >= NormalCamera.scale.z) {
+				camera->cameraTransform_.scale.z -= 0.02f;
+				if (camera->cameraTransform_.scale.z < NormalCamera.scale.z) {
+					camera->cameraTransform_.scale.z = NormalCamera.scale.z;
+				}
 			}
 			if (moveFlag) {
 				camera->cameraTransform_.translate.x += car_->Speed * move.y;
@@ -219,12 +273,40 @@ void GameScene::Accel(){
 
 			if (camera->cameraTransform_.scale.x <= AccelDriftCamera.scale.x) {
 				camera->cameraTransform_.scale.x += 0.05f;
+				if (camera->cameraTransform_.scale.x > AccelDriftCamera.scale.x) {
+					camera->cameraTransform_.scale.x = AccelDriftCamera.scale.x;
+				}
+			}
+			else if (camera->cameraTransform_.scale.x >= AccelDriftCamera.scale.x) {
+				camera->cameraTransform_.scale.x -= 0.05f;
+				if (camera->cameraTransform_.scale.x < AccelDriftCamera.scale.x) {
+					camera->cameraTransform_.scale.x = AccelDriftCamera.scale.x;
+				}
 			}
 			if (camera->cameraTransform_.scale.y <= AccelDriftCamera.scale.y) {
 				camera->cameraTransform_.scale.y += 0.05f;
+				if (camera->cameraTransform_.scale.y > AccelDriftCamera.scale.y) {
+					camera->cameraTransform_.scale.y = AccelDriftCamera.scale.y;
+				}
+			}
+			else if (camera->cameraTransform_.scale.y >= AccelDriftCamera.scale.y) {
+				camera->cameraTransform_.scale.y -= 0.05f;
+				if (camera->cameraTransform_.scale.y < AccelDriftCamera.scale.y) {
+					camera->cameraTransform_.scale.y = AccelDriftCamera.scale.y;
+				}
+
 			}
 			if (camera->cameraTransform_.scale.z >= AccelDriftCamera.scale.z) {
 				camera->cameraTransform_.scale.z -= 0.02f;
+				if (camera->cameraTransform_.scale.z < AccelDriftCamera.scale.z) {
+					camera->cameraTransform_.scale.z = AccelDriftCamera.scale.z;
+				}
+			}
+			else if (camera->cameraTransform_.scale.z <= AccelDriftCamera.scale.z) {
+				camera->cameraTransform_.scale.z += 0.02f;
+				if (camera->cameraTransform_.scale.z > AccelDriftCamera.scale.z) {
+					camera->cameraTransform_.scale.z = AccelDriftCamera.scale.z;
+				}
 			}
 			if (moveFlag) {
 				camera->cameraTransform_.translate.x += car_->Speed * move.y;
@@ -244,12 +326,39 @@ void GameScene::Accel(){
 			 
 			if (camera->cameraTransform_.scale.x >= DriftCamera.scale.x) {
 				camera->cameraTransform_.scale.x -= 0.05f;
+				if (camera->cameraTransform_.scale.x < DriftCamera.scale.x) {
+					camera->cameraTransform_.scale.x = DriftCamera.scale.x;
+				}
+			}
+			else if (camera->cameraTransform_.scale.x <= DriftCamera.scale.x) {
+				camera->cameraTransform_.scale.x += 0.05f;
+				if (camera->cameraTransform_.scale.x > DriftCamera.scale.x) {
+					camera->cameraTransform_.scale.x = DriftCamera.scale.x;
+				}
 			}
 			if (camera->cameraTransform_.scale.y >= DriftCamera.scale.y) {
 				camera->cameraTransform_.scale.y -= 0.05f;
+				if (camera->cameraTransform_.scale.y < DriftCamera.scale.y) {
+					camera->cameraTransform_.scale.y = DriftCamera.scale.y;
+				}
+			}
+			else if (camera->cameraTransform_.scale.y <= DriftCamera.scale.y) {
+				camera->cameraTransform_.scale.y += 0.05f;
+				if (camera->cameraTransform_.scale.y > DriftCamera.scale.y) {
+					camera->cameraTransform_.scale.y = DriftCamera.scale.y;
+				}
 			}
 			if (camera->cameraTransform_.scale.z <= DriftCamera.scale.z) {
 				camera->cameraTransform_.scale.z += 0.02f;
+				if (camera->cameraTransform_.scale.z > DriftCamera.scale.z) {
+					camera->cameraTransform_.scale.z = DriftCamera.scale.z;
+				}
+			}
+			else if (camera->cameraTransform_.scale.z >= DriftCamera.scale.z) {
+				camera->cameraTransform_.scale.z -= 0.02f;
+				if (camera->cameraTransform_.scale.z < DriftCamera.scale.z) {
+					camera->cameraTransform_.scale.z = DriftCamera.scale.z;
+				}
 			}
 			if (moveFlag) {
 				camera->cameraTransform_.translate.x += car_->DriftSpeed * move.y;
