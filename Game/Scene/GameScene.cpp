@@ -19,6 +19,11 @@ void GameScene::Init()
 	rear_left_tire_->Init();
 	rear_right_tire_ = new Rear_right_tire();
 	rear_right_tire_->Init();
+
+	DriftCamera.rotate.x = 0.125f;
+	AccelCamera;
+	NormalCamera.rotate.x = 0.125f;
+	AccelDriftCamera;
 }
 
 void GameScene::Update()
@@ -33,10 +38,7 @@ void GameScene::Update()
 	if (input->TriggerKey(DIK_W)) {
 		moveFlag = true;
 	}
-	if (moveFlag) {
-		camera->cameraTransform_.translate.x += car_->Speed * move.y;
-		camera->cameraTransform_.translate.z += car_->Speed * move.x;
-	}
+	
 	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNo = TITLE;
 		sceneTime = 0;
@@ -48,7 +50,7 @@ void GameScene::Update()
 		camera->cameraTransform_.rotate.y = 0.15f;
 	}
 
-	//Depart();
+	Depart();
 	Accel();
 	camera->Update();
 	floor_->Update();
@@ -58,10 +60,28 @@ void GameScene::Update()
 	rear_left_tire_->Update();
 	rear_right_tire_->Update();
 	ImGui::Begin("Camera");
-	ImGui::DragFloat3("Translate", &camera->cameraTransform_.translate.x, camera->cameraTransform_.translate.y, camera->cameraTransform_.translate.z, 1.0f);
-	ImGui::DragFloat3("Translate", (float*)&camera->cameraTransform_.translate, 0.01f, -100.0f, 100.0f);
-	ImGui::DragFloat3("Rotate", (float*)&camera->cameraTransform_.rotate, 0.01f, -100.0f, 100.0f);
-	ImGui::DragFloat3("Scale", (float*)&camera->cameraTransform_.scale, 0.01f, -100.0f, 100.0f);
+	ImGui::Text("NormalCamera");
+	ImGui::DragFloat3("NScale",&NormalCamera.scale.x);
+	ImGui::DragFloat3("NRotate", &NormalCamera.rotate.x);
+	ImGui::DragFloat3("NTranslate", &NormalCamera.translate.x);
+
+	ImGui::Text("AccelCamera");
+	ImGui::DragFloat3("AScale", &AccelCamera.scale.x);
+	ImGui::DragFloat3("ARotate", &AccelCamera.rotate.x);
+	ImGui::DragFloat3("ATranslate", &AccelCamera.translate.x);
+
+	ImGui::Text("DriftCamera");
+	ImGui::DragFloat3("DScale", &DriftCamera.scale.x);
+	ImGui::DragFloat3("DRotate", &DriftCamera.rotate.x);
+	ImGui::DragFloat3("DTranslate", &AccelCamera.translate.x);
+
+	ImGui::Text("AccelDriftCamera");
+	ImGui::DragFloat3("ADScale", &AccelDriftCamera.scale.x);
+	ImGui::DragFloat3("ADRotate", &AccelDriftCamera.rotate.x);
+	ImGui::DragFloat3("ADTranslate", &AccelDriftCamera.translate.x);
+
+	ImGui::Checkbox("Aceel",&AccelFlag);
+	ImGui::Checkbox("Drift", &DriftFlag);
 	ImGui::End();
 }
 void GameScene::Draw()
@@ -73,7 +93,6 @@ void GameScene::Draw()
 	rear_left_tire_->Draw(camera);
 	rear_right_tire_->Draw(camera);*/
 }
-
 void GameScene::Release() {
 	delete floor_;
 	delete front_left_tire_;
@@ -92,9 +111,9 @@ int GameScene::GameClose()
 void GameScene::Depart()
 {
 	XINPUT_STATE Gamepad{};
-	/*if (!Input::GetInstance()->GetJoystickState(Gamepad)) {
+	if (!Input::GetInstance()->GetJoystickState(Gamepad)) {
 		return;
-	}*/
+	}
 	if (Gamepad.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
 
 		moveFlag = true;
@@ -113,41 +132,115 @@ void GameScene::Depart()
 
 void GameScene::Accel(){
 	XINPUT_STATE joyState{};
-	/*if (!Input::GetInstance()->GetJoystickState(joyState)) {
+	float theta = (car_->rotate_ / 2.0f) * (float)M_PI;
+	Vector2 move = { cosf(theta),sinf(theta) };
+	if (!Input::GetInstance()->GetJoystickState(joyState)) {
 		return;
-	}*/
-
-	if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)|| input->PushKey(DIK_LSHIFT)) {
-		if (camera->cameraTransform_.scale.x <= 2.0f) {
-			camera->cameraTransform_.scale.x += 0.05f;
-		}
-		if (camera->cameraTransform_.scale.y <= 2.0f) {
-			camera->cameraTransform_.scale.y += 0.05f;
-		}
-		if (camera->cameraTransform_.scale.z >= 0.6f) {
-			camera->cameraTransform_.scale.z -= 0.02f;
-		}
-		/*camera->cameraTransform_.scale.x = 2.0f;
-		camera->cameraTransform_.scale.y = 2.0f;
-	camera->cameraTransform_.scale.z = 0.6f;*/
 	}
-	else if(!(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)||!input->PushKey(DIK_LSHIFT))
+	switch (car_->GetDriveMode())
 	{
-		camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 25;
-		camera->cameraTransform_.translate.y = 6.0f;
-		camera->cameraTransform_.rotate.x = 0.125f;
-		if (camera->cameraTransform_.scale.x >= 1.0f) {
-			camera->cameraTransform_.scale.x -= 0.05f;
+	case NormalMode: {
+
+		//camera->cameraTransform_.rotate = AccelCamera.rotate;
+		//camera->cameraTransform_.translate = AccelCamera.translate;
+		if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || input->PushKey(DIK_LSHIFT) || AccelFlag) {
+			if (camera->cameraTransform_.scale.x <= 2.0f) {
+				camera->cameraTransform_.scale.x += 0.05f;
+			}
+			if (camera->cameraTransform_.scale.y <= 2.0f) {
+				camera->cameraTransform_.scale.y += 0.05f;
+			}
+			if (camera->cameraTransform_.scale.z >= 0.6f) {
+				camera->cameraTransform_.scale.z -= 0.02f;
+			}
+			/*camera->cameraTransform_.scale.x = 2.0f;
+			camera->cameraTransform_.scale.y = 2.0f;
+		camera->cameraTransform_.scale.z = 0.6f;*/
+			if (moveFlag) {
+				camera->cameraTransform_.translate.x += car_->Speed * move.y;
+				camera->cameraTransform_.translate.z += car_->Speed * move.x;
+			}
 		}
-		if (camera->cameraTransform_.scale.y >= 1.0f) {
-			camera->cameraTransform_.scale.y -= 0.05f;
+		else if (!(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || !input->PushKey(DIK_LSHIFT))
+		{
+			//camera->cameraTransform_.rotate = NormalCamera.rotate;
+			//camera->cameraTransform_.translate = NormalCamera.translate;
+			camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 25;
+			camera->cameraTransform_.translate.y = 6.0f;
+			camera->cameraTransform_.rotate.x = NormalCamera.rotate.x;
+			if (camera->cameraTransform_.scale.x >= 1.0f) {
+				camera->cameraTransform_.scale.x -= 0.05f;
+			}
+			if (camera->cameraTransform_.scale.y >= 1.0f) {
+				camera->cameraTransform_.scale.y -= 0.05f;
+			}
+			if (camera->cameraTransform_.scale.z <= 1.0f) {
+				camera->cameraTransform_.scale.z += 0.02f;
+			}
+			if (moveFlag) {
+				camera->cameraTransform_.translate.x += car_->Speed * move.y;
+				camera->cameraTransform_.translate.z += car_->Speed * move.x;
+			}
+			/*camera->cameraTransform_.scale.x = 1.0f;
+			camera->cameraTransform_.scale.y = 1.0f;
+			camera->cameraTransform_.scale.z = 1.0f;*/
 		}
-		if (camera->cameraTransform_.scale.z <= 1.0f) {
-			camera->cameraTransform_.scale.z += 0.02f;
+		break;
+	}
+	case DriftMode: {
+		if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || input->PushKey(DIK_LSHIFT) || (AccelFlag && DriftFlag)) {
+
+			//camera->cameraTransform_.rotate = AccelDriftCamera.rotate;
+			//camera->cameraTransform_.translate = AccelDriftCamera.translate;
+
+			camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 25;
+			camera->cameraTransform_.translate.y = 6.0f;
+			camera->cameraTransform_.rotate.x = DriftCamera.rotate.x;
+
+			if (camera->cameraTransform_.scale.x <= 2.0f) {
+				camera->cameraTransform_.scale.x += 0.05f;
+			}
+			if (camera->cameraTransform_.scale.y <= 2.0f) {
+				camera->cameraTransform_.scale.y += 0.05f;
+			}
+			if (camera->cameraTransform_.scale.z >= 0.6f) {
+				camera->cameraTransform_.scale.z -= 0.02f;
+			}
+			if (moveFlag) {
+				camera->cameraTransform_.translate.x += car_->Speed * move.y;
+				camera->cameraTransform_.translate.z += car_->Speed * move.x;
+			}
+			/*camera->cameraTransform_.scale.x = 2.0f;
+			camera->cameraTransform_.scale.y = 2.0f;
+		camera->cameraTransform_.scale.z = 0.6f;*/
 		}
-		/*camera->cameraTransform_.scale.x = 1.0f;
-		camera->cameraTransform_.scale.y = 1.0f;
-		camera->cameraTransform_.scale.z = 1.0f;*/
+		else if (!(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || !input->PushKey(DIK_LSHIFT)|| DriftFlag)
+		{
+			//camera->cameraTransform_.rotate = DriftCamera.rotate;
+			//camera->cameraTransform_.translate = DriftCamera.translate;
+			camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 25;
+			camera->cameraTransform_.translate.y = 6.0f;
+			camera->cameraTransform_.rotate.x = DriftCamera.rotate.x;
+			 
+			if (camera->cameraTransform_.scale.x >= 1.0f) {
+				camera->cameraTransform_.scale.x -= 0.05f;
+			}
+			if (camera->cameraTransform_.scale.y >= 1.0f) {
+				camera->cameraTransform_.scale.y -= 0.05f;
+			}
+			if (camera->cameraTransform_.scale.z <= 1.0f) {
+				camera->cameraTransform_.scale.z += 0.02f;
+			}
+			if (moveFlag) {
+				camera->cameraTransform_.translate.x += car_->DriftSpeed * move.y;
+				camera->cameraTransform_.translate.z += car_->DriftSpeed * move.x;
+			}
+			/*camera->cameraTransform_.scale.x = 1.0f;
+			camera->cameraTransform_.scale.y = 1.0f;
+			camera->cameraTransform_.scale.z = 1.0f;*/
+		}
+		break;
+	}
 	}
 
 }

@@ -18,9 +18,6 @@ void ClearScene::Init()
 	SlectSprite_ = new Sprite;
 	SlectSprite_->Initialize(color);
 
-	
-	
-
 	SelectNumber = 0;
 	PushSprite_ = new Sprite;
 	PushSprite_->Initialize(color);

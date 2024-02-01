@@ -8,6 +8,7 @@
 #include "../Car/Rear_left_tire/Rear_left_tire.h"
 #include "../Car/Rear_right_tire/Rear_right_tire.h"
 #include "ImGuiCommon.h"
+#include "Transform.h"
 class GameScene :public IScene
 {
 public:
@@ -24,8 +25,16 @@ private:
 	int sceneTime = 0;
 	// Carが動く
 	bool moveFlag = false;
+
+	bool DriftFlag = false;
+	bool AccelFlag = false;
+
 	Camera* camera = nullptr;
 	Car* car_ = nullptr;
+	Transform DriftCamera;
+	Transform AccelCamera;
+	Transform NormalCamera;
+	Transform AccelDriftCamera;
 	Floor* floor_ = nullptr;
 	Front_left_tire* front_left_tire_ = nullptr;
 	Front_right_tire* front_right_tire_ = nullptr;
