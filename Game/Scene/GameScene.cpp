@@ -21,6 +21,7 @@ void GameScene::Init()
 	rear_right_tire_->Init();
 
 	texture_ = TextureManager::GetInstance()->StoreTexture("Resources/tex.png");
+	texture2_ = TextureManager::GetInstance()->StoreTexture("Resources/Green/Green.png");
 
 	collisionModel_ = new Model();
 	collisionModel_->Initialize("Resources/colision", "colisionCube.obj",color);
@@ -30,13 +31,33 @@ void GameScene::Init()
 
 	colisionTransform_.Initialize();
 	colisionTransform_.scale_ = { 1.0f,2.50f,1.0f };
-	colisionTransform_.translation_ = {0.0f,2.0f,207.0f};
+	colisionTransform_.translation_ = {0.0f,0.5f,200.0f};
 
 	GreenWorldTransform_.Initialize();
-	GreenWorldTransform_.scale_ = { 2.0f,1.0f,1.0f };
-	GreenWorldTransform_.translation_ = { 0.0f,2.0f,100.0f };
+	GreenWorldTransform_.scale_ = {1.0f,1.0f,1.5f };
+	GreenWorldTransform_.translation_ = { 0.0f,0.5f,0.0f };
 
 	color = { 1,1,1,1 };
+
+	x1min = GreenWorldTransform_.translation_.x - GreenWorldTransform_.scale_.x / 2;
+	x1max = GreenWorldTransform_.translation_.x + GreenWorldTransform_.scale_.x / 2;
+
+	y1min = GreenWorldTransform_.translation_.y - GreenWorldTransform_.scale_.y / 2;
+	y1max = GreenWorldTransform_.translation_.y + GreenWorldTransform_.scale_.y / 2;
+
+	z1min = GreenWorldTransform_ .translation_.z - GreenWorldTransform_.scale_.z / 2;
+	z1max = GreenWorldTransform_.translation_.z + GreenWorldTransform_.scale_.z / 2;
+
+	x2min = colisionTransform_.translation_.x - colisionTransform_.scale_.x / 2;
+	x2max = colisionTransform_.translation_.x + colisionTransform_.scale_.x / 2;
+
+	y2min = colisionTransform_.translation_.y - colisionTransform_.scale_.y / 2;
+	y2max = colisionTransform_.translation_.y + colisionTransform_.scale_.y / 2;
+
+	z2min = colisionTransform_.translation_.z - colisionTransform_.scale_.z / 2;
+	z2max = colisionTransform_.translation_.z + colisionTransform_.scale_.z / 2;
+
+
 }
 
 void GameScene::Update()
@@ -47,7 +68,7 @@ void GameScene::Update()
 	camera->cameraTransform_.translate.x = car_->worldTransform_.translation_.x;
 	camera->cameraTransform_.rotate.y = car_->worldTransform_.rotation_.y / 10;
 
-	//GreenWorldTransform_.translation_ = car_->worldTransform_.translation_;
+	GreenWorldTransform_.translation_ = car_->worldTransform_.translation_;
 
 	sceneTime++;
 	if (input->TriggerKey(DIK_W)) {
@@ -101,16 +122,21 @@ void GameScene::Update()
 	}
 
 	//colision_->cubeColision(colisionTransform_, car_->worldTransform_,isColision);
-	colision_->cubeCollision(GreenWorldTransform_,colisionTransform_, isColision);
+
+	//colision_->cubeCollision(GreenWorldTransform_, colisionTransform_, isColision);
+	
+	
 
 
-	if (isColision == true)
+
+	/*if (isColision == true)
 	{
 		sceneNo = TITLE;
 		sceneTime = 0;
-	}
+	}*/
 
 	colisionTransform_.UpdateMatrix();
+	GreenWorldTransform_.UpdateMatrix();
 	camera->Update();
 	floor_->Update();
 	car_->Update();
@@ -131,10 +157,27 @@ void GameScene::Update()
 	ImGui::DragFloat3("rotate", (float*)&colisionTransform_.rotation_, 0.01f, -100.0f, 100.0f);
 	ImGui::DragFloat3("scale", (float*)&colisionTransform_.scale_, 0.01f, -100.0f, 100.0f);
 	ImGui::End();
+
+	if (x1max < x2min || x1min > x2max || y1max < y2min || y1min > y2max || z1max < z2min || z1min > z2max)
+	{
+		sceneNo = TITLE;
+		sceneTime = 0;
+	}
+	else {
+		isColision = false;
+	}
+
+	/*if (x1min <= x2max && x1max >= x2min && y1min <= y2max && y1max >= y2min &&
+		z1min <= z2max && z1max >= z2min)
+	{
+		
+	}*/
+	
 }
 void GameScene::Draw()
 {
 	collisionModel_->Draw(colisionTransform_, texture_, camera, color);
+	GreenModel->Draw(GreenWorldTransform_, texture2_, camera, color);
 	floor_->Draw(camera);
 	car_->Draw(camera);
 	front_left_tire_->Draw(camera);

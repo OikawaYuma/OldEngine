@@ -39,6 +39,19 @@ private:
 	Model* GreenModel = nullptr;
 	WorldTransform GreenWorldTransform_;
 
+	float x1min;
+	float x1max;
+	float y1min;
+	float y1max;
+	float z1min;
+	float z1max;
+
+	float x2min;
+	float x2max;
+	float y2min;
+	float y2max;
+	float z2min;
+	float z2max;
 
 };
 
