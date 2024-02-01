@@ -24,39 +24,38 @@ void GameScene::Init()
 	texture2_ = TextureManager::GetInstance()->StoreTexture("Resources/Green/Green.png");
 
 	collisionModel_ = new Model();
-	collisionModel_->Initialize("Resources/colision", "colisionCube.obj",color);
+	collisionModel_->Initialize("Resources/colision", "colisionCube.obj", color);
 
 	GreenModel = new Model();
 	GreenModel->Initialize("Resources/Green", "Green.obj", color);
 
 	colisionTransform_.Initialize();
-	colisionTransform_.scale_ = { 1.0f,2.50f,1.0f };
-	colisionTransform_.translation_ = {0.0f,0.5f,200.0f};
+	colisionTransform_.scale_ = { 1.0f,1.0f,1.0f };
+	colisionTransform_.translation_ = { 0.0f,1.0f,100.0f };
 
 	GreenWorldTransform_.Initialize();
-	GreenWorldTransform_.scale_ = {1.0f,1.0f,1.5f };
-	GreenWorldTransform_.translation_ = { 0.0f,0.5f,0.0f };
+	GreenWorldTransform_.scale_ = { 1.0f,1.0f,1.0f };
+	GreenWorldTransform_.translation_ = { 0.0f,1.0f,0.0f };
 
 	color = { 1,1,1,1 };
 
-	x1min = GreenWorldTransform_.translation_.x - GreenWorldTransform_.scale_.x / 2;
-	x1max = GreenWorldTransform_.translation_.x + GreenWorldTransform_.scale_.x / 2;
+	x1min = GreenWorldTransform_.translation_.x - GreenWorldTransform_.scale_.x/2;
+	x1max = GreenWorldTransform_.translation_.x + GreenWorldTransform_.scale_.x;
 
-	y1min = GreenWorldTransform_.translation_.y - GreenWorldTransform_.scale_.y / 2;
-	y1max = GreenWorldTransform_.translation_.y + GreenWorldTransform_.scale_.y / 2;
+	//y1min = GreenWorldTransform_.translation_.y - GreenWorldTransform_.scale_.y;
+	//y1max = GreenWorldTransform_.translation_.y + GreenWorldTransform_.scale_.y ;
 
-	z1min = GreenWorldTransform_ .translation_.z - GreenWorldTransform_.scale_.z / 2;
-	z1max = GreenWorldTransform_.translation_.z + GreenWorldTransform_.scale_.z / 2;
+	z1min = GreenWorldTransform_.translation_.z - GreenWorldTransform_.scale_.z/2;
+	z1max = GreenWorldTransform_.translation_.z + GreenWorldTransform_.scale_.z;
 
-	x2min = colisionTransform_.translation_.x - colisionTransform_.scale_.x / 2;
-	x2max = colisionTransform_.translation_.x + colisionTransform_.scale_.x / 2;
+	x2min = colisionTransform_.translation_.x - colisionTransform_.scale_.x/2;
+	x2max = colisionTransform_.translation_.x + colisionTransform_.scale_.x;
 
-	y2min = colisionTransform_.translation_.y - colisionTransform_.scale_.y / 2;
-	y2max = colisionTransform_.translation_.y + colisionTransform_.scale_.y / 2;
+	//y2min = colisionTransform_.translation_.y - colisionTransform_.scale_.y;
+	//y2max = colisionTransform_.translation_.y + colisionTransform_.scale_.y ;
 
-	z2min = colisionTransform_.translation_.z - colisionTransform_.scale_.z / 2;
-	z2max = colisionTransform_.translation_.z + colisionTransform_.scale_.z / 2;
-
+	z2min = colisionTransform_.translation_.z - colisionTransform_.scale_.z/2;
+	z2max = colisionTransform_.translation_.z + colisionTransform_.scale_.z;
 
 }
 
@@ -98,15 +97,15 @@ void GameScene::Update()
 		if (camera->cameraTransform_.scale.z >= 0.6f) {
 			camera->cameraTransform_.scale.z -= 0.02f;
 		}
-			/*camera->cameraTransform_.scale.x = 2.0f;
-			camera->cameraTransform_.scale.y = 2.0f;
-		camera->cameraTransform_.scale.z = 0.6f;*/
+		/*camera->cameraTransform_.scale.x = 2.0f;
+		camera->cameraTransform_.scale.y = 2.0f;
+	camera->cameraTransform_.scale.z = 0.6f;*/
 	}
 	else
 	{
 		camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 25;
 		camera->cameraTransform_.translate.y = 6.0f;
-	    camera->cameraTransform_.rotate.x = 0.125f;
+		camera->cameraTransform_.rotate.x = 0.125f;
 		if (camera->cameraTransform_.scale.x >= 1.0f) {
 			camera->cameraTransform_.scale.x -= 0.05f;
 		}
@@ -116,16 +115,17 @@ void GameScene::Update()
 		if (camera->cameraTransform_.scale.z <= 1.0f) {
 			camera->cameraTransform_.scale.z += 0.02f;
 		}
-		/*camera->cameraTransform_.scale.x = 1.0f;
-		camera->cameraTransform_.scale.y = 1.0f;
-		camera->cameraTransform_.scale.z = 1.0f;*/
 	}
+	/*camera->cameraTransform_.scale.x = 1.0f;
+	camera->cameraTransform_.scale.y = 1.0f;
+	camera->cameraTransform_.scale.z = 1.0f;*/
 
-	//colision_->cubeColision(colisionTransform_, car_->worldTransform_,isColision);
+
+	//colision_->cubeCollision(colisionTransform_, car_->worldTransform_,isColision);
 
 	//colision_->cubeCollision(GreenWorldTransform_, colisionTransform_, isColision);
-	
-	
+
+
 
 
 
@@ -158,22 +158,40 @@ void GameScene::Update()
 	ImGui::DragFloat3("scale", (float*)&colisionTransform_.scale_, 0.01f, -100.0f, 100.0f);
 	ImGui::End();
 
-	if (x1max < x2min || x1min > x2max || y1max < y2min || y1min > y2max || z1max < z2min || z1min > z2max)
+
+	ImGui::Begin("Green");
+	ImGui::DragFloat3("Translate", &GreenWorldTransform_.translation_.x, GreenWorldTransform_.translation_.y, GreenWorldTransform_.translation_.z, 1.0f);
+	ImGui::DragFloat3("Translate", (float*)&GreenWorldTransform_.translation_, 0.01f, -100.0f, 100.0f);
+	ImGui::DragFloat3("Rotate", (float*)&GreenWorldTransform_.rotation_, 0.01f, -100.0f, 100.0f);
+	ImGui::DragFloat3("scale", (float*)&GreenWorldTransform_.scale_, 0.01f, -100.0f, 100.0f);
+	ImGui::End();
+	
+
+	/*if (x1max < x2min || x1min > x2max || z1max < z2min || z1min > z2max)
 	{
 		sceneNo = TITLE;
 		sceneTime = 0;
 	}
 	else {
 		isColision = false;
+	}*/
+
+
+
+
+	/*if (x1min < x2max && x1max > x2min &&z1min < z2max && z1max > z2min)
+	{
+
+
+	}*/
+
+	if (x1max == x2min && x1min == x2max && z1max == z2min && z1min == z2max) {
+		sceneNo = TITLE;
+		sceneTime = 0;
 	}
 
-	/*if (x1min <= x2max && x1max >= x2min && y1min <= y2max && y1max >= y2min &&
-		z1min <= z2max && z1max >= z2min)
-	{
-		
-	}*/
-	
 }
+
 void GameScene::Draw()
 {
 	collisionModel_->Draw(colisionTransform_, texture_, camera, color);
@@ -184,7 +202,6 @@ void GameScene::Draw()
 	front_right_tire_->Draw(camera);
 	rear_left_tire_->Draw(camera);
 	rear_right_tire_->Draw(camera);
-	
 }
 
 void GameScene::Release() {
