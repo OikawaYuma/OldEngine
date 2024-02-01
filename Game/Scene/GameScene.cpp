@@ -39,23 +39,23 @@ void GameScene::Init()
 
 	color = { 1,1,1,1 };
 
-	x1min = GreenWorldTransform_.translation_.x;
-	x1max = GreenWorldTransform_.translation_.x + GreenWorldTransform_.scale_.x;
+	x1min = GreenWorldTransform_.translation_.x - GreenWorldTransform_.scale_.x / 2;
+	x1max = GreenWorldTransform_.translation_.x + GreenWorldTransform_.scale_.x / 2;
 
-	y1min = GreenWorldTransform_.translation_.y;
-	y1max = GreenWorldTransform_.translation_.y + GreenWorldTransform_.scale_.y ;
+	y1min = GreenWorldTransform_.translation_.y - GreenWorldTransform_.scale_.y / 2;
+	y1max = GreenWorldTransform_.translation_.y + GreenWorldTransform_.scale_.y / 2;
 
-	z1min = GreenWorldTransform_.translation_.z;
-	z1max = GreenWorldTransform_.translation_.z + GreenWorldTransform_.scale_.z;
+	z1min = GreenWorldTransform_.translation_.z - GreenWorldTransform_.scale_.z / 2;
+	z1max = GreenWorldTransform_.translation_.z + GreenWorldTransform_.scale_.z / 2;
 
-	x2min = colisionTransform_.translation_.x;
-	x2max = colisionTransform_.translation_.x + colisionTransform_.scale_.x;
+	x2min = colisionTransform_.translation_.x - colisionTransform_.scale_.x / 2;
+	x2max = colisionTransform_.translation_.x + colisionTransform_.scale_.x / 2;
 
-	y2min = colisionTransform_.translation_.y;
-	y2max = colisionTransform_.translation_.y + colisionTransform_.scale_.y ;
+	y2min = colisionTransform_.translation_.y - colisionTransform_.scale_.y / 2;
+	y2max = colisionTransform_.translation_.y + colisionTransform_.scale_.y / 2;
 
-	z2min = colisionTransform_.translation_.z;
-	z2max = colisionTransform_.translation_.z + colisionTransform_.scale_.z;
+	z2min = colisionTransform_.translation_.z - colisionTransform_.scale_.z / 2;
+	z2max = colisionTransform_.translation_.z + colisionTransform_.scale_.z / 2;
 
 }
 
@@ -185,8 +185,9 @@ void GameScene::Update()
 
 	}*/
 
-	if (x1max <= x2min && x1min >= x2max && y1min >= y2max && y2min >= y1max &&
-		z1max <= z2min && z1min >= z2max) {
+	if (GreenWorldTransform_.translation_.x >= colisionTransform_.translation_.x&&
+		GreenWorldTransform_.translation_.z >= colisionTransform_.translation_.z) {
+
 		sceneNo = TITLE;
 		sceneTime = 0;
 	}
