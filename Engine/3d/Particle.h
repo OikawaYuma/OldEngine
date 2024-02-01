@@ -67,7 +67,7 @@ public:
 
 	void Initialize();
 	//void Update();
-	void Draw(const Vector3& worldTransform,uint32_t texture, Camera* camera, const RandRangePro& randRange);
+	void Draw(const Vector3& worldTransform,uint32_t texture, Camera* camera, const RandRangePro& randRange, bool scaleAddFlag);
 	void Release();
 	void SetTextureManager(TextureManager* textureManager) {
 		textureManager_ = textureManager;
