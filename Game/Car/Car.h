@@ -25,7 +25,7 @@ enum DriveMode {
 class Car
 {
 public:
-	
+
 	Car();
 	~Car();
 	void Init();

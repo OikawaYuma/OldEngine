@@ -11,6 +11,10 @@ void GameScene::Init()
 	car_->Init();
 	floor_ = new Floor();
 	floor_->Init();
+	skydome = new Skydome();
+	skydome->Init();
+	tree = new Tree();
+	tree->Init();
 	front_left_tire_ = new Front_left_tire();
 	front_left_tire_->Init();
 	front_right_tire_ = new Front_right_tire();
@@ -62,6 +66,8 @@ void GameScene::Update()
 	camera->Update();
 	floor_->Update();
 	car_->Update();
+	skydome->Update();
+	tree->Update();
 	front_left_tire_->Update();
 	front_right_tire_->Update();
 	rear_left_tire_->Update();
@@ -102,6 +108,8 @@ void GameScene::Draw()
 {
 	floor_->Draw(camera);
 	car_->Draw(camera);
+	skydome->Draw(camera);
+	tree->Draw(camera);
 	/*front_left_tire_->Draw(camera);
 	front_right_tire_->Draw(camera);
 	rear_left_tire_->Draw(camera);
@@ -114,6 +122,8 @@ void GameScene::Release() {
 	delete rear_left_tire_;
 	delete rear_right_tire_;
 	delete car_;
+	delete skydome;
+	delete tree;
 }
 // ゲームを終了
 int GameScene::GameClose()

@@ -7,6 +7,8 @@
 #include "../Car/Front_right_tire/Front_right_tire.h"
 #include "../Car/Rear_left_tire/Rear_left_tire.h"
 #include "../Car/Rear_right_tire/Rear_right_tire.h"
+#include "../Skydome/Skydome.h"
+#include "../Tree/Tree.h"
 #include "ImGuiCommon.h"
 #include "Transform.h"
 class GameScene :public IScene
@@ -29,6 +31,8 @@ private:
 	bool DriftFlag = false;
 	bool AccelFlag = false;
 
+	Tree* tree = nullptr;
+	Skydome* skydome = nullptr;
 	Camera* camera = nullptr;
 	Car* car_ = nullptr;
 	Transform DriftCamera;

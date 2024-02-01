@@ -120,12 +120,14 @@ void Car::Draw(Camera* camera) {
 	switch (driveMode_) {
 	case NormalMode: {
 		model_->Draw(worldTransform_, texture_, camera, color);
+
 	
 		particle3->Draw(lightEmitter_,{ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y+0.3f,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearLeft,false);
 		particle4->Draw(lightEmitter_,{ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y+0.3f,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearRight,false);
 		
 		particle->Draw(smokeEmitter_, { worldTransform_.translation_.x - 2 * move.y,worldTransform_.translation_.y - 0.2f,worldTransform_.translation_.z - 2 * move.x }, texture2_, camera, rearLeft, true);
 		particle2->Draw(smokeEmitter_, { worldTransform_.translation_.x - 2 * move.y,worldTransform_.translation_.y - 0.2f,worldTransform_.translation_.z - 2 * move.x }, texture2_, camera, rearRight, true);
+
 		break;
 	}
 	case DriftMode: {
@@ -140,8 +142,10 @@ void Car::Draw(Camera* camera) {
 		float theta = (rotate_ / 2.0f) * (float)M_PI;
 		Vector2 move2 = { cosf(theta),sinf(theta) };
 		model_->Draw(driftWT, texture_, camera, color);
+
 		particle->Draw(smokeEmitter_, { driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y - 0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearLeft, true);
 		particle2->Draw(smokeEmitter_, { driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y - 0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearRight, true);
+
 		break;
 	}
 	}
@@ -178,92 +182,94 @@ void Car::Move()
 	if (Input::GetInstance()->GetJoystickState(joyState)) {
 	}
 
-		if (worldTransform_.rotation_.y > 1.5f) {
-			worldTransform_.rotation_.y = 1.5f;
-			rotate_ = 0.96f;
+	if (worldTransform_.rotation_.y > 1.5f) {
+		worldTransform_.rotation_.y = 1.5f;
+		rotate_ = 0.96f;
+	}
+	if (worldTransform_.rotation_.y < -1.5f) {
+		worldTransform_.rotation_.y = -1.5f;
+		rotate_ = -0.96f;
+	}
+	switch (driveMode_) {
+	case NormalMode: {
+		// 回転
+		if (worldTransform_.rotation_.y >= -1.5f && worldTransform_.rotation_.y <= 1.5f) {
+			rotate_ += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.04f;
+
 		}
-		if (worldTransform_.rotation_.y < -1.5f) {
-			worldTransform_.rotation_.y = -1.5f;
-			rotate_ = -0.96f;
+		// 移動
+		if (moveFlag_) {
+			worldTransform_.translation_.x += Speed * move.y;
+			worldTransform_.translation_.z += Speed * move.x;
+
 		}
-		switch (driveMode_) {
-		case NormalMode: {
-			// 回転
-			if (worldTransform_.rotation_.y >= -1.5f && worldTransform_.rotation_.y <= 1.5f) {
-				rotate_ += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.04f;
+		worldTransform_.rotation_.z = 0.0f;
+		worldTransform_.rotation_.x = 0.0f;
+		break;
+	}
+	case DriftMode: {
+		// 回転
+		/*if (worldTransform_.rotation_.y >= -1.5f && worldTransform_.rotation_.y <= 1.5f) {
+			rotate_ += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.06f;
+
+		}*/
+
+
+		if (rotate_ >= 0.05f) {
+			short leftStickX = joyState.Gamepad.sThumbLX;
+			if (leftStickX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
+				rotate_ += 0.01f;
 
 			}
-			// 移動
-			if (moveFlag_) {
-				worldTransform_.translation_.x += Speed * move.y;
-				worldTransform_.translation_.z += Speed * move.x;
+			else if (leftStickX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
+				rotate_ -= 0.005f;
+				worldTransform_.translation_.x -= 1.5f * move.y;
 
+				//worldTransform_.translation_.z -= 1.5f * move.x;
 			}
-			worldTransform_.rotation_.z = 0.0f; 
-			worldTransform_.rotation_.x = 0.0f;
-			break;
+
+			if (rotate_ < 0.05f) {
+				rotate_ = 0.05f;
+			}
+			worldTransform_.rotation_.z = -0.05f;
+			worldTransform_.rotation_.x = -0.05f;
 		}
-		case DriftMode: {
-			// 回転
-			/*if (worldTransform_.rotation_.y >= -1.5f && worldTransform_.rotation_.y <= 1.5f) {
-				rotate_ += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.06f;
+		else if (rotate_ <= -0.05f) {
 
-			}*/
-
-
-			if (rotate_ >= 0.05f) {
-				short leftStickX = joyState.Gamepad.sThumbLX;
-				if (leftStickX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
-					rotate_ += 0.01f;
-					
-				}
-				else if (leftStickX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
-					rotate_ -= 0.005f;
-					worldTransform_.translation_.x -=1.5f * move.y;
-					
-					//worldTransform_.translation_.z -= 1.5f * move.x;
-				}
-				
-				if (rotate_ < 0.05f) {
-					rotate_ = 0.05f;
-				}
-				worldTransform_.rotation_.z = -0.05f;
-				worldTransform_.rotation_.x = -0.05f;
+			short leftStickX = joyState.Gamepad.sThumbLX;
+			if (leftStickX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
+				rotate_ -= 0.01f;
 			}
-			else if (rotate_ <= -0.05f) {
-
-				short leftStickX = joyState.Gamepad.sThumbLX;
-				if (leftStickX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
-					rotate_ -= 0.01f;
-				}
-				else if (leftStickX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
-					rotate_ += 0.005f;
-					worldTransform_.translation_.x -= 1.5f * move.y;
-					//worldTransform_.translation_.z -= 1.5f * move.x;
-				}
-				//rotate_ += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.06f;
-				if (rotate_ > -0.05f) {
-					rotate_ = -0.05f;
-				}
-				worldTransform_.rotation_.z = 0.05f;
-				worldTransform_.rotation_.x = -0.05f;
+			else if (leftStickX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
+				rotate_ += 0.005f;
+				worldTransform_.translation_.x -= 1.5f * move.y;
+				//worldTransform_.translation_.z -= 1.5f * move.x;
 			}
-			
-
-
-			// 移動
-			if (moveFlag_) {
-				worldTransform_.translation_.x += DriftSpeed * move.y;
-				worldTransform_.translation_.z += DriftSpeed * move.x;
+			//rotate_ += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.06f;
+			if (rotate_ > -0.05f) {
+				rotate_ = -0.05f;
 			}
-
-			break;
+			worldTransform_.rotation_.z = 0.05f;
+			worldTransform_.rotation_.x = -0.05f;
 		}
-		}
-		//rotate_ += 0.04f;
 
-	
+
+
+		// 移動
+		if (moveFlag_) {
+			worldTransform_.translation_.x += DriftSpeed * move.y;
+			worldTransform_.translation_.z += DriftSpeed * move.x;
+		}
+
+
+		break;
+	}
+	}
+	//rotate_ += 0.04f;
+
 }
+//}
+
 
 void Car::Drift()
 {
@@ -273,7 +279,7 @@ void Car::Drift()
 		smokeEmitter_.count = 0;
 		driveMode_ = NormalMode;
 	}
-	else if (input->PushKey(DIK_S) || (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) &&!(rotate_<0.05f&& rotate_>-0.05)) {
+	else if (input->PushKey(DIK_S) || (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) && !(rotate_<0.05f && rotate_>-0.05)) {
 		driveMode_ = DriftMode;
 		smokeEmitter_.count = 6;
 		/*if (rotate_ > 0) {

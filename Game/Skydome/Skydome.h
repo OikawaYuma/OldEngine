@@ -1,6 +1,5 @@
 #pragma once
 #include "WorldTransform.h"
-#include "Model.h"
 #include "Camera.h"
 #include "Input.h"
 #include "IScene.h"
@@ -8,20 +7,32 @@
 #include "Audio.h"
 #include "Particle.h"
 #include "Sprite.h"
-class Floor
+#include "Model.h"
+#include "Sphere.h"
+#include "Particle.h"
+class Skydome
 {
 public:
-	Floor();
-	~Floor();
+
+	Skydome();
+	~Skydome();
 	void Init();
 	void Update();
 	void Draw(Camera* camera);
 	void Release();
+
+	Vector3 GetWorldTransform() {
+		return worldTransform_.translation_;
+	}
+
 private:
-	WorldTransform worldTransform_;
-	Model* model_ = nullptr;
 	uint32_t texture_ = 1;
 	Input* input = nullptr;
-	Vector4 color = { 0.3f,0.3f,0.3f,1.0f };
-};
+	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
+	Model* model_ = nullptr;
+	Camera* camera = nullptr;
 
+public:
+	WorldTransform worldTransform_;
+
+};
