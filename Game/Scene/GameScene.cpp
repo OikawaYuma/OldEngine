@@ -29,7 +29,7 @@ void GameScene::Init()
 	GreenModel = new Model();
 	GreenModel->Initialize("Resources/Green", "Green.obj", color);
 
-	colisionTransform_.Initialize();
+	colisionTransform_.Initialize();//
 	colisionTransform_.scale_ = { 1.0f,1.0f,1.0f };
 	colisionTransform_.translation_ = { 0.0f,1.0f,100.0f };
 
@@ -39,7 +39,7 @@ void GameScene::Init()
 
 	color = { 1,1,1,1 };
 
-	x1min = GreenWorldTransform_.translation_.x - GreenWorldTransform_.scale_.x / 2;
+	/*x1min = GreenWorldTransform_.translation_.x - GreenWorldTransform_.scale_.x / 2;
 	x1max = GreenWorldTransform_.translation_.x + GreenWorldTransform_.scale_.x / 2;
 
 	y1min = GreenWorldTransform_.translation_.y - GreenWorldTransform_.scale_.y / 2;
@@ -55,7 +55,7 @@ void GameScene::Init()
 	y2max = colisionTransform_.translation_.y + colisionTransform_.scale_.y / 2;
 
 	z2min = colisionTransform_.translation_.z - colisionTransform_.scale_.z / 2;
-	z2max = colisionTransform_.translation_.z + colisionTransform_.scale_.z / 2;
+	z2max = colisionTransform_.translation_.z + colisionTransform_.scale_.z / 2;*/
 
 }
 
@@ -121,19 +121,6 @@ void GameScene::Update()
 	camera->cameraTransform_.scale.z = 1.0f;*/
 
 
-	//colision_->cubeCollision(colisionTransform_, car_->worldTransform_,isColision);
-
-	//colision_->cubeCollision(GreenWorldTransform_, colisionTransform_, isColision);
-
-
-
-
-
-	/*if (isColision == true)
-	{
-		sceneNo = TITLE;
-		sceneTime = 0;
-	}*/
 
 	colisionTransform_.UpdateMatrix();
 	GreenWorldTransform_.UpdateMatrix();
@@ -165,28 +152,11 @@ void GameScene::Update()
 	ImGui::DragFloat3("Rotate", (float*)&GreenWorldTransform_.rotation_, 0.01f, -100.0f, 100.0f);
 	ImGui::DragFloat3("scale", (float*)&GreenWorldTransform_.scale_, 0.01f, -100.0f, 100.0f);
 	ImGui::End();
-	
-
-	/*if (x1max < x2min || x1min > x2max || z1max < z2min || z1min > z2max)
-	{
-		sceneNo = TITLE;
-		sceneTime = 0;
-	}
-	else {
-		isColision = false;
-	}*/
 
 
-
-
-	/*if (x1min < x2max && x1max > x2min &&z1min < z2max && z1max > z2min)
-	{
-
-
-	}*/
-
-	if (GreenWorldTransform_.translation_.x >= colisionTransform_.translation_.x&&
-		GreenWorldTransform_.translation_.z >= colisionTransform_.translation_.z) {
+	//プレイヤーとブロックの当たり判定
+	if (car_->GetWorldTransform().x >= colisionTransform_.translation_.x &&
+		car_->GetWorldTransform().z >= colisionTransform_.translation_.z) {
 
 		sceneNo = TITLE;
 		sceneTime = 0;
