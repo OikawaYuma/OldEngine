@@ -37,6 +37,21 @@ void GameScene::Init()
 	GreenWorldTransform_.scale_ = { 1.0f,1.0f,1.0f };
 	GreenWorldTransform_.translation_ = { 0.0f,1.0f,0.0f };
 
+
+
+	testColLeftX = colisionTransform_.translation_.x - 0.5f;
+	testColRight = colisionTransform_.translation_.x + 0.5f;
+	testColBackZ = colisionTransform_.translation_.z + 0.5f;
+	testColflontZ = colisionTransform_.translation_.z - 0.5f;
+
+	carLeftX = car_->GetWorldTransform().x - 0.5f;
+	carRightX = car_->GetWorldTransform().x + 0.5f;
+	carFrontZ = car_->GetWorldTransform().z + 0.5f;
+	carBackZ = car_->GetWorldTransform().z - 0.5f;
+
+
+
+
 	color = { 1,1,1,1 };
 
 	/*x1min = GreenWorldTransform_.translation_.x - GreenWorldTransform_.scale_.x / 2;
@@ -154,13 +169,26 @@ void GameScene::Update()
 	ImGui::End();
 
 
-	//プレイヤーとブロックの当たり判定
-	if (car_->GetWorldTransform().x >= colisionTransform_.translation_.x &&
-		car_->GetWorldTransform().z >= colisionTransform_.translation_.z) {
+	testColLeftX = colisionTransform_.translation_.x - 0.5f;
+	testColRight = colisionTransform_.translation_.x + 0.5f;
+	testColBackZ = colisionTransform_.translation_.z - 0.5f;
+	testColflontZ = colisionTransform_.translation_.z - 0.5f;
 
+	carLeftX = car_->GetWorldTransform().x - 0.5f;
+	carRightX = car_->GetWorldTransform().x + 0.5f;
+	carFrontZ = car_->GetWorldTransform().z + 0.5f;
+	carBackZ = car_->GetWorldTransform().z - 0.5f;
+
+
+	if ((testColLeftX < carRightX && testColRight>carLeftX) &&
+		(testColBackZ < carFrontZ && carBackZ<testColflontZ))
+	{
 		sceneNo = TITLE;
 		sceneTime = 0;
 	}
+
+
+	//プレイヤーとブロックの当たり判定
 
 }
 

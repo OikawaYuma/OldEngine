@@ -53,5 +53,15 @@ private:
 	float z2min;
 	float z2max;
 
+	float testColLeftX;
+	float testColRight;
+	float testColBackZ;
+	float testColflontZ;
+
+	float carLeftX;
+	float carRightX;
+	float carFrontZ;
+	float carBackZ;
+
 };
 
