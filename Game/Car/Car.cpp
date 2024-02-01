@@ -36,14 +36,24 @@ void Car::Init() {
 		{-0.5f,0.3f}
 	};
 
+	smokeEmitter_.count = 6;
+	smokeEmitter_.frequency = 0.02f;
+	smokeEmitter_.frequencyTime = 0.0f;
+	smokeEmitter_.transform.scale = {0.2f,0.2f,0.2f};
+
+	lightEmitter_.count = 6;
+	lightEmitter_.frequency = 0.02f;
+	lightEmitter_.frequencyTime = 0.0f;
+	lightEmitter_.transform.scale = { 1.0f,1.0f,1.0f };
+
 	particle = new Particle();
-	particle->Initialize();
+	particle->Initialize(smokeEmitter_);
 	particle2 = new Particle();
-	particle2->Initialize();
+	particle2->Initialize(smokeEmitter_);
 	particle3 = new Particle();
-	particle3->Initialize();
+	particle3->Initialize(smokeEmitter_);
 	particle4 = new Particle();
-	particle4->Initialize();
+	particle4->Initialize(smokeEmitter_);
 }
 
 void Car::Update() {
@@ -110,11 +120,12 @@ void Car::Draw(Camera* camera) {
 	switch (driveMode_) {
 	case NormalMode: {
 		model_->Draw(worldTransform_, texture_, camera, color);
-		if (input->PushKey(DIK_LSHIFT)) {
-			particle3->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y+0.3f,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearLeft,false);
-			particle4->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y+0.3f,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearRight,false);
+	
+		particle3->Draw(lightEmitter_,{ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y+0.3f,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearLeft,false);
+		particle4->Draw(lightEmitter_,{ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y+0.3f,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearRight,false);
 		
-		}
+		particle->Draw(smokeEmitter_, { worldTransform_.translation_.x - 2 * move.y,worldTransform_.translation_.y - 0.2f,worldTransform_.translation_.z - 2 * move.x }, texture2_, camera, rearLeft, true);
+		particle2->Draw(smokeEmitter_, { worldTransform_.translation_.x - 2 * move.y,worldTransform_.translation_.y - 0.2f,worldTransform_.translation_.z - 2 * move.x }, texture2_, camera, rearRight, true);
 		break;
 	}
 	case DriftMode: {
@@ -129,11 +140,12 @@ void Car::Draw(Camera* camera) {
 		float theta = (rotate_ / 2.0f) * (float)M_PI;
 		Vector2 move2 = { cosf(theta),sinf(theta) };
 		model_->Draw(driftWT, texture_, camera, color);
-		particle->Draw({ driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y-0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearLeft,true);
-		particle2->Draw({ driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y-0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearRight,true);
+		particle->Draw(smokeEmitter_, { driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y - 0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearLeft, true);
+		particle2->Draw(smokeEmitter_, { driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y - 0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearRight, true);
 		break;
 	}
 	}
+	
 	//sprite_->Draw(texture_,color);
 }
 
@@ -258,11 +270,12 @@ void Car::Drift()
 	XINPUT_STATE joyState;
 	Input::GetInstance()->GetJoystickState(joyState);
 	if (!input->PushKey(DIK_S) && !(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
-
+		smokeEmitter_.count = 0;
 		driveMode_ = NormalMode;
 	}
 	else if (input->PushKey(DIK_S) || (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) &&!(rotate_<0.05f&& rotate_>-0.05)) {
 		driveMode_ = DriftMode;
+		smokeEmitter_.count = 6;
 		/*if (rotate_ > 0) {
 			float theta = (rotate_ + 0.1f / 2.0f) * (float)M_PI;
 			move = { cosf(theta),sinf(theta) };
@@ -285,11 +298,18 @@ void Car::Accel()
 
 	if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || Input::GetInstance()->PushKey(DIK_LSHIFT)) {
 		Speed = ShiftSpeed;
+		lightEmitter_.count = 10;
 	}
 	else
 	{
+		lightEmitter_.count = 0;
 		Speed = NormalSpeed;
 	}
 
+}
+
+void Car::SetDriveMode(int driveMode)
+{
+	driveMode_ = driveMode;
 }
 
