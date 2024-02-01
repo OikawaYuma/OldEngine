@@ -38,6 +38,7 @@ public:
 	void Move();
 	void Drift();
 	void Accel();
+	void SetDriveMode(int driveMode);
 	Vector3 GetWorldTransform() {
 		return worldTransform_.translation_;
 	}
@@ -59,6 +60,8 @@ private:
 	Camera* camera = nullptr;
 
 	int driveMode_ = NormalMode;
+	Emitter smokeEmitter_;
+	Emitter lightEmitter_;
 
 public:
 	WorldTransform worldTransform_;
