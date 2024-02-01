@@ -111,8 +111,8 @@ void Car::Draw(Camera* camera) {
 	case NormalMode: {
 		model_->Draw(worldTransform_, texture_, camera, color);
 		if (input->PushKey(DIK_LSHIFT)) {
-			particle3->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y+0.3f,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearLeft);
-			particle4->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y+0.3f,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearRight);
+			particle3->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y+0.3f,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearLeft,false);
+			particle4->Draw({ worldTransform_.translation_.x - 3 * move.y,worldTransform_.translation_.y+0.3f,worldTransform_.translation_.z - 3 * move.x }, texture3_, camera, rearRight,false);
 		
 		}
 		break;
@@ -129,8 +129,8 @@ void Car::Draw(Camera* camera) {
 		float theta = (rotate_ / 2.0f) * (float)M_PI;
 		Vector2 move2 = { cosf(theta),sinf(theta) };
 		model_->Draw(driftWT, texture_, camera, color);
-		particle->Draw({ driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y-0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearLeft);
-		particle2->Draw({ driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y-0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearRight);
+		particle->Draw({ driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y-0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearLeft,true);
+		particle2->Draw({ driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y-0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearRight,true);
 		break;
 	}
 	}
@@ -145,10 +145,8 @@ void Car::Release()
 // 車の発車
 void Car::Depart()
 {
-	XINPUT_STATE Gamepad{};
-	/*if (!Input::GetInstance()->GetJoystickState(Gamepad)) {
-		return;
-	}*/
+	XINPUT_STATE Gamepad;
+	Input::GetInstance()->GetJoystickState(Gamepad);
 	if (Gamepad.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
 
 		moveFlag_ = true;
@@ -165,7 +163,8 @@ void Car::Move()
 	XINPUT_STATE joyState{};
 	/*switch (driveMode_) {
 	}*/
-	//if (Input::GetInstance()->GetJoystickState(joyState)) {
+	if (Input::GetInstance()->GetJoystickState(joyState)) {
+	}
 
 		if (worldTransform_.rotation_.y > 1.5f) {
 			worldTransform_.rotation_.y = 1.5f;
@@ -251,15 +250,13 @@ void Car::Move()
 		}
 		//rotate_ += 0.04f;
 
-	}
-//}
+	
+}
 
 void Car::Drift()
 {
-	XINPUT_STATE joyState{};
-	/*if (!Input::GetInstance()->GetJoystickState(joyState)) {
-		return;
-	}*/
+	XINPUT_STATE joyState;
+	Input::GetInstance()->GetJoystickState(joyState);
 	if (!input->PushKey(DIK_S) && !(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
 
 		driveMode_ = NormalMode;
@@ -283,10 +280,8 @@ void Car::Drift()
 
 void Car::Accel()
 {
-	XINPUT_STATE joyState{};
-	/*if (!Input::GetInstance()->GetJoystickState(joyState)) {
-		return;
-	}*/
+	XINPUT_STATE joyState;
+	Input::GetInstance()->GetJoystickState(joyState);
 
 	if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || Input::GetInstance()->PushKey(DIK_LSHIFT)) {
 		Speed = ShiftSpeed;

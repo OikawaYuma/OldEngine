@@ -161,7 +161,7 @@ void Particle::Initialize() {
 //
 //};
 
-void Particle::Draw(const Vector3& worldTransform, uint32_t texture,  Camera* camera, const RandRangePro& randRange) {
+void Particle::Draw(const Vector3& worldTransform, uint32_t texture,  Camera* camera, const RandRangePro& randRange,bool scaleAddFlag) {
 	pso_ = PSOParticle::GatInstance();
 	emitter_.transform = { {0.5f,0.5f,0.5f},{0.0f,0.0f,0.0f},worldTransform };
 	randRange_ = randRange;
@@ -200,7 +200,9 @@ void Particle::Draw(const Vector3& worldTransform, uint32_t texture,  Camera* ca
 		(*particleIterator).transform.translate.x += (*particleIterator).velocity.x * kDeltaTime;
 		(*particleIterator).transform.translate.y += (*particleIterator).velocity.y * kDeltaTime;
 		(*particleIterator).transform.translate.z += (*particleIterator).velocity.z * kDeltaTime;
-		(*particleIterator).transform.scale = Add((*particleIterator).transform.scale, { 0.1f ,0.1f,0.1f });
+		if (scaleAddFlag) {
+			(*particleIterator).transform.scale = Add((*particleIterator).transform.scale, { 0.1f ,0.1f,0.1f });
+		}
 		(*particleIterator).currentTime += kDeltaTime;
 		// (*particleIterator).color = { 1.0f,1.0f,1.0f,1.0f };
 		float alpha = 1.0f - ((*particleIterator).currentTime / (*particleIterator).lifeTime);
