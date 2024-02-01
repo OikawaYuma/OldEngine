@@ -12,7 +12,7 @@
 
 
 Particle::Particle() {};
-void Particle::Initialize() {
+void Particle::Initialize(Emitter emitter) {
 	sWinAPI = WinAPI::GetInstance();
 	sDirectXCommon = DirectXCommon::GetInstance();
 
@@ -152,7 +152,7 @@ void Particle::Initialize() {
 	directionalLightData->color = { 1.0f,1.0f,1.0f,1.0f };
 	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
 	directionalLightData->intensity = 1.0f;
-
+	emitter_ = emitter;
 	emitter_.count =6;
 	emitter_.frequency = 0.02f;// 0.5秒ごとに発生
 	emitter_.frequencyTime = 0.0f;// 発生頻度用の時刻、0で初期化
@@ -161,9 +161,11 @@ void Particle::Initialize() {
 //
 //};
 
-void Particle::Draw(const Vector3& worldTransform, uint32_t texture,  Camera* camera, const RandRangePro& randRange) {
+void Particle::Draw(Emitter emitter,const Vector3& worldTransform, uint32_t texture,  Camera* camera, const RandRangePro& randRange,bool scaleAddFlag) {
 	pso_ = PSOParticle::GatInstance();
-	emitter_.transform = { {0.5f,0.5f,0.5f},{0.0f,0.0f,0.0f},worldTransform };
+	
+	emitter_.count = emitter.count;
+	emitter_.transform = { emitter.transform.scale,{0.0f,0.0f,0.0f},worldTransform };
 	randRange_ = randRange;
 
 	randRange_ = 
@@ -184,7 +186,7 @@ void Particle::Draw(const Vector3& worldTransform, uint32_t texture,  Camera* ca
 
 	emitter_.frequencyTime += kDeltaTime;// 時刻を進める
 	if (emitter_.frequency <= emitter_.frequencyTime) {// 頻度より大きいなら発生
-		particles_.splice(particles_.end(), particle->Emission(emitter_, randomEngine, worldTransform,randRange));
+		particles_.splice(particles_.end(), particle->Emission(emitter_, randomEngine, worldTransform , randRange));
 		emitter_.frequencyTime -= emitter_.frequency;// 余計に過ぎた時間も加味して頻度計算する
 
 	}
@@ -200,7 +202,9 @@ void Particle::Draw(const Vector3& worldTransform, uint32_t texture,  Camera* ca
 		(*particleIterator).transform.translate.x += (*particleIterator).velocity.x * kDeltaTime;
 		(*particleIterator).transform.translate.y += (*particleIterator).velocity.y * kDeltaTime;
 		(*particleIterator).transform.translate.z += (*particleIterator).velocity.z * kDeltaTime;
-		(*particleIterator).transform.scale = Add((*particleIterator).transform.scale, { 0.1f ,0.1f,0.1f });
+		if (scaleAddFlag) {
+			(*particleIterator).transform.scale = Add((*particleIterator).transform.scale, { 0.1f ,0.1f,0.1f });
+		}
 		(*particleIterator).currentTime += kDeltaTime;
 		// (*particleIterator).color = { 1.0f,1.0f,1.0f,1.0f };
 		float alpha = 1.0f - ((*particleIterator).currentTime / (*particleIterator).lifeTime);
@@ -240,7 +244,7 @@ void Particle::Draw(const Vector3& worldTransform, uint32_t texture,  Camera* ca
 
 
 
-Particle::ParticlePro Particle::MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate, const RandRangePro& randRange)
+Particle::ParticlePro Particle::MakeNewParticle(std::mt19937& randomEngine, const Vector3& scale, const Vector3& translate, const RandRangePro& randRange)
 {
 	RandRangePro ran = randRange;
 	std::uniform_real_distribution<float> distribution(-0.8f, 0.8f);
@@ -251,7 +255,7 @@ Particle::ParticlePro Particle::MakeNewParticle(std::mt19937& randomEngine, cons
 	std::uniform_real_distribution<float> distTime(0.0f, 1.5f);
 
 	Particle::ParticlePro particle;
-	particle.transform.scale = { 0.2f,0.2f,0.2f };
+	particle.transform.scale = scale;
 	particle.transform.rotate = { 0.0f,0.0f,0.0f };
 
 	// 位置と速度を[-1,1]でランダムに初期化
@@ -268,7 +272,7 @@ std::list<Particle::ParticlePro> Particle::Emission(const Emitter& emitter, std:
 {
 	std::list<Particle::ParticlePro> particles;
 	for (uint32_t count = 0; count < emitter.count; ++count) {
-		particles.push_back(MakeNewParticle(randEngine, emitter.transform.translate,randRange));
+		particles.push_back(MakeNewParticle(randEngine, emitter.transform.scale,emitter.transform.translate,randRange));
 
 	}
 	return particles;

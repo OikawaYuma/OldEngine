@@ -65,19 +65,19 @@ public:
 	Particle();
 	~Particle();
 
-	void Initialize();
+	void Initialize(Emitter emitter);
 	//void Update();
-	void Draw(const Vector3& worldTransform,uint32_t texture, Camera* camera, const RandRangePro& randRange);
+	void Draw(Emitter emitter,const Vector3& worldTransform,uint32_t texture, Camera* camera, const RandRangePro& randRange, bool scaleAddFlag);
 	void Release();
 	void SetTextureManager(TextureManager* textureManager) {
 		textureManager_ = textureManager;
 	}
-	ParticlePro MakeNewParticle(std::mt19937& randomEngine, const Vector3& translate, const RandRangePro& randRange);
+	ParticlePro MakeNewParticle(std::mt19937& randomEngine, const Vector3& scale, const Vector3& translate, const RandRangePro& randRange);
 
 	std::list<ParticlePro> Emission(const Emitter& emitter, std::mt19937& randEngine, const Vector3& worldTransform, const RandRangePro& randRange);
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
 private:
-	const static uint32_t kNumMaxInstance = 600; // インスタンス数
+	const static uint32_t kNumMaxInstance = 10000; // インスタンス数
 	// Instancing用のTransformMatrixリソースを作る
 	Microsoft::WRL::ComPtr<ID3D12Resource> instancingResorce = nullptr;
 	PSOParticle* pso_ = nullptr;
