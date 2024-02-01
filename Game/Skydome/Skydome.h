@@ -7,6 +7,7 @@
 #include "Audio.h"
 #include "Particle.h"
 #include "Sprite.h"
+#include "Model.h"
 #include "Sphere.h"
 #include "Particle.h"
 class Skydome
@@ -28,8 +29,7 @@ private:
 	uint32_t texture_ = 1;
 	Input* input = nullptr;
 	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
-	Sprite* sprite_ = nullptr;
-	Sphere* sphere_ = nullptr;
+	Model* model_ = nullptr;
 	Camera* camera = nullptr;
 
 public:

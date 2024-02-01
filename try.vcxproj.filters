@@ -63,7 +63,6 @@
     <ClCompile Include="Engine\Interface\PSOProperty.cpp" />
     <ClCompile Include="Engine\Interface\PSOParticle.cpp" />
     <ClCompile Include="Engine\3d\Particle.cpp" />
-    <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="imgui\imgui_impl_dx12.cpp" />
@@ -82,6 +81,8 @@
     <ClCompile Include="Game\Car\Rear_left_tire\Rear_left_tire.cpp" />
     <ClCompile Include="Game\Car\Rear_right_tire\Rear_right_tire.cpp" />
     <ClCompile Include="Game\Skydome\Skydome.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="Game\Tree\Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -145,8 +146,6 @@
     <ClInclude Include="Engine\Interface\PSOProperty.h" />
     <ClInclude Include="Engine\Interface\PSOParticle.h" />
     <ClInclude Include="Engine\3d\Particle.h" />
-    <ClInclude Include="imgui\imconfig.h" />
-    <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx12.h" />
     <ClInclude Include="imgui\imgui_impl_win32.h" />
     <ClInclude Include="imgui\imgui_internal.h" />
@@ -165,6 +164,9 @@
     <ClInclude Include="Game\Car\Rear_left_tire\Rear_left_tire.h" />
     <ClInclude Include="Game\Car\Rear_right_tire\Rear_right_tire.h" />
     <ClInclude Include="Game\Skydome\Skydome.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="Game\Tree\Tree.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

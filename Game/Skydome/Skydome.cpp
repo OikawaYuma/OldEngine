@@ -9,20 +9,20 @@ Skydome::~Skydome() {
 }
 
 void Skydome::Init() {
+	model_ = new Model();
+	model_->Initialize("Resources/skydome", "skydome.obj", color);
+	texture_ = TextureManager::StoreTexture("Resources/skydome/sky.png");
 	worldTransform_.Initialize();
-	worldTransform_.translation_.y += 0.05f;
-	worldTransform_.translation_.z += 10.0f;
-	texture_ = TextureManager::StoreTexture("Resources/demo_car/CAR.png");
 }
 
 void Skydome::Update() {
 
+	worldTransform_.rotation_.y += 0.005f;
 	worldTransform_.UpdateMatrix();
-
 }
 
 void Skydome::Draw(Camera* camera) {
-	sphere_->Draw()
+	model_->Draw(worldTransform_, texture_, camera, color);
 }
 
 void Skydome::Release()
