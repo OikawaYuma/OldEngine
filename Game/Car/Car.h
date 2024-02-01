@@ -51,6 +51,8 @@ private:
 	Sprite* sprite_ = nullptr;
 	Particle* particle = nullptr;
 	Particle* particle2 = nullptr;
+	Particle* particle3 = nullptr;
+	Particle* particle4 = nullptr;
 	Camera* camera = nullptr;
 
 	int driveMode_ = NormalMode;
