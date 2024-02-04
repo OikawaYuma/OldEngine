@@ -27,7 +27,8 @@ private:
 	uint32_t soundData2;
 	Vector4 color = {1.0f,1.0f,1.0f,1.0f};
 	Sprite* sprite_ = nullptr;
-
+	Material material;
 	Particle* particle = nullptr;
+	DirectionalLight dir_;
 };
 

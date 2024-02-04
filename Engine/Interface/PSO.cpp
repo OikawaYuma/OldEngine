@@ -80,6 +80,10 @@ void PSO::CreateRootSignature() {
 	rootParamerters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParamerters[3].Descriptor.ShaderRegister = 1;
 
+	rootParamerters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParamerters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParamerters[4].Descriptor.ShaderRegister = 2;
+
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイナリフィルタ
 	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
 	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;

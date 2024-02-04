@@ -4,6 +4,9 @@
 #include "PSOProperty.h"
 
 
+struct CameraForGPU {
+	Vector3 worldPosition;
+};
 
 class PSO : public PSOProperty
 {
@@ -63,7 +66,7 @@ private:
 	// バイナリを元に生成
 	//ID3D12RootSignature* rootSignature;
 	// RootParmeter作成。複数でっていできるので配列。今回は結果１つだけなので長さ1の配列
-	D3D12_ROOT_PARAMETER rootParamerters[4] = {};
+	D3D12_ROOT_PARAMETER rootParamerters[5] = {};
 
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 
