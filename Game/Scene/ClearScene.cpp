@@ -11,7 +11,7 @@ void ClearScene::Init()
 	camera_->Initialize();
 	texture_ = TextureManager::GetInstance()->StoreTexture("Resources/uvChecker.png");//画像読み込み
 	texture2_ = TextureManager::GetInstance()->StoreTexture("Resources/GLAY.png");//画像読み込み
-
+	soundData = Audio::SoundLoadWave("Resources/fanfare.wav");
 	PushTexture_ = TextureManager::GetInstance()->StoreTexture("Resources/BLUE.png");
 	Stage1model_ = new Model();
 	Stage1model_->Initialize("Resources/Car", "car.obj", color);
@@ -65,8 +65,13 @@ void ClearScene::Init()
 
 void ClearScene::Update()
 {
+	XINPUT_STATE joyState{};
 	ImGui::Begin("Demo");
-	ImGui::DragFloat3("CameraTranslate", &cameraPos.x);
+	ImGui::DragFloat3("CameraTranslate", &cameraPos.x,0.1f);
+	ImGui::Text("Push A D ModelMoveX");
+	ImGui::Text("GamePad ThumbLY ModelMoveY");
+	ImGui::Text("Trigger L Sound");
+	
 	ImGui::End();
 	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
 	worldTransform_.UpdateMatrix();
@@ -78,6 +83,18 @@ void ClearScene::Update()
 	}
 	else if (Input::GetInstance()->PushKey(DIK_D)) {
 		modelWorldTransform_.translation_.x += 0.1f;
+	}
+	
+	if (Input::GetInstance()->GetJoystickState(joyState)) {
+		modelWorldTransform_.translation_.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.04f;
+	}
+
+	if (Input::GetInstance()->TriggerKey(DIK_L)) {
+		Audio::SoundPlayWave(Audio::GetInstance()->GetIXAudio().Get(), soundData, false);
+	}
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
+		sceneNo = TITLE;
+		sceneTime = 0;
 	}
 	modelWorldTransform_.UpdateMatrix();
 

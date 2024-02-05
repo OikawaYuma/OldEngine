@@ -8,19 +8,15 @@ void TitleScene::Init()
 	camera->Initialize();
 	input = Input::GetInstance();
 
-	car_ = new TitleCar();
-	car_->Init();
 	
+	sprite = new Sprite();
+	sprite->Initialize({1.0f,1.0f,1.0f,1.0f});
+	textureHandle = TextureManager::StoreTexture("Resources/Title.png");
 }
 
 void TitleScene::Update()
 {
-	ImGui::Begin("Camera");
 	
-	ImGui::DragFloat3("cameratranslation_", &camera->cameraTransform_.translate.x, 0.01f, -100.0f, 100.0f);
-	
-	
-	ImGui::End();
 	sceneTime++;
 	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNo = CLEAR;
@@ -28,15 +24,13 @@ void TitleScene::Update()
 	}
 	////カメラの更新
 	camera->Update();
-
-	car_->Update();
-
-	
-	
+	sprite->SetPosition({0.0f,0.0f});
+	sprite->SetSize({ 1280.0f,720.0f });
+	sprite->Update();
 }
 void TitleScene::Draw()
 {
-	car_->Draw(camera);
+	sprite->Draw(textureHandle, {1.0f,1.0f,1.0f,1.0f});
 }
 
 void TitleScene::Release() {

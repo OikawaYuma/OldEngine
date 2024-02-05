@@ -9,6 +9,7 @@
 #include "../Car/Car.h"
 #include "../Floor/Floor.h"
 #include "Particle.h"
+#include "Audio.h"
 #define STAGE_MAX 10
 class ClearScene : public IScene
 {
@@ -57,6 +58,7 @@ private:
 
 	Vector3 cameraPos;
 
+	uint32_t soundData;
 };
 ;
 

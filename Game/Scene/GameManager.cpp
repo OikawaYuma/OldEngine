@@ -80,8 +80,9 @@ int GameManager::Run() {
 		sDirctX->BeginFrame();
 		sInput->Update();
 
-		ImGui::Begin("kakunin");
+		ImGui::Begin("StatePattern");
 		ImGui::Text("%d", IScene::GetSceneNo());
+		ImGui::Text("Trriger SPACE SceneChange");
 		ImGui::End();
 
 		// シーンのチェック

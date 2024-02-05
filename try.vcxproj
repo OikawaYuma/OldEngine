@@ -91,6 +91,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Interface;$(ProjectDir)Engine\Adapter;$(ProjectDir)Engine\Include;$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)\Game\Player;$(ProjectDir)Game\Scene;$(ProjectDir)\Game\Title;$(ProjectDir)\Game\Clear;$(ProjectDir)\Game\SceneEffect;$(ProjectDir)Resources\shaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <Optimization>MinSpace</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,11 +153,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3d\Particle.cpp" />
     <ClCompile Include="Game\Skydome\Skydome.cpp" />
     <ClCompile Include="Game\Effect\SceneEffect.cpp" />
-    <ClCompile Include="Slect.cpp" />
-    <ClCompile Include="SlectScene.cpp" />
-    <ClCompile Include="Stage1.cpp" />
-    <ClCompile Include="Stage2.cpp" />
-    <ClCompile Include="Stage3.cpp" />
+    <ClCompile Include="Game\Scene\Slect.cpp" />
+    <ClCompile Include="Game\Scene\SlectScene.cpp" />
+    <ClCompile Include="Game\Scene\Stage1.cpp" />
+    <ClCompile Include="Game\Scene\Stage2.cpp" />
+    <ClCompile Include="Game\Scene\Stage3.cpp" />
     <ClCompile Include="Game\Car\Rear_left_tire\Rear_left_tire.cpp" />
     <ClCompile Include="Game\Car\Rear_right_tire\Rear_right_tire.cpp" />
     <ClCompile Include="Game\Tree\Tree.cpp" />
@@ -219,11 +220,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3d\Particle.h" />
     <ClInclude Include="Game\Skydome\Skydome.h" />
     <ClInclude Include="Game\Effect\SceneEffect.h" />
-    <ClInclude Include="Slect.h" />
-    <ClInclude Include="SlectScene.h" />
-    <ClInclude Include="Stage1.h" />
-    <ClInclude Include="Stage2.h" />
-    <ClInclude Include="Stage3.h" />
+    <ClInclude Include="Game\Scene\Slect.h" />
+    <ClInclude Include="Game\Scene\SlectScene.h" />
+    <ClInclude Include="Game\Scene\Stage1.h" />
+    <ClInclude Include="Game\Scene\Stage2.h" />
+    <ClInclude Include="Game\Scene\Stage3.h" />
     <ClInclude Include="Game\Car\Rear_left_tire\Rear_left_tire.h" />
     <ClInclude Include="Game\Car\Rear_right_tire\Rear_right_tire.h" />
     <ClInclude Include="Game\Tree\Tree.h" />

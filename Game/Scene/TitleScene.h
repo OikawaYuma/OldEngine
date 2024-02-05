@@ -5,6 +5,8 @@
 #include "Input.h"
 #include "Particle.h"
 #include "TitleCar.h"
+#include "Sprite.h"
+#include "TextureManager.h"
 class TitleScene : public IScene
 {
 public:
@@ -20,6 +22,7 @@ private:
 	Camera* camera = nullptr;
 	Input* input = nullptr;
 	TitleCar* car_ = nullptr;
-	
+	Sprite* sprite = nullptr;
+	uint32_t textureHandle;
 };
 
