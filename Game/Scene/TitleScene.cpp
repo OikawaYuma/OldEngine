@@ -6,6 +6,7 @@ void TitleScene::Init()
 {
 	camera = new Camera;
 	camera->Initialize();
+	camera->cameraTransform_.translate = { 0.0f,1.5f,0.0f };
 	input = Input::GetInstance();
 
 	car_ = new TitleCar();
