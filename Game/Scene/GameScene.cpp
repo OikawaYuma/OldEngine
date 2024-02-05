@@ -23,7 +23,8 @@ void GameScene::Init()
 	rear_left_tire_->Init();
 	rear_right_tire_ = new Rear_right_tire();
 	rear_right_tire_->Init();
-
+	corn = new Corn();
+	corn->Init();
 	AccelDriftCamera;
 
 	//SceleCamera
@@ -72,6 +73,7 @@ void GameScene::Update()
 	front_right_tire_->Update();
 	rear_left_tire_->Update();
 	rear_right_tire_->Update();
+	corn->Update();
 	ImGui::Begin("Camera");
 	ImGui::Text("NormalCamera");
 	ImGui::DragFloat3("NScale",&NormalCamera.scale.x, 0.1f);
@@ -110,6 +112,7 @@ void GameScene::Draw()
 	car_->Draw(camera);
 	skydome->Draw(camera);
 	tree->Draw(camera);
+	corn->Draw(camera);
 	/*front_left_tire_->Draw(camera);
 	front_right_tire_->Draw(camera);
 	rear_left_tire_->Draw(camera);

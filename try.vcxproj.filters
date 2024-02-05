@@ -86,6 +86,7 @@
     <ClCompile Include="Game\Title\TitleCar.cpp" />
     <ClCompile Include="Game\Clear\ClearCar.cpp" />
     <ClCompile Include="Game\Effect\SceneEffect.cpp" />
+    <ClCompile Include="Game\Corn\Corn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -173,6 +174,7 @@
     <ClInclude Include="Game\Title\TitleCar.h" />
     <ClInclude Include="Game\Clear\ClearCar.h" />
     <ClInclude Include="Game\Effect\SceneEffect.h" />
+    <ClInclude Include="Game\Corn\Corn.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

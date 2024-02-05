@@ -8,6 +8,7 @@
 #include "../Car/Rear_left_tire/Rear_left_tire.h"
 #include "../Car/Rear_right_tire/Rear_right_tire.h"
 #include "../Skydome/Skydome.h"
+#include "../Corn/Corn.h"
 #include "../Tree/Tree.h"
 #include "ImGuiCommon.h"
 #include "Transform.h"
@@ -31,6 +32,7 @@ private:
 	bool DriftFlag = false;
 	bool AccelFlag = false;
 
+	Corn* corn = nullptr;
 	Tree* tree = nullptr;
 	Skydome* skydome = nullptr;
 	Camera* camera = nullptr;
