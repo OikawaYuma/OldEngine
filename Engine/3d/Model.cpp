@@ -110,7 +110,7 @@ MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, c
 		return materialData;
 };
 
-void Model::Initialize(const std::string& directoryPath, const std::string& filename, const Vector4& color) {
+void Model::Initialize(const std::string& directoryPath, const std::string& filename, const Vector4& color,bool lighting) {
 	WinAPI* sWinAPI = WinAPI::GetInstance();
 	directXCommon_ = DirectXCommon::GetInstance();
 	
@@ -139,7 +139,7 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
 	materialData->color = color;
-	materialData->enableLighting = true;
+	materialData->enableLighting = lighting;
 	materialData->uvTransform = MakeIdentity4x4();
 
 	transformUv = {

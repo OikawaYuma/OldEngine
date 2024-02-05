@@ -13,7 +13,7 @@ void ClearScene::Init()
 
 	PushTexture_ = TextureManager::GetInstance()->StoreTexture("Resources/circle.png");
 	Stage1model_ = new Model();
-	Stage1model_->Initialize("Resources/box", "box.obj", color);
+	Stage1model_->Initialize("Resources/box", "box.obj", color, true);
 	//Pushmodel_->Initialize("Resources/")
 	SlectSprite_ = new Sprite;
 	SlectSprite_->Initialize(color);

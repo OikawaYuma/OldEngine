@@ -21,7 +21,7 @@ void Car::Init() {
 	texture2_ = TextureManager::StoreTexture("Resources/circle.png");
 	texture3_ = TextureManager::StoreTexture("Resources/cubeRED.png");
 	model_ = new Model();
-	model_->Initialize("Resources/demo_car", "CAR.obj", color);
+	model_->Initialize("Resources/demo_car", "CAR.obj", color,true);
 
 	Speed = 10;
 	rearLeft = {

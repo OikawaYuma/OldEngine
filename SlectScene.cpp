@@ -11,7 +11,7 @@ void SlectScene::Init()
 	texture_= TextureManager::GetInstance()->StoreTexture("Resources/uvChecker.png");//画像読み込み
 	PushTexture_ = TextureManager::GetInstance()->StoreTexture("Resources/circle.png");
 	model_ = new Model();
-	model_[0].Initialize("Resources/box", "box.obj", color);
+	model_[0].Initialize("Resources/box", "box.obj", color, true);
 	PushSprite_ = new Sprite;
 	SlectSprite_ = new Sprite;
 	SlectSprite_[0].Initialize(color);
