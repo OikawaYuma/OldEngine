@@ -207,7 +207,7 @@ void Particle::Draw(Emitter emitter,const Vector3& worldTransform, uint32_t text
 		}
 		(*particleIterator).currentTime += kDeltaTime;
 		// (*particleIterator).color = { 1.0f,1.0f,1.0f,1.0f };
-		float alpha = 1.0f - ((*particleIterator).currentTime / (*particleIterator).lifeTime);
+		float alpha = 0.5f - ((*particleIterator).currentTime / (*particleIterator).lifeTime);
 		//transforms_[index].rotate.x += 0.1f;
 		Matrix4x4 worldMatrix = Multiply(MakeScaleMatrix((*particleIterator).transform.scale), Multiply(billboardMatrix, MakeTranslateMatrix((*particleIterator).transform.translate)));
 		//Matrix4x4 worldViewProjectionMatrixSprite = Multiply(worldMatrixSprite, Multiply(viewMatrixSprite, projectionMatrixSprite));
