@@ -172,7 +172,7 @@ void GameScene::Update()
 	testColLeftX = colisionTransform_.translation_.x - 0.5f;
 	testColRight = colisionTransform_.translation_.x + 0.5f;
 	testColBackZ = colisionTransform_.translation_.z - 0.5f;
-	testColflontZ = colisionTransform_.translation_.z - 0.5f;
+	testColflontZ = colisionTransform_.translation_.z + 0.5f;
 
 	carLeftX = car_->GetWorldTransform().x - 0.5f;
 	carRightX = car_->GetWorldTransform().x + 0.5f;
@@ -186,8 +186,6 @@ void GameScene::Update()
 		sceneNo = TITLE;
 		sceneTime = 0;
 	}
-
-
 	//プレイヤーとブロックの当たり判定
 
 }
