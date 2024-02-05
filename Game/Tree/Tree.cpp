@@ -10,7 +10,7 @@ Tree::~Tree() {
 
 void Tree::Init() {
 	model_ = new Model();
-	model_->Initialize("Resources/tree", "tree.obj", color);
+	model_->Initialize("Resources/tree", "tree1.obj", color);
 	texture_ = TextureManager::StoreTexture("Resources/tree/sidewall.png");
 	worldTransform_.Initialize();
 }
