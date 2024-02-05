@@ -40,7 +40,7 @@ void ImGuiCommon::Draw() {
 	////描画用のDescriptorの設定
 	//ID3D12DescriptorHeap* descriptorHeaps[] = { sDirectXCommon_->GetSrvDescriptorHeap()};
 	//sDirectXCommon_->GetCommandList()->SetDescriptorHeaps(1, descriptorHeaps);
-	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), sDirectXCommon_->GetCommandList().Get());
+	//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), sDirectXCommon_->GetCommandList().Get());
 }
 
 

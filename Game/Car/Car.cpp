@@ -28,21 +28,21 @@ void Car::Init() {
 
 	Speed = 10;
 	rearLeft = {
-		{-0.9f,-0.7f},
+		{-2.0f,-1.6f},
 		{0.1f,0.4f},
-		{-0.5f,0.3f}
+		{-2.0f,-1.7f}
 	};
 
 	rearRight = {
-		{0.7f,0.9f},
+		{1.6f,2.0f},
 		{0.1f,0.4f},
-		{-0.5f,0.3f}
+		{-2.0f,-1.7f}
 	};
 
 	smokeEmitter_.count = 6;
 	smokeEmitter_.frequency = 0.02f;
 	smokeEmitter_.frequencyTime = 0.0f;
-	smokeEmitter_.transform.scale = {0.2f,0.2f,0.2f};
+	smokeEmitter_.transform.scale = {0.6f,0.6f,0.6f};
 
 	lightEmitter_.count = 6;
 	lightEmitter_.frequency = 0.02f;
@@ -146,8 +146,8 @@ void Car::Draw(Camera* camera) {
 		Vector2 move2 = { cosf(theta),sinf(theta) };
 		model_->Draw(driftWT, texture_, camera, color);
 
-		particle->Draw(smokeEmitter_, { driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y - 0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearLeft, true);
-		particle2->Draw(smokeEmitter_, { driftWT.translation_.x - 2 * move2.y,driftWT.translation_.y - 0.2f,driftWT.translation_.z - 2 * move2.x }, texture2_, camera, rearRight, true);
+		particle->Draw(smokeEmitter_, { driftWT.translation_.x - 5 * move2.y,driftWT.translation_.y - 0.2f,driftWT.translation_.z - 4 * move2.x }, texture2_, camera, rearLeft, true);
+		particle2->Draw(smokeEmitter_, { driftWT.translation_.x - 5 * move2.y,driftWT.translation_.y - 0.2f,driftWT.translation_.z - 4 * move2.x }, texture2_, camera, rearRight, true);
 
 		break;
 	}
