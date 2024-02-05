@@ -35,25 +35,26 @@ public:
 	~Sprite();
 
 	void Initialize(const Vector4& color);
-	//void Update();
+	void Update();
 	void Draw(uint32_t texture, const Vector4& color);
 	void Release();
-	void SetTextureManager(TextureManager* textureManager) {
-		textureManager_ = textureManager;
-	}
 
 	Transform GetTransform() {
 		return transform_;
 	}
-	Transform transform_;
+	// getter
+	const Vector2& GetPosition() const { return position_; }
+	const Vector2& GetSize() const { return size_; }
+
+	// setter
+	void SetPosition(const Vector2& position) { this->position_ = position; }
+	void SetSize(const Vector2& size) { this->size_ = size; }
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
 private:
-	PSOSprite* pso_ = nullptr;
+	Vector2 position_ = { 0.0f, 0.0f};
+	Vector2 size_ = { 1.0f,1.0f };
+	Transform transform_;
 	Microsoft::WRL::ComPtr < ID3D12Resource> vertexResourceSprite_ =nullptr;
-	WinAPI* sWinAPI;
-	DirectXCommon* sDirectXCommon;
-	Mesh* mesh_;
-	TextureManager* textureManager_ = nullptr;
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferViewSprite_{};
 
@@ -64,7 +65,7 @@ private:
 	// データを書き込む
 	TransformationMatrix* transformationMatrixDataSprite = nullptr;
 
-	Transform transformSprite_;
+	//Transform transform_;
 	
 	//D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
 
