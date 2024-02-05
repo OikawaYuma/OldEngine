@@ -138,6 +138,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Lib\Utility\CSVReader.cpp" />
     <ClCompile Include="Lib\utility\function.cpp" />
     <ClCompile Include="Engine\2d\ImGuiCommon.cpp" />
     <ClCompile Include="main.cpp" />
@@ -199,6 +200,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Interface\DirectXCommon.h" />
     <ClInclude Include="Engine\3d\Triangle.h" />
     <ClInclude Include="Game\Scene\TitleScene.h" />
+    <ClInclude Include="Lib\Utility\CSVReader.h" />
     <ClInclude Include="Lib\utility\function.h" />
     <ClInclude Include="Engine\2d\ImGuiCommon.h" />
     <ClInclude Include="Lib\math\mathFunction.h" />

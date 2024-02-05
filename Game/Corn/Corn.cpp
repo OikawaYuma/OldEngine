@@ -7,13 +7,13 @@ Corn::~Corn() {
 
 }
 
-void Corn::Init() {
+void Corn::Init(Vector3 translation) {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
+	worldTransform_.translation_ = translation;
 	texture_ = TextureManager::StoreTexture("Resources/corn/corn.png");
 	model_ = new Model();
 	model_->Initialize("Resources/corn", "corn.obj", color);
-	worldTransform_.translation_.z = 600.0f;
 }
 
 void Corn::Update() {

@@ -23,8 +23,6 @@ void GameScene::Init()
 	rear_left_tire_->Init();
 	rear_right_tire_ = new Rear_right_tire();
 	rear_right_tire_->Init();
-	corn = new Corn();
-	corn->Init();
 	AccelDriftCamera;
 
 	//SceleCamera
@@ -35,7 +33,7 @@ void GameScene::Init()
 
 	DriftCamera.rotate.x = 0.125f;
 	NormalCamera.rotate.x = 0.125f;
-
+	LoadCornPopData();
 }
 
 void GameScene::Update()
@@ -73,7 +71,9 @@ void GameScene::Update()
 	front_right_tire_->Update();
 	rear_left_tire_->Update();
 	rear_right_tire_->Update();
-	corn->Update();
+	for (Corn* corn : corns_) {
+		corn->Update();
+	}
 	ImGui::Begin("Camera");
 	ImGui::Text("NormalCamera");
 	ImGui::DragFloat3("NScale",&NormalCamera.scale.x, 0.1f);
@@ -112,7 +112,9 @@ void GameScene::Draw()
 	car_->Draw(camera);
 	skydome->Draw(camera);
 	tree->Draw(camera);
-	corn->Draw(camera);
+	for (Corn* corn : corns_) {
+		corn->Draw(camera);
+	}
 	/*front_left_tire_->Draw(camera);
 	front_right_tire_->Draw(camera);
 	rear_left_tire_->Draw(camera);
@@ -127,6 +129,9 @@ void GameScene::Release() {
 	delete car_;
 	delete skydome;
 	delete tree;
+	for (Corn* corn : corns_) {
+		delete corn;
+	}
 }
 // ゲームを終了
 int GameScene::GameClose()
@@ -155,7 +160,7 @@ void GameScene::Depart()
 
 
 
-void GameScene::Accel(){
+void GameScene::Accel() {
 	XINPUT_STATE joyState;
 	float theta = (car_->rotate_ / 2.0f) * (float)M_PI;
 	Vector2 move = { cosf(theta),sinf(theta) };
@@ -265,7 +270,7 @@ void GameScene::Accel(){
 		break;
 	}
 	case DriftMode: {
-		if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || input->PushKey(DIK_LSHIFT) || AccelFlag ) {
+		if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || input->PushKey(DIK_LSHIFT) || AccelFlag) {
 
 			//camera->cameraTransform_.rotate = AccelDriftCamera.rotate;
 			//camera->cameraTransform_.translate = AccelDriftCamera.translate;
@@ -326,7 +331,7 @@ void GameScene::Accel(){
 			camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 25;
 			camera->cameraTransform_.translate.y = 6.0f;
 			camera->cameraTransform_.rotate.x = DriftCamera.rotate.x;
-			 
+
 			if (camera->cameraTransform_.scale.x >= DriftCamera.scale.x) {
 				camera->cameraTransform_.scale.x -= 0.05f;
 				if (camera->cameraTransform_.scale.x < DriftCamera.scale.x) {
@@ -374,5 +379,83 @@ void GameScene::Accel(){
 		break;
 	}
 	}
-
 }
+
+	void GameScene::LoadCornPopData(){
+		// ファイルを開く
+		std::ifstream file;
+		file.open("csv/cornPop.csv");
+		assert(file.is_open());
+
+		// ファイルも内容を文字列ストリームにコピー
+		cornPopCommands << file.rdbuf();
+
+		// ファイルを閉じる
+		file.close();
+	}
+
+	void GameScene::UpdateCornPopCommands() {
+
+		// 1行分の文字列を入れる変数
+		std::string line;
+
+		// コマンド実行ループ
+		while (getline(cornPopCommands, line)) {
+			// 1行分の文字列をストリームに変換して解析しやすくなる
+			std::istringstream line_stream(line);
+
+			std::string word;
+			// ,区切りで行の先頭文字列を取得
+			getline(line_stream, word, ',');
+
+			// "//"から始まる行はコメント
+			if (word.find("//") == 0) {
+				// コメント行を飛ばす
+				continue;
+			}
+
+			// POPコマンド
+			if (word.find("POP") == 0) {
+				// X座標
+				getline(line_stream, word, ',');
+				cornPos.x = (float)std::atof(word.c_str());
+
+				// Y座標
+				getline(line_stream, word, ',');
+				cornPos.y = (float)std::atof(word.c_str());
+
+				// Z座標
+				getline(line_stream, word, ',');
+				cornPos.z = (float)std::atof(word.c_str());
+			}
+
+			// TYPEコマンド
+			if (word.find("TYPE") == 0) {
+				// type
+				getline(line_stream, word, ',');
+				float type = (float)std::atof(word.c_str());
+
+				// ブロックを発生させる
+				CornSpown(Vector3(cornPos.x, cornPos.y, cornPos.z), type);
+
+				break;
+			}
+		}
+	}
+
+	void GameScene::CornSpown(Vector3 translation, float type) {
+		// ブロックの生成
+		Corn* corn_ = new Corn();
+		// ブロックの初期化
+		if (type == 1) {
+			corn_->Init(translation);
+		}
+		// ブロックのタイプ設定
+		corn_->SetType(type);
+		AddCorn(corn_);
+	}
+
+	void GameScene::AddCorn(Corn* corn) {
+		// リストに登録する
+		corns_.push_back(corn);
+	}

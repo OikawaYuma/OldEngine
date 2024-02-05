@@ -10,6 +10,7 @@
 #include "../Skydome/Skydome.h"
 #include "../Corn/Corn.h"
 #include "../Tree/Tree.h"
+#include"CSVReader.h"
 #include "ImGuiCommon.h"
 #include "Transform.h"
 class GameScene :public IScene
@@ -23,6 +24,12 @@ public:
 
 	void Depart();
 	void Accel();
+
+	void LoadCornPopData();
+	void UpdateCornPopCommands();
+	void CornSpown(Vector3, float);
+	void AddCorn(Corn* corn);
+
 private:
 	Input* input = nullptr;
 	int sceneTime = 0;
@@ -46,5 +53,11 @@ private:
 	Front_right_tire* front_right_tire_ = nullptr;
 	Rear_left_tire* rear_left_tire_ = nullptr;
 	Rear_right_tire* rear_right_tire_ = nullptr;
+
+	Vector3 cornPos;
+	// ブロック発生コマンド
+	std::stringstream cornPopCommands;
+	// ブロック
+	std::list<Corn*> corns_;
 };
 

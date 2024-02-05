@@ -13,15 +13,17 @@ class Corn
 public:
 	Corn();
 	~Corn();
-	void Init();
+	void Init(Vector3 translation);
 	void Update();
 	void Draw(Camera* camera);
 	void Release();
+	void SetType(float type) { type_ = type; }
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
 	uint32_t texture_ = 1;
 	Input* input = nullptr;
 	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
+	float type_ = 0;
 };
 
