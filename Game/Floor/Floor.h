@@ -22,6 +22,6 @@ private:
 	Model* model_ = nullptr;
 	uint32_t texture_ = 1;
 	Input* input = nullptr;
-	Vector4 color = { 0.3f,0.3f,0.3f,1.0f };
+	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
 };
 
