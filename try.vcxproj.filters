@@ -83,6 +83,9 @@
     <ClCompile Include="Game\Skydome\Skydome.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="Game\Tree\Tree.cpp" />
+    <ClCompile Include="Game\Title\TitleCar.cpp" />
+    <ClCompile Include="Game\Clear\ClearCar.cpp" />
+    <ClCompile Include="Game\Effect\SceneEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -167,6 +170,9 @@
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="Game\Tree\Tree.h" />
+    <ClInclude Include="Game\Title\TitleCar.h" />
+    <ClInclude Include="Game\Clear\ClearCar.h" />
+    <ClInclude Include="Game\Effect\SceneEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
