@@ -8,6 +8,7 @@
 #include "TextureManager.h"
 #include "../Car/Car.h"
 #include "../Floor/Floor.h"
+#include "Particle.h"
 #define STAGE_MAX 10
 class ClearScene : public IScene
 {
@@ -32,17 +33,29 @@ private:
 	Model* Stage1model_ = {};
 	Model* Stage2model_ = {};
 	Model* Stage3model_ = {};
+	Model* model_ = nullptr;
 	Vector4 color = { 1,1,1,1 };
+
 	uint32_t texture_ = 1;
+	uint32_t texture2_ = 1;
 	uint32_t PushTexture_ = 1;
 
+	WorldTransform modelWorldTransform_ = {};
 	WorldTransform worldTransform_ = {};
 	WorldTransform PushTransform_ = {};
 
+	Particle* particle = nullptr;
+	Particle* particle2 = nullptr;
 
+	Emitter smokeEmitter_;
+	Emitter lightEmitter_;
 
+	RandRangePro rearLeft;
+	RandRangePro rearRight;
 	int SelectNumber = 0;
 	bool SelectLock = false;
+
+	Vector3 cameraPos;
 
 };
 ;

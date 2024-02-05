@@ -18,5 +18,8 @@ public:
 	void Initialize();
 	void Update();
 	void Draw();
+	void SetCameraPosition(const Vector3& position) {
+		cameraTransform_.translate = position;
+	}
 };
 
