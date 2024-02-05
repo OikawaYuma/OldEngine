@@ -8,12 +8,19 @@ void TitleScene::Init()
 	camera->Initialize();
 	input = Input::GetInstance();
 
-	player_ = new Player();
-	player_->Init();
+	car_ = new TitleCar();
+	car_->Init();
+	
 }
 
 void TitleScene::Update()
 {
+	ImGui::Begin("Camera");
+	
+	ImGui::DragFloat3("cameratranslation_", &camera->cameraTransform_.translate.x, 0.01f, -100.0f, 100.0f);
+	
+	
+	ImGui::End();
 	sceneTime++;
 	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNo = CLEAR;
@@ -22,16 +29,18 @@ void TitleScene::Update()
 	////カメラの更新
 	camera->Update();
 
-	player_->Update();
+	car_->Update();
+
+	
 	
 }
 void TitleScene::Draw()
 {
-	player_->Draw(camera);
+	car_->Draw(camera);
 }
 
 void TitleScene::Release() {
-	delete player_;
+	delete car_;
 }
 
 // ゲームを終了
