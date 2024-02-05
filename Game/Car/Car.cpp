@@ -78,11 +78,11 @@ void Car::Update() {
 	{
 		Speed = NormalSpeed;
 	}*/
-	if (worldTransform_.translation_.x >= 42.0f) {
-		worldTransform_.translation_.x = 42.0f;
+	if (worldTransform_.translation_.x >= 40.0f) {
+		worldTransform_.translation_.x = 40.0f;
 	}
-	if (worldTransform_.translation_.x <= -42.0f) {
-		worldTransform_.translation_.x = -42.0f;
+	if (worldTransform_.translation_.x <= -40.0f) {
+		worldTransform_.translation_.x = -40.0f;
 	}
 
 	Move();
