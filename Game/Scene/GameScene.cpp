@@ -179,7 +179,7 @@ void GameScene::Update()
 	carFrontZ = car_->GetWorldTransform().z + 0.5f;
 	carBackZ = car_->GetWorldTransform().z - 0.5f;
 
-
+	//当たり判定
 	if ((testColLeftX < carRightX && testColRight>carLeftX) &&
 		(testColBackZ < carFrontZ && carBackZ<testColflontZ))
 	{
