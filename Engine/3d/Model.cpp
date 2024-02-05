@@ -195,7 +195,7 @@ void Model::Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera
 	materialData->color = material.color;
 	materialData->shininess = material.shininess;
 	directionalLightData->direction = dire.direction;
-	directionalLightData->direction =  Normalize(directionalLightData->direction);
+	//directionalLightData->direction =  Normalize(directionalLightData->direction);
 	directXCommon_->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
 	directXCommon_->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定
 	directXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);    //VBVを設定

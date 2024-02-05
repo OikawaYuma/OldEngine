@@ -48,7 +48,7 @@ void Player::Update() {
 	}
 	
 
-	ImGui::Begin("•]‰¿‰Û‘è2");
+	ImGui::Begin("task2");
 	/*ImGui::DragFloat4("s",&worldTransform_.scale_.x,0.01f);
 	ImGui::DragFloat4("r", &worldTransform_.rotation_.x,  0.01f);
 	ImGui::DragFloat4("t", &worldTransform_.translation_.x,  0.01f);
@@ -56,6 +56,7 @@ void Player::Update() {
 	ImGui::DragFloat("MaterialShininess", &material.shininess, 0.01f);
 	ImGui::DragFloat3("LightDirection", &dir_.direction.x, 0.01f);
 	ImGui::End();
+	dir_.direction = Normalize(dir_.direction);
 	//Audio::SoundLoopWave(Audio::GetIXAudio().Get(), soundData);
 	worldTransform_.UpdateMatrix();
 }
