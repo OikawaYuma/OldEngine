@@ -15,6 +15,9 @@ Car::~Car() {
 void Car::Init() {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
+	worldTransform_.scale_.x = 3.0f;
+	worldTransform_.scale_.y = 3.0f;
+	worldTransform_.scale_.z = 3.0f;
 	worldTransform_.translation_.y += 0.05f;
 	worldTransform_.translation_.z += 10.0f;
 	texture_ = TextureManager::StoreTexture("Resources/demo_car/CAR.png");
@@ -75,11 +78,11 @@ void Car::Update() {
 	{
 		Speed = NormalSpeed;
 	}*/
-	if (worldTransform_.translation_.x >= 100.0f) {
-		worldTransform_.translation_.x = 100.0f;
+	if (worldTransform_.translation_.x >= 42.0f) {
+		worldTransform_.translation_.x = 42.0f;
 	}
-	if (worldTransform_.translation_.x <= -100.0f) {
-		worldTransform_.translation_.x = -100.0f;
+	if (worldTransform_.translation_.x <= -42.0f) {
+		worldTransform_.translation_.x = -42.0f;
 	}
 
 	Move();
