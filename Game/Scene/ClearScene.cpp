@@ -53,8 +53,12 @@ void ClearScene::Update()
 
 	PushTransform_.UpdateMatrix();
 	camera_->Update();
+	Vector2 size = SlectSprite_->GetSize();
+	size.x += 0.2f;
+	size.y += 0.1f;
 
-
+	SlectSprite_->SetSize(size);
+	SlectSprite_->Update();
 	if (!SelectLock)
 	{
 		if (input_->TriggerKey(DIK_W))
