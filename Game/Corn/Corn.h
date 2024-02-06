@@ -18,6 +18,11 @@ public:
 	void Draw(Camera* camera);
 	void Release();
 	void SetType(float type) { type_ = type; }
+
+	Vector3 GetWorldTransform() {
+		return worldTransform_.translation_;
+	}
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;

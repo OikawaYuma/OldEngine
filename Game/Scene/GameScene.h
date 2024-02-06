@@ -53,6 +53,7 @@ private:
 	Front_right_tire* front_right_tire_ = nullptr;
 	Rear_left_tire* rear_left_tire_ = nullptr;
 	Rear_right_tire* rear_right_tire_ = nullptr;
+	WorldTransform cornTransform = {};
 
 	float cornColLeftX;
 	float cornColRightX;
@@ -64,7 +65,11 @@ private:
 	float carFrontZ;
 	float carBackZ;
 
+	Vector3 carPos;
 	Vector3 cornPos;
+	Vector3 Getcorn;
+	Vector3 cornRadius;
+	Vector3 carRadius;
 	// ブロック発生コマンド
 	std::stringstream cornPopCommands;
 	// ブロック

@@ -35,15 +35,8 @@ void GameScene::Init()
 	NormalCamera.rotate.x = 0.125f;
 	LoadCornPopData();
 	
-	cornColLeftX = cornPos.x - 0.5f;
-	cornColRightX = cornPos.x + 0.5f;
-	cornColBackZ = cornPos.z - 0.5f;
-	cornColflontZ = cornPos.z + 0.5f;
 
-	carLeftX = car_->GetWorldTransform().x - 0.5f;
-	carRightX = car_->GetWorldTransform().x + 0.5f;
-	carBackZ = car_->GetWorldTransform().z - 0.5f;
-	carFrontZ = car_->GetWorldTransform().z + 0.5f;
+
 
 }
 
@@ -51,6 +44,7 @@ void GameScene::Update()
 {
 	float theta = (car_->rotate_ / 2.0f) * (float)M_PI;
 	Vector2 move = { cosf(theta),sinf(theta) };
+
 	car_->worldTransform_.rotation_.y = theta;
 	camera->cameraTransform_.translate.x = car_->worldTransform_.translation_.x;
 	camera->cameraTransform_.rotate.y = car_->worldTransform_.rotation_.y / 10;
@@ -59,7 +53,7 @@ void GameScene::Update()
 	if (input->TriggerKey(DIK_W)) {
 		moveFlag = true;
 	}
-	
+
 	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNo = TITLE;
 		sceneTime = 0;
@@ -87,8 +81,8 @@ void GameScene::Update()
 	}
 	ImGui::Begin("Camera");
 	ImGui::Text("NormalCamera");
-	ImGui::DragFloat3("NScale",&NormalCamera.scale.x, 0.1f);
-	ImGui::DragFloat3("NRotate", &NormalCamera.rotate.x,0.1f);
+	ImGui::DragFloat3("NScale", &NormalCamera.scale.x, 0.1f);
+	ImGui::DragFloat3("NRotate", &NormalCamera.rotate.x, 0.1f);
 	ImGui::DragFloat3("NTranslate", &NormalCamera.translate.x);
 
 	ImGui::Text("AccelCamera");
@@ -106,7 +100,7 @@ void GameScene::Update()
 	ImGui::DragFloat3("ADRotate", &AccelDriftCamera.rotate.x);
 	ImGui::DragFloat3("ADTranslate", &AccelDriftCamera.translate.x);
 
-	ImGui::Checkbox("Aceel",&AccelFlag);
+	ImGui::Checkbox("Aceel", &AccelFlag);
 	ImGui::Checkbox("Drift", &DriftFlag);
 	ImGui::End();
 
@@ -131,23 +125,46 @@ void GameScene::Update()
 	//}
 
 	//
-	cornColLeftX = cornPos.x - 0.5f;
-	cornColRightX = cornPos.x + 1.5f;
-	cornColBackZ = cornPos.z - 0.5f;
-	cornColflontZ = cornPos.z + 1.5f;
+	carPos = car_->worldTransform_.translation_;
+	carRadius = car_->worldTransform_.scale_;
 
-	carLeftX = car_->GetWorldTransform().x - 0.5f;
-	carRightX = car_->GetWorldTransform().x + 0.5f;
-	carBackZ = car_->GetWorldTransform().z - 0.5f;
-	carFrontZ = car_->GetWorldTransform().z + 0.5f;
-
-
-	if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
-		(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
+	for (std::list<Corn*>::iterator cornIterator = corns_.begin(); cornIterator != corns_.end();)
 	{
-		sceneNo = TITLE;
-		sceneTime = 0;
+		Getcorn = (*cornIterator)->GetWorldTransform();
+
+		float p2b = (Getcorn.x - carPos.x) * (Getcorn.x - carPos.x) + (Getcorn.y - carPos.y) * (Getcorn.y - carPos.y) +
+			(Getcorn.z - carPos.z) * (Getcorn.z - carPos.z);
+		cornRadius = (*cornIterator)->GetWorldTransform();
+
+		int r2r = (carRadius.x + cornRadius.x) * (carPos.x + cornRadius.x) *
+			(carRadius.y + cornRadius.y) * (carPos.y + cornRadius.y) * (carRadius.z + cornRadius.z);
+
+		if (p2b <= r2r)
+		{
+			sceneNo = TITLE;
+			sceneTime = 0;
+		}
+		
+
+		/*if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
+			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
+		{
+			sceneNo = TITLE;
+			sceneTime = 0;
+		}*/
+
 	}
+
+
+	/*cornColLeftX = cornPos.x - 0.5f;
+	cornColRightX = cornPos.x + 0.5f;
+	cornColBackZ = cornPos.z - 0.5f;
+	cornColflontZ = cornPos.z + 0.5f;
+
+	carLeftX = car_->GetWorldTransform().x - 1.5f;
+	carRightX = car_->GetWorldTransform().x + 1.5f;
+	carFrontZ = car_->GetWorldTransform().z + 1.5f;
+	carBackZ = car_->GetWorldTransform().z - 1.5f;*/
 
 
 	if (DriftFlag) {
@@ -161,9 +178,6 @@ void GameScene::Update()
 		UpdateCornPopCommands();
 	}
 
-
-
-	
 }
 void GameScene::Draw()
 {
