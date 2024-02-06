@@ -34,6 +34,9 @@ void GameScene::Init()
 	DriftCamera.rotate.x = 0.125f;
 	NormalCamera.rotate.x = 0.125f;
 	LoadCornPopData();
+	UpdateCornPopCommands();
+	UpdateCornPopCommands();
+	UpdateCornPopCommands();
 }
 
 void GameScene::Update()
