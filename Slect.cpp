@@ -11,10 +11,10 @@ void Slect::Init()
 	texture_ = TextureManager::GetInstance()->StoreTexture("Resources/uvChecker.png");//画像読み込み
 	PushTexture_ = TextureManager::GetInstance()->StoreTexture("Resources/circle.png");
 	model_ = new Model();
-	model_[0].Initialize("Resources/box", "box.obj", color);
+	model_->Initialize("Resources/box", "box.obj", color);
 	PushSprite_ = new Sprite;
 	SlectSprite_ = new Sprite;
-	SlectSprite_[0].Initialize(color);
+	SlectSprite_->Initialize(color);
 
 
 
@@ -24,22 +24,11 @@ void Slect::Init()
 	worldTransform_[0].translation_.y += 64.0f * Height;
 	worldTransform_[0].UpdateMatrix();*/
 
-
-	for (int i = 1; i < STAGE_MAX; i++)
-	{
-		worldTransform_[i].Initialize();
-		worldTransform_[i].scale_ = { 1.0f,1.0f,1.0f };
-		worldTransform_[i].translation_.x += 128.0f * Width;
-		worldTransform_[i].translation_.y += 64.0f * Height;
-		worldTransform_[i].UpdateMatrix();
-
-		Height++;
-		if ((i) % 5 == 0)
-		{
-			Width++;
-			Height = 0;
-		}
-	}
+	worldTransform_.Initialize();
+	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
+	worldTransform_.translation_.x += 128.0f * Width;
+	worldTransform_.translation_.y += 64.0f * Height;
+	worldTransform_.UpdateMatrix();
 
 	SelectNumber = 0;
 
@@ -61,15 +50,15 @@ void Slect::Update()
 	sceneTime++;
 	for (int i = 1; i < STAGE_MAX; i++)
 	{
-		worldTransform_[i].scale_ = { 1.0f,1.0f,1.0f };
-		worldTransform_[i].UpdateMatrix();
+		worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
+		worldTransform_.UpdateMatrix();
 
 		
 		if (input_->TriggerKey(DIK_SPACE))
 		{
 			//ステージ決定の処理
-			if (PushTransform_.translation_.x == worldTransform_[0].translation_.x &&
-				PushTransform_.translation_.y == worldTransform_[0].translation_.y)
+			if (PushTransform_.translation_.x == worldTransform_.translation_.x &&
+				PushTransform_.translation_.y == worldTransform_.translation_.y)
 			{
 				sceneNo = STSGE1;
 				sceneTime = 0;
@@ -109,12 +98,9 @@ void Slect::Update()
 
 void Slect::Draw()
 {
-	for (int i = 0; i < STAGE_MAX; i++)
-	{
-		model_[i].Draw(worldTransform_[i], texture_, camera_, color);
-		SlectSprite_[i].Draw(texture_, color);
+	model_->Draw(worldTransform_, texture_, camera_, color);
+	SlectSprite_->Draw(texture_, color);
 
-	}
 	PushSprite_->Draw(PushTexture_, color);
 
 }

@@ -34,7 +34,7 @@ private:
 	uint32_t texture_ = 1;
 	uint32_t PushTexture_ = 1;
 
-	WorldTransform worldTransform_[STAGE_MAX] = {};
+	WorldTransform worldTransform_ = {};
 	WorldTransform PushTransform_ = {};
 
 	int SelectNumber = 0;
