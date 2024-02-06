@@ -128,31 +128,27 @@ void GameScene::Update()
 
 	for (Corn* corn : corns_)
 	{
-
+		
 		cornColLeftX = corn->GetWorldTransform().x - 0.5f;
 		cornColRightX = corn->GetWorldTransform().x + 0.5f;
 		cornColBackZ = corn->GetWorldTransform().z - 0.5f;
 		cornColflontZ = corn->GetWorldTransform().z + 0.5f;
 
-		carLeftX = car_->worldTransform_.translation_.x - 1.5f;
-		carRightX = car_->worldTransform_.translation_.x + 1.5f;
-		carFrontZ = car_->worldTransform_.translation_.z + 1.5f;
-		carBackZ = car_->worldTransform_.translation_.z- 1.5f;
+		carLeftX = car_->worldTransform_.translation_.x - 2.0f;
+		carRightX = car_->worldTransform_.translation_.x + 2.0f;
+		carFrontZ = car_->worldTransform_.translation_.z + 3.0f;
+		carBackZ = car_->worldTransform_.translation_.z- 3.0f;
 		
 
 		if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
 			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
 		{
-
-			sceneNo = TITLE;
-			sceneTime = 0;
+			Vector3 tmpTranslate = corn->GetWorldTransform();
+			tmpTranslate.z += 10.0f;
+			corn->SetTranslate(tmpTranslate);
 		}
 
 	}
-
-
-	
-
 
 	if (DriftFlag) {
 		car_->SetDriveMode(DriftMode);

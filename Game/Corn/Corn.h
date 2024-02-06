@@ -18,6 +18,7 @@ public:
 	void Draw(Camera* camera);
 	void Release();
 	void SetType(float type) { type_ = type; }
+	void SetTranslate(Vector3 translation);
 
 	Vector3 GetWorldTransform() {
 		return worldTransform_.translation_;

@@ -26,6 +26,11 @@ void Corn::Draw(Camera* camera) {
 	model_->Draw(worldTransform_, texture_, camera, color);
 }
 
+void Corn::SetTranslate(Vector3 translation) {
+
+	worldTransform_.translation_ = translation;
+}
+
 void Corn::Release()
 {
 }
