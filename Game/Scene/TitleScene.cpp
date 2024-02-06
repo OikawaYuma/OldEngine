@@ -11,6 +11,9 @@ void TitleScene::Init()
 
 	car_ = new TitleCar();
 	car_->Init();
+
+	room_ = new Room();
+	room_->Init();
 	
 }
 
@@ -38,6 +41,7 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {
 	car_->Draw(camera);
+	room_->Draw(camera);
 }
 
 void TitleScene::Release() {

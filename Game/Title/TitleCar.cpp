@@ -84,12 +84,7 @@ void TitleCar::Update() {
 
 	Move();
 	Accel();
-	if (input->PushKey(DIK_A) /*&& worldTransform_.rotation_.y >= -1.5f*/) {
-		rotate_ -= 0.04f;
-	}
-	else if (input->PushKey(DIK_D) /*&& worldTransform_.rotation_.y <= 1.5f*/) {
-		rotate_ += 0.04f;
-	}
+	rotate_ += 0.015f;
 	/*if (worldTransform_.rotation_.y >= 1.5f) {
 		worldTransform_.rotation_.y = 1.5f;
 	}
