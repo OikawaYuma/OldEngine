@@ -143,7 +143,9 @@ void GameScene::Update()
 		if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
 			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
 		{
-			cornPos.z += speed.z;
+
+			sceneNo = TITLE;
+			sceneTime = 0;
 		}
 
 	}
