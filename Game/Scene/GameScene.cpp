@@ -106,13 +106,10 @@ void GameScene::Update()
 	ImGui::DragFloat3("ADRotate", &AccelDriftCamera.rotate.x);
 	ImGui::DragFloat3("ADTranslate", &AccelDriftCamera.translate.x);
 
-	ImGui::Text("corn");
-	ImGui::DragFloat3("cornTransrate", &cornPos.x, 0.1f);
-
-
 	ImGui::Checkbox("Aceel",&AccelFlag);
 	ImGui::Checkbox("Drift", &DriftFlag);
 	ImGui::End();
+
 
 
 	//testColLeftX = colisionTransform_.translation_.x - 0.5f;
