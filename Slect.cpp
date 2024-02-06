@@ -10,9 +10,14 @@ void Slect::Init()
 	camera_->Initialize();
 	texture_ = TextureManager::GetInstance()->StoreTexture("Resources/uvChecker.png");//画像読み込み
 	PushTexture_ = TextureManager::GetInstance()->StoreTexture("Resources/circle.png");
+
 	model_ = new Model();
 	model_->Initialize("Resources/box", "box.obj", color);
+	Spritemodel = new Model();
+	Spritemodel->Initialize("Resources/Green", "Green.obj", color);
+
 	PushSprite_ = new Sprite;
+	PushSprite_->Initialize(color);
 	SlectSprite_ = new Sprite;
 	SlectSprite_->Initialize(color);
 

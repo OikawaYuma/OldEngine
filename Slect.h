@@ -30,6 +30,7 @@ private:
 	Sprite* PushSprite_ = nullptr;
 	Sprite* SlectSprite_ = nullptr;
 	Model* model_ = {};
+	Model* Spritemodel = {};
 	Vector4 color = { 1,1,1,1 };
 	uint32_t texture_ = 1;
 	uint32_t PushTexture_ = 1;
