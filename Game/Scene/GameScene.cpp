@@ -136,8 +136,8 @@ void GameScene::Update()
 
 		carLeftX = car_->worldTransform_.translation_.x - 2.0f;
 		carRightX = car_->worldTransform_.translation_.x + 2.0f;
-		carFrontZ = car_->worldTransform_.translation_.z + 3.0f;
-		carBackZ = car_->worldTransform_.translation_.z- 3.0f;
+		carFrontZ = car_->worldTransform_.translation_.z + 8.0f;
+		carBackZ = car_->worldTransform_.translation_.z- 8.0f;
 		
 
 		if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
