@@ -102,22 +102,44 @@ void GameScene::Update()
 	ImGui::Checkbox("Drift", &DriftFlag);
 	ImGui::End();
 
-	cornColLeftX = cornPos.x - 1.0f;
-	cornColRightX = cornPos.x + 1.0f;
-	cornColBackZ = cornPos.z + 1.0f;
-	cornColflontZ = cornPos.z - 1.0f;
+
+	//testColLeftX = colisionTransform_.translation_.x - 0.5f;
+	//testColRight = colisionTransform_.translation_.x + 0.5f;
+	//testColBackZ = colisionTransform_.translation_.z - 0.5f;
+	//testColflontZ = colisionTransform_.translation_.z + 0.5f;
+
+	//carLeftX = car_->GetWorldTransform().x - 0.5f;
+	//carRightX = car_->GetWorldTransform().x + 0.5f;
+	//carFrontZ = car_->GetWorldTransform().z + 0.5f;
+	//carBackZ = car_->GetWorldTransform().z - 0.5f;
+
+	////当たり判定
+	//if ((testColLeftX < carRightX && testColRight>carLeftX) &&
+	//	(testColBackZ < carFrontZ && carBackZ < testColflontZ))
+	//{
+	//	sceneNo = TITLE;
+	//	sceneTime = 0;
+	//}
+
+	//
+	cornColLeftX = cornPos.x - 0.5f;
+	cornColRightX = cornPos.x + 0.5f;
+	cornColBackZ = cornPos.z - 0.5f;
+	cornColflontZ = cornPos.z + 0.5f;
 
 	carLeftX = car_->GetWorldTransform().x - 0.5f;
 	carRightX = car_->GetWorldTransform().x + 0.5f;
 	carBackZ = car_->GetWorldTransform().z - 0.5f;
 	carFrontZ = car_->GetWorldTransform().z + 0.5f;
 
-	if (cornColLeftX<carRightX && cornColRightX>carLeftX
-		&& cornColBackZ < carFrontZ && carBackZ < cornColflontZ)
+
+	if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
+		(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
 	{
 		sceneNo = TITLE;
 		sceneTime = 0;
 	}
+
 
 	if (DriftFlag) {
 		car_->SetDriveMode(DriftMode);
@@ -129,6 +151,10 @@ void GameScene::Update()
 	{
 		UpdateCornPopCommands();
 	}
+
+
+
+	
 }
 void GameScene::Draw()
 {
