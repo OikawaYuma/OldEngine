@@ -11,6 +11,7 @@ void Corn::Init(Vector3 translation) {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = translation;
+	worldTransform_.scale_ = { 2,2,2 };
 	texture_ = TextureManager::StoreTexture("Resources/corn/corn.png");
 	model_ = new Model();
 	model_->Initialize("Resources/corn", "corn.obj", color);

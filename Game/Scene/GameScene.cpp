@@ -102,10 +102,10 @@ void GameScene::Update()
 	ImGui::Checkbox("Drift", &DriftFlag);
 	ImGui::End();
 
-	cornColLeftX = cornPos.x - 0.5f;
-	cornColRightX = cornPos.x + 1.5f;
-	cornColBackZ = cornPos.z + 1.5f;
-	cornColflontZ = cornPos.z - 0.5f;
+	cornColLeftX = cornPos.x - 1.0f;
+	cornColRightX = cornPos.x + 1.0f;
+	cornColBackZ = cornPos.z + 1.0f;
+	cornColflontZ = cornPos.z - 1.0f;
 
 	carLeftX = car_->GetWorldTransform().x - 0.5f;
 	carRightX = car_->GetWorldTransform().x + 0.5f;
@@ -115,7 +115,8 @@ void GameScene::Update()
 	if (cornColLeftX<carRightX && cornColRightX>carLeftX
 		&& cornColBackZ < carFrontZ && carBackZ < cornColflontZ)
 	{
-		cornPos.z += 2.0f;
+		sceneNo = TITLE;
+		sceneTime = 0;
 	}
 
 	if (DriftFlag) {
