@@ -183,7 +183,7 @@ void GameScene::Update()
 	if ((testColLeftX < carRightX && testColRight>carLeftX) &&
 		(testColBackZ < carFrontZ && carBackZ<testColflontZ))
 	{
-		sceneNo = TITLE;
+d		sceneNo = TITLE;
 		sceneTime = 0;
 	}
 	//プレイヤーとブロックの当たり判定
