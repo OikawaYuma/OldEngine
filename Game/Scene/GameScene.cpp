@@ -35,7 +35,15 @@ void GameScene::Init()
 	NormalCamera.rotate.x = 0.125f;
 	LoadCornPopData();
 	
-	
+	cornColLeftX = cornPos.x - 0.5f;
+	cornColRightX = cornPos.x + 0.5f;
+	cornColBackZ = cornPos.z - 0.5f;
+	cornColflontZ = cornPos.z + 0.5f;
+
+	carLeftX = car_->GetWorldTransform().x - 0.5f;
+	carRightX = car_->GetWorldTransform().x + 0.5f;
+	carBackZ = car_->GetWorldTransform().z - 0.5f;
+	carFrontZ = car_->GetWorldTransform().z + 0.5f;
 
 }
 
@@ -98,6 +106,10 @@ void GameScene::Update()
 	ImGui::DragFloat3("ADRotate", &AccelDriftCamera.rotate.x);
 	ImGui::DragFloat3("ADTranslate", &AccelDriftCamera.translate.x);
 
+	ImGui::Text("corn");
+	ImGui::DragFloat3("cornTransrate", &cornPos.x, 0.1f);
+
+
 	ImGui::Checkbox("Aceel",&AccelFlag);
 	ImGui::Checkbox("Drift", &DriftFlag);
 	ImGui::End();
@@ -123,9 +135,9 @@ void GameScene::Update()
 
 	//
 	cornColLeftX = cornPos.x - 0.5f;
-	cornColRightX = cornPos.x + 0.5f;
+	cornColRightX = cornPos.x + 1.5f;
 	cornColBackZ = cornPos.z - 0.5f;
-	cornColflontZ = cornPos.z + 0.5f;
+	cornColflontZ = cornPos.z + 1.5f;
 
 	carLeftX = car_->GetWorldTransform().x - 0.5f;
 	carRightX = car_->GetWorldTransform().x + 0.5f;
