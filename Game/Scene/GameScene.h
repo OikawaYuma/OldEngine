@@ -67,9 +67,7 @@ private:
 
 	Vector3 carPos;
 	Vector3 cornPos;
-	Vector3 Getcorn;
-	Vector3 cornRadius;
-	Vector3 carRadius;
+	Vector3 speed;
 	// ブロック発生コマンド
 	std::stringstream cornPopCommands;
 	// ブロック

@@ -35,7 +35,7 @@ void GameScene::Init()
 	NormalCamera.rotate.x = 0.125f;
 	LoadCornPopData();
 	
-
+	speed = { 0,0,2.0f };
 
 
 }
@@ -125,46 +125,31 @@ void GameScene::Update()
 	//}
 
 	//
-	carPos = car_->worldTransform_.translation_;
-	carRadius = car_->worldTransform_.scale_;
 
-	for (std::list<Corn*>::iterator cornIterator = corns_.begin(); cornIterator != corns_.end();)
+	for (Corn* corn : corns_)
 	{
-		Getcorn = (*cornIterator)->GetWorldTransform();
 
-		float p2b = (Getcorn.x - carPos.x) * (Getcorn.x - carPos.x) + (Getcorn.y - carPos.y) * (Getcorn.y - carPos.y) +
-			(Getcorn.z - carPos.z) * (Getcorn.z - carPos.z);
-		cornRadius = (*cornIterator)->GetWorldTransform();
+		cornColLeftX = corn->GetWorldTransform().x - 0.5f;
+		cornColRightX = corn->GetWorldTransform().x + 0.5f;
+		cornColBackZ = corn->GetWorldTransform().z - 0.5f;
+		cornColflontZ = corn->GetWorldTransform().z + 0.5f;
 
-		int r2r = (carRadius.x + cornRadius.x) * (carPos.x + cornRadius.x) *
-			(carRadius.y + cornRadius.y) * (carPos.y + cornRadius.y) * (carRadius.z + cornRadius.z);
-
-		if (p2b <= r2r)
-		{
-			sceneNo = TITLE;
-			sceneTime = 0;
-		}
+		carLeftX = car_->worldTransform_.translation_.x - 1.5f;
+		carRightX = car_->worldTransform_.translation_.x + 1.5f;
+		carFrontZ = car_->worldTransform_.translation_.z + 1.5f;
+		carBackZ = car_->worldTransform_.translation_.z- 1.5f;
 		
 
-		/*if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
+		if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
 			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
 		{
-			sceneNo = TITLE;
-			sceneTime = 0;
-		}*/
+			cornPos.z += speed.z;
+		}
 
 	}
 
 
-	/*cornColLeftX = cornPos.x - 0.5f;
-	cornColRightX = cornPos.x + 0.5f;
-	cornColBackZ = cornPos.z - 0.5f;
-	cornColflontZ = cornPos.z + 0.5f;
-
-	carLeftX = car_->GetWorldTransform().x - 1.5f;
-	carRightX = car_->GetWorldTransform().x + 1.5f;
-	carFrontZ = car_->GetWorldTransform().z + 1.5f;
-	carBackZ = car_->GetWorldTransform().z - 1.5f;*/
+	
 
 
 	if (DriftFlag) {
