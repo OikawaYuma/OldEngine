@@ -54,6 +54,16 @@ private:
 	Rear_left_tire* rear_left_tire_ = nullptr;
 	Rear_right_tire* rear_right_tire_ = nullptr;
 
+	float cornColLeftX;
+	float cornColRightX;
+	float cornColBackZ;
+	float cornColflontZ;
+
+	float carLeftX;
+	float carRightX;
+	float carFrontZ;
+	float carBackZ;
+
 	Vector3 cornPos;
 	// ブロック発生コマンド
 	std::stringstream cornPopCommands;
