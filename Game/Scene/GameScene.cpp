@@ -134,18 +134,18 @@ void GameScene::Update()
 		cornColBackZ = corn->GetWorldTransform().z - 0.5f;
 		cornColflontZ = corn->GetWorldTransform().z + 0.5f;
 
-		carLeftX = car_->worldTransform_.translation_.x - 1.5f;
-		carRightX = car_->worldTransform_.translation_.x + 1.5f;
-		carFrontZ = car_->worldTransform_.translation_.z + 1.5f;
-		carBackZ = car_->worldTransform_.translation_.z- 1.5f;
+		carLeftX = car_->worldTransform_.translation_.x - 0.5f;
+		carRightX = car_->worldTransform_.translation_.x + 0.5f;
+		carFrontZ = car_->worldTransform_.translation_.z + 0.5f;
+		carBackZ = car_->worldTransform_.translation_.z- 0.5f;
 		
 
 		if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
 			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
 		{
 
-			sceneNo = TITLE;
-			sceneTime = 0;
+			cornColBackZ += speed.z;
+			cornColflontZ += speed.z;
 		}
 
 	}
