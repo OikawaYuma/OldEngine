@@ -34,6 +34,7 @@ void GameScene::Init()
 	DriftCamera.rotate.x = 0.125f;
 	NormalCamera.rotate.x = 0.125f;
 	LoadCornPopData();
+	
 }
 
 void GameScene::Update()
@@ -104,6 +105,10 @@ void GameScene::Update()
 	}
 	else if (!DriftFlag && !moveFlag) {
 		car_->SetDriveMode(NormalMode);
+	}
+	for (int i = 0; i < 99; i++)
+	{
+		UpdateCornPopCommands();
 	}
 }
 void GameScene::Draw()
