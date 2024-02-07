@@ -37,7 +37,8 @@ public:
 	void Depart();
 	void Move();
 	void Drift();
-	void Accel();
+	void Accel(bool flag);
+
 	void SetDriveMode(int driveMode);
 	Vector3 GetWorldTransform() {
 		return worldTransform_.translation_;
@@ -58,7 +59,7 @@ private:
 	Particle* particle3 = nullptr;
 	Particle* particle4 = nullptr;
 	Camera* camera = nullptr;
-
+	bool Accelflag = false;
 	int driveMode_ = NormalMode;
 	Emitter smokeEmitter_;
 	Emitter lightEmitter_;

@@ -86,7 +86,7 @@ void Car::Update() {
 	}
 
 	Move();
-	Accel();
+	Accel(Accelflag);
 	if (input->PushKey(DIK_A) && worldTransform_.rotation_.y >= -1.5f) {
 		rotate_ -= 0.04f;
 	}
@@ -300,12 +300,12 @@ void Car::Drift()
 
 }
 
-void Car::Accel()
+void Car::Accel(bool flag)
 {
 	XINPUT_STATE joyState;
 	Input::GetInstance()->GetJoystickState(joyState);
 
-	if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || Input::GetInstance()->PushKey(DIK_LSHIFT)) {
+	if (flag) {
 		Speed = ShiftSpeed;
 		lightEmitter_.count = 10;
 	}

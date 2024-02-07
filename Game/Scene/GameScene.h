@@ -64,6 +64,7 @@ private:
 	Rear_right_tire* rear_right_tire_ = nullptr;
 	WorldTransform cornTransform = {};
 
+	float speedUPtime = 0.0f;
 	float cornColLeftX;
 	float cornColRightX;
 	float cornColBackZ;

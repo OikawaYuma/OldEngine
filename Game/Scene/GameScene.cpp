@@ -151,9 +151,20 @@ void GameScene::Update()
 		{
 			//car_->worldTransform_.rotation_ = corn->GetWorldTransform();
 			Vector3 tmpTranslate = corn->GetWorldTransform();
-			tmpTranslate.z+= 10.0f;
+			if (tmpTranslate.y > 3.5f)
+			{
+				tmpTranslate.y -= 0.25f;
+			}
+			else if(tmpTranslate.y<2.0f)
+			{
+				tmpTranslate.y += 2.0f;
+			}
+			tmpTranslate.z+= 1.0f;
 			corn->SetTranslate(tmpTranslate);
+			
 		}
+
+		
 
 	}
 
@@ -180,102 +191,14 @@ void GameScene::Update()
 
 	if (SpeedUPflag)
 	{
-		if (camera->cameraTransform_.scale.x <= AccelCamera.scale.x) {
-			camera->cameraTransform_.scale.x += 0.05f;
-			if (camera->cameraTransform_.scale.x > AccelCamera.scale.x) {
-				camera->cameraTransform_.scale.x = AccelCamera.scale.x;
-			}
-		}
-		else if (camera->cameraTransform_.scale.x >= AccelCamera.scale.x) {
-			camera->cameraTransform_.scale.x -= 0.05f;
-			if (camera->cameraTransform_.scale.x < AccelCamera.scale.x) {
-				camera->cameraTransform_.scale.x = AccelCamera.scale.x;
-			}
-		}
-		if (camera->cameraTransform_.scale.y <= AccelCamera.scale.y) {
-			camera->cameraTransform_.scale.y += 0.05f;
-			if (camera->cameraTransform_.scale.y > AccelCamera.scale.y) {
-				camera->cameraTransform_.scale.y = AccelCamera.scale.y;
-			}
-		}
-		else if (camera->cameraTransform_.scale.y >= AccelCamera.scale.y) {
-			camera->cameraTransform_.scale.y -= 0.05f;
-			if (camera->cameraTransform_.scale.y < AccelCamera.scale.y) {
-				camera->cameraTransform_.scale.y = AccelCamera.scale.y;
-			}
-		}
-		if (camera->cameraTransform_.scale.z >= AccelCamera.scale.z) {
-			camera->cameraTransform_.scale.z -= 0.02f;
-			if (camera->cameraTransform_.scale.z < AccelCamera.scale.z) {
-				camera->cameraTransform_.scale.z = AccelCamera.scale.z;
-			}
-		}
-		else if (camera->cameraTransform_.scale.z <= AccelCamera.scale.z) {
-			camera->cameraTransform_.scale.z += 0.02f;
-			if (camera->cameraTransform_.scale.z > AccelCamera.scale.z) {
-				camera->cameraTransform_.scale.z = AccelCamera.scale.z;
-			}
-		}
-		/*camera->cameraTransform_.scale.x = 2.0f;
-		camera->cameraTransform_.scale.y = 2.0f;
-	camera->cameraTransform_.scale.z = 0.6f;*/
-		if (moveFlag) {
-			camera->cameraTransform_.translate.x += car_->Speed * move.y;
-			camera->cameraTransform_.translate.z += car_->Speed * move.x;
-		}
+		speedUPtime++;
 	}
-	else if (!SpeedUPflag)
+
+	if (speedUPtime > 95.0f)
 	{
-		//camera->cameraTransform_.rotate = NormalCamera.rotate;
-		//camera->cameraTransform_.translate = NormalCamera.translate;
-		camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 25;
-		camera->cameraTransform_.translate.y = 6.0f;
-		camera->cameraTransform_.rotate.x = NormalCamera.rotate.x;
-		if (camera->cameraTransform_.scale.x >= NormalCamera.scale.x) {
-			camera->cameraTransform_.scale.x -= 0.05f;
-			if (camera->cameraTransform_.scale.x < NormalCamera.scale.x) {
-				camera->cameraTransform_.scale.x = NormalCamera.scale.x;
-			}
-		}
-		else if (camera->cameraTransform_.scale.x <= NormalCamera.scale.x) {
-			camera->cameraTransform_.scale.x += 0.05f;
-			if (camera->cameraTransform_.scale.x > NormalCamera.scale.x) {
-				camera->cameraTransform_.scale.x = NormalCamera.scale.x;
-			}
-		}
-		if (camera->cameraTransform_.scale.y >= NormalCamera.scale.y) {
-			camera->cameraTransform_.scale.y -= 0.05f;
-			if (camera->cameraTransform_.scale.y < NormalCamera.scale.y) {
-				camera->cameraTransform_.scale.y = NormalCamera.scale.y;
-			}
-		}
-		else if (camera->cameraTransform_.scale.y <= NormalCamera.scale.y) {
-			camera->cameraTransform_.scale.y += 0.05f;
-			if (camera->cameraTransform_.scale.y > NormalCamera.scale.y) {
-				camera->cameraTransform_.scale.y = NormalCamera.scale.y;
-			}
-		}
-		if (camera->cameraTransform_.scale.z <= NormalCamera.scale.z) {
-			camera->cameraTransform_.scale.z += 0.02f;
-			if (camera->cameraTransform_.scale.z > NormalCamera.scale.z) {
-				camera->cameraTransform_.scale.z = NormalCamera.scale.z;
-			}
-		}
-		else if (camera->cameraTransform_.scale.z >= NormalCamera.scale.z) {
-			camera->cameraTransform_.scale.z -= 0.02f;
-			if (camera->cameraTransform_.scale.z < NormalCamera.scale.z) {
-				camera->cameraTransform_.scale.z = NormalCamera.scale.z;
-			}
-		}
-		if (moveFlag) {
-			camera->cameraTransform_.translate.x += car_->Speed * move.y;
-			camera->cameraTransform_.translate.z += car_->Speed * move.x;
-		}
-		/*camera->cameraTransform_.scale.x = 1.0f;
-		camera->cameraTransform_.scale.y = 1.0f;
-		camera->cameraTransform_.scale.z = 1.0f;*/
+		SpeedUPflag = false;
+		speedUPtime = 0.0f;
 	}
-	
 
 	if (DriftFlag) {
 		car_->SetDriveMode(DriftMode);
@@ -360,7 +283,7 @@ void GameScene::Accel() {
 
 		//camera->cameraTransform_.rotate = AccelCamera.rotate;
 		//camera->cameraTransform_.translate = AccelCamera.translate;
-		if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || input->PushKey(DIK_LSHIFT) || AccelFlag) {
+		if (SpeedUPflag) {
 			if (camera->cameraTransform_.scale.x <= AccelCamera.scale.x) {
 				camera->cameraTransform_.scale.x += 0.05f;
 				if (camera->cameraTransform_.scale.x > AccelCamera.scale.x) {
@@ -405,7 +328,7 @@ void GameScene::Accel() {
 				camera->cameraTransform_.translate.z += car_->Speed * move.x;
 			}
 		}
-		else if (!(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || !input->PushKey(DIK_LSHIFT))
+		else if (!SpeedUPflag)
 		{
 			//camera->cameraTransform_.rotate = NormalCamera.rotate;
 			//camera->cameraTransform_.translate = NormalCamera.translate;
@@ -459,7 +382,7 @@ void GameScene::Accel() {
 		break;
 	}
 	case DriftMode: {
-		if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || input->PushKey(DIK_LSHIFT) || AccelFlag) {
+		if (SpeedUPflag) {
 
 			//camera->cameraTransform_.rotate = AccelDriftCamera.rotate;
 			//camera->cameraTransform_.translate = AccelDriftCamera.translate;
@@ -513,7 +436,7 @@ void GameScene::Accel() {
 			camera->cameraTransform_.scale.y = 2.0f;
 		camera->cameraTransform_.scale.z = 0.6f;*/
 		}
-		else if (!(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || !input->PushKey(DIK_LSHIFT))
+		else if (!SpeedUPflag)
 		{
 			//camera->cameraTransform_.rotate = DriftCamera.rotate;
 			//camera->cameraTransform_.translate = DriftCamera.translate;
