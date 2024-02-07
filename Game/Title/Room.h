@@ -34,6 +34,7 @@ private:
 	Model* shutter_ = nullptr;
 	uint32_t texture_ = 1;
 	uint32_t texture2_ = 1;
+	uint32_t texture3_ = 1;
 	Input* input = nullptr;
 	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
 	Sprite* sprite_ = nullptr;
