@@ -566,15 +566,15 @@ void GameScene::UpdateSpeedpanelPopCommands() {
 		if (word.find("POP") == 0) {
 			// X座標
 			getline(line_stream, word, ',');
-			cornPos.x = (float)std::atof(word.c_str());
+			speedpanelPos.x = (float)std::atof(word.c_str());
 
 			// Y座標
 			getline(line_stream, word, ',');
-			cornPos.y = (float)std::atof(word.c_str());
+			speedpanelPos.y = (float)std::atof(word.c_str());
 
 			// Z座標
 			getline(line_stream, word, ',');
-			cornPos.z = (float)std::atof(word.c_str());
+			speedpanelPos.z = (float)std::atof(word.c_str());
 		}
 
 		// TYPEコマンド
@@ -584,7 +584,7 @@ void GameScene::UpdateSpeedpanelPopCommands() {
 			float type = (float)std::atof(word.c_str());
 
 			// ブロックを発生させる
-			CornSpown(Vector3(cornPos.x, cornPos.y, cornPos.z), type);
+			SpeedpanelSpown(Vector3(speedpanelPos.x, speedpanelPos.y, speedpanelPos.z), type);
 
 			break;
 		}
