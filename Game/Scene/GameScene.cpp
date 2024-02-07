@@ -595,7 +595,7 @@ void GameScene::SpeedpanelSpown(Vector3 translation, float type) {
 	// ブロックの生成
 	Speedpanel* speedpanel_ = new Speedpanel();
 	// ブロックの初期化
-	if (type == 1) {
+	if (type == 2) {
 		speedpanel_->Init(translation);
 	}
 	// ブロックのタイプ設定
