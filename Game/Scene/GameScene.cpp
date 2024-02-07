@@ -37,7 +37,7 @@ void GameScene::Init()
 	LoadSpeedpanelPopData();
 
 	speed = { 0,0,2.0f };
-	acceleration = { 0.0f,3.5f,0.0f };
+	acceleration = { 0.0f,1.5f,0.0f };
 
 }
 
@@ -108,7 +108,7 @@ void GameScene::Update()
 	ImGui::Checkbox("Drift", &DriftFlag);
 	ImGui::End();
 
-
+	ImGui::Text("%d hitCron",hitCorn);
 	
 
 	//testColLeftX = colisionTransform_.translation_.x - 0.5f;
@@ -132,6 +132,9 @@ void GameScene::Update()
 	//
 	for (Corn* corn : corns_)
 	{
+		bool cornMoveFlag = corn->GetCornflag();
+
+
 		cornColLeftX = corn->GetWorldTransform().x - 0.5f;
 		cornColRightX = corn->GetWorldTransform().x + 0.5f;
 		cornColBackZ = corn->GetWorldTransform().z - 0.5f;
@@ -142,25 +145,39 @@ void GameScene::Update()
 		carFrontZ = car_->worldTransform_.translation_.z + 8.0f;
 		carBackZ = car_->worldTransform_.translation_.z - 8.0f;
 
+
 		if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
 			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
 		{
-			Cornmoveflag = true;
+			cornMoveFlag = true;
+			hitCorn = +1;
 		}
 
-		if (Cornmoveflag)
+		if (cornMoveFlag)
 		{
 			//car_->worldTransform_.rotation_ = corn->GetWorldTransform();
 			Vector3 tmpTranslate = corn->GetWorldTransform();
 			tmpTranslate.y -= acceleration.y;
 
-			if (tmpTranslate.y < 20.0f)
+			if (car_->worldTransform_.rotation_.y>0.0f&& car_->worldTransform_.rotation_.y < 1.5f)
 			{
-				tmpTranslate.y += 3.0f;
+				tmpTranslate.x += 3.0f;
 			}
-			tmpTranslate.z+= 3.0f;
-			corn->SetTranslate(tmpTranslate);
+			else if (car_->worldTransform_.rotation_.y<0.0f && car_->worldTransform_.rotation_.y > -1.5f)
+			{
+				tmpTranslate.x -= 3.0f;
+			}
+
+			/*else if(car_->worldTransform_.rotation_.y==0.0f)
+			{
+				
+				
+			}*/
+			tmpTranslate.z += 3.0f;
+			tmpTranslate.y += 3.0f;
 			
+			corn->SetTranslate(tmpTranslate);
+			corn->SetCornflag(cornMoveFlag);
 		}
 
 		

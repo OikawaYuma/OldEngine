@@ -19,10 +19,18 @@ public:
 	void Release();
 	void SetType(float type) { type_ = type; }
 	void SetTranslate(Vector3 translation);
+	void SetCornflag(bool cornflag) { cornflag_ = cornflag; }
 
 	Vector3 GetWorldTransform() {
 		return worldTransform_.translation_;
 	}
+
+	bool GetCornflag()
+	{
+		return cornflag_;
+	}
+
+
 
 private:
 	WorldTransform worldTransform_;
@@ -31,5 +39,6 @@ private:
 	Input* input = nullptr;
 	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
 	float type_ = 0;
+	bool cornflag_ = false;
 };
 

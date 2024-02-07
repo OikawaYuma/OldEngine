@@ -42,11 +42,12 @@ private:
 	// Carが動く
 	bool moveFlag = false;
 	bool SpeedUPflag = false;
-	bool Cornmoveflag = false;
+	//bool Cornmoveflag = false;
 
 	bool DriftFlag = false;
 	bool AccelFlag = false;
 	bool cornActionFlag = false;
+
 
 	Corn* corn = nullptr;
 	Speedpanel* speedpanel = nullptr;
@@ -80,6 +81,8 @@ private:
 	float carRightX;
 	float carFrontZ;
 	float carBackZ;
+	
+	int hitCorn;
 
 	Vector3 carPos;
 	Vector3 cornPos;
