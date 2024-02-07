@@ -41,6 +41,8 @@ private:
 	int sceneTime = 0;
 	// Carが動く
 	bool moveFlag = false;
+	bool SpeedUPflag = false;
+	bool Cornmoveflag = false;
 
 	bool DriftFlag = false;
 	bool AccelFlag = false;

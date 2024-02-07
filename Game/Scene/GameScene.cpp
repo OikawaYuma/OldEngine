@@ -144,11 +144,19 @@ void GameScene::Update()
 		if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
 			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
 		{
-			Vector3 tmpTranslate = corn->GetWorldTransform();
-			tmpTranslate.z += 10.0f;
-			corn->SetTranslate(tmpTranslate);
+			Cornmoveflag = true;
 		}
+
+		
+	if (Cornmoveflag == true)
+	{
+		Vector3 tmpTranslate = corn();
+		tmpTranslate.z += 10.0f;
+		speedpanel->SetTranslate(tmpTranslate);
 	}
+	}
+
+
 
 	for (Speedpanel* speedpanel : speedpanels_)
 	{
@@ -165,11 +173,15 @@ void GameScene::Update()
 		if ((speedpanelColLeftX < carRightX && speedpanelColRightX > carLeftX) &&
 			(carFrontZ > speedpanelColBackZ && carBackZ < speedpanelColflontZ))
 		{
-			Vector3 tmpTranslate = speedpanel->GetWorldTransform();
-			tmpTranslate.z += 10.0f;
-			speedpanel->SetTranslate(tmpTranslate);
+			SpeedUPflag = true;
 		}
 	}
+
+	if (SpeedUPflag == true)
+	{
+
+	}
+	
 
 	if (DriftFlag) {
 		car_->SetDriveMode(DriftMode);
