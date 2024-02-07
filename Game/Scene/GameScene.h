@@ -8,7 +8,10 @@
 #include "../Car/Rear_left_tire/Rear_left_tire.h"
 #include "../Car/Rear_right_tire/Rear_right_tire.h"
 #include "../Skydome/Skydome.h"
+#include "../Corn/Corn.h"
 #include "../Tree/Tree.h"
+#include "../Speedpanel/Speedpanel.h"
+#include"CSVReader.h"
 #include "ImGuiCommon.h"
 #include "Transform.h"
 #include "Room.h"
@@ -23,6 +26,17 @@ public:
 
 	void Depart();
 	void Accel();
+
+	void LoadCornPopData();
+	void UpdateCornPopCommands();
+	void CornSpown(Vector3, float);
+	void AddCorn(Corn* corn);
+
+	void LoadSpeedpanelPopData();
+	void UpdateSpeedpanelPopCommands();
+	void SpeedpanelSpown(Vector3, float);
+	void AddSpeedpanel(Speedpanel* speedpanel);
+
 private:
 	Input* input = nullptr;
 	int sceneTime = 0;
@@ -32,6 +46,8 @@ private:
 	bool DriftFlag = false;
 	bool AccelFlag = false;
 
+	Corn* corn = nullptr;
+	Speedpanel* speedpanel = nullptr;
 	Tree* tree = nullptr;
 	Skydome* skydome = nullptr;
 	Camera* camera = nullptr;
@@ -46,5 +62,32 @@ private:
 	Front_right_tire* front_right_tire_ = nullptr;
 	Rear_left_tire* rear_left_tire_ = nullptr;
 	Rear_right_tire* rear_right_tire_ = nullptr;
+	WorldTransform cornTransform = {};
+
+	float cornColLeftX;
+	float cornColRightX;
+	float cornColBackZ;
+	float cornColflontZ;
+
+	float speedpanelColLeftX;
+	float speedpanelColRightX;
+	float speedpanelColBackZ;
+	float speedpanelColflontZ;
+
+	float carLeftX;
+	float carRightX;
+	float carFrontZ;
+	float carBackZ;
+
+	Vector3 carPos;
+	Vector3 cornPos;
+	Vector3 speedpanelPos;
+	Vector3 speed;
+	// ブロック発生コマンド
+	std::stringstream cornPopCommands;
+	std::stringstream speedpanelPopCommands;
+	// ブロック
+	std::list<Corn*> corns_;
+	std::list<Speedpanel*> speedpanels_;
 };
 

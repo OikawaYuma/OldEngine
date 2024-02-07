@@ -23,7 +23,6 @@ void GameScene::Init()
 	rear_left_tire_->Init();
 	rear_right_tire_ = new Rear_right_tire();
 	rear_right_tire_->Init();
-
 	AccelDriftCamera;
 
 	//SceleCamera
@@ -34,6 +33,11 @@ void GameScene::Init()
 
 	DriftCamera.rotate.x = 0.125f;
 	NormalCamera.rotate.x = 0.125f;
+	LoadCornPopData();
+	LoadSpeedpanelPopData();
+
+	speed = { 0,0,2.0f };
+
 
 	
 
@@ -43,6 +47,7 @@ void GameScene::Update()
 {
 	float theta = (car_->rotate_ / 2.0f) * (float)M_PI;
 	Vector2 move = { cosf(theta),sinf(theta) };
+
 	car_->worldTransform_.rotation_.y = theta;
 	camera->cameraTransform_.translate.x = car_->worldTransform_.translation_.x;
 	camera->cameraTransform_.rotate.y = car_->worldTransform_.rotation_.y / 10;
@@ -51,7 +56,7 @@ void GameScene::Update()
 	if (input->TriggerKey(DIK_W)) {
 		moveFlag = true;
 	}
-	
+
 	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNo = TITLE;
 		sceneTime = 0;
@@ -74,10 +79,16 @@ void GameScene::Update()
 	front_right_tire_->Update();
 	rear_left_tire_->Update();
 	rear_right_tire_->Update();
+	for (Corn* corn : corns_) {
+		corn->Update();
+	}
+	for (Speedpanel* speedpanel : speedpanels_) {
+		speedpanel->Update();
+	}
 	ImGui::Begin("Camera");
 	ImGui::Text("NormalCamera");
-	ImGui::DragFloat3("NScale",&NormalCamera.scale.x, 0.1f);
-	ImGui::DragFloat3("NRotate", &NormalCamera.rotate.x,0.1f);
+	ImGui::DragFloat3("NScale", &NormalCamera.scale.x, 0.1f);
+	ImGui::DragFloat3("NRotate", &NormalCamera.rotate.x, 0.1f);
 	ImGui::DragFloat3("NTranslate", &NormalCamera.translate.x);
 
 	ImGui::Text("AccelCamera");
@@ -95,15 +106,83 @@ void GameScene::Update()
 	ImGui::DragFloat3("ADRotate", &AccelDriftCamera.rotate.x);
 	ImGui::DragFloat3("ADTranslate", &AccelDriftCamera.translate.x);
 
-	ImGui::Checkbox("Aceel",&AccelFlag);
+	ImGui::Checkbox("Aceel", &AccelFlag);
 	ImGui::Checkbox("Drift", &DriftFlag);
 	ImGui::End();
+
+
+
+	//testColLeftX = colisionTransform_.translation_.x - 0.5f;
+	//testColRight = colisionTransform_.translation_.x + 0.5f;
+	//testColBackZ = colisionTransform_.translation_.z - 0.5f;
+	//testColflontZ = colisionTransform_.translation_.z + 0.5f;
+
+	//carLeftX = car_->GetWorldTransform().x - 0.5f;
+	//carRightX = car_->GetWorldTransform().x + 0.5f;
+	//carFrontZ = car_->GetWorldTransform().z + 0.5f;
+	//carBackZ = car_->GetWorldTransform().z - 0.5f;
+
+	////当たり判定
+	//if ((testColLeftX < carRightX && testColRight>carLeftX) &&
+	//	(testColBackZ < carFrontZ && carBackZ < testColflontZ))
+	//{
+	//	sceneNo = TITLE;
+	//	sceneTime = 0;
+	//}
+
+	//
+	for (Corn* corn : corns_)
+	{
+		cornColLeftX = corn->GetWorldTransform().x - 0.5f;
+		cornColRightX = corn->GetWorldTransform().x + 0.5f;
+		cornColBackZ = corn->GetWorldTransform().z - 0.5f;
+		cornColflontZ = corn->GetWorldTransform().z + 0.5f;
+
+		carLeftX = car_->worldTransform_.translation_.x - 2.0f;
+		carRightX = car_->worldTransform_.translation_.x + 2.0f;
+		carFrontZ = car_->worldTransform_.translation_.z + 8.0f;
+		carBackZ = car_->worldTransform_.translation_.z - 8.0f;
+
+		if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
+			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
+		{
+			Vector3 tmpTranslate = corn->GetWorldTransform();
+			tmpTranslate.z += 10.0f;
+			corn->SetTranslate(tmpTranslate);
+		}
+	}
+
+	for (Speedpanel* speedpanel : speedpanels_)
+	{
+		speedpanelColLeftX = speedpanel->GetWorldTransform().x - 6.0f;
+		speedpanelColRightX = speedpanel->GetWorldTransform().x + 6.0f;
+		speedpanelColBackZ = speedpanel->GetWorldTransform().z - 3.0f;
+		speedpanelColflontZ = speedpanel->GetWorldTransform().z + 3.0f;
+
+		carLeftX = car_->worldTransform_.translation_.x - 2.0f;
+		carRightX = car_->worldTransform_.translation_.x + 2.0f;
+		carFrontZ = car_->worldTransform_.translation_.z + 8.0f;
+		carBackZ = car_->worldTransform_.translation_.z - 8.0f;
+
+		if ((speedpanelColLeftX < carRightX && speedpanelColRightX > carLeftX) &&
+			(carFrontZ > speedpanelColBackZ && carBackZ < speedpanelColflontZ))
+		{
+			Vector3 tmpTranslate = speedpanel->GetWorldTransform();
+			tmpTranslate.z += 10.0f;
+			speedpanel->SetTranslate(tmpTranslate);
+		}
+	}
 
 	if (DriftFlag) {
 		car_->SetDriveMode(DriftMode);
 	}
 	else if (!DriftFlag && !moveFlag) {
 		car_->SetDriveMode(NormalMode);
+	}
+	for (int i = 0; i < 99; i++)
+	{
+		UpdateCornPopCommands();
+		UpdateSpeedpanelPopCommands();
 	}
 }
 void GameScene::Draw()
@@ -112,6 +191,12 @@ void GameScene::Draw()
 	car_->Draw(camera);
 	skydome->Draw(camera);
 	tree->Draw(camera);
+	for (Corn* corn : corns_) {
+		corn->Draw(camera);
+	}
+	for (Speedpanel* speedpanel : speedpanels_) {
+		speedpanel->Draw(camera);
+	}
 	/*front_left_tire_->Draw(camera);
 	front_right_tire_->Draw(camera);
 	rear_left_tire_->Draw(camera);
@@ -126,6 +211,12 @@ void GameScene::Release() {
 	delete car_;
 	delete skydome;
 	delete tree;
+	for (Corn* corn : corns_) {
+		delete corn;
+	}
+	for (Speedpanel* speedpanel : speedpanels_) {
+		delete speedpanel;
+	}
 }
 // ゲームを終了
 int GameScene::GameClose()
@@ -154,7 +245,7 @@ void GameScene::Depart()
 
 
 
-void GameScene::Accel(){
+void GameScene::Accel() {
 	XINPUT_STATE joyState;
 	float theta = (car_->rotate_ / 2.0f) * (float)M_PI;
 	Vector2 move = { cosf(theta),sinf(theta) };
@@ -264,7 +355,7 @@ void GameScene::Accel(){
 		break;
 	}
 	case DriftMode: {
-		if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || input->PushKey(DIK_LSHIFT) || AccelFlag ) {
+		if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || input->PushKey(DIK_LSHIFT) || AccelFlag) {
 
 			//camera->cameraTransform_.rotate = AccelDriftCamera.rotate;
 			//camera->cameraTransform_.translate = AccelDriftCamera.translate;
@@ -325,7 +416,7 @@ void GameScene::Accel(){
 			camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 25;
 			camera->cameraTransform_.translate.y = 6.0f;
 			camera->cameraTransform_.rotate.x = DriftCamera.rotate.x;
-			 
+
 			if (camera->cameraTransform_.scale.x >= DriftCamera.scale.x) {
 				camera->cameraTransform_.scale.x -= 0.05f;
 				if (camera->cameraTransform_.scale.x < DriftCamera.scale.x) {
@@ -373,5 +464,162 @@ void GameScene::Accel(){
 		break;
 	}
 	}
+}
 
+void GameScene::LoadCornPopData() {
+	// ファイルを開く
+	std::ifstream file;
+	file.open("csv/cornPop.csv");
+	assert(file.is_open());
+
+	// ファイルも内容を文字列ストリームにコピー
+	cornPopCommands << file.rdbuf();
+
+	// ファイルを閉じる
+	file.close();
+}
+
+void GameScene::UpdateCornPopCommands() {
+
+	// 1行分の文字列を入れる変数
+	std::string line;
+
+	// コマンド実行ループ
+	while (getline(cornPopCommands, line)) {
+		// 1行分の文字列をストリームに変換して解析しやすくなる
+		std::istringstream line_stream(line);
+
+		std::string word;
+		// ,区切りで行の先頭文字列を取得
+		getline(line_stream, word, ',');
+
+		// "//"から始まる行はコメント
+		if (word.find("//") == 0) {
+			// コメント行を飛ばす
+			continue;
+		}
+
+		// POPコマンド
+		if (word.find("POP") == 0) {
+			// X座標
+			getline(line_stream, word, ',');
+			cornPos.x = (float)std::atof(word.c_str());
+
+			// Y座標
+			getline(line_stream, word, ',');
+			cornPos.y = (float)std::atof(word.c_str());
+
+			// Z座標
+			getline(line_stream, word, ',');
+			cornPos.z = (float)std::atof(word.c_str());
+		}
+
+		// TYPEコマンド
+		if (word.find("TYPE") == 0) {
+			// type
+			getline(line_stream, word, ',');
+			float type = (float)std::atof(word.c_str());
+
+			// ブロックを発生させる
+			CornSpown(Vector3(cornPos.x, cornPos.y, cornPos.z), type);
+
+			break;
+		}
+	}
+}
+
+void GameScene::CornSpown(Vector3 translation, float type) {
+	// ブロックの生成
+	Corn* corn_ = new Corn();
+	// ブロックの初期化
+	if (type == 1) {
+		corn_->Init(translation);
+	}
+	// ブロックのタイプ設定
+	corn_->SetType(type);
+	AddCorn(corn_);
+}
+
+void GameScene::AddCorn(Corn* corn) {
+	// リストに登録する
+	corns_.push_back(corn);
+}
+
+void GameScene::LoadSpeedpanelPopData() {
+	// ファイルを開く
+	std::ifstream file;
+	file.open("csv/speedpanelPop.csv");
+	assert(file.is_open());
+
+	// ファイルも内容を文字列ストリームにコピー
+	speedpanelPopCommands << file.rdbuf();
+
+	// ファイルを閉じる
+	file.close();
+}
+
+void GameScene::UpdateSpeedpanelPopCommands() {
+
+	// 1行分の文字列を入れる変数
+	std::string line;
+
+	// コマンド実行ループ
+	while (getline(speedpanelPopCommands, line)) {
+		// 1行分の文字列をストリームに変換して解析しやすくなる
+		std::istringstream line_stream(line);
+
+		std::string word;
+		// ,区切りで行の先頭文字列を取得
+		getline(line_stream, word, ',');
+
+		// "//"から始まる行はコメント
+		if (word.find("//") == 0) {
+			// コメント行を飛ばす
+			continue;
+		}
+
+		// POPコマンド
+		if (word.find("POP") == 0) {
+			// X座標
+			getline(line_stream, word, ',');
+			speedpanelPos.x = (float)std::atof(word.c_str());
+
+			// Y座標
+			getline(line_stream, word, ',');
+			speedpanelPos.y = (float)std::atof(word.c_str());
+
+			// Z座標
+			getline(line_stream, word, ',');
+			speedpanelPos.z = (float)std::atof(word.c_str());
+		}
+
+		// TYPEコマンド
+		if (word.find("TYPE") == 0) {
+			// type
+			getline(line_stream, word, ',');
+			float type = (float)std::atof(word.c_str());
+
+			// ブロックを発生させる
+			SpeedpanelSpown(Vector3(speedpanelPos.x, speedpanelPos.y, speedpanelPos.z), type);
+
+			break;
+		}
+	}
+}
+
+void GameScene::SpeedpanelSpown(Vector3 translation, float type) {
+	// ブロックの生成
+	Speedpanel* speedpanel_ = new Speedpanel();
+	// ブロックの初期化
+	if (type == 2) {
+		speedpanel_->Init(translation);
+	}
+	// ブロックのタイプ設定
+	speedpanel_->SetType(type);
+	AddSpeedpanel(speedpanel_);
+}
+
+void GameScene::AddSpeedpanel(Speedpanel* speedpanel) {
+	// リストに登録する
+	speedpanels_.push_back(speedpanel);
 }

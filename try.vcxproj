@@ -109,6 +109,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Corn\Corn.cpp" />
     <ClCompile Include="Game\Clear\ClearCar.cpp" />
     <ClCompile Include="Game\Car\Front_right_tire\Front_right_tire.cpp" />
     <ClCompile Include="Game\Car\Front_left_tire\Front_left_tire.cpp" />
@@ -137,6 +138,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Lib\Utility\CSVReader.cpp" />
     <ClCompile Include="Lib\utility\function.cpp" />
     <ClCompile Include="Engine\2d\ImGuiCommon.cpp" />
     <ClCompile Include="main.cpp" />
@@ -155,6 +157,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Title\Room.cpp" />
     <ClCompile Include="Slect.cpp" />
     <ClCompile Include="SlectScene.cpp" />
+    <ClCompile Include="Game\Speedpanel\Speedpanel.cpp" />
     <ClCompile Include="Stage1.cpp" />
     <ClCompile Include="Stage2.cpp" />
     <ClCompile Include="Stage3.cpp" />
@@ -164,6 +167,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Title\TitleCar.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Corn\Corn.h" />
     <ClInclude Include="Game\Clear\ClearCar.h" />
     <ClInclude Include="Game\Car\Front_right_tire\Front_right_tire.h" />
     <ClInclude Include="Game\Car\Front_left_tire\Front_left_tire.h" />
@@ -198,6 +202,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Interface\DirectXCommon.h" />
     <ClInclude Include="Engine\3d\Triangle.h" />
     <ClInclude Include="Game\Scene\TitleScene.h" />
+    <ClInclude Include="Lib\Utility\CSVReader.h" />
     <ClInclude Include="Lib\utility\function.h" />
     <ClInclude Include="Engine\2d\ImGuiCommon.h" />
     <ClInclude Include="Lib\math\mathFunction.h" />
@@ -223,6 +228,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Title\Room.h" />
     <ClInclude Include="Slect.h" />
     <ClInclude Include="SlectScene.h" />
+    <ClInclude Include="Game\Speedpanel\Speedpanel.h" />
     <ClInclude Include="Stage1.h" />
     <ClInclude Include="Stage2.h" />
     <ClInclude Include="Stage3.h" />
@@ -266,6 +272,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="csv\speedpanelPop.csv" />
     <None Include="imgui\imgui.ini" />
     <None Include="Object3d.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
