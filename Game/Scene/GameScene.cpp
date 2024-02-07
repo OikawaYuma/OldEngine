@@ -37,7 +37,7 @@ void GameScene::Init()
 	LoadSpeedpanelPopData();
 
 	speed = { 0,0,2.0f };
-
+	acceleration = { 0.0f,3.5f,0.0f };
 
 }
 
@@ -109,6 +109,7 @@ void GameScene::Update()
 	ImGui::End();
 
 
+	
 
 	//testColLeftX = colisionTransform_.translation_.x - 0.5f;
 	//testColRight = colisionTransform_.translation_.x + 0.5f;
@@ -151,15 +152,13 @@ void GameScene::Update()
 		{
 			//car_->worldTransform_.rotation_ = corn->GetWorldTransform();
 			Vector3 tmpTranslate = corn->GetWorldTransform();
-			if (tmpTranslate.y > 3.5f)
+			tmpTranslate.y -= acceleration.y;
+
+			if (tmpTranslate.y < 20.0f)
 			{
-				tmpTranslate.y -= 0.25f;
+				tmpTranslate.y += 3.0f;
 			}
-			else if(tmpTranslate.y<2.0f)
-			{
-				tmpTranslate.y += 2.0f;
-			}
-			tmpTranslate.z+= 1.0f;
+			tmpTranslate.z+= 3.0f;
 			corn->SetTranslate(tmpTranslate);
 			
 		}

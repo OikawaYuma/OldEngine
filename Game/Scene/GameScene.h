@@ -46,6 +46,7 @@ private:
 
 	bool DriftFlag = false;
 	bool AccelFlag = false;
+	bool cornActionFlag = false;
 
 	Corn* corn = nullptr;
 	Speedpanel* speedpanel = nullptr;
@@ -83,6 +84,7 @@ private:
 	Vector3 carPos;
 	Vector3 cornPos;
 	Vector3 speedpanelPos;
+	Vector3 acceleration;
 	Vector3 speed;
 	// ブロック発生コマンド
 	std::stringstream cornPopCommands;
