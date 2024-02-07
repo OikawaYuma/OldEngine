@@ -70,7 +70,7 @@ int GameManager::Run() {
 	Input* sInput = Input::GetInstance();
 	sInput->Initialize();
 
-	Audiohandle_= Audio::SoundLoadWave("Resources/InitialDParo.wav");
+	//Audiohandle_= Audio::SoundLoadWave("Resources/InitialDParo.wav");
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (true)  // ゲームループ

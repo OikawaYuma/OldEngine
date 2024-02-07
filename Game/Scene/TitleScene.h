@@ -26,6 +26,7 @@ public:
 	int GameClose()override;
 
 	void FadeBlackChange();
+	void FadeWhiteChange();
 	void CameraChange();
 private:
 	int sceneTime = 0;
@@ -37,14 +38,21 @@ private:
 	Room* room = nullptr;
 	Sprite* fadeBlack;
 	float fadeColor = 0.0f;
+	float fadeColorWhite = 0.0f;
 	bool fadeBlackFlag = true;
 	float rotate_;
 	uint32_t texture_;
+	uint32_t texture2_;
 	bool isSceneChanege = false;
 	uint32_t fadeBlackTimer = 0;
 	uint32_t cameraSet = 0;
-
+	float velo;
 	uint32_t cameraTime = 0;
+	Sprite* fadeWhite;
 
+	uint32_t scenetimer = 0;
+
+
+	bool sceneChangeFlag = false;
 };
 

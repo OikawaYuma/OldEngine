@@ -17,7 +17,7 @@ public:
 	Room();
 	~Room();
 	void Init();
-	void Update();
+	void Update(bool Flag);
 	void Draw(Camera* camera);
 	void Release();
 
@@ -41,7 +41,9 @@ private:
 
 public:
 	WorldTransform worldTransform_;
+	WorldTransform worldTransform2_;
 	float rotate_;
+	int time;
 	
 };
 
