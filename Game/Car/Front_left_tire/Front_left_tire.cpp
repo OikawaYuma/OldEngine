@@ -19,7 +19,7 @@ void Front_left_tire::Init() {
 	worldTransform_.translation_.z += 10.0f;
 	texture_ = TextureManager::StoreTexture("Resources/uvChecker.png");
 	model_ = new Model();
-	model_->Initialize("Resources/demo_car", "front_left_tire.obj", color);
+	model_->Initialize("Resources/demo_car", "front_left_tire.obj", color, true);
 
 	Speed = 10;
 }

@@ -39,6 +39,8 @@ void GameScene::Init()
 	speed = { 0,0,2.0f };
 
 
+	
+
 }
 
 void GameScene::Update()

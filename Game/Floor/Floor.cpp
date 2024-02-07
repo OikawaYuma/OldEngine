@@ -12,8 +12,10 @@ void Floor::Init() {
 	worldTransform_.Initialize();
 	texture_ = TextureManager::StoreTexture("Resources/demo_floor/floorimage.png");
 	model_ = new Model();
-	model_->Initialize("Resources/demo_floor", "0.obj", color);
+
+	model_->Initialize("Resources/demo_floor", "0.obj", color, true);
 }
+
 
 void Floor::Update() {
 	worldTransform_.UpdateMatrix();

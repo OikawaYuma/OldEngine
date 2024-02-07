@@ -14,6 +14,7 @@
 #include"CSVReader.h"
 #include "ImGuiCommon.h"
 #include "Transform.h"
+#include "Room.h"
 class GameScene :public IScene
 {
 public:
@@ -56,6 +57,7 @@ private:
 	Transform NormalCamera;
 	Transform AccelDriftCamera;
 	Floor* floor_ = nullptr;
+
 	Front_left_tire* front_left_tire_ = nullptr;
 	Front_right_tire* front_right_tire_ = nullptr;
 	Rear_left_tire* rear_left_tire_ = nullptr;

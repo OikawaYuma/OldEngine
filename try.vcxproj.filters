@@ -89,6 +89,7 @@
     <ClCompile Include="Game\Corn\Corn.cpp" />
     <ClCompile Include="Lib\Utility\CSVReader.cpp" />
     <ClCompile Include="Game\Speedpanel\Speedpanel.cpp" />
+    <ClCompile Include="Game\Title\Room.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -179,6 +180,7 @@
     <ClInclude Include="Game\Corn\Corn.h" />
     <ClInclude Include="Lib\Utility\CSVReader.h" />
     <ClInclude Include="Game\Speedpanel\Speedpanel.h" />
+    <ClInclude Include="Game\Title\Room.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

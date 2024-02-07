@@ -32,6 +32,7 @@ public:
 	bool PushKey(BYTE keyNumber);
 	bool TriggerKey(BYTE keyNumber);
 
+	bool TriggerJoyBotton();
 	
 
 	/*XINPUT_STATE GetXInputState() {
@@ -46,6 +47,7 @@ private:
 	ComPtr <IDirectInputDevice8> keyboard = nullptr;
 	BYTE keys[256];
 	BYTE preKeys[256];
+	XINPUT_STATE preState;
 	//XINPUT_STATE state;
 
 	
