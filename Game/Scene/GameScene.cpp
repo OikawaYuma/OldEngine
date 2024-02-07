@@ -129,10 +129,8 @@ void GameScene::Update()
 	//}
 
 	//
-
 	for (Corn* corn : corns_)
 	{
-		
 		cornColLeftX = corn->GetWorldTransform().x - 0.5f;
 		cornColRightX = corn->GetWorldTransform().x + 0.5f;
 		cornColBackZ = corn->GetWorldTransform().z - 0.5f;
@@ -141,8 +139,7 @@ void GameScene::Update()
 		carLeftX = car_->worldTransform_.translation_.x - 2.0f;
 		carRightX = car_->worldTransform_.translation_.x + 2.0f;
 		carFrontZ = car_->worldTransform_.translation_.z + 8.0f;
-		carBackZ = car_->worldTransform_.translation_.z- 8.0f;
-		
+		carBackZ = car_->worldTransform_.translation_.z - 8.0f;
 
 		if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
 			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
@@ -151,7 +148,27 @@ void GameScene::Update()
 			tmpTranslate.z += 10.0f;
 			corn->SetTranslate(tmpTranslate);
 		}
+	}
 
+	for (Speedpanel* speedpanel : speedpanels_)
+	{
+		speedpanelColLeftX = speedpanel->GetWorldTransform().x - 6.0f;
+		speedpanelColRightX = speedpanel->GetWorldTransform().x + 6.0f;
+		speedpanelColBackZ = speedpanel->GetWorldTransform().z - 3.0f;
+		speedpanelColflontZ = speedpanel->GetWorldTransform().z + 3.0f;
+
+		carLeftX = car_->worldTransform_.translation_.x - 2.0f;
+		carRightX = car_->worldTransform_.translation_.x + 2.0f;
+		carFrontZ = car_->worldTransform_.translation_.z + 8.0f;
+		carBackZ = car_->worldTransform_.translation_.z - 8.0f;
+
+		if ((speedpanelColLeftX < carRightX && speedpanelColRightX > carLeftX) &&
+			(carFrontZ > speedpanelColBackZ && carBackZ < speedpanelColflontZ))
+		{
+			Vector3 tmpTranslate = speedpanel->GetWorldTransform();
+			tmpTranslate.z += 10.0f;
+			speedpanel->SetTranslate(tmpTranslate);
+		}
 	}
 
 	if (DriftFlag) {
@@ -165,7 +182,6 @@ void GameScene::Update()
 		UpdateCornPopCommands();
 		UpdateSpeedpanelPopCommands();
 	}
-
 }
 void GameScene::Draw()
 {
