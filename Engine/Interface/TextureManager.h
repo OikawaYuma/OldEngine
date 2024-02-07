@@ -63,7 +63,7 @@ public:
 	//D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 
 	//SRV
-	const static uint32_t SRVSizes = 128;
+	const static uint32_t SRVSizes = 10000;
 	// metaDataを基にSRVの設定
 	
 	// Resourceの生成
