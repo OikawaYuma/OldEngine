@@ -15,8 +15,9 @@ TitleCar::~TitleCar() {
 void TitleCar::Init() {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
-	worldTransform_.translation_.y += 0.05f;
+	worldTransform_.translation_.y += 0.15f;
 	worldTransform_.translation_.z += 10.0f;
+	//worldTransform_.translation_.z += 10.0f;
 	texture_ = TextureManager::StoreTexture("Resources/demo_car/CAR.png");
 	texture2_ = TextureManager::StoreTexture("Resources/circle.png");
 	texture3_ = TextureManager::StoreTexture("Resources/cubeRED.png");
@@ -82,14 +83,9 @@ void TitleCar::Update() {
 		worldTransform_.translation_.x = -100.0f;
 	}
 
-	Move();
-	Accel();
-	if (input->PushKey(DIK_A) /*&& worldTransform_.rotation_.y >= -1.5f*/) {
-		rotate_ -= 0.04f;
-	}
-	else if (input->PushKey(DIK_D) /*&& worldTransform_.rotation_.y <= 1.5f*/) {
-		rotate_ += 0.04f;
-	}
+	//Move();
+	//Accel();
+	//rotate_ += 0.015f;
 	/*if (worldTransform_.rotation_.y >= 1.5f) {
 		worldTransform_.rotation_.y = 1.5f;
 	}

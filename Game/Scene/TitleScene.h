@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Particle.h"
 #include "TitleCar.h"
+#include "Room.h"
 class TitleScene : public IScene
 {
 public:
@@ -20,6 +21,7 @@ private:
 	Camera* camera = nullptr;
 	Input* input = nullptr;
 	TitleCar* car_ = nullptr;
-	
+	Room* room = nullptr;
+	float rotate_;
 };
 
