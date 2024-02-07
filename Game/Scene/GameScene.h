@@ -69,6 +69,7 @@ private:
 	WorldTransform cornTransform = {};
 
 	float speedUPtime = 0.0f;
+	float clearPOS = 1500.0f;
 	float cornColLeftX;
 	float cornColRightX;
 	float cornColBackZ;
