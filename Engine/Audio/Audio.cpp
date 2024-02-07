@@ -44,18 +44,18 @@ uint32_t Audio::SoundLoadWave(const char* filename)
 	RiffHeader riff;
 	file.read((char*)&riff, sizeof(riff));
 	// ファイルがRIFFかチェック
-	if (strncmp(riff.chunk.id, "RIFF", 4) != 0) {
+	if (strncmp(riff.chunk.id, "RIFF", 100) != 0) {
 		assert(0);
 	}
 	// タイプがWAVEかチェック
-	if (strncmp(riff.type, "WAVE", 4) != 0) {
+	if (strncmp(riff.type, "WAVE", 100) != 0) {
 		assert(0);
 	}
 	// Formatチャンクの読み込み
 	FormatChunk format = {};
 	// チャンクヘッダ―の確認
 	file.read((char*)&format, sizeof(ChunkHeader));
-	if (strncmp(format.chunk.id, "fmt ", 4) != 0) {
+	if (strncmp(format.chunk.id, "fmt ", 100) != 0) {
 		assert(0);
 	}
 
@@ -67,14 +67,14 @@ uint32_t Audio::SoundLoadWave(const char* filename)
 	ChunkHeader data{};
 	file.read((char*)&data, sizeof(data));
 	// JUNKチャンクを検出した場合
-	if (strncmp(data.id, "JUNK", 4) == 0) {
+	if (strncmp(data.id, "JUNK", 100) == 0) {
 		// 読み取り位置をJUNKチャンクの終わりまで進める
 		file.seekg(data.size, std::ios_base::cur);
 		// 再読み込み
 		file.read((char*)&data, sizeof(data));
 	}
 
-	if (strncmp(data.id, "data", 4) != 0) {
+	if (strncmp(data.id, "data", 100) != 0) {
 		assert(0);
 	}
 
@@ -121,7 +121,7 @@ void Audio::SoundPlayWave(IXAudio2* xAudio2,uint32_t audioHandle,bool loopFlag)
 	buf.pAudioData = soundData[audioHandle].pBuffer;
 	buf.AudioBytes = soundData[audioHandle].bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
-	buf.PlayLength = 1111111;
+	//buf.PlayLength = 1111111;
 	if (loopFlag) {
 		// 無限ループ
 		buf.LoopCount = XAUDIO2_LOOP_INFINITE;

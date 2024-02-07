@@ -28,6 +28,7 @@ public:
 	void FadeBlackChange();
 	void FadeWhiteChange();
 	void CameraChange();
+	uint32_t GetAudio() { return Audiohandle_; };
 private:
 	int sceneTime = 0;
 	Camera* camera = nullptr;
@@ -52,7 +53,11 @@ private:
 
 	uint32_t scenetimer = 0;
 
-
+	Sprite* Do;
+	Sprite* Ri;
+	Sprite* Hu;
+	Sprite* To;
+	Vector4 moji = { 1.0f,1.0f,1.0f,1.0f };
 	bool sceneChangeFlag = false;
 };
 

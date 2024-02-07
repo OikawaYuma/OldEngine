@@ -39,7 +39,8 @@ void GameScene::Init()
 	speed = { 0,0,2.0f };
 	acceleration = { 0.0f,1.5f,0.0f };
 
-	
+	Audiohandle_ = Audio::SoundLoadWave("Resources/Audio/InitialD.wav");
+	Audio::SoundPlayWave(Audio::GetInstance()->GetIXAudio().Get(), Audiohandle_, true);
 
 }
 
@@ -252,6 +253,8 @@ void GameScene::Release() {
 	delete car_;
 	delete skydome;
 	delete tree;
+	Audio::SoundStopWave(Audio::GetInstance()->GetIXAudio().Get(), Audiohandle_);
+	Audio::SoundUnload(Audiohandle_);
 	for (Corn* corn : corns_) {
 		delete corn;
 	}

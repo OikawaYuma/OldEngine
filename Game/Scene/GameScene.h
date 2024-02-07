@@ -36,6 +36,7 @@ public:
 	void UpdateSpeedpanelPopCommands();
 	void SpeedpanelSpown(Vector3, float);
 	void AddSpeedpanel(Speedpanel* speedpanel);
+	
 
 private:
 	Input* input = nullptr;
@@ -86,6 +87,7 @@ private:
 	float carBackZ;
 	
 	int hitCorn;
+	uint32_t Audiohandle_;
 
 	Vector3 carPos;
 	Vector3 cornPos;

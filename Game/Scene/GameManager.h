@@ -25,7 +25,7 @@ private:
 public:
 	GameManager();
 	~GameManager();
-
+	uint32_t GetAudio() { return Audiohandle_; }
 	int Run();
 
 };

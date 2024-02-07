@@ -64,13 +64,12 @@ int GameManager::Run() {
 	PSOParticle* psoParticle = PSOParticle::GatInstance();
 	psoParticle->CreatePipelineStateObject();
 
-
 	sceneArr_[currentSceneNo_]->Init();
 
 	Input* sInput = Input::GetInstance();
 	sInput->Initialize();
 
-	//Audiohandle_= Audio::SoundLoadWave("Resources/InitialDParo.wav");
+	
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (true)  // ゲームループ
@@ -112,6 +111,7 @@ int GameManager::Run() {
 		// シーン変更チェック
 		if (prevSceneNo_ != currentSceneNo_) {
 			sceneArr_[currentSceneNo_]->Init();
+			
 		}
 
 		///

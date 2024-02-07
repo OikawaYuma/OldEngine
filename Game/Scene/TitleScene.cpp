@@ -23,8 +23,18 @@ void TitleScene::Init()
 	texture_ = TextureManager::StoreTexture("Resources/Fade/FadeKURO.png");
 	texture2_ = TextureManager::StoreTexture("Resources/Fade/FadeWhite.png");
 
+	Do = new Sprite();
+	Do->Initialize(moji);
+
+	Ri = new Sprite();
+	Ri->Initialize(moji);
+	Hu = new Sprite();
+	Hu->Initialize(moji);
+	To = new Sprite();
+	To->Initialize(moji);
 
 	Audiohandle_ = Audio::SoundLoadWave("Resources/Audio/InitialD.wav");
+	Audio::SoundPlayWave(Audio::GetInstance()->GetIXAudio().Get(), Audiohandle_,true);
 
 }
 
@@ -130,7 +140,7 @@ void TitleScene::Draw()
 }
 
 void TitleScene::Release() {
-
+	Audio::SoundStopWave(Audio::GetInstance()->GetIXAudio().Get(), Audiohandle_);
 	Audio::SoundUnload(Audiohandle_);
 	delete car_;
 
