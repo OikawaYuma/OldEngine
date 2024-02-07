@@ -10,6 +10,7 @@ void TitleScene::Init()
 
 	player_ = new Player();
 	player_->Init();
+	Audiohandle_ = Audio::SoundLoadWave("Resources/Alarm01.wav");
 }
 
 void TitleScene::Update()
@@ -23,7 +24,9 @@ void TitleScene::Update()
 	camera->Update();
 
 	player_->Update();
-	
+	if (Input::GetInstance()->TriggerKey(DIK_A)) {
+		Audio::SoundPlayWave(Audio::GetIXAudio().Get(), Audiohandle_, true);
+	}
 }
 void TitleScene::Draw()
 {

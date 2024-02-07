@@ -101,7 +101,7 @@ int GameManager::Run() {
 		}
 		else {
 			this->isPlayingAudio_ = true;
-			Audio::(Audiohandle_);
+			//Audio::(Audiohandle_);
 
 		}
 
