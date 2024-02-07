@@ -135,12 +135,10 @@ void GameScene::Update()
 	//	sceneNo = TITLE;
 	//	sceneTime = 0;
 	//}
-
 	//
 	for (Corn* corn : corns_)
 	{
 		bool cornMoveFlag = corn->GetCornflag();
-
 
 		cornColLeftX = corn->GetWorldTransform().x - 0.5f;
 		cornColRightX = corn->GetWorldTransform().x + 0.5f;
@@ -151,7 +149,6 @@ void GameScene::Update()
 		carRightX = car_->worldTransform_.translation_.x + 2.0f;
 		carFrontZ = car_->worldTransform_.translation_.z + 8.0f;
 		carBackZ = car_->worldTransform_.translation_.z - 8.0f;
-
 
 		if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
 			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
@@ -178,7 +175,6 @@ void GameScene::Update()
 			/*else if(car_->worldTransform_.rotation_.y==0.0f)
 			{
 				
-				
 			}*/
 			tmpTranslate.z += 3.0f;
 			tmpTranslate.y += 3.0f;
@@ -186,12 +182,7 @@ void GameScene::Update()
 			corn->SetTranslate(tmpTranslate);
 			corn->SetCornflag(cornMoveFlag);
 		}
-
-		
-
 	}
-
-
 
 	for (Speedpanel* speedpanel : speedpanels_)
 	{
@@ -288,9 +279,6 @@ void GameScene::Depart()
 	else {
 
 	}
-
-
-
 }
 
 
