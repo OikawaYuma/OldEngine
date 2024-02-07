@@ -156,7 +156,7 @@ void GameScene::Update()
 			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
 		{
 			cornMoveFlag = true;
-			hitCorn = +1;
+			hitCorn += 1;
 		}
 
 		if (cornMoveFlag)
@@ -201,6 +201,7 @@ void GameScene::Update()
 		if ((speedpanelColLeftX < carRightX && speedpanelColRightX > carLeftX) &&
 			(carFrontZ > speedpanelColBackZ && carBackZ < speedpanelColflontZ))
 		{
+			speedUPtime = 0.0f;
 			SpeedUPflag = true;
 		}
 	}
@@ -213,7 +214,6 @@ void GameScene::Update()
 	if (speedUPtime > 150.0f)
 	{
 		SpeedUPflag = false;
-		speedUPtime = 0.0f;
 	}
 
 	if (DriftFlag) {
