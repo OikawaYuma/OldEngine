@@ -44,18 +44,18 @@ uint32_t Audio::SoundLoadWave(const char* filename)
 	RiffHeader riff;
 	file.read((char*)&riff, sizeof(riff));
 	// ファイルがRIFFかチェック
-	if (strncmp(riff.chunk.id, "RIFF", 100) != 0) {
+	if (strncmp(riff.chunk.id, "RIFF", 256) != 0) {
 		assert(0);
 	}
 	// タイプがWAVEかチェック
-	if (strncmp(riff.type, "WAVE", 100) != 0) {
+	if (strncmp(riff.type, "WAVE", 256) != 0) {
 		assert(0);
 	}
 	// Formatチャンクの読み込み
 	FormatChunk format = {};
 	// チャンクヘッダ―の確認
 	file.read((char*)&format, sizeof(ChunkHeader));
-	if (strncmp(format.chunk.id, "fmt ", 100) != 0) {
+	if (strncmp(format.chunk.id, "fmt ", 256) != 0) {
 		assert(0);
 	}
 
@@ -67,14 +67,14 @@ uint32_t Audio::SoundLoadWave(const char* filename)
 	ChunkHeader data{};
 	file.read((char*)&data, sizeof(data));
 	// JUNKチャンクを検出した場合
-	if (strncmp(data.id, "JUNK", 100) == 0) {
+	if (strncmp(data.id, "JUNK", 256) == 0) {
 		// 読み取り位置をJUNKチャンクの終わりまで進める
 		file.seekg(data.size, std::ios_base::cur);
 		// 再読み込み
 		file.read((char*)&data, sizeof(data));
 	}
 
-	if (strncmp(data.id, "data", 100) != 0) {
+	if (strncmp(data.id, "data", 256) != 0) {
 		assert(0);
 	}
 
