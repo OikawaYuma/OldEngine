@@ -10,7 +10,7 @@ void TitleScene::Init()
 
 	player_ = new Player();
 	player_->Init();
-	Audiohandle_ = Audio::SoundLoadWave("Resources/Audio/Drift.wav");
+	Audiohandle_ = Audio::SoundLoadWave("Resources/Audio/InitialD.wav");
 }
 
 void TitleScene::Update()
@@ -34,6 +34,7 @@ void TitleScene::Draw()
 }
 
 void TitleScene::Release() {
+	Audio::SoundUnload(Audiohandle_);
 	delete player_;
 }
 
