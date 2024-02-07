@@ -21,7 +21,7 @@ private:
 	Camera* camera = nullptr;
 	Input* input = nullptr;
 	TitleCar* car_ = nullptr;
-	Room* room_ = nullptr;
-	
+	Room* room = nullptr;
+	float rotate_;
 };
 

@@ -13,6 +13,7 @@
 class Room
 {
 public:
+
 	Room();
 	~Room();
 	void Init();
@@ -29,11 +30,13 @@ public:
 	}*/
 private:
 	Model* model_ = nullptr;
+	Model* modelFront_ = nullptr;
+	Model* shutter_ = nullptr;
 	uint32_t texture_ = 1;
-	
+	uint32_t texture2_ = 1;
 	Input* input = nullptr;
 	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
-	
+	Sprite* sprite_ = nullptr;
 
 public:
 	WorldTransform worldTransform_;
