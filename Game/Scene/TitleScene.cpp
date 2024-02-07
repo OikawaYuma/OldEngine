@@ -18,6 +18,11 @@ void TitleScene::Init()
 	fadeBlack->SetSize({ 1280.0f, 720.0f });
 	texture_ = TextureManager::StoreTexture("Resources/Fade/FadeKURO.png");
 
+
+	player_ = new Player();
+	player_->Init();
+	Audiohandle_ = Audio::SoundLoadWave("Resources/Audio/InitialD.wav");
+
 }
 
 void TitleScene::Update()
@@ -85,6 +90,12 @@ void TitleScene::Update()
 
 
 
+
+	player_->Update();
+	if (Input::GetInstance()->TriggerKey(DIK_A)) {
+		Audio::SoundPlayWave(Audio::GetIXAudio().Get(), Audiohandle_, true);
+	}
+
 }
 void TitleScene::Draw()
 {
@@ -96,7 +107,12 @@ void TitleScene::Draw()
 }
 
 void TitleScene::Release() {
+
+	Audio::SoundUnload(Audiohandle_);
+	delete player_;
+
 	delete car_;
+
 }
 
 // ゲームを終了

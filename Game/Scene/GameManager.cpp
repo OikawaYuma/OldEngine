@@ -64,10 +64,14 @@ int GameManager::Run() {
 	PSOParticle* psoParticle = PSOParticle::GatInstance();
 	psoParticle->CreatePipelineStateObject();
 
+
 	sceneArr_[currentSceneNo_]->Init();
 
 	Input* sInput = Input::GetInstance();
 	sInput->Initialize();
+
+	Audiohandle_= Audio::SoundLoadWave("Resources/InitialDParo.wav");
+
 	// ウィンドウの×ボタンが押されるまでループ
 	while (true)  // ゲームループ
 	{
@@ -83,6 +87,23 @@ int GameManager::Run() {
 		ImGui::Begin("kakunin");
 		ImGui::Text("%d", IScene::GetSceneNo());
 		ImGui::End();
+
+		if (this->isPlayingAudio_)
+		{
+			this->time_++;
+
+			if (this->time_ > 2640)
+			{
+				this->isPlayingAudio_ = false;
+				this->time_ = 0;
+			}
+
+		}
+		else {
+			this->isPlayingAudio_ = true;
+			//Audio::(Audiohandle_);
+
+		}
 
 		// シーンのチェック
 		prevSceneNo_ = currentSceneNo_;

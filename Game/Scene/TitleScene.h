@@ -4,6 +4,9 @@
 #include "WorldTransform.h"
 #include "Input.h"
 #include "Particle.h"
+
+#include "Audio.h"
+
 #include "TitleCar.h"
 #include "Room.h"
 #include "Sprite.h"
@@ -27,6 +30,10 @@ private:
 	int sceneTime = 0;
 	Camera* camera = nullptr;
 	Input* input = nullptr;
+	uint32_t Audiohandle_ = 0;
+	bool isPlayingAudio_ = false;
+	
+	
 	TitleCar* car_ = nullptr;
 	Room* room = nullptr;
 	Sprite* fadeBlack;
@@ -39,5 +46,6 @@ private:
 	uint32_t cameraSet = 0;
 
 	uint32_t cameraTime = 0;
+
 };
 

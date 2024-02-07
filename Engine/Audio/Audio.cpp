@@ -44,6 +44,10 @@ uint32_t Audio::SoundLoadWave(const char* filename)
 	RiffHeader riff;
 	file.read((char*)&riff, sizeof(riff));
 	// ファイルがRIFFかチェック
+	if (strncmp(riff.chunk.id, "RIFF", 4) != 0) {
+		assert(0);
+	}
+	// タイプがWAVEかチェック
 	if (strncmp(riff.type, "WAVE", 4) != 0) {
 		assert(0);
 	}
@@ -60,7 +64,7 @@ uint32_t Audio::SoundLoadWave(const char* filename)
 	file.read((char*)&format.fmt, format.chunk.size);
 	
 	// Dataチャンクの読み込み
-	ChunkHeader data;
+	ChunkHeader data{};
 	file.read((char*)&data, sizeof(data));
 	// JUNKチャンクを検出した場合
 	if (strncmp(data.id, "JUNK", 4) == 0) {
@@ -117,6 +121,7 @@ void Audio::SoundPlayWave(IXAudio2* xAudio2,uint32_t audioHandle,bool loopFlag)
 	buf.pAudioData = soundData[audioHandle].pBuffer;
 	buf.AudioBytes = soundData[audioHandle].bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
+	buf.PlayLength = 1111111;
 	if (loopFlag) {
 		// 無限ループ
 		buf.LoopCount = XAUDIO2_LOOP_INFINITE;

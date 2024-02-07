@@ -42,9 +42,13 @@ private:
 	int sceneTime = 0;
 	// Carが動く
 	bool moveFlag = false;
+	bool SpeedUPflag = false;
+	//bool Cornmoveflag = false;
 
 	bool DriftFlag = false;
 	bool AccelFlag = false;
+	bool cornActionFlag = false;
+
 
 	Corn* corn = nullptr;
 	Speedpanel* speedpanel = nullptr;
@@ -64,6 +68,7 @@ private:
 	Rear_right_tire* rear_right_tire_ = nullptr;
 	WorldTransform cornTransform = {};
 
+	float speedUPtime = 0.0f;
 	float cornColLeftX;
 	float cornColRightX;
 	float cornColBackZ;
@@ -78,10 +83,13 @@ private:
 	float carRightX;
 	float carFrontZ;
 	float carBackZ;
+	
+	int hitCorn;
 
 	Vector3 carPos;
 	Vector3 cornPos;
 	Vector3 speedpanelPos;
+	Vector3 acceleration;
 	Vector3 speed;
 	// ブロック発生コマンド
 	std::stringstream cornPopCommands;

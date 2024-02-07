@@ -37,7 +37,7 @@ void GameScene::Init()
 	LoadSpeedpanelPopData();
 
 	speed = { 0,0,2.0f };
-
+	acceleration = { 0.0f,1.5f,0.0f };
 
 	
 
@@ -112,7 +112,8 @@ void GameScene::Update()
 	ImGui::Checkbox("Drift", &DriftFlag);
 	ImGui::End();
 
-
+	ImGui::Text("%d hitCron",hitCorn);
+	
 
 	//testColLeftX = colisionTransform_.translation_.x - 0.5f;
 	//testColRight = colisionTransform_.translation_.x + 0.5f;
@@ -135,6 +136,9 @@ void GameScene::Update()
 	//
 	for (Corn* corn : corns_)
 	{
+		bool cornMoveFlag = corn->GetCornflag();
+
+
 		cornColLeftX = corn->GetWorldTransform().x - 0.5f;
 		cornColRightX = corn->GetWorldTransform().x + 0.5f;
 		cornColBackZ = corn->GetWorldTransform().z - 0.5f;
@@ -145,14 +149,46 @@ void GameScene::Update()
 		carFrontZ = car_->worldTransform_.translation_.z + 8.0f;
 		carBackZ = car_->worldTransform_.translation_.z - 8.0f;
 
+
 		if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
 			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
 		{
-			Vector3 tmpTranslate = corn->GetWorldTransform();
-			tmpTranslate.z += 10.0f;
-			corn->SetTranslate(tmpTranslate);
+			cornMoveFlag = true;
+			hitCorn = +1;
 		}
+
+		if (cornMoveFlag)
+		{
+			//car_->worldTransform_.rotation_ = corn->GetWorldTransform();
+			Vector3 tmpTranslate = corn->GetWorldTransform();
+			tmpTranslate.y -= acceleration.y;
+
+			if (car_->worldTransform_.rotation_.y>0.0f&& car_->worldTransform_.rotation_.y < 1.5f)
+			{
+				tmpTranslate.x += 3.0f;
+			}
+			else if (car_->worldTransform_.rotation_.y<0.0f && car_->worldTransform_.rotation_.y > -1.5f)
+			{
+				tmpTranslate.x -= 3.0f;
+			}
+
+			/*else if(car_->worldTransform_.rotation_.y==0.0f)
+			{
+				
+				
+			}*/
+			tmpTranslate.z += 3.0f;
+			tmpTranslate.y += 3.0f;
+			
+			corn->SetTranslate(tmpTranslate);
+			corn->SetCornflag(cornMoveFlag);
+		}
+
+		
+
 	}
+
+
 
 	for (Speedpanel* speedpanel : speedpanels_)
 	{
@@ -169,10 +205,19 @@ void GameScene::Update()
 		if ((speedpanelColLeftX < carRightX && speedpanelColRightX > carLeftX) &&
 			(carFrontZ > speedpanelColBackZ && carBackZ < speedpanelColflontZ))
 		{
-			Vector3 tmpTranslate = speedpanel->GetWorldTransform();
-			tmpTranslate.z += 10.0f;
-			speedpanel->SetTranslate(tmpTranslate);
+			SpeedUPflag = true;
 		}
+	}
+
+	if (SpeedUPflag)
+	{
+		speedUPtime++;
+	}
+
+	if (speedUPtime > 95.0f)
+	{
+		SpeedUPflag = false;
+		speedUPtime = 0.0f;
 	}
 
 	if (DriftFlag) {
@@ -258,7 +303,7 @@ void GameScene::Accel() {
 
 		//camera->cameraTransform_.rotate = AccelCamera.rotate;
 		//camera->cameraTransform_.translate = AccelCamera.translate;
-		if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || input->PushKey(DIK_LSHIFT) || AccelFlag) {
+		if (SpeedUPflag) {
 			if (camera->cameraTransform_.scale.x <= AccelCamera.scale.x) {
 				camera->cameraTransform_.scale.x += 0.05f;
 				if (camera->cameraTransform_.scale.x > AccelCamera.scale.x) {
@@ -303,7 +348,7 @@ void GameScene::Accel() {
 				camera->cameraTransform_.translate.z += car_->Speed * move.x;
 			}
 		}
-		else if (!(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || !input->PushKey(DIK_LSHIFT))
+		else if (!SpeedUPflag)
 		{
 			//camera->cameraTransform_.rotate = NormalCamera.rotate;
 			//camera->cameraTransform_.translate = NormalCamera.translate;
@@ -357,7 +402,7 @@ void GameScene::Accel() {
 		break;
 	}
 	case DriftMode: {
-		if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || input->PushKey(DIK_LSHIFT) || AccelFlag) {
+		if (SpeedUPflag) {
 
 			//camera->cameraTransform_.rotate = AccelDriftCamera.rotate;
 			//camera->cameraTransform_.translate = AccelDriftCamera.translate;
@@ -411,7 +456,7 @@ void GameScene::Accel() {
 			camera->cameraTransform_.scale.y = 2.0f;
 		camera->cameraTransform_.scale.z = 0.6f;*/
 		}
-		else if (!(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) || !input->PushKey(DIK_LSHIFT))
+		else if (!SpeedUPflag)
 		{
 			//camera->cameraTransform_.rotate = DriftCamera.rotate;
 			//camera->cameraTransform_.translate = DriftCamera.translate;

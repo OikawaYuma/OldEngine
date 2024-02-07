@@ -73,5 +73,9 @@ private:
 	static IXAudio2SourceVoice* pSourceVoice[soundDataMaxSize];
 	static SoundData soundData[soundDataMaxSize];
 
+	//std::vector<BYTE> data[2];
+	int primary = 0;
+	int secondary = 1;
+	DWORD write = 0;
 };
 
