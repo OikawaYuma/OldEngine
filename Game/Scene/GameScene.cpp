@@ -144,16 +144,19 @@ void GameScene::Update()
 		if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
 			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
 		{
-			Cornmoveflag = true;
+			Vector3 tmpTranslate = corn->GetWorldTransform();
+			tmpTranslate.z += 10.0f;
+			corn->SetTranslate(tmpTranslate);
 		}
 
-		
-	if (Cornmoveflag == true)
-	{
-		Vector3 tmpTranslate = corn();
-		tmpTranslate.z += 10.0f;
-		speedpanel->SetTranslate(tmpTranslate);
-	}
+		if (Cornmoveflag)
+		{
+			//car_->worldTransform_.rotation_ = corn->GetWorldTransform();
+			Vector3 tmpTranslate = corn->GetWorldTransform();
+			tmpTranslate.z+= 10.0f;
+			corn->SetTranslate(tmpTranslate);
+		}
+
 	}
 
 
@@ -177,7 +180,7 @@ void GameScene::Update()
 		}
 	}
 
-	if (SpeedUPflag == true)
+	if (SpeedUPflag)
 	{
 
 	}
