@@ -43,7 +43,7 @@ void ClearScene::Update()
 		Input::GetInstance()->GetJoystickState(joyState);
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A && !input_->GetIsTrigger()) {
 			input_->SetIsTrriger(true);
-			sceneNo = STSGE1;
+			sceneNo = TITLE;
 			sceneTime = 0;
 		}
 		else if (!(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) && input_->GetIsTrigger()) { input_->SetIsTrriger(false); }
@@ -54,7 +54,7 @@ void ClearScene::Update()
 		if (PushTransform_.translation_.x == worldTransform_.translation_.x &&
 			PushTransform_.translation_.y == worldTransform_.translation_.y)*/
 		{
-			sceneNo = STSGE1;
+			sceneNo = TITLE;
 			sceneTime = 0;
 		}
 	}

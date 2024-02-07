@@ -32,7 +32,7 @@ void TitleScene::Update()
 	ImGui::End();
 	sceneTime++;
 	if (input->TriggerKey(DIK_SPACE)) {
-		sceneNo = CLEAR;
+		sceneNo = STSGE1;
 		sceneTime = 0;
 	}
 

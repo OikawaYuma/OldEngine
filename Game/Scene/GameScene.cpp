@@ -59,9 +59,8 @@ void GameScene::Update()
 	XINPUT_STATE joyState;
 	Input::GetInstance()->GetJoystickState(joyState);
 	
-	if (input->TriggerKey(DIK_SPACE)) {
-		sceneNo = TITLE;
-		sceneTime = 0;
+	if (car_->worldTransform_.translation_.z >= 2000) {
+		clearflag_ = true;
 	}
 	if (camera->cameraTransform_.rotate.y <= -0.15f) {
 		camera->cameraTransform_.rotate.y = -0.15f;
@@ -69,7 +68,11 @@ void GameScene::Update()
 	if (camera->cameraTransform_.rotate.y >= 0.15f) {
 		camera->cameraTransform_.rotate.y = 0.15f;
 	}
-
+	if (clearflag_) {
+		sceneNo = CLEAR;
+		sceneTime = 0;
+		clearflag_ = false;
+	}
 	Depart();
 	Accel();
 	camera->Update();
