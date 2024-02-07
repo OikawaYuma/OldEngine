@@ -13,7 +13,8 @@
 enum CameraSet {
 	OneCame,
 	TwoCame,
-	ThreeCame
+	ThreeCame,
+	FourCame
 };
 class TitleScene : public IScene
 {
