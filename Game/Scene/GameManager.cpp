@@ -70,7 +70,7 @@ int GameManager::Run() {
 	Input* sInput = Input::GetInstance();
 	sInput->Initialize();
 
-	Audiohandle_= Audio::SoundLoadWave("Resources/InitialDParo.wav");
+	//Audiohandle_= Audio::SoundLoadWave("Resources/Audio/Brake.wav");
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (true)  // ゲームループ
@@ -88,7 +88,7 @@ int GameManager::Run() {
 		ImGui::Text("%d", IScene::GetSceneNo());
 		ImGui::End();
 
-		if (this->isPlayingAudio_)
+		/*if (this->isPlayingAudio_)
 		{
 			this->time_++;
 
@@ -101,10 +101,10 @@ int GameManager::Run() {
 		}
 		else {
 			this->isPlayingAudio_ = true;
-			//Audio::(Audiohandle_);
+			
+		}*/
 
-		}
-
+		//Audio::SoundPlayWave(Audio::GetIXAudio().Get(), Audiohandle_, true);
 		// シーンのチェック
 		prevSceneNo_ = currentSceneNo_;
 		currentSceneNo_ = sceneArr_[currentSceneNo_]->GetSceneNo();

@@ -5,12 +5,14 @@
 
 void TitleScene::Init()
 {
+	
 	camera = new Camera;
 	camera->Initialize();
 	camera->cameraTransform_.translate = { 0.0f,1.5f,0.0f };
 	input = Input::GetInstance();
 	room = new Room();
 	room->Init();
+	Audiohandle_ = Audio::SoundLoadWave("Resources/Audio/Dirft3.wav");
 	car_ = new TitleCar();
 	car_->Init();
 	fadeBlack = new Sprite();
@@ -19,7 +21,7 @@ void TitleScene::Init()
 	texture_ = TextureManager::StoreTexture("Resources/Fade/FadeKURO.png");
 
 
-	Audiohandle_ = Audio::SoundLoadWave("Resources/Audio/InitialD.wav");
+	
 
 }
 
