@@ -144,9 +144,7 @@ void GameScene::Update()
 		if ((cornColLeftX < carRightX && cornColRightX > carLeftX) &&
 			(carFrontZ > cornColBackZ && carBackZ < cornColflontZ))
 		{
-			Vector3 tmpTranslate = corn->GetWorldTransform();
-			tmpTranslate.z += 10.0f;
-			corn->SetTranslate(tmpTranslate);
+			Cornmoveflag = true;
 		}
 
 		if (Cornmoveflag)
@@ -182,7 +180,100 @@ void GameScene::Update()
 
 	if (SpeedUPflag)
 	{
-
+		if (camera->cameraTransform_.scale.x <= AccelCamera.scale.x) {
+			camera->cameraTransform_.scale.x += 0.05f;
+			if (camera->cameraTransform_.scale.x > AccelCamera.scale.x) {
+				camera->cameraTransform_.scale.x = AccelCamera.scale.x;
+			}
+		}
+		else if (camera->cameraTransform_.scale.x >= AccelCamera.scale.x) {
+			camera->cameraTransform_.scale.x -= 0.05f;
+			if (camera->cameraTransform_.scale.x < AccelCamera.scale.x) {
+				camera->cameraTransform_.scale.x = AccelCamera.scale.x;
+			}
+		}
+		if (camera->cameraTransform_.scale.y <= AccelCamera.scale.y) {
+			camera->cameraTransform_.scale.y += 0.05f;
+			if (camera->cameraTransform_.scale.y > AccelCamera.scale.y) {
+				camera->cameraTransform_.scale.y = AccelCamera.scale.y;
+			}
+		}
+		else if (camera->cameraTransform_.scale.y >= AccelCamera.scale.y) {
+			camera->cameraTransform_.scale.y -= 0.05f;
+			if (camera->cameraTransform_.scale.y < AccelCamera.scale.y) {
+				camera->cameraTransform_.scale.y = AccelCamera.scale.y;
+			}
+		}
+		if (camera->cameraTransform_.scale.z >= AccelCamera.scale.z) {
+			camera->cameraTransform_.scale.z -= 0.02f;
+			if (camera->cameraTransform_.scale.z < AccelCamera.scale.z) {
+				camera->cameraTransform_.scale.z = AccelCamera.scale.z;
+			}
+		}
+		else if (camera->cameraTransform_.scale.z <= AccelCamera.scale.z) {
+			camera->cameraTransform_.scale.z += 0.02f;
+			if (camera->cameraTransform_.scale.z > AccelCamera.scale.z) {
+				camera->cameraTransform_.scale.z = AccelCamera.scale.z;
+			}
+		}
+		/*camera->cameraTransform_.scale.x = 2.0f;
+		camera->cameraTransform_.scale.y = 2.0f;
+	camera->cameraTransform_.scale.z = 0.6f;*/
+		if (moveFlag) {
+			camera->cameraTransform_.translate.x += car_->Speed * move.y;
+			camera->cameraTransform_.translate.z += car_->Speed * move.x;
+		}
+	}
+	else if (!SpeedUPflag)
+	{
+		//camera->cameraTransform_.rotate = NormalCamera.rotate;
+		//camera->cameraTransform_.translate = NormalCamera.translate;
+		camera->cameraTransform_.translate.z = car_->GetWorldTransform().z - 25;
+		camera->cameraTransform_.translate.y = 6.0f;
+		camera->cameraTransform_.rotate.x = NormalCamera.rotate.x;
+		if (camera->cameraTransform_.scale.x >= NormalCamera.scale.x) {
+			camera->cameraTransform_.scale.x -= 0.05f;
+			if (camera->cameraTransform_.scale.x < NormalCamera.scale.x) {
+				camera->cameraTransform_.scale.x = NormalCamera.scale.x;
+			}
+		}
+		else if (camera->cameraTransform_.scale.x <= NormalCamera.scale.x) {
+			camera->cameraTransform_.scale.x += 0.05f;
+			if (camera->cameraTransform_.scale.x > NormalCamera.scale.x) {
+				camera->cameraTransform_.scale.x = NormalCamera.scale.x;
+			}
+		}
+		if (camera->cameraTransform_.scale.y >= NormalCamera.scale.y) {
+			camera->cameraTransform_.scale.y -= 0.05f;
+			if (camera->cameraTransform_.scale.y < NormalCamera.scale.y) {
+				camera->cameraTransform_.scale.y = NormalCamera.scale.y;
+			}
+		}
+		else if (camera->cameraTransform_.scale.y <= NormalCamera.scale.y) {
+			camera->cameraTransform_.scale.y += 0.05f;
+			if (camera->cameraTransform_.scale.y > NormalCamera.scale.y) {
+				camera->cameraTransform_.scale.y = NormalCamera.scale.y;
+			}
+		}
+		if (camera->cameraTransform_.scale.z <= NormalCamera.scale.z) {
+			camera->cameraTransform_.scale.z += 0.02f;
+			if (camera->cameraTransform_.scale.z > NormalCamera.scale.z) {
+				camera->cameraTransform_.scale.z = NormalCamera.scale.z;
+			}
+		}
+		else if (camera->cameraTransform_.scale.z >= NormalCamera.scale.z) {
+			camera->cameraTransform_.scale.z -= 0.02f;
+			if (camera->cameraTransform_.scale.z < NormalCamera.scale.z) {
+				camera->cameraTransform_.scale.z = NormalCamera.scale.z;
+			}
+		}
+		if (moveFlag) {
+			camera->cameraTransform_.translate.x += car_->Speed * move.y;
+			camera->cameraTransform_.translate.z += car_->Speed * move.x;
+		}
+		/*camera->cameraTransform_.scale.x = 1.0f;
+		camera->cameraTransform_.scale.y = 1.0f;
+		camera->cameraTransform_.scale.z = 1.0f;*/
 	}
 	
 
