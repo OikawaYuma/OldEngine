@@ -18,6 +18,10 @@ private:
 	// どのステージを呼び出すかを管理する変数
 	int currentSceneNo_ = 0;
 	int prevSceneNo_ = 0;
+	uint32_t Audiohandle_ = 0;
+	bool isPlayingAudio_ = false;
+	int time_ = 0;
+
 public:
 	GameManager();
 	~GameManager();
