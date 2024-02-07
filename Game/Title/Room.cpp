@@ -21,7 +21,7 @@ void Room::Init()
 	modelFront_ = new Model();
 	modelFront_->Initialize("Resources/room", "roomFront.obj", color,false);
 	shutter_ = new Model();
-	shutter_->Initialize("Resources/room", "shutter.obj", color,true);
+	shutter_->Initialize("Resources/room", "shutter.obj", color,false);
 	texture_ = TextureManager::StoreTexture("Resources/room/room.png");
 	texture2_ = TextureManager::StoreTexture("Resources/room/shutter.png");
 	texture3_ = TextureManager::StoreTexture("Resources/room/roomFront.png");
