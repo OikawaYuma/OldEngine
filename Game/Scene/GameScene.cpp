@@ -39,6 +39,8 @@ void GameScene::Init()
 	speed = { 0,0,2.0f };
 	acceleration = { 0.0f,1.5f,0.0f };
 
+	
+
 }
 
 void GameScene::Update()
@@ -54,7 +56,9 @@ void GameScene::Update()
 	if (input->TriggerKey(DIK_W)) {
 		moveFlag = true;
 	}
-
+	XINPUT_STATE joyState;
+	Input::GetInstance()->GetJoystickState(joyState);
+	
 	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNo = TITLE;
 		sceneTime = 0;

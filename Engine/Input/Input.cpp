@@ -35,6 +35,8 @@ void Input::Initialize() {
 void Input::Update() {
 	// 前回のキー入力を保存
 	memcpy(preKeys, keys, sizeof(keys));
+	XINPUT_STATE state{};
+	memcpy(&preState,&state,sizeof(state));
 
 	// キーボード情報の取得開始
 	keyboard->Acquire();

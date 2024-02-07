@@ -13,7 +13,7 @@ void ClearScene::Init()
 
 	PushTexture_ = TextureManager::GetInstance()->StoreTexture("Resources/circle.png");
 	Stage1model_ = new Model();
-	Stage1model_->Initialize("Resources/box", "box.obj", color);
+	Stage1model_->Initialize("Resources/box", "box.obj", color, true);
 	//Pushmodel_->Initialize("Resources/")
 	SlectSprite_ = new Sprite;
 	SlectSprite_->Initialize(color);
@@ -38,7 +38,16 @@ void ClearScene::Update()
 	worldTransform_.UpdateMatrix();
 
 	sceneTime++;
-
+	{
+		XINPUT_STATE joyState;
+		Input::GetInstance()->GetJoystickState(joyState);
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A && !input_->GetIsTrigger()) {
+			input_->SetIsTrriger(true);
+			sceneNo = STSGE1;
+			sceneTime = 0;
+		}
+		else if (!(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) && input_->GetIsTrigger()) { input_->SetIsTrriger(false); }
+	}
 	if (input_->TriggerKey(DIK_SPACE))
 	{
 		/*ステージ決定の処理
@@ -50,11 +59,17 @@ void ClearScene::Update()
 		}
 	}
 
+	
+
 
 	PushTransform_.UpdateMatrix();
 	camera_->Update();
+	Vector2 size = SlectSprite_->GetSize();
+	size.x += 0.2f;
+	size.y += 0.1f;
 
-
+	SlectSprite_->SetSize(size);
+	SlectSprite_->Update();
 	if (!SelectLock)
 	{
 		if (input_->TriggerKey(DIK_W))

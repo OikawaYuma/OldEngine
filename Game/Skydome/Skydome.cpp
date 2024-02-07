@@ -10,7 +10,7 @@ Skydome::~Skydome() {
 
 void Skydome::Init() {
 	model_ = new Model();
-	model_->Initialize("Resources/skydome", "skydome.obj", color);
+	model_->Initialize("Resources/skydome", "skydome.obj", color,false);
 	texture_ = TextureManager::StoreTexture("Resources/skydome/sky.png");
 	worldTransform_.Initialize();
 }

@@ -31,3 +31,18 @@ Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
 
 //Matrix4x4 MakeAffineMatrixBillboard(const Vector3& scale, const Vector3& rotate, const Vector3& translate)
 Vector3 Add(const Vector3& posa, const Vector3& posb);
+
+// ベクトル変換
+Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
+
+float Normalize(const float& v);
+Vector3 Normalize(const Vector3& v);
+float Lerp(const float& v1, const float& v2, float t);
+Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
+
+// 内績
+float Dot(const Vector3& v1, const Vector3& v2);
+
+Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t);
+
+float SLerp(const float& v1, const float& v2, float t);
