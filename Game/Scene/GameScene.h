@@ -37,12 +37,6 @@ public:
 	void SpeedpanelSpown(Vector3, float);
 	void AddSpeedpanel(Speedpanel* speedpanel);
 
-	void SetClearflag(bool clearflag) { clearflag_ = clearflag; }
-	bool GetClearflag()
-	{
-		return clearflag_;
-	}
-
 private:
 	Input* input = nullptr;
 	int sceneTime = 0;
