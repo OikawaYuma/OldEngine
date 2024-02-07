@@ -68,12 +68,12 @@ void TitleScene::Update()
 		break;
 	}
 	case TwoCame: {
-		camera->cameraTransform_.translate.x -= 0.025f;
+		camera->cameraTransform_.translate.x -= 0.020f;
 		camera->Update();
 		break;
 	}
 	case ThreeCame: {
-		camera->cameraTransform_.translate.x += 0.025f;
+		camera->cameraTransform_.translate.x += 0.01f;
 		camera->Update();
 		break;
 	}
