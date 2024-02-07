@@ -56,7 +56,9 @@ void GameScene::Update()
 	if (input->TriggerKey(DIK_W)) {
 		moveFlag = true;
 	}
-
+	XINPUT_STATE joyState;
+	Input::GetInstance()->GetJoystickState(joyState);
+	
 	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNo = TITLE;
 		sceneTime = 0;

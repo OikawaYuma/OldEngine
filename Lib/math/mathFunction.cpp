@@ -359,3 +359,70 @@ Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m) {
 
 	return result;
 };
+// 正規化
+Vector3 Normalize(const Vector3& v) {
+	Vector3 m3;
+	float mag = 1 / sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	m3 = { v.x * mag, v.y * mag, v.z * mag };
+
+	return m3;
+};
+
+float Normalize(const float& v) {
+	float m3;
+	float mag = 1 / sqrtf(v * v);
+	m3 = { v * mag };
+
+	return m3;
+};
+
+
+float Lerp(const float& v1, const float& v2, float t) {
+	float p;
+	p = v1 + t * (v2 - v1);
+	return p;
+}
+Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t) {
+	Vector3 p;
+	p.x = v1.x + t * (v2.x - v1.x);
+	p.y = v1.y + t * (v2.y - v1.y);
+	p.z = v1.z + t * (v2.z - v1.z);
+	return p;
+};
+
+// 内績
+float Dot(const Vector3& v1, const Vector3& v2) {
+	float m3;
+	m3 = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+
+	return m3;
+};
+
+
+
+
+Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t) {
+	Vector3 p;
+
+	Vector3 s;
+	Vector3 e;
+
+	s = Normalize(v1);
+	e = Normalize(v2);
+	float angle = acos(Dot(s, e));
+	// SinΘ
+	float SinTh = sin(angle);
+
+	// 補間係数
+	float Ps = sin(angle * (1 - t));
+	float Pe = sin(angle * t);
+
+	p.x = (Ps * s.x + Pe * e.x) / SinTh;
+	p.y = (Ps * s.y + Pe * e.y) / SinTh;
+	p.z = (Ps * s.z + Pe * e.z) / SinTh;
+
+	p = Normalize(p);
+
+
+	return p;
+};

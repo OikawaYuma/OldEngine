@@ -33,7 +33,10 @@ public:
 	bool TriggerKey(BYTE keyNumber);
 
 	bool TriggerJoyBotton();
-	
+	bool GetIsTrigger() { return isTriggerPressed_;}
+	void SetIsTrriger(bool isTriggerPressed) {
+		isTriggerPressed_ = isTriggerPressed;
+	}
 
 	/*XINPUT_STATE GetXInputState() {
 		return state;
@@ -48,6 +51,7 @@ private:
 	BYTE keys[256];
 	BYTE preKeys[256];
 	XINPUT_STATE preState;
+	bool isTriggerPressed_ = false;
 	//XINPUT_STATE state;
 
 	

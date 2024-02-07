@@ -19,7 +19,7 @@ public:
 	int GameClose()override;
 private:
 	int sceneTime = 0;
-	Input* input = nullptr;
+	//Input* input = nullptr;
 
 	//メンバ
 	Input* input_ = nullptr;
