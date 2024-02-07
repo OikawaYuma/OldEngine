@@ -527,8 +527,6 @@ void GameScene::AddCorn(Corn* corn) {
 	corns_.push_back(corn);
 }
 
-
-
 void GameScene::LoadSpeedpanelPopData() {
 	// ファイルを開く
 	std::ifstream file;
