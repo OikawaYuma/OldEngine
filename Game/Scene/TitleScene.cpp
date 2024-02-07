@@ -19,8 +19,6 @@ void TitleScene::Init()
 	texture_ = TextureManager::StoreTexture("Resources/Fade/FadeKURO.png");
 
 
-	player_ = new Player();
-	player_->Init();
 	Audiohandle_ = Audio::SoundLoadWave("Resources/Audio/InitialD.wav");
 
 }
@@ -91,7 +89,6 @@ void TitleScene::Update()
 
 
 
-	player_->Update();
 	if (Input::GetInstance()->TriggerKey(DIK_A)) {
 		Audio::SoundPlayWave(Audio::GetIXAudio().Get(), Audiohandle_, true);
 	}
@@ -109,8 +106,6 @@ void TitleScene::Draw()
 void TitleScene::Release() {
 
 	Audio::SoundUnload(Audiohandle_);
-	delete player_;
-
 	delete car_;
 
 }

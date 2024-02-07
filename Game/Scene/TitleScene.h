@@ -32,8 +32,6 @@ private:
 	Input* input = nullptr;
 	uint32_t Audiohandle_ = 0;
 	bool isPlayingAudio_ = false;
-	
-	
 	TitleCar* car_ = nullptr;
 	Room* room = nullptr;
 	Sprite* fadeBlack;
