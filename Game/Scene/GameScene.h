@@ -67,7 +67,9 @@ private:
 	Rear_left_tire* rear_left_tire_ = nullptr;
 	Rear_right_tire* rear_right_tire_ = nullptr;
 	WorldTransform cornTransform = {};
-
+	Sprite* UIsprite_ = nullptr;
+	uint32_t UItexture_;
+	Vector4 color;
 	float speedUPtime = 0.0f;
 	float cornColLeftX;
 	float cornColRightX;

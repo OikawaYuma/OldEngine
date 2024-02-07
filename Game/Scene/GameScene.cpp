@@ -21,8 +21,13 @@ void GameScene::Init()
 	front_right_tire_->Init();
 	rear_left_tire_ = new Rear_left_tire();
 	rear_left_tire_->Init();
+
 	rear_right_tire_ = new Rear_right_tire();
 	rear_right_tire_->Init();
+
+	UItexture_ = TextureManager::GetInstance()->StoreTexture("Resources/GameUI.png");
+	UIsprite_ = new Sprite();
+	UIsprite_->Initialize(color);
 	AccelDriftCamera;
 
 	//SceleCamera
@@ -36,9 +41,9 @@ void GameScene::Init()
 	LoadCornPopData();
 	LoadSpeedpanelPopData();
 
-	speed = { 0,0,2.0f };
-	acceleration = { 0.0f,1.5f,0.0f };
 
+	acceleration = { 0.0f,1.5f,0.0f };
+	color = { 0,0,0,0 };
 	
 
 }
@@ -206,18 +211,20 @@ void GameScene::Update()
 			(carFrontZ > speedpanelColBackZ && carBackZ < speedpanelColflontZ))
 		{
 			SpeedUPflag = true;
+			speedUPtime = 0.0f;
 		}
 	}
 
 	if (SpeedUPflag)
 	{
 		speedUPtime++;
+		
 	}
 
 	if (speedUPtime > 95.0f)
 	{
 		SpeedUPflag = false;
-		speedUPtime = 0.0f;
+		
 	}
 
 	if (DriftFlag) {
@@ -234,6 +241,7 @@ void GameScene::Update()
 }
 void GameScene::Draw()
 {
+	UIsprite_->Draw(UItexture_,color);
 	floor_->Draw(camera);
 	car_->Draw(camera);
 	skydome->Draw(camera);
@@ -244,6 +252,7 @@ void GameScene::Draw()
 	for (Speedpanel* speedpanel : speedpanels_) {
 		speedpanel->Draw(camera);
 	}
+	
 	/*front_left_tire_->Draw(camera);
 	front_right_tire_->Draw(camera);
 	rear_left_tire_->Draw(camera);
