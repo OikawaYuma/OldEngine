@@ -205,6 +205,8 @@ void TitleScene::FadeWhiteChange()
 		fadeColorWhite += 0.025f;
 		if (fadeColorWhite >= 1.0f) {
 			sceneNo = STSGE1;
+			Audio::SoundStopWave(Audio::GetInstance()->GetIXAudio().Get(), Audiohandle_);
+
 		}
 	}
 }

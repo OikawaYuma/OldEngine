@@ -73,6 +73,7 @@ void GameScene::Update()
 		sceneNo = CLEAR;
 		sceneTime = 0;
 		clearflag_ = false;
+		Audio::SoundStopWave(Audio::GetInstance()->GetIXAudio().Get(), Audiohandle_);
 	}
 	Depart();
 	Accel();
