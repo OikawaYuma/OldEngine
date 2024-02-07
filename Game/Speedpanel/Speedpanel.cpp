@@ -15,7 +15,7 @@ void Speedpanel::Init(Vector3 translation) {
 	worldTransform_.UpdateMatrix();
 	texture_ = TextureManager::StoreTexture("Resources/speedpanel/speedpanel.png");
 	model_ = new Model();
-	model_->Initialize("Resources/speedpanel", "speedpanel.obj", color);
+	model_->Initialize("Resources/speedpanel", "speedpanel.obj", color,true);
 }
 
 void Speedpanel::Update() {
