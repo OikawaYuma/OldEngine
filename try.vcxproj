@@ -156,6 +156,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Effect\SceneEffect.cpp" />
     <ClCompile Include="Slect.cpp" />
     <ClCompile Include="SlectScene.cpp" />
+    <ClCompile Include="Game\Speedpanel\Speedpanel.cpp" />
     <ClCompile Include="Stage1.cpp" />
     <ClCompile Include="Stage2.cpp" />
     <ClCompile Include="Stage3.cpp" />
@@ -225,6 +226,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Effect\SceneEffect.h" />
     <ClInclude Include="Slect.h" />
     <ClInclude Include="SlectScene.h" />
+    <ClInclude Include="Game\Speedpanel\Speedpanel.h" />
     <ClInclude Include="Stage1.h" />
     <ClInclude Include="Stage2.h" />
     <ClInclude Include="Stage3.h" />
@@ -268,6 +270,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="csv\speedpanelPop.csv" />
     <None Include="imgui\imgui.ini" />
     <None Include="Object3d.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

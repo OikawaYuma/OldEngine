@@ -88,6 +88,7 @@
     <ClCompile Include="Game\Effect\SceneEffect.cpp" />
     <ClCompile Include="Game\Corn\Corn.cpp" />
     <ClCompile Include="Lib\Utility\CSVReader.cpp" />
+    <ClCompile Include="Game\Speedpanel\Speedpanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -177,6 +178,7 @@
     <ClInclude Include="Game\Effect\SceneEffect.h" />
     <ClInclude Include="Game\Corn\Corn.h" />
     <ClInclude Include="Lib\Utility\CSVReader.h" />
+    <ClInclude Include="Game\Speedpanel\Speedpanel.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
@@ -195,6 +197,7 @@
     <None Include="Sprite.hlsli" />
     <None Include="Particle.hlsli" />
     <None Include="imgui\imgui.ini" />
+    <None Include="csv\speedpanelPop.csv" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="imgui\LICENSE.txt" />

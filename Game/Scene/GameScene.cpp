@@ -34,7 +34,8 @@ void GameScene::Init()
 	DriftCamera.rotate.x = 0.125f;
 	NormalCamera.rotate.x = 0.125f;
 	LoadCornPopData();
-	
+	LoadSpeedpanelPopData();
+
 	speed = { 0,0,2.0f };
 
 
@@ -78,6 +79,9 @@ void GameScene::Update()
 	rear_right_tire_->Update();
 	for (Corn* corn : corns_) {
 		corn->Update();
+	}
+	for (Speedpanel* speedpanel : speedpanels_) {
+		speedpanel->Update();
 	}
 	ImGui::Begin("Camera");
 	ImGui::Text("NormalCamera");
@@ -159,6 +163,7 @@ void GameScene::Update()
 	for (int i = 0; i < 99; i++)
 	{
 		UpdateCornPopCommands();
+		UpdateSpeedpanelPopCommands();
 	}
 
 }
@@ -170,6 +175,9 @@ void GameScene::Draw()
 	tree->Draw(camera);
 	for (Corn* corn : corns_) {
 		corn->Draw(camera);
+	}
+	for (Speedpanel* speedpanel : speedpanels_) {
+		speedpanel->Draw(camera);
 	}
 	/*front_left_tire_->Draw(camera);
 	front_right_tire_->Draw(camera);
@@ -187,6 +195,9 @@ void GameScene::Release() {
 	delete tree;
 	for (Corn* corn : corns_) {
 		delete corn;
+	}
+	for (Speedpanel* speedpanel : speedpanels_) {
+		delete speedpanel;
 	}
 }
 // ゲームを終了
@@ -437,81 +448,162 @@ void GameScene::Accel() {
 	}
 }
 
-	void GameScene::LoadCornPopData(){
-		// ファイルを開く
-		std::ifstream file;
-		file.open("csv/cornPop.csv");
-		assert(file.is_open());
+void GameScene::LoadCornPopData() {
+	// ファイルを開く
+	std::ifstream file;
+	file.open("csv/cornPop.csv");
+	assert(file.is_open());
 
-		// ファイルも内容を文字列ストリームにコピー
-		cornPopCommands << file.rdbuf();
+	// ファイルも内容を文字列ストリームにコピー
+	cornPopCommands << file.rdbuf();
 
-		// ファイルを閉じる
-		file.close();
-	}
+	// ファイルを閉じる
+	file.close();
+}
 
-	void GameScene::UpdateCornPopCommands() {
+void GameScene::UpdateCornPopCommands() {
 
-		// 1行分の文字列を入れる変数
-		std::string line;
+	// 1行分の文字列を入れる変数
+	std::string line;
 
-		// コマンド実行ループ
-		while (getline(cornPopCommands, line)) {
-			// 1行分の文字列をストリームに変換して解析しやすくなる
-			std::istringstream line_stream(line);
+	// コマンド実行ループ
+	while (getline(cornPopCommands, line)) {
+		// 1行分の文字列をストリームに変換して解析しやすくなる
+		std::istringstream line_stream(line);
 
-			std::string word;
-			// ,区切りで行の先頭文字列を取得
+		std::string word;
+		// ,区切りで行の先頭文字列を取得
+		getline(line_stream, word, ',');
+
+		// "//"から始まる行はコメント
+		if (word.find("//") == 0) {
+			// コメント行を飛ばす
+			continue;
+		}
+
+		// POPコマンド
+		if (word.find("POP") == 0) {
+			// X座標
 			getline(line_stream, word, ',');
+			cornPos.x = (float)std::atof(word.c_str());
 
-			// "//"から始まる行はコメント
-			if (word.find("//") == 0) {
-				// コメント行を飛ばす
-				continue;
-			}
+			// Y座標
+			getline(line_stream, word, ',');
+			cornPos.y = (float)std::atof(word.c_str());
 
-			// POPコマンド
-			if (word.find("POP") == 0) {
-				// X座標
-				getline(line_stream, word, ',');
-				cornPos.x = (float)std::atof(word.c_str());
+			// Z座標
+			getline(line_stream, word, ',');
+			cornPos.z = (float)std::atof(word.c_str());
+		}
 
-				// Y座標
-				getline(line_stream, word, ',');
-				cornPos.y = (float)std::atof(word.c_str());
+		// TYPEコマンド
+		if (word.find("TYPE") == 0) {
+			// type
+			getline(line_stream, word, ',');
+			float type = (float)std::atof(word.c_str());
 
-				// Z座標
-				getline(line_stream, word, ',');
-				cornPos.z = (float)std::atof(word.c_str());
-			}
+			// ブロックを発生させる
+			CornSpown(Vector3(cornPos.x, cornPos.y, cornPos.z), type);
 
-			// TYPEコマンド
-			if (word.find("TYPE") == 0) {
-				// type
-				getline(line_stream, word, ',');
-				float type = (float)std::atof(word.c_str());
-
-				// ブロックを発生させる
-				CornSpown(Vector3(cornPos.x, cornPos.y, cornPos.z), type);
-
-				break;
-			}
+			break;
 		}
 	}
+}
 
-	void GameScene::CornSpown(Vector3 translation, float type) {
-		// ブロックの生成
-		Corn* corn_ = new Corn();
-		// ブロックの初期化
-		if (type == 1) {
-			corn_->Init(translation);
+void GameScene::CornSpown(Vector3 translation, float type) {
+	// ブロックの生成
+	Corn* corn_ = new Corn();
+	// ブロックの初期化
+	if (type == 1) {
+		corn_->Init(translation);
+	}
+	// ブロックのタイプ設定
+	corn_->SetType(type);
+	AddCorn(corn_);
+}
+
+void GameScene::AddCorn(Corn* corn) {
+	// リストに登録する
+	corns_.push_back(corn);
+}
+
+
+
+void GameScene::LoadSpeedpanelPopData() {
+	// ファイルを開く
+	std::ifstream file;
+	file.open("csv/speedpanelPop.csv");
+	assert(file.is_open());
+
+	// ファイルも内容を文字列ストリームにコピー
+	speedpanelPopCommands << file.rdbuf();
+
+	// ファイルを閉じる
+	file.close();
+}
+
+void GameScene::UpdateSpeedpanelPopCommands() {
+
+	// 1行分の文字列を入れる変数
+	std::string line;
+
+	// コマンド実行ループ
+	while (getline(speedpanelPopCommands, line)) {
+		// 1行分の文字列をストリームに変換して解析しやすくなる
+		std::istringstream line_stream(line);
+
+		std::string word;
+		// ,区切りで行の先頭文字列を取得
+		getline(line_stream, word, ',');
+
+		// "//"から始まる行はコメント
+		if (word.find("//") == 0) {
+			// コメント行を飛ばす
+			continue;
 		}
-		// ブロックのタイプ設定
-		corn_->SetType(type);
-		AddCorn(corn_);
-	}
 
-	void GameScene::AddCorn(Corn* corn) {
-		// リストに登録する
-		corns_.push_back(corn);
+		// POPコマンド
+		if (word.find("POP") == 0) {
+			// X座標
+			getline(line_stream, word, ',');
+			cornPos.x = (float)std::atof(word.c_str());
+
+			// Y座標
+			getline(line_stream, word, ',');
+			cornPos.y = (float)std::atof(word.c_str());
+
+			// Z座標
+			getline(line_stream, word, ',');
+			cornPos.z = (float)std::atof(word.c_str());
+		}
+
+		// TYPEコマンド
+		if (word.find("TYPE") == 0) {
+			// type
+			getline(line_stream, word, ',');
+			float type = (float)std::atof(word.c_str());
+
+			// ブロックを発生させる
+			CornSpown(Vector3(cornPos.x, cornPos.y, cornPos.z), type);
+
+			break;
+		}
 	}
+}
+
+void GameScene::SpeedpanelSpown(Vector3 translation, float type) {
+	// ブロックの生成
+	Speedpanel* speedpanel_ = new Speedpanel();
+	// ブロックの初期化
+	if (type == 1) {
+		speedpanel_->Init(translation);
+	}
+	// ブロックのタイプ設定
+	speedpanel_->SetType(type);
+	AddSpeedpanel(speedpanel_);
+}
+
+void GameScene::AddSpeedpanel(Speedpanel* speedpanel) {
+	// リストに登録する
+	speedpanels_.push_back(speedpanel);
+}

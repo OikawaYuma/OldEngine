@@ -10,6 +10,7 @@
 #include "../Skydome/Skydome.h"
 #include "../Corn/Corn.h"
 #include "../Tree/Tree.h"
+#include "../Speedpanel/Speedpanel.h"
 #include"CSVReader.h"
 #include "ImGuiCommon.h"
 #include "Transform.h"
@@ -30,6 +31,11 @@ public:
 	void CornSpown(Vector3, float);
 	void AddCorn(Corn* corn);
 
+	void LoadSpeedpanelPopData();
+	void UpdateSpeedpanelPopCommands();
+	void SpeedpanelSpown(Vector3, float);
+	void AddSpeedpanel(Speedpanel* speedpanel);
+
 private:
 	Input* input = nullptr;
 	int sceneTime = 0;
@@ -40,6 +46,7 @@ private:
 	bool AccelFlag = false;
 
 	Corn* corn = nullptr;
+	Speedpanel* speedpanel = nullptr;
 	Tree* tree = nullptr;
 	Skydome* skydome = nullptr;
 	Camera* camera = nullptr;
@@ -60,6 +67,11 @@ private:
 	float cornColBackZ;
 	float cornColflontZ;
 
+	float speedpanelColLeftX;
+	float speedpanelColRightX;
+	float speedpanelColBackZ;
+	float speedpanelColflontZ;
+
 	float carLeftX;
 	float carRightX;
 	float carFrontZ;
@@ -67,10 +79,13 @@ private:
 
 	Vector3 carPos;
 	Vector3 cornPos;
+	Vector3 speedpanelPos;
 	Vector3 speed;
 	// ブロック発生コマンド
 	std::stringstream cornPopCommands;
+	std::stringstream speedpanelPopCommands;
 	// ブロック
 	std::list<Corn*> corns_;
+	std::list<Speedpanel*> speedpanels_;
 };
 
