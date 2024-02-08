@@ -55,8 +55,8 @@ void ClearScene::Update()
 		Input::GetInstance()->GetJoystickState(joyState);
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A && !input_->GetIsTrigger()) {
 			input_->SetIsTrriger(true);
-			sceneNo = TITLE;
 			sceneTime = 0;
+			sceneNo = TITLE;
 		}
 		else if (!(joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) && input_->GetIsTrigger()) { input_->SetIsTrriger(false); }
 	}

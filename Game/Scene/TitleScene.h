@@ -38,20 +38,22 @@ private:
 	TitleCar* car_ = nullptr;
 	Room* room = nullptr;
 	Sprite* fadeBlack;
-	float fadeColor = 0.0f;
-	float fadeColorWhite = 0.0f;
-	bool fadeBlackFlag = true;
+	
 	float rotate_;
 	uint32_t texture_;
 	uint32_t texture2_;
+	float fadeColor = 0.0f;
+	float fadeColorWhite = 0.0f;
+	bool fadeBlackFlag = true;
 	bool isSceneChanege = false;
-	uint32_t fadeBlackTimer = 0;
 	uint32_t cameraSet = 0;
-	float velo;
-	uint32_t cameraTime = 0;
-	Sprite* fadeWhite;
+	bool sceneChangeFlag = false;
 
+	float velo;
+	Sprite* fadeWhite;
+	uint32_t cameraTime = 0;
 	uint32_t scenetimer = 0;
+	uint32_t fadeBlackTimer = 0;
 
 	Sprite* Do;
 	Sprite* Ri;
@@ -61,13 +63,12 @@ private:
 
 	Sprite* pushA;
 	uint32_t texture7_;
-	float pushColor  = 1.0f;
+	float pushColor = 1.0f;
 
 
 	uint32_t texture3_;
 	uint32_t texture4_;
 	uint32_t texture5_;
 	uint32_t texture6_;
-	bool sceneChangeFlag = false;
 };
 

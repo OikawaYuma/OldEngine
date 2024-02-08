@@ -5,6 +5,17 @@
 
 void TitleScene::Init()
 {
+	cameraSet = OneCame;
+	 cameraTime = 0;
+	 scenetimer = 0;
+	 fadeBlackTimer = 0;
+	scenetimer = 0;
+	velo = 0.0f;
+	 fadeColor = 0.00000f;
+	 fadeColorWhite = 0.00000f;
+	 bool fadeBlackFlag = true;
+	 isSceneChanege = false;
+	 sceneChangeFlag = false;
 	camera = new Camera;
 	camera->Initialize();
 	camera->cameraTransform_.translate = { 0.0f,1.5f,0.0f };
@@ -73,8 +84,7 @@ void TitleScene::Update()
 	Input::GetInstance()->GetJoystickState(joyState);
 
 
-
-	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A && !input->GetIsTrigger() &&!isSceneChanege) {
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A && !isSceneChanege) {
 		isSceneChanege = true;
 		cameraTime = 301;
 	}
