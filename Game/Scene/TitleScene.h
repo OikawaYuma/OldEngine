@@ -59,6 +59,11 @@ private:
 	Sprite* To;
 	float moji = 1.0f;
 
+	Sprite* pushA;
+	uint32_t texture7_;
+	float pushColor  = 1.0f;
+
+
 	uint32_t texture3_;
 	uint32_t texture4_;
 	uint32_t texture5_;

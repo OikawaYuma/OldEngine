@@ -22,7 +22,10 @@ void TitleScene::Init()
 	fadeWhite->SetSize({ 1280.0f, 720.0f });
 	texture_ = TextureManager::StoreTexture("Resources/Fade/FadeKURO.png");
 	texture2_ = TextureManager::StoreTexture("Resources/Fade/FadeWhite.png");
-
+	pushA = new Sprite();
+	pushA->Initialize({1.0f,1.0f,1.0f,pushColor});
+	pushA->SetPosition({ 20,620 });
+	pushA->SetSize({400,100});
 	Do = new Sprite();
 	Do->Initialize({1.0f,1.0f,1.0f, moji });
 
@@ -47,7 +50,7 @@ void TitleScene::Init()
 	texture4_ = TextureManager::StoreTexture("Resources/Ri.png");
 	texture5_ = TextureManager::StoreTexture("Resources/To2.png");
 	texture6_ = TextureManager::StoreTexture("Resources/Hu.png");
-
+	texture7_ = TextureManager::StoreTexture("Resources/title/PUSHA.png");
 	Audiohandle_ = Audio::SoundLoadWave("Resources/Audio/InitialD.wav");
 	Audio::SoundPlayWave(Audio::GetInstance()->GetIXAudio().Get(), Audiohandle_,true);
 
@@ -147,6 +150,7 @@ void TitleScene::Update()
 	Ri->Update();
 	Hu->Update();
 	To->Update();
+	pushA->Update();
 
 
 }
@@ -162,7 +166,7 @@ void TitleScene::Draw()
 	Ri->Draw(texture4_,{1.0f,1.0f,1.0f,moji});
 	Hu->Draw(texture5_,{1.0f,1.0f,1.0f,moji});
 	To->Draw(texture6_,{1.0f,1.0f,1.0f,moji});
-
+	pushA->Draw(texture7_, { 1.0f,1.0f,1.0f,pushColor });
 
 }
 
