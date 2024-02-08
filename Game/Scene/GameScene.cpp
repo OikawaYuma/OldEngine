@@ -38,7 +38,7 @@ void GameScene::Init()
 
 	speed = { 0,0,2.0f };
 	acceleration = { 0.0f,1.5f,0.0f };
-
+	texture3_= TextureManager::StoreTexture("Resources/corn/corn.png");
 	Audiohandle_ = Audio::SoundLoadWave("Resources/Audio/InitialD.wav");
 	Audio::SoundPlayWave(Audio::GetInstance()->GetIXAudio().Get(), Audiohandle_, true);
 
@@ -235,7 +235,7 @@ void GameScene::Draw()
 	skydome->Draw(camera);
 	tree->Draw(camera);
 	for (Corn* corn : corns_) {
-		corn->Draw(camera);
+		corn->Draw(camera,texture3_);
 	}
 	for (Speedpanel* speedpanel : speedpanels_) {
 		speedpanel->Draw(camera);

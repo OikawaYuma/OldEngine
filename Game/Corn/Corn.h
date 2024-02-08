@@ -15,7 +15,7 @@ public:
 	~Corn();
 	void Init(Vector3 translation);
 	void Update();
-	void Draw(Camera* camera);
+	void Draw(Camera* camera,uint32_t texture);
 	void Release();
 	void SetType(float type) { type_ = type; }
 	void SetTranslate(Vector3 translation);

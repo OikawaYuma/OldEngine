@@ -85,7 +85,7 @@ private:
 	float carRightX;
 	float carFrontZ;
 	float carBackZ;
-	
+	uint32_t texture3_;
 	int hitCorn;
 	uint32_t Audiohandle_;
 
