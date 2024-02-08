@@ -57,7 +57,12 @@ private:
 	Sprite* Ri;
 	Sprite* Hu;
 	Sprite* To;
-	Vector4 moji = { 1.0f,1.0f,1.0f,1.0f };
+	float moji = 1.0f;
+
+	uint32_t texture3_;
+	uint32_t texture4_;
+	uint32_t texture5_;
+	uint32_t texture6_;
 	bool sceneChangeFlag = false;
 };
 

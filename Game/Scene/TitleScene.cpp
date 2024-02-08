@@ -24,14 +24,29 @@ void TitleScene::Init()
 	texture2_ = TextureManager::StoreTexture("Resources/Fade/FadeWhite.png");
 
 	Do = new Sprite();
-	Do->Initialize(moji);
+	Do->Initialize({1.0f,1.0f,1.0f, moji });
 
 	Ri = new Sprite();
-	Ri->Initialize(moji);
+	Ri->Initialize({ 1.0f,1.0f,1.0f, moji });
 	Hu = new Sprite();
-	Hu->Initialize(moji);
+	Hu->Initialize({ 1.0f,1.0f,1.0f, moji });
 	To = new Sprite();
-	To->Initialize(moji);
+	To->Initialize({ 1.0f,1.0f,1.0f, moji });
+	
+	Do->SetSize({256,256});
+	Ri->SetSize({256,256});
+	Hu->SetSize({256,256});
+	To->SetSize({256,256});
+	Do->SetPosition({80,200.0f});
+	Ri->SetPosition({380,200.0f});
+	Hu->SetPosition({680,200.0f});
+	To->SetPosition({980,200.0f});
+
+
+	texture3_ = TextureManager::StoreTexture("Resources/Do.png");
+	texture4_ = TextureManager::StoreTexture("Resources/Ri.png");
+	texture5_ = TextureManager::StoreTexture("Resources/To2.png");
+	texture6_ = TextureManager::StoreTexture("Resources/Hu.png");
 
 	Audiohandle_ = Audio::SoundLoadWave("Resources/Audio/InitialD.wav");
 	Audio::SoundPlayWave(Audio::GetInstance()->GetIXAudio().Get(), Audiohandle_,true);
@@ -128,6 +143,12 @@ void TitleScene::Update()
 		Audio::SoundPlayWave(Audio::GetIXAudio().Get(), Audiohandle_, true);
 	}
 
+	Do->Update();
+	Ri->Update();
+	Hu->Update();
+	To->Update();
+
+
 }
 void TitleScene::Draw()
 {
@@ -136,6 +157,12 @@ void TitleScene::Draw()
 	room->Draw(camera);
 	fadeBlack->Draw(texture_, { 1.0f,1.0f,1.0f,fadeColor });
 	fadeWhite->Draw(texture2_, { 1.0f,1.0f,1.0f,fadeColorWhite });
+	
+	Do->Draw(texture3_,{1.0f,1.0f,1.0f,moji});
+	Ri->Draw(texture4_,{1.0f,1.0f,1.0f,moji});
+	Hu->Draw(texture5_,{1.0f,1.0f,1.0f,moji});
+	To->Draw(texture6_,{1.0f,1.0f,1.0f,moji});
+
 
 }
 

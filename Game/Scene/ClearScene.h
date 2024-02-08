@@ -8,6 +8,10 @@
 #include "TextureManager.h"
 #include "../Car/Car.h"
 #include "../Floor/Floor.h"
+#include "../Skydome/Skydome.h"
+#include "../Corn/Corn.h"
+#include "../Tree/Tree.h"
+#include "ClearCar.h"
 #define STAGE_MAX 10
 class ClearScene : public IScene
 {
@@ -23,8 +27,10 @@ private:
 
 	//メンバ
 	Input* input_ = nullptr;
-	Camera* camera_ = nullptr;
-	Car* car_ = nullptr;
+	Tree* tree = nullptr;
+	Skydome* skydome = nullptr;
+	Camera* camera = nullptr;
+	ClearCar* car_ = nullptr;
 	Floor* floor_ = nullptr;
 	Sprite* PushSprite_ = nullptr;
 	Sprite* SlectSprite_ = nullptr;
