@@ -12,10 +12,6 @@ void DemoScene::Init()
 void DemoScene::Update()
 {
 	sceneTime++;
-	if (input->TriggerKey(DIK_SPACE)) {
-		sceneNo = STAGE;
-		sceneTime = 0;
-	}
 	////カメラの更新
 	camera->Update();
 
