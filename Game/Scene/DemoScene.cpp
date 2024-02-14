@@ -1,15 +1,15 @@
-#include "TitleScene.h"
+#include "DemoScene.h"
 #include "ImGuiCommon.h"
 
 
-void TitleScene::Init()
+void DemoScene::Init()
 {
 	camera = new Camera;
 	camera->Initialize();
 	input = Input::GetInstance();
 }
 
-void TitleScene::Update()
+void DemoScene::Update()
 {
 	sceneTime++;
 	if (input->TriggerKey(DIK_SPACE)) {
@@ -18,17 +18,17 @@ void TitleScene::Update()
 	}
 	////カメラの更新
 	camera->Update();
-	
+
 }
-void TitleScene::Draw()
+void DemoScene::Draw()
 {
 }
 
-void TitleScene::Release() {
+void DemoScene::Release() {
 }
 
 // ゲームを終了
-int TitleScene::GameClose()
+int DemoScene::GameClose()
 {
 	return false;
 }
