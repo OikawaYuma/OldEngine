@@ -31,3 +31,5 @@ Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
 
 //Matrix4x4 MakeAffineMatrixBillboard(const Vector3& scale, const Vector3& rotate, const Vector3& translate)
 Vector3 Add(const Vector3& posa, const Vector3& posb);
+
+Vector3 Normalize(const Vector3& v);

@@ -8,7 +8,7 @@ void PSO::CreatePipelineStateObject() {
 	PSO::SetInputLayout();
 	PSO::SetBlendState();
 	PSO::SetRasterrizerState();
-
+	PSO::CreateDepth();
 	// Shaderをコンパイルする
 	property.vertexShaderBlob = CompileShader(L"Object3d.VS.hlsl",
 		L"vs_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
@@ -79,6 +79,10 @@ void PSO::CreateRootSignature() {
 	rootParamerters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParamerters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParamerters[3].Descriptor.ShaderRegister = 1;
+
+	rootParamerters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParamerters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+	rootParamerters[4].Descriptor.ShaderRegister = 2;
 
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイナリフィルタ
 	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート

@@ -15,7 +15,6 @@ void GameScene::Update()
 		sceneTime = 0;
 	}
 	
-
 }
 void GameScene::Draw()
 {

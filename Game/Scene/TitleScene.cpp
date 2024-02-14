@@ -7,11 +7,6 @@ void TitleScene::Init()
 	camera = new Camera;
 	camera->Initialize();
 	input = Input::GetInstance();
-
-	player_ = new Player();
-	player_->Init();
-
-	
 }
 
 void TitleScene::Update()
@@ -23,17 +18,13 @@ void TitleScene::Update()
 	}
 	////カメラの更新
 	camera->Update();
-
-	player_->Update();
 	
 }
 void TitleScene::Draw()
 {
-	player_->Draw(camera);
 }
 
 void TitleScene::Release() {
-	delete player_;
 }
 
 // ゲームを終了
