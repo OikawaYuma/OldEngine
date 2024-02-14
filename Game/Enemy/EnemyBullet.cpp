@@ -1,13 +1,12 @@
-#include "PlayerBullet.h"
+#include "EnemyBullet.h"
 
-//#include "GameScene.h"
-void PlayerBullet::Init(const Vector3& pos,const Vector3& velocity)
+void EnemyBullet::Init(const Vector3& pos, const Vector3& velocity)
 {
 	// NULLポインタチェック
 	//assert(model);
 
 	model_ = new Model();
-	model_->Initialize("Resources/box", "box.obj",color );
+	model_->Initialize("Resources/box", "box.obj", color);
 	// テクスチャ読み込み
 	//textureHandle_ = TextureManager::StoreTexture("Resources/uvChecker.png");
 
@@ -16,14 +15,12 @@ void PlayerBullet::Init(const Vector3& pos,const Vector3& velocity)
 	worldtransform_.translation_ = pos;
 
 	velocity_ = velocity;
-	// 衝突属性を設定
-	SetCollisonAttribute(0);
+	SetCollisonAttribute(1);
 
-	// 衝突対象を自分の属性以外に設定
-	SetCollisionMask(1);
+	SetCollisionMask(0);
 }
 
-void PlayerBullet::Update()
+void EnemyBullet::Update()
 {
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
@@ -33,17 +30,16 @@ void PlayerBullet::Update()
 
 }
 
-void PlayerBullet::Draw(Camera* camera)
+void EnemyBullet::Draw(Camera* camera)
 {
-	model_->Draw(worldtransform_, 1, camera, {1.0f,1.0f,1.0f,1.0f});
+	model_->Draw(worldtransform_, 1, camera, { 1.0f,1.0f,1.0f,1.0f });
 }
 
-void PlayerBullet::OnCollision()
+void EnemyBullet::OnCollision()
 {
-	//GameScene::SetChangeScene();
 }
 
-Vector3 PlayerBullet::GetWorldPosition() const
+Vector3 EnemyBullet::GetWorldPosition() const
 {
 	// ワールド行列座標を入れる変数
 	Vector3 worldPos;
@@ -54,3 +50,4 @@ Vector3 PlayerBullet::GetWorldPosition() const
 
 	return worldPos;
 }
+

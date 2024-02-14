@@ -30,14 +30,14 @@ void Sprite::Initialize(const Vector4& color) {
 	vertexResourceSprite_->Map(0, nullptr, reinterpret_cast<void**>(&vertexDataSprite_));
 
 	// 1枚目の三角形
-	vertexDataSprite_[0].position = { 0.0f,360.0f,0.0f,1.0f };//左下
+	vertexDataSprite_[0].position = { 0.0f,720.0f,0.0f,1.0f };//左下
 	vertexDataSprite_[0].texcorrd = { 0.0f,1.0f };
 	vertexDataSprite_[1].position = { 0.0f,0.0f,0.0f,1.0f }; // 左上
 	vertexDataSprite_[1].texcorrd = { 0.0f,0.0f };
-	vertexDataSprite_[2].position = { 640.0f,360.0f,0.0f,1.0f }; // 右下
+	vertexDataSprite_[2].position = { 1280.0f,720.0f,0.0f,1.0f }; // 右下
 	vertexDataSprite_[2].texcorrd = { 1.0f,1.0f };
 
-	vertexDataSprite_[3].position = { 640.0f,0.0f,0.0f,1.0f }; // 右上
+	vertexDataSprite_[3].position = { 1280.0f,0.0f,0.0f,1.0f }; // 右上
 	vertexDataSprite_[3].texcorrd = { 1.0f,0.0f };
 
 	// 実際に頂点リソースを作る

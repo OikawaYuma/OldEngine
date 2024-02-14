@@ -41,7 +41,7 @@ GameManager::~GameManager() {}
 const char kWindowTitle[] = "LE2B_05_オイカワユウマ";
 
 int GameManager::Run() {
-	DirectXCommon::D3DResourceLeakChecker leakCheck;
+	//DirectXCommon::D3DResourceLeakChecker leakCheck;
 
 	WinAPI* sWinAPI = WinAPI::GetInstance();
 	sWinAPI->Initialize(L"CG2");

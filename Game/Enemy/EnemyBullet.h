@@ -3,12 +3,11 @@
 #include "Camera.h"
 #include "Vector3.h"
 #include "WorldTransform.h"
-
 #include "Collider.h"
 
-class PlayerBullet : public Collider {
+class EnemyBullet : public Collider 
+{
 public:
-
 	/// <summary>
 	/// 初期化
 	/// </summary>
