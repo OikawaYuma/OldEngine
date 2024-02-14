@@ -19,8 +19,13 @@ void Player::Init() {
 	texture2_ = TextureManager::StoreTexture("Resources/monsterBall.png");
 	soundData = Audio::SoundLoadWave("Resources/fanfare.wav");
 	soundData2 = Audio::SoundLoadWave("Resources/fanfare.wav");
+
+	material.color = color;
+	material.enableLighting = true;
+	material.shininess = 5.0f;
+	dir_.direction = { 0.0f,-1.0f,0.0f };
 	model_ = new Model();
-	model_->Initialize("Resources/box","box.obj",color);
+	model_->Initialize("Resources/ball","ball.obj",material);
 	particle = new Particle();
 	particle->Initialize({ 1.0f, 1.0f, 1.0f, 1.0f });
 	sprite_ = new Sprite;
@@ -87,6 +92,7 @@ void Player::Update() {
 	// キャラクター攻撃処理
 	Attack();
 
+
 	// 弾更新
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Update();
@@ -96,12 +102,17 @@ void Player::Update() {
 	ImGui::DragFloat4("s",&worldTransform_.scale_.x,0.01f);
 	ImGui::DragFloat4("r", &worldTransform_.rotation_.x,  0.01f);
 	ImGui::DragFloat4("t", &worldTransform_.translation_.x,  0.01f);
+	ImGui::DragFloat4("color", &material.color.x, 0.01f);*/
+	ImGui::DragFloat("MaterialShininess", &material.shininess, 0.01f);
+	ImGui::DragFloat3("LightDirection", &dir_.direction.x, 0.01f);
 	ImGui::End();
+	dir_.direction = Normalize(dir_.direction);
 	//Audio::SoundLoopWave(Audio::GetIXAudio().Get(), soundData);
 	worldTransform_.UpdateMatrix();
 }
 
 void Player::Draw(Camera *camera) {
+
 	model_->Draw(worldTransform_, texture_, camera,color);
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(camera);

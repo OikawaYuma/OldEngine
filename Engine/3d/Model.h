@@ -42,9 +42,9 @@ public:
 	ModelData GetModelData() { return modelData_; }
 	Model();
 	~Model();
-	void Initialize(const std::string& directoryPath, const std::string& filename, const Vector4& color);
+	void Initialize(const std::string& directoryPath, const std::string& filename, const Material& material);
 	void Update();
-	void Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera,const Vector4 &color);
+	void Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera, const Material& material, const DirectionalLight& dire);
 
 
 	void SetTextureManager(TextureManager* textureManager) {
@@ -84,6 +84,11 @@ private:
 	Microsoft::WRL::ComPtr < ID3D12Resource> directionalLightResource;
 	// データを書き込む
 	DirectionalLight* directionalLightData;
+
+	//カメラ用
+	Microsoft::WRL::ComPtr < ID3D12Resource> cameraForGPUResource_;
+	CameraForGPU* cameraForGPUData_;
+
 	Transform transformUv;
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW wvpBufferView{};

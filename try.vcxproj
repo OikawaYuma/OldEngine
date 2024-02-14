@@ -109,6 +109,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Scene\DemoScene.cpp" />
     <ClCompile Include="Game\Collision\Collider.cpp" />
     <ClCompile Include="Game\Collision\CollisionManager.cpp" />
     <ClCompile Include="Game\Enemy\EnemyBullet.cpp" />
@@ -156,6 +157,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Utilty\TimedCall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Scene\DemoScene.h" />
     <ClInclude Include="Game\Collision\CollisionConfig.h" />
     <ClInclude Include="Game\Collision\Collider.h" />
     <ClInclude Include="Game\Collision\CollisionManager.h" />

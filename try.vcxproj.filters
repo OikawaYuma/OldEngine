@@ -71,6 +71,7 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Game\Player\PlayerBullet.cpp" />
+    <ClCompile Include="Game\Scene\DemoScene.cpp" />
     <ClCompile Include="Game\Enemy\Enemy.cpp" />
     <ClCompile Include="Game\Enemy\IEnemy.cpp" />
     <ClCompile Include="Game\Enemy\EnemyApproach.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Game\Player\PlayerBullet.h" />
+    <ClInclude Include="Game\Scene\DemoScene.h" />
     <ClInclude Include="Game\Enemy\Enemy.h" />
     <ClInclude Include="Game\Enemy\IEnemy.h" />
     <ClInclude Include="Game\Enemy\EnemyApproach.h" />

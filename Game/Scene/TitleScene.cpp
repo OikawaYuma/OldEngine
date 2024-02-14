@@ -24,6 +24,7 @@ void TitleScene::Update()
 			startFlag_ = true;
 		}
 	}
+
 	else {
 		sceneTime++;
 		if (input->TriggerKey(DIK_I)) {
@@ -59,13 +60,14 @@ void TitleScene::Update()
 }
 void TitleScene::Draw()
 {
+
 	title_->Draw(textureHandle2, { 1.0f, 1.0f, 1.0f, 1.0f });
 	push_->Draw(textureHandle3, { 1.0f, 1.0f, 1.0f, pushColor_ });
 	sprite_->Draw(textureHandle, { 1.0f, 1.0f, 1.0f, fadeColor_ });
 }
 
 void TitleScene::Release() {
-	
+
 }
 
 // ゲームを終了

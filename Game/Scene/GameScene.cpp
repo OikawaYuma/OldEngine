@@ -30,6 +30,7 @@ void GameScene::Update()
 			startFlag_ = true;
 		}
 	}
+
 	else {
 		sceneTime++;
 		/*if (sceneTime >= 240) {

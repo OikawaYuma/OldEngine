@@ -110,7 +110,7 @@ MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, c
 		return materialData;
 };
 
-void Model::Initialize(const std::string& directoryPath, const std::string& filename, const Vector4& color) {
+void Model::Initialize(const std::string& directoryPath, const std::string& filename, const Material& material) {
 	WinAPI* sWinAPI = WinAPI::GetInstance();
 	directXCommon_ = DirectXCommon::GetInstance();
 	
@@ -138,9 +138,10 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	// 書き込むためのアドレスを取得
 	materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	// 色のデータを変数から読み込み
-	materialData->color = color;
-	materialData->enableLighting = false;
+	materialData->color = material.color;
+	materialData->enableLighting = material.enableLighting;
 	materialData->uvTransform = MakeIdentity4x4();
+	materialData->shininess = material.shininess;
 
 	transformUv = {
 		{1.0f,1.0f,1.0f},
@@ -169,6 +170,13 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
 	directionalLightData->intensity = 1.0f;
 
+	cameraForGPUData_ = nullptr;
+	cameraForGPUResource_ = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(CameraForGPU));
+	// 書き込むためのアドレスを取得
+	cameraForGPUResource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraForGPUData_));
+
+	cameraForGPUData_->worldPosition = { 1.0f,1.0f,-5.0f };
+
 };
 
 void Model::Update() {
@@ -176,14 +184,18 @@ void Model::Update() {
 };
 
 
-void Model::Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera, const Vector4& color) {
+void Model::Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera, const Material& material,const DirectionalLight& dire) {
 	camera_ = camera;
+	cameraForGPUData_->worldPosition = camera->cameraTransform_.translate;
 	pso_ = PSO::GatInstance();
 	Matrix4x4 worldViewProjectionMatrix = Multiply(worldTransform.matWorld_, Multiply(camera_->viewMatrix_, camera_->projectionMatrix_));
 	wvpData->WVP = worldViewProjectionMatrix;
 	textureManager_ = TextureManager::GetInstance();
 	// 色のデータを変数から読み込み
-	materialData->color = color;
+	materialData->color = material.color;
+	materialData->shininess = material.shininess;
+	directionalLightData->direction = dire.direction;
+	//directionalLightData->direction =  Normalize(directionalLightData->direction);
 	directXCommon_->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
 	directXCommon_->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定
 	directXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);    //VBVを設定
@@ -196,5 +208,6 @@ void Model::Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	directXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_[texture]);
 	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(3, directionalLightResource->GetGPUVirtualAddress());
+	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(4, cameraForGPUResource_->GetGPUVirtualAddress());
 	directXCommon_->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }
