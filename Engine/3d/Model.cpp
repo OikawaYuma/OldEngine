@@ -186,9 +186,9 @@ void Model::Update() {
 
 void Model::Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera, const Material& material,const DirectionalLight& dire) {
 	camera_ = camera;
-	cameraForGPUData_->worldPosition = camera->cameraTransform_.translate;
+	cameraForGPUData_->worldPosition = camera->GetTransform().translate;
 	pso_ = PSO::GatInstance();
-	Matrix4x4 worldViewProjectionMatrix = Multiply(worldTransform.matWorld_, Multiply(camera_->viewMatrix_, camera_->projectionMatrix_));
+	Matrix4x4 worldViewProjectionMatrix = Multiply(worldTransform.matWorld_, Multiply(camera_->GetViewMatrix(), camera_->GetProjectionMatrix()));
 	wvpData->WVP = worldViewProjectionMatrix;
 	textureManager_ = TextureManager::GetInstance();
 	// 色のデータを変数から読み込み

@@ -131,7 +131,7 @@ void Triangle::Draw(WorldTransform worlsTransform, Camera* camera,uint32_t textu
 	camera_ = camera;
 	textureManager_ = TextureManager::GetInstance();
 	
-	Matrix4x4 worldViewProjectionMatrix = Multiply(worlsTransform.matWorld_, Multiply(camera_->viewMatrix_, camera_->projectionMatrix_));
+	Matrix4x4 worldViewProjectionMatrix = Multiply(worlsTransform.matWorld_, Multiply(camera_->GetViewMatrix(), camera_->GetProjectionMatrix()));
 	TransformationData->WVP = worldViewProjectionMatrix;
 	TransformationData->World = MakeIdentity4x4();
 	// 色のデータを変数から読み込み
