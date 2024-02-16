@@ -2,18 +2,10 @@
 
 void GameScene::Init()
 {
-	input = Input::GetInstance();
-
 }
 
 void GameScene::Update()
 {
-
-	sceneTime++;
-	if (input->TriggerKey(DIK_SPACE)) {
-		sceneNo = CLEAR;
-		sceneTime = 0;
-	}
 	
 }
 void GameScene::Draw()
@@ -29,3 +21,4 @@ int GameScene::GameClose()
 {
 	return false;
 }
+

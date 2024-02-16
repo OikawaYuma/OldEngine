@@ -2,7 +2,6 @@
 #include "IScene.h"
 #include "Triangle.h"
 #include "WorldTransform.h"
-#include "Player.h"
 #include "Input.h"
 #include "Particle.h"
 class DemoScene : public IScene
@@ -17,7 +16,6 @@ public:
 private:
 	int sceneTime = 0;
 	Camera* camera = nullptr;
-	Player* player_ = nullptr;
 	Input* input = nullptr;
 };
 

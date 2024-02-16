@@ -56,7 +56,6 @@
     <ClCompile Include="Game\Scene\ClearScene.cpp" />
     <ClCompile Include="Game\Scene\GameScene.cpp" />
     <ClCompile Include="Engine\Adapter\Engine.cpp" />
-    <ClCompile Include="Game\Player\Player.cpp" />
     <ClCompile Include="Engine\Input\InputManager.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Interface\PSOSprite.cpp" />
@@ -70,8 +69,10 @@
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
-    <ClCompile Include="Game\Player\PlayerBullet.cpp" />
     <ClCompile Include="Game\Scene\DemoScene.cpp" />
+    <ClCompile Include="Game\Utilty\TimedCall.cpp" />
+    <ClCompile Include="Game\Collision\CollisionManager.cpp" />
+    <ClCompile Include="Game\Collision\Collider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -128,7 +129,6 @@
     <ClInclude Include="Game\Scene\ClearScene.h" />
     <ClInclude Include="Game\Scene\GameScene.h" />
     <ClInclude Include="Engine\Adapter\Engine.h" />
-    <ClInclude Include="Game\Player\Player.h" />
     <ClInclude Include="Engine\Input\InputManager.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />
     <ClInclude Include="Engine\Interface\PSOSprite.h" />
@@ -143,8 +143,11 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
-    <ClInclude Include="Game\Player\PlayerBullet.h" />
     <ClInclude Include="Game\Scene\DemoScene.h" />
+    <ClInclude Include="Game\Utilty\TimedCall.h" />
+    <ClInclude Include="Game\Collision\CollisionManager.h" />
+    <ClInclude Include="Game\Collision\Collider.h" />
+    <ClInclude Include="Game\Collision\CollisionConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

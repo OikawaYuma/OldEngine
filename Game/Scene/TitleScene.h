@@ -1,10 +1,6 @@
 #pragma once
 #include "IScene.h"
-#include "Triangle.h"
-#include "WorldTransform.h"
-#include "Player.h"
-#include "Input.h"
-#include "Particle.h"
+
 class TitleScene : public IScene
 {
 public:
@@ -15,10 +11,5 @@ public:
 	int GameClose()override;
 
 private:
-	int sceneTime = 0;
-	Camera* camera = nullptr;
-	Player* player_ = nullptr;
-	Input* input = nullptr;
-	
 };
 
