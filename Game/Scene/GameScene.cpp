@@ -21,6 +21,8 @@ void GameScene::Init()
 	sprite_->Initialize({1.0f,1.0f,1.0f,fadeColor_ });
 	textureHandle_ = TextureManager::StoreTexture("Resources/Fade.png");
 	
+	skydome = new Skydome();
+	skydome->Init();
 
 }
 
@@ -64,9 +66,11 @@ void GameScene::Update()
 }
 void GameScene::Draw()
 {
+	skydome->Draw(camera);
 	player_->Draw(camera);
 	enemy_->Draw(camera);
 	sprite_->Draw(textureHandle_,{1.0f,1.0f,1.0f, fadeColor_ });
+	
 }
 
 void GameScene::Release() {

@@ -89,7 +89,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Interface;$(ProjectDir)Engine\Adapter;$(ProjectDir)Engine\Include;$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)\Game\Player;$(ProjectDir)\Game\Enemy;$(ProjectDir)Game\Scene;$(ProjectDir)Game\Collision;$(ProjectDir)\Game\Utilty;$(ProjectDir)Resources\shaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Interface;$(ProjectDir)Engine\Adapter;$(ProjectDir)Engine\Include;$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)\Game\Player;$(ProjectDir)\Game\Enemy;$(ProjectDir)\Game\Skydome;$(ProjectDir)Game\Scene;$(ProjectDir)Game\Collision;$(ProjectDir)\Game\Utilty;$(ProjectDir)Resources\shaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -155,6 +155,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3d\Particle.cpp" />
     <ClCompile Include="Game\Player\PlayerBullet.cpp" />
     <ClCompile Include="Game\Utilty\TimedCall.cpp" />
+    <ClCompile Include="Game\Skydome\Skydome.cpp" />
+    <ClCompile Include="RailCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Scene\DemoScene.h" />
@@ -217,6 +219,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3d\Particle.h" />
     <ClInclude Include="Game\Player\PlayerBullet.h" />
     <ClInclude Include="Game\Utilty\TimedCall.h" />
+    <ClInclude Include="Game\Skydome\Skydome.h" />
+    <ClInclude Include="RailCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
