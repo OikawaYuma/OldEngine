@@ -12,7 +12,7 @@ void CollisionManager::CheckAllCollision() {
 	//// 敵弾リストの取得
 	//const std::list<EnemyBullet*>& enemyBullets = enemy_->Getbullet();
 
-	std::list<Collider*> colliders_;
+	//std::list<Collider*> colliders_;
 	//// コライダーをリストに登録
 	//colliders_.push_back(player_);
 	//colliders_.push_back(enemy_);
@@ -38,6 +38,11 @@ void CollisionManager::CheckAllCollision() {
 			CheckCollisionPair(*itrA, *itrB);
 		}
 	}
+}
+
+void CollisionManager::PushClider(Collider* collider)
+{
+	colliders_.push_back(collider);
 }
 
 void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* colliderB) {
