@@ -13,7 +13,9 @@ void GameScene::Init()
 	collisionManager_->SetPlayer(player_);
 	
 	enemy_ = new Enemy();
+	enemy_->SetPlayer(player_);
 	enemy_->Init(this);
+	
 	collisionManager_->SetEnemy(enemy_);
 	sprite_ = new Sprite();
 	sprite_->Initialize({1.0f,1.0f,1.0f,fadeColor_ });

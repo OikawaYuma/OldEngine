@@ -11,10 +11,11 @@
 #include "list"
 #include "IEnemy.h"
 #include "EnemyBullet.h"
-
+#include "Material.h"
 #include "TimedCall.h"
 #include "Collider.h"
 class GameScene;
+class Player;
 class Enemy : public Collider
 {
 public:
@@ -51,7 +52,7 @@ public:
 	Vector3 GetWorldPosition()const override;
 	// 弾リストを取得
 	const std::list<EnemyBullet*>& Getbullet() const { return bullets_; }
-
+	void SetPlayer(Player* player) { player_ = player; }
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
@@ -60,7 +61,8 @@ private:
 	Input* input = nullptr;
 	uint32_t soundData;
 	uint32_t soundData2;
-	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
+	Material material_;
+	DirectionalLight dir_;
 	Sprite* sprite_ = nullptr;
 	Particle* particle = nullptr;
 	float rotate_;
@@ -68,6 +70,7 @@ private:
 	Vector3 velocity_;
 	int radius_ = 1;
 	GameScene* gamescene_ = nullptr;
+	Player* player_ = nullptr;
 
 private:
 	int32_t FireTimer = 0;

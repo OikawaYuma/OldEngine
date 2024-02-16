@@ -5,9 +5,12 @@ void PlayerBullet::Init(const Vector3& pos,const Vector3& velocity)
 {
 	// NULLポインタチェック
 	//assert(model);
-
+	material.color = color;
+	material.enableLighting = true;
+	material.shininess = 5.0f;
+	dir_.direction = { 0.0f,-1.0f,0.0f };
 	model_ = new Model();
-	model_->Initialize("Resources/box", "box.obj",color );
+	model_->Initialize("Resources/box", "box.obj", material);
 	// テクスチャ読み込み
 	//textureHandle_ = TextureManager::StoreTexture("Resources/uvChecker.png");
 
@@ -35,7 +38,7 @@ void PlayerBullet::Update()
 
 void PlayerBullet::Draw(Camera* camera)
 {
-	model_->Draw(worldtransform_, 1, camera, {1.0f,1.0f,1.0f,1.0f});
+	model_->Draw(worldtransform_, 1, camera, material,dir_);
 }
 
 void PlayerBullet::OnCollision()

@@ -37,7 +37,8 @@ private:
 	Vector3 velocity_;
 
 	static const int32_t kLifeTime = 60 * 5;
-
+	DirectionalLight dir_;
+	Material material;
 	// デスタイマー
 	int32_t deathTimer_ = kLifeTime;
 	bool isDead_ = false;

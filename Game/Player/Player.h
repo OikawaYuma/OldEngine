@@ -10,7 +10,8 @@
 #include "Sprite.h"
 #include "list"
 #include "PlayerBullet.h"
-
+#include "Material.h"
+#include "DirectionLight.h"
 #include "Collider.h"
 class Player : public Collider
 {
@@ -39,7 +40,8 @@ private:
 	uint32_t soundData2;
 	Vector4 color = {1.0f,1.0f,1.0f,1.0f};
 	Sprite* sprite_ = nullptr;
-
+	DirectionalLight dir_;
+	Material material;
 	Particle* particle = nullptr;
 	float rotate_;
 	float red_ = 1.0f;

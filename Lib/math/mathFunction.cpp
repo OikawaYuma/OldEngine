@@ -366,3 +366,47 @@ Vector3 Normalize(const Vector3& v) {
 
 	return m3;
 };
+
+
+Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t) {
+	Vector3 p;
+	p.x = v1.x + t * (v2.x - v1.x);
+	p.y = v1.y + t * (v2.y - v1.y);
+	p.z = v1.z + t * (v2.z - v1.z);
+	return p;
+};
+
+// 内績
+float Dot(const Vector3& v1, const Vector3& v2) {
+	float m3;
+	m3 = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+
+	return m3;
+};
+
+
+Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t) {
+	Vector3 p;
+
+	Vector3 s;
+	Vector3 e;
+
+	s = Normalize(v1);
+	e = Normalize(v2);
+	float angle = acos(Dot(s, e));
+	// SinΘ
+	float SinTh = sin(angle);
+
+	// 補間係数
+	float Ps = sin(angle * (1 - t));
+	float Pe = sin(angle * t);
+
+	p.x = (Ps * s.x + Pe * e.x) / SinTh;
+	p.y = (Ps * s.y + Pe * e.y) / SinTh;
+	p.z = (Ps * s.z + Pe * e.z) / SinTh;
+
+	p = Normalize(p);
+
+
+	return p;
+};

@@ -102,7 +102,7 @@ void Player::Update() {
 	ImGui::DragFloat4("s",&worldTransform_.scale_.x,0.01f);
 	ImGui::DragFloat4("r", &worldTransform_.rotation_.x,  0.01f);
 	ImGui::DragFloat4("t", &worldTransform_.translation_.x,  0.01f);
-	ImGui::DragFloat4("color", &material.color.x, 0.01f);*/
+	ImGui::DragFloat4("color", &material.color.x, 0.01f);
 	ImGui::DragFloat("MaterialShininess", &material.shininess, 0.01f);
 	ImGui::DragFloat3("LightDirection", &dir_.direction.x, 0.01f);
 	ImGui::End();
@@ -113,7 +113,7 @@ void Player::Update() {
 
 void Player::Draw(Camera *camera) {
 
-	model_->Draw(worldTransform_, texture_, camera,color);
+	model_->Draw(worldTransform_, texture_, camera,material,dir_);
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(camera);
 	}

@@ -4,6 +4,7 @@
 #include<math.h>
 #include"EnemyApproach.h"
 #include "GameScene.h"
+#include "Player.h"
 Enemy::Enemy() {
 
 }
@@ -24,14 +25,14 @@ void Enemy::Init(GameScene * gamescene) {
 	soundData = Audio::SoundLoadWave("Resources/fanfare.wav");
 	soundData2 = Audio::SoundLoadWave("Resources/fanfare.wav");
 	model_ = new Model();
-	model_->Initialize("Resources/box", "box.obj", color);
+	model_->Initialize("Resources/box", "box.obj", material_);
 	particle = new Particle();
 	particle->Initialize({ 1.0f, 1.0f, 1.0f, 1.0f });
 	sprite_ = new Sprite;
-	sprite_->Initialize(color);
+	sprite_->Initialize(material_.color);
 	velocity_ = { 0,0,-0.5f };
 	state = new EnemyApproach();
-
+	material_.color = { 1.0f,1.0f,1.0f,1.0f };
 	gamescene_ = gamescene;
 	
 
@@ -86,12 +87,12 @@ void Enemy::Update() {
 }
 
 void Enemy::Draw(Camera* camera) {
-	model_->Draw(worldTransform_, texture_, camera, color);
+	model_->Draw(worldTransform_, texture_, camera, material_,dir_);
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Draw(camera);
 	}
 	//sprite_->Draw(texture_,color);
-	particle->Draw(texture_, color, camera);
+	particle->Draw(texture_, material_.color, camera);
 
 }
 
@@ -125,6 +126,7 @@ void Enemy::Fire()
 		// 弾を生成し、初期化
 		EnemyBullet* newBullet = new EnemyBullet();
 		newBullet->Init(worldTransform_.translation_, velocity);
+		newBullet->SetPlayer(player_);
 
 		// 弾を登録する
 		bullets_.push_back(newBullet);
