@@ -10,7 +10,7 @@ void CollisionManager::CheckAllCollision() {
 	const std::list<PlayerBullet*>& playerBullets = player_->Getbullet();
 
 	// 敵弾リストの取得
-	const std::list<EnemyBullet*>& enemyBullets = enemy_->Getbullet();
+	const std::list<EnemyBullet*>& enemyBullets = gameScene_->Getbullet();
 
 	std::list<Collider*> colliders_;
 	// コライダーをリストに登録

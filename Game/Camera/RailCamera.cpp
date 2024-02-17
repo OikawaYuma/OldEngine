@@ -17,6 +17,10 @@ void RailCamera::Init(const Vector3& pos, const Vector3& rot)
 	//move.z = 0.0f;
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
+	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+
+	// カメラオブジェクトのワールド行列からビュー行列を計算する
+	camera->viewMatrix_ = Inverse(worldTransform_.matWorld_);
 
 }
 
@@ -24,7 +28,7 @@ void RailCamera::Update()
 {
 	Vector3 move = { 0.0f,0.0f,0.25f };
 	// 座標移動（ベクトルの加算）
-	worldTransform_.translation_ = Add(worldTransform_.translation_, move);
+	//worldTransform_.translation_ = Add(worldTransform_.translation_, move);
 
 	// 回転速さ[ラジアン/frame]
 	const float kRotSpeed = 0.02f;

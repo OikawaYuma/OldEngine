@@ -15,7 +15,7 @@ Player::~Player() {
 void Player::Init() {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
-	worldTransform_.translation_.z = 10;
+	worldTransform_.translation_.z = 40;
 	worldTransform_.UpdateMatrix();
 	texture_ = TextureManager::StoreTexture("Resources/white.png");
 	texture2_ = TextureManager::StoreTexture("Resources/monsterBall.png");

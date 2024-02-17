@@ -38,7 +38,7 @@ void Enemy::Init(GameScene * gamescene) {
 
 	//FazeInit();
 
-	FireLoop();
+	//FireLoop();
 
 	SetCollisonAttribute(1);
 
@@ -47,50 +47,38 @@ void Enemy::Init(GameScene * gamescene) {
 
 void Enemy::Update() {
 
-	bullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-		});
+	
 	state->Update(this);
 
-	/*FireTimer--;
-	if (FireTimer <= 0) {
+	FireTimer++;
+	/*if (FireTimer <= 0) {
 		Fire();
 		FireTimer = kFireInterval;
 	}*/
 
-	timedCalls_.remove_if([](TimedCall* timedCall) {
-		if (timedCall->IsFinished()) {
-			delete timedCall;
-			return true;
-		}
-		return false;
-		});
+	//timedCalls_.remove_if([](TimedCall* timedCall) {
+	//	if (timedCall->IsFinished()) {
+	//		delete timedCall;
+	//		return true;
+	//	}
+	//	return false;
+	//	});
 
-	// 範囲forでリストの全要素について回す
-	for (TimedCall* timedCall : timedCalls_) {
-		timedCall->Update();
-	}
+	//// 範囲forでリストの全要素について回す
+	//for (TimedCall* timedCall : timedCalls_) {
+	//	timedCall->Update();
+	//}
 
 	float theta = (rotate_ / 2.0f) * (float)M_PI;
 	worldTransform_.rotation_.y = theta;
 	worldTransform_.UpdateMatrix();
-	// 弾更新
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Update();
-
-	}
+	
 	
 }
 
 void Enemy::Draw(Camera* camera) {
 	model_->Draw(worldTransform_, texture_, camera, material_,dir_);
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Draw(camera);
-	}
+	
 	//sprite_->Draw(texture_,color);
 	particle->Draw(texture_, material_.color, camera);
 
@@ -129,7 +117,7 @@ void Enemy::Fire()
 		newBullet->SetPlayer(player_);
 
 		// 弾を登録する
-		bullets_.push_back(newBullet);
+		//ullets_.push_back(newBullet);
 
 
 	

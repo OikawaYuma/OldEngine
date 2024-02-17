@@ -33,7 +33,7 @@ public:
 	{
 		return velocity_;
 	}
-
+	WorldTransform GetWorldTransform() { return worldTransform_; }
 	Vector3 GetTranslation() { return worldTransform_.translation_; }
 	//setter
 	void SetVelo(Vector3 velocity);
@@ -42,7 +42,7 @@ public:
 	void ChangeState(IEnemy* newState);
 	void FireCount();
 	int GetFireTimer() { return FireTimer; };
-
+	bool IsDead() { return isDead_; }
 	const static int kFireInterval = 60;
 
 	void FireLoop();
@@ -50,8 +50,7 @@ public:
 	// 衝突を検出したらコールバック関数
 	void OnCollision() override;
 	Vector3 GetWorldPosition()const override;
-	// 弾リストを取得
-	const std::list<EnemyBullet*>& Getbullet() const { return bullets_; }
+	
 	void SetPlayer(Player* player) { player_ = player; }
 private:
 	WorldTransform worldTransform_;
@@ -71,12 +70,12 @@ private:
 	int radius_ = 1;
 	GameScene* gamescene_ = nullptr;
 	Player* player_ = nullptr;
-
+	bool isDead_ = false;
 private:
 	int32_t FireTimer = 0;
 
 	// 弾
-	std::list<EnemyBullet*> bullets_;
+	//std::list<EnemyBullet*> bullets_;
 	std::function<void(void)> fireLoop;
 	// 時限発動のリスト
 	std::list<TimedCall*> timedCalls_;

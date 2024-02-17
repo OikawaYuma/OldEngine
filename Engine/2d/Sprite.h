@@ -35,19 +35,26 @@ public:
 	~Sprite();
 
 	void Initialize(const Vector4& color);
-	//void Update();
+	void Update();
 	void Draw(uint32_t texture, const Vector4& color);
 	void Release();
 	void SetTextureManager(TextureManager* textureManager) {
 		textureManager_ = textureManager;
 	}
-
+	// getter
+	const Vector2& GetPosition() const { return position_; }
+	const Vector2& GetSize() const { return size_; }
+	// setter
+	void SetPosition(const Vector2& position) { this->position_ = position; }
+	void SetSize(const Vector2& size) { this->size_ = size; }
 	Transform GetTransform() {
 		return transform_;
 	}
 	Transform transform_;
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
 private:
+	Vector2 position_ = { 0.0f, 0.0f };
+	Vector2 size_ = { 1.0f,1.0f };
 	PSOSprite* pso_ = nullptr;
 	Microsoft::WRL::ComPtr < ID3D12Resource> vertexResourceSprite_ =nullptr;
 	WinAPI* sWinAPI;
