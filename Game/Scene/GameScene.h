@@ -9,8 +9,8 @@
 #include "Sprite.h"
 #include "TextureManager.h"
 #include "CollisionManager.h"
-#include "Skydome.h"
-
+#include "../Skydome.h"
+#include "RailCamera.h"
 class GameScene :public IScene
 {
 public:
@@ -32,7 +32,7 @@ public:
 	bool startFlag_ = false;
 	static bool sceneChange;
 	CollisionManager* collisionManager_ = nullptr;
-
+	RailCamera* railCamera = nullptr;
 	Skydome* skydome = nullptr;
 };
 

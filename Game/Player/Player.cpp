@@ -15,6 +15,8 @@ Player::~Player() {
 void Player::Init() {
 	input = Input::GetInstance();
 	worldTransform_.Initialize();
+	worldTransform_.translation_.z = 10;
+	worldTransform_.UpdateMatrix();
 	texture_ = TextureManager::StoreTexture("Resources/white.png");
 	texture2_ = TextureManager::StoreTexture("Resources/monsterBall.png");
 	soundData = Audio::SoundLoadWave("Resources/fanfare.wav");
@@ -164,4 +166,10 @@ Vector3 Player::GetWorldPosition() const
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
+}
+
+void Player::SetParent(const WorldTransform* parent)
+{
+	// 親子関係を結ぶ
+	worldTransform_.parent_ = parent;
 }

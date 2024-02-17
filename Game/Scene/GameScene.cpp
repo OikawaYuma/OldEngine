@@ -6,16 +6,18 @@ void GameScene::Init()
 	input = Input::GetInstance();
 	camera = new Camera;
 	camera->Initialize();
+	
 	collisionManager_ = new CollisionManager;
 	collisionManager_->SetGameScene(this);
 	player_ = new Player();
 	player_->Init();
 	collisionManager_->SetPlayer(player_);
-	
+	railCamera = new RailCamera();
+	railCamera->Init(player_->GetWorldPosition(),{0.0f,0.0f,0.0f});
 	enemy_ = new Enemy();
 	enemy_->SetPlayer(player_);
 	enemy_->Init(this);
-	
+	player_->SetParent(&railCamera->GetWorldTransform());
 	collisionManager_->SetEnemy(enemy_);
 	sprite_ = new Sprite();
 	sprite_->Initialize({1.0f,1.0f,1.0f,fadeColor_ });
@@ -58,7 +60,7 @@ void GameScene::Update()
 
 		////カメラの更新
 		camera->Update();
-
+		railCamera->Update();
 		player_->Update();
 		enemy_->Update();
 		collisionManager_->CheckAllCollision();
@@ -66,9 +68,9 @@ void GameScene::Update()
 }
 void GameScene::Draw()
 {
-	skydome->Draw(camera);
-	player_->Draw(camera);
-	enemy_->Draw(camera);
+	skydome->Draw(railCamera->camera);
+	player_->Draw(railCamera->camera);
+	enemy_->Draw(railCamera->camera);
 	sprite_->Draw(textureHandle_,{1.0f,1.0f,1.0f, fadeColor_ });
 	
 }

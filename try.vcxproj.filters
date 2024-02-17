@@ -80,7 +80,7 @@
     <ClCompile Include="Game\Utilty\TimedCall.cpp" />
     <ClCompile Include="Game\Collision\CollisionManager.cpp" />
     <ClCompile Include="Game\Collision\Collider.cpp" />
-    <ClCompile Include="Game\Skydome\Skydome.cpp" />
+    <ClCompile Include="Game\Skydome.cpp" />
     <ClCompile Include="Game\Camera\RailCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,7 +164,7 @@
     <ClInclude Include="Game\Collision\CollisionManager.h" />
     <ClInclude Include="Game\Collision\Collider.h" />
     <ClInclude Include="Game\Collision\CollisionConfig.h" />
-    <ClInclude Include="Game\Skydome\Skydome.h" />
+    <ClInclude Include="Game\Skydome.h" />
     <ClInclude Include="Game\Camera\RailCamera.h" />
   </ItemGroup>
   <ItemGroup>

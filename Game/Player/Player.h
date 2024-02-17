@@ -30,6 +30,7 @@ public:
 	// 衝突を検出したらコールバック関数
 	void OnCollision()override;
 	Vector3 GetWorldPosition()const override;
+	void SetParent(const WorldTransform* parent);
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
