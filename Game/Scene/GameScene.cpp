@@ -81,7 +81,7 @@ void GameScene::Update()
 		////カメラの更新
 		camera->Update();
 		railCamera->Update();
-		player_->Update();
+		player_->Update(railCamera->camera);
 		UpdateEnemyPopCommands();
 		// 敵キャラの更新
 		for (Enemy* enemy : enemys_) {
@@ -146,6 +146,7 @@ void GameScene::Draw()
 			bullet->Draw(railCamera->camera);
 		}
 	}
+	player_->DrawUI();
 	sprite_->Draw(textureHandle_,{1.0f,1.0f,1.0f, fadeColor_ });
 	
 }

@@ -1,6 +1,7 @@
 ﻿#include "RailCamera.h"
 #include "ImGuiCommon.h"
 #include "mathFunction.h"
+#include "WinAPI.h"
 void RailCamera::Init(const Vector3& pos, const Vector3& rot)
 {
 	camera = new Camera();
@@ -41,11 +42,15 @@ void RailCamera::Update()
 		worldTransform_.rotation_.y += kRotSpeed;
 	}*/
 
-	//.UpdateMatrix();
+	//UpdateMatrix();
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
-	
+	//camera->Update();
 	// カメラオブジェクトのワールド行列からビュー行列を計算する
 	camera->viewMatrix_ = Inverse(worldTransform_.matWorld_);
 
+	//cameraMatrix_ = MakeAffineMatrix(cameraTransform_.scale, cameraTransform_.rotate, cameraTransform_.translate);
+	//iewMatrix_ = Inverse(cameraMatrix_);
+	camera->projectionMatrix_ = MakePerspectiveFovMatrix(0.45f, float(WinAPI::kClientWidth_) / float(WinAPI::kClientHeight_), 0.1f, 100.0f);
+	//worldViewProjectionMatrix_ = Multiply(worldmatrix_, Multiply(viewMatrix_, projectionMatrix_));
 
 }

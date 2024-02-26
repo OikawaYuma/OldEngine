@@ -47,6 +47,10 @@ public:
 	// setter
 	void SetPosition(const Vector2& position) { this->position_ = position; }
 	void SetSize(const Vector2& size) { this->size_ = size; }
+	const Vector2& GetAnchorPoint()const { return anchorPoint; }
+	void SetAnchorPoint(const Vector2& anchorPoint) {
+		this->anchorPoint = anchorPoint;
+	}
 	Transform GetTransform() {
 		return transform_;
 	}
@@ -55,6 +59,7 @@ public:
 private:
 	Vector2 position_ = { 0.0f, 0.0f };
 	Vector2 size_ = { 1.0f,1.0f };
+	Vector2 anchorPoint = { 0.0f,0.0f };
 	PSOSprite* pso_ = nullptr;
 	Microsoft::WRL::ComPtr < ID3D12Resource> vertexResourceSprite_ =nullptr;
 	WinAPI* sWinAPI;

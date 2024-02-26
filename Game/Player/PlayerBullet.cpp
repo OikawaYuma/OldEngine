@@ -17,7 +17,7 @@ void PlayerBullet::Init(const Vector3& pos,const Vector3& velocity)
 	worldtransform_.Initialize();
 	// 引数で受け取った初期座標をセット
 	worldtransform_.translation_ = pos;
-
+	worldtransform_.UpdateMatrix();
 	velocity_ = velocity;
 	// 衝突属性を設定
 	SetCollisonAttribute(0);

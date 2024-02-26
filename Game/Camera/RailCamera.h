@@ -2,6 +2,13 @@
 #include "Camera.h"
 #include "WorldTransform.h"
 #include "Input.h"
+
+enum cameraTragetPos {
+	TargetOne,
+	TargetTwo,
+	TargetThree,
+	TargetFour
+};
 class RailCamera
 {
 public:

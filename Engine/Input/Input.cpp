@@ -1,8 +1,6 @@
 #include "Input.h"
 #include "WinAPI.h"
-#include <Xinput.h>
-//Xinput.lib; Xinput9_1_0.lib
-#pragma comment(lib, "Xinput.lib")
+
 
 void Input::Initialize() {
 	WinAPI *sWinAPI = WinAPI::GetInstance();
@@ -20,6 +18,8 @@ void Input::Initialize() {
 	// 入力データ形式のセット
 	result = keyboard->SetDataFormat(&c_dfDIKeyboard); // 標準形式
 	assert(SUCCEEDED(result));
+
+	//assert(key = 0); // 0の時止まる
 
 	// 排他制御レベルのセット
 	result = keyboard->SetCooperativeLevel(
@@ -54,7 +54,7 @@ void Input::Update() {
 
 	// キーボード情報の取得開始
 	keyboard->Acquire();
-
+	//assert(key = 0); // 0の時止まる
 	keyboard->GetDeviceState(sizeof(keys), keys);
 }
 
@@ -69,6 +69,19 @@ bool Input::PushKey(BYTE keyNumber)
 bool Input::TriggerKey(BYTE keyNumber)
 {
 	if (keys[keyNumber] && preKeys[keyNumber] == 0) {
+		return true;
+	}
+	return false;
+}
+
+bool Input::GetJoystickState(XINPUT_STATE& state)
+{
+	ZeroMemory(&state, sizeof(XINPUT_STATE));
+
+	// コントローラーの状態を取得
+	result = XInputGetState(0, &state);
+
+	if (result == ERROR_SUCCESS) {
 		return true;
 	}
 	return false;

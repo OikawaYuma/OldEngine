@@ -1,5 +1,6 @@
 ﻿#include"mathFunction.h"
-
+#include "algorithm"
+#include "math.h"
 Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m) {
 	Vector3 result{
 		v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0],
@@ -410,3 +411,114 @@ Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t) {
 
 	return p;
 };
+
+// 3. ビューポート変換行列
+Matrix4x4 MakeViewportMatrix(
+	float left, float top, float width, float height, float minDepth, float maxDepth) {
+	Matrix4x4 m4;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			m4.m[i][j] = 0;
+		}
+	}
+	m4.m[0][0] = width / 2;
+	m4.m[1][1] = -(height / 2);
+	m4.m[2][2] = maxDepth - minDepth;
+	m4.m[3][0] = left + (width / 2);
+	m4.m[3][1] = top + height / 2;
+	m4.m[3][2] = minDepth;
+	m4.m[3][3] = 1;
+
+	return m4;
+};
+
+// 3. 座標返還
+Vector3 Transform1(const Vector3& vector, const Matrix4x4& matrix) {
+	Vector3 result;
+	result.x = vector.x * matrix.m[0][0] + vector.y * matrix.m[1][0] + vector.z * matrix.m[2][0] +
+		1.0f * matrix.m[3][0];
+	result.y = vector.x * matrix.m[0][1] + vector.y * matrix.m[1][1] + vector.z * matrix.m[2][1] +
+		1.0f * matrix.m[3][1];
+	result.z = vector.x * matrix.m[0][2] + vector.y * matrix.m[1][2] + vector.z * matrix.m[2][2] +
+		1.0f * matrix.m[3][2];
+	float w = vector.x * matrix.m[0][3] + vector.y * matrix.m[1][3] + vector.z * matrix.m[2][3] +
+		1.0f * matrix.m[3][3];
+	assert(w != 0.0f);
+	result.x /= w;
+	result.y /= w;
+	result.z /= w;
+	return result;
+}
+Vector3 CatmullRomInterpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t)
+{
+	Vector3 result;
+	const float s = 0.5f; // 数式に出てくる 1/2 のこと。
+
+	float t2 = t * t; // t の2乗
+	float t3 = t2 * t; // t の3乗
+
+	Vector3 e3;
+	e3.x = -p0.x + 3 * p1.x - 3 * p2.x + p3.x;
+	e3.y = -p0.y + 3 * p1.y - 3 * p2.y + p3.y;
+	e3.z = -p0.z + 3 * p1.z - 3 * p2.z + p3.z;
+
+	Vector3 e2;
+	e2.x = 2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x;
+	e2.y = 2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y;
+	e2.z = 2 * p0.z - 5 * p1.z + 4 * p2.z - p3.z;
+
+	Vector3 e1 = Add({ -p0.x,-p0.y,-p0.z }, p2);
+
+	Vector3 e0;
+	e0.x = 2 * p1.x;
+	e0.y = 2 * p1.y;
+	e0.z = 2 * p1.z;
+
+	result.x = s * (e3.x * t3 + e2.x * t2 + e1.x * t + e0.x);
+	result.y = s * (e3.y * t3 + e2.y * t2 + e1.y * t + e0.y);
+	result.z = s * (e3.z * t3 + e2.z * t2 + e1.z * t + e0.z);
+	return result;
+}
+Vector3 CatmullRomPosition(const std::vector<Vector3>& points, float t)
+{
+	assert(points.size() >= 4 && "制御点は4点以上必要です");
+
+	// 区間数は制御点の数-1
+	size_t division = points.size() - 1;
+	// 1区間の長さ（全体を1.0とした割合）
+	float areaWidth = 1.0f / division;
+
+	// 区間内の視点を0.0f、終点を1.0fとした時の現在位置
+	float t_2 = std::fmod(t, areaWidth) * division;
+	// 下限(0.0f)と上限(1.0f)の範囲に収める
+	t_2 = std::clamp(t_2, 0.0f, 1.0f);
+
+	// 区間番号
+	size_t index = static_cast<size_t>(t / areaWidth);
+	// 区間番号が上限を超えないように収める
+	index = std::min(index,points.size() - 2);
+
+	// 4点分のindex
+	size_t index0 = index -1;
+	size_t index1 = index;
+	size_t index2 = index + 1;
+	size_t index3 = index + 2;
+
+	// 最初の区間のp0はp1重複使用する
+	if (index == 0) {
+		index0 == index1;
+	}
+
+	// 最後の区間のp3はp2を重複使用する
+	if (index3 >= points.size()) {
+		index3 = index2;
+	}
+
+	// 4点の座標
+	const Vector3& p0 = (points);
+	const Vector3& p1 = (points);
+	const Vector3& p2 = (points);
+	const Vector3& p3 = (points);
+	return CatmullRomInterpolation(p0,p1,p2,p3,t_2);
+}
+;

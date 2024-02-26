@@ -4,6 +4,9 @@
 #include <cassert>
 #include <wrl.h>
 //#include <Xinput.h>
+#include <Xinput.h>
+//Xinput.lib; Xinput9_1_0.lib
+#pragma comment(lib, "Xinput.lib")
 
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
@@ -31,6 +34,7 @@ public:
 
 	bool TriggerKey(BYTE keyNumber);
 
+	bool GetJoystickState(XINPUT_STATE& state);
 	// namespace省略
 	template <class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
 private:
@@ -39,6 +43,6 @@ private:
 	ComPtr <IDirectInputDevice8> keyboard = nullptr;
 	BYTE keys[256];
 	BYTE preKeys[256];
-	
+	//uint32_t key = 0;
 };
 

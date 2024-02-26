@@ -94,6 +94,16 @@ void Sprite::Initialize(const Vector4& color) {
 void Sprite::Update() {
 	transform_.translate = { position_.x,position_.y ,0.0f };
 	transform_.scale = { size_.x,size_.y,1.0f };
+	float left = 0.0f - anchorPoint.x;
+	float right = 1.0f - anchorPoint.x;
+	float top = 0.0f - anchorPoint.y;
+	float bottom = 1.0f - anchorPoint.y;
+
+	// 1枚目の三角形
+	vertexDataSprite_[0].position = { left,bottom,0.0f,1.0f };//左下
+	vertexDataSprite_[1].position = { left,top,0.0f,1.0f }; // 左上
+	vertexDataSprite_[2].position = { right,bottom,0.0f,1.0f }; // 右下
+	vertexDataSprite_[3].position = { right,top,0.0f,1.0f }; // 右上
 };
 
 void Sprite::Draw(uint32_t texture, const Vector4& color) {
