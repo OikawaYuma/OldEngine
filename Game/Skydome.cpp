@@ -2,12 +2,12 @@
 
 void Skydome::Init()
 {
-	textureHandle_ = TextureManager::StoreTexture("Resources/skydome/Skydome.png");
+	textureHandle_ = TextureManager::StoreTexture("Resources/uvChecker.png");
 
 	material_.color = {1.0f,1.0f,1.0f,1.0f};
 	material_.enableLighting = false;
 	worldTransform.Initialize();
-	worldTransform.scale_ = { 1000.0f,1000.0f,1000.0f };
+	worldTransform.scale_ = { 100.0f,100.0f,100.0f };
 	worldTransform.UpdateMatrix();
 	//material_.shininess = 5.0f;
 	dir_.direction = { 0.0f,-1.0f,0.0f };

@@ -68,6 +68,7 @@ void EnemyBullet::Draw(Camera* camera)
 
 void EnemyBullet::OnCollision()
 {
+	isDead_ = true;
 }
 
 Vector3 EnemyBullet::GetWorldPosition() const

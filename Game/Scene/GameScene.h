@@ -62,6 +62,7 @@ public:
 	// スポーンフラグ
 	bool isRespown = true;
 
+	bool cameraFlag_ = false;
 	//スポーンタイマー
 	int respownTimer_ = 0;
 

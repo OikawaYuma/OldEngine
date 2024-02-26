@@ -41,6 +41,7 @@ void GameScene::Update()
 		}
 	}
 
+	
 	else {
 		sceneTime++;
 		/*if (sceneTime >= 240) {
@@ -80,7 +81,10 @@ void GameScene::Update()
 			});
 		////カメラの更新
 		camera->Update();
-		railCamera->Update();
+		if (input->TriggerKey(DIK_C)) {
+			cameraFlag_ = true;
+		}
+		railCamera->Update(cameraFlag_);
 		player_->Update(railCamera->camera);
 		UpdateEnemyPopCommands();
 		// 敵キャラの更新
@@ -128,7 +132,9 @@ void GameScene::Update()
 		for (EnemyBullet* bullet : enemyBullets_) {
 			bullet->Update();
 		}
-		collisionManager_->CheckAllCollision();
+		if (cameraFlag_ == false) {
+			collisionManager_->CheckAllCollision();
+		}
 	}
 }
 void GameScene::Draw()
