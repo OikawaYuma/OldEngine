@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "ImGuiCommon.h"
+#include <iostream>
 bool GameScene::sceneChange = false;
 void GameScene::Init()
 {
@@ -43,6 +44,13 @@ void GameScene::Update()
 
 	
 	else {
+		ImGui::Begin("Demo");
+		//ImGui::Text("bullet :%d", enemy->GetFireTimer());
+		ImGui::Text("Push WASD or PAD Left プレイヤー移動");
+		ImGui::Text("Push Arrow or PAD Right レティクル移動");
+		ImGui::Text("Trigger Space or Pad RT 射撃");
+		ImGui::Text("Trigger C 三次元カメラ移動");
+		ImGui::End();
 		sceneTime++;
 		/*if (sceneTime >= 240) {
 			sceneChange = true;
@@ -51,7 +59,7 @@ void GameScene::Update()
 			fadeColor_ += 0.01f;
 		}
 		if (fadeColor_ >= 1.0f) {
-			sceneNo = CLEAR;
+			sceneNo = TITLE;
 			sceneTime = 0;
 			startFlag_ = false;
 			sceneChange = false;
@@ -91,9 +99,7 @@ void GameScene::Update()
 		for (Enemy* enemy : enemys_) {
 			enemy->Update();
 
-			ImGui::Begin("Debug5");
-			ImGui::Text("bullet :%d", enemy->GetFireTimer());
-			ImGui::End();
+			
 			// enemy->Fire();
 			if (enemy->GetFireTimer() >= enemy->kFireInterval) {
 				assert(player_);

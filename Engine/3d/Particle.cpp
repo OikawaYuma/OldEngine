@@ -172,11 +172,11 @@ void Particle::Draw(uint32_t texture, const Vector4& color, Camera* camera) {
 	billboardMatrix.m[3][2] = 0.0f;
 	std::random_device seedGenerator;
 	std::mt19937 randomEngine(seedGenerator());
-	ImGui::Begin("Particle Add");
+	/*ImGui::Begin("Particle Add");
 	if (ImGui::Button("Add pa")) {
 		particles_.push_back(MakeNewParticle(randomEngine));
 	}
-	ImGui::End();
+	ImGui::End();*/
 	uint32_t numInstance = 0;// 描画すべきインスタンス数
 	// Sprite用のWorldViewProjectMatrixを作る
 	for (std::list<ParticlePro>::iterator particleIterator = particles_.begin(); particleIterator != particles_.end();) {

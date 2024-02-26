@@ -200,7 +200,7 @@ void Player::Update(Camera* camera) {
 		bullet->Update();
 	}
 	color = { red_,green_,blue_,1.0f };
-	ImGui::Begin("Color");
+	/*ImGui::Begin("Color");
 	ImGui::DragFloat4("s",&worldTransform_.scale_.x,0.01f);
 	ImGui::DragFloat4("r", &worldTransform_.rotation_.x,  0.01f);
 	ImGui::DragFloat4("t", &worldTransform_.translation_.x,  0.01f);
@@ -210,7 +210,7 @@ void Player::Update(Camera* camera) {
 	ImGui::Text("3DreticleightDirection   %f,%f,%f", worldTransform3DReticle_.translation_.x, worldTransform3DReticle_.translation_.y, worldTransform3DReticle_.translation_.z);
 	ImGui::Text("Wold   %f,%f,%f", worldTransform_.translation_.x, worldTransform_.translation_.y, worldTransform_.translation_.z);
 
-	ImGui::End();
+	ImGui::End();*/
 	dir_.direction = Normalize(dir_.direction);
 	//Audio::SoundLoopWave(Audio::GetIXAudio().Get(), soundData);
 	worldTransform_.UpdateMatrix();
