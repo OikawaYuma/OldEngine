@@ -12,28 +12,25 @@ Microsoft::WRL::ComPtr <ID3D12Resource> TextureManager::textureResource_[SRVSize
 
 D3D12_CPU_DESCRIPTOR_HANDLE TextureManager::textureSrvHandleCPU_[SRVSizes];
 D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::textureSrvHandleGPU_[SRVSizes];
-
-D3D12_SHADER_RESOURCE_VIEW_DESC TextureManager::srvDesc_[SRVSizes]{};
-
+DirectX::TexMetadata TextureManager::metadata_[SRVSizes];
+D3D12_SHADER_RESOURCE_VIEW_DESC TextureManager::srvDesc_[SRVSizes];
 int TextureManager::StoreTexture(const std::string& filePath) {
 	DirectXCommon *sDirectXCommon = DirectXCommon::GetInstance();
 	WinAPI* sWinAPI = WinAPI::GetInstance();
 	// Textureを読んで転送する
 	// ミップマップの作成
 	DirectX::ScratchImage mipImages_ = LoadTexture(filePath);
-	const DirectX::TexMetadata& metadata = mipImages_.GetMetadata();
+	metadata_[index_] = mipImages_.GetMetadata();
 
-	
-
-	textureResource_[index_] = CreateTextureResource(sDirectXCommon->GetDevice().Get(), metadata);
+	textureResource_[index_] = CreateTextureResource(sDirectXCommon->GetDevice().Get(), metadata_[index_]);
 	UploadTextureData(textureResource_[index_].Get(), mipImages_);
 
-	
+	//D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc_;
 	// metaDataを基にSRVの設定
-	srvDesc_[index_].Format = metadata.format;
+	srvDesc_[index_].Format = metadata_[index_].format;
 	srvDesc_[index_].Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc_[index_].ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャfi
-	srvDesc_[index_].Texture2D.MipLevels = UINT(metadata.mipLevels);
+	srvDesc_[index_].Texture2D.MipLevels = UINT(metadata_[index_].mipLevels);
 	
 	// SRVを作成するDescriptorHeapの場所を決める
 	textureSrvHandleCPU_[index_] = sDirectXCommon->GetSrvDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
@@ -64,6 +61,15 @@ TextureManager* TextureManager::GetInstance() {
 //	sDirectXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU_);
 //};
 
+
+const DirectX::TexMetadata& TextureManager::GetMetaData(uint32_t textureIndex)
+{
+	// 範囲外指定違反チェック
+	assert(textureIndex <= SRVSizes);
+	//const DirectX::TexMetadata& metadata = metadata_[textureIndex];
+	return  metadata_[textureIndex];
+	//return  metadata;;
+}
 
 DirectX::ScratchImage TextureManager::LoadTexture(const std::string& filePath) {
 	////// テクスチャファイルを呼んでプログラムを使えるようにする

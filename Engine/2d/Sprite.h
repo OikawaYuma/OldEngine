@@ -35,7 +35,7 @@ public:
 	~Sprite();
 
 	void Init(const Vector2& pos,const Vector2& size,const Vector2& anchorPoint,const Vector4& color);
-	void Update();
+	void Update(uint32_t texture);
 	void Draw(uint32_t texture, const Vector4& color);
 	void Release();
 	Transform GetTransform() {
@@ -73,7 +73,7 @@ private:
 	// テクスチャ左上座標
 	Vector2 textureleftTop_ = { 0.0f,0.0f };
 	// テクスチャ切り出しサイズ
-	Vector2 textureSize_ = { 100.0f,100.0f };
+	Vector2 textureSize_ = { 64.0f,64.0f };
 	Transform transform_;
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferViewSprite_{};
@@ -95,7 +95,7 @@ private:
 	uint32_t* indexDataSprite;
 	Microsoft::WRL::ComPtr < ID3D12Resource> indexResourceSprite;
 	D3D12_INDEX_BUFFER_VIEW indexBufferViewSprite{};
-
+	
 
 	// 実際に頂点リソースを作る
 	Microsoft::WRL::ComPtr <ID3D12Resource> materialResource;

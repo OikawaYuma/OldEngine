@@ -96,19 +96,38 @@ void Sprite::Init(const Vector2& pos, const Vector2& size, const Vector2& anchor
 	
 
 };
-void Sprite::Update() {
-	transform_.translate = { position_.x,position_.y ,0.0f };
-	transform_.scale = { size_.x,size_.y,1.0f };
+void Sprite::Update(uint32_t texture) {
+	/*transform_.translate = { position_.x,position_.y ,0.0f };
+	transform_.scale = { size_.x,size_.y,1.0f };*/
 	float left = 0.0f - anchorPoint_.x;
 	float right = 1.0f - anchorPoint_.x;
 	float top = 0.0f - anchorPoint_.y;
 	float bottom = 1.0f - anchorPoint_.y;
+
 
 	// 1枚目の三角形
 	vertexDataSprite_[0].position = { left,bottom,0.0f,1.0f };//左下
 	vertexDataSprite_[1].position = { left,top,0.0f,1.0f }; // 左上
 	vertexDataSprite_[2].position = { right,bottom,0.0f,1.0f }; // 右下
 	vertexDataSprite_[3].position = { right,top,0.0f,1.0f }; // 右上
+
+	const DirectX::TexMetadata& metadata =
+		TextureManager::GetInstance()->GetMetaData(texture);
+	float tex_left = textureleftTop_.x / metadata.width;
+	float tex_right = (textureleftTop_.x + textureSize_.x) / metadata.width;
+	float tex_top = textureleftTop_.y / metadata.height;
+	float tex_bottom = (textureleftTop_.y + textureSize_.y) / metadata.height;
+
+	// 1枚目の三角形
+	vertexDataSprite_[0].texcorrd = { tex_left,tex_bottom };
+	vertexDataSprite_[1].texcorrd = { tex_left,tex_top };
+	vertexDataSprite_[2].texcorrd = { tex_right,tex_bottom };
+	vertexDataSprite_[3].texcorrd = { tex_right,tex_top };
+	//// 1枚目の三角形
+	//vertexDataSprite_[0].texcorrd = { 0.0f,1.0f };
+	//vertexDataSprite_[1].texcorrd = { 0.0f,0.0f };
+	//vertexDataSprite_[2].texcorrd = { 1.0f,1.0f };
+	//vertexDataSprite_[3].texcorrd = { 1.0f,0.0f };
 };
 
 
@@ -132,7 +151,7 @@ void Sprite::Draw(uint32_t texture, const Vector4& color) {
 	// TransformationmatrixCBufferの場所を設定
 	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResouceSprite->GetGPUVirtualAddress());
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
-	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->textureSrvHandleGPU_[texture]);
+	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetTextureSrvHandleGPU_(texture));
 	// 描画（DrawCall/ドローコール）
 	//sDirectXCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
 	sDirectXCommon->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);

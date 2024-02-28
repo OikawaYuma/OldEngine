@@ -9,7 +9,7 @@ void DemoScene::Init()
 	camera->Initialize();
 	input = Input::GetInstance();
 	demoSprite = new Sprite();
-	demoSprite->Init({0.0f,0.0f},{100.0f,100.0f},{0.0f,0.0f},{1.0f,1.0f,1.0f,1.0f});
+	demoSprite->Init({0.0f,0.0f},{600.0f,600.0f},{0.0f,0.0f},{1.0f,1.0f,1.0f,1.0f});
 	textureHandle = TextureManager::StoreTexture("Resources/uvChecker.png");
 }
 
@@ -18,6 +18,7 @@ void DemoScene::Update()
 	sceneTime++;
 	////カメラの更新
 	camera->Update();
+	demoSprite->Update(textureHandle);
 
 }
 void DemoScene::Draw()
