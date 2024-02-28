@@ -8,7 +8,8 @@
 
 
 Sprite::Sprite() {};
-void Sprite::Initialize(const Vector4& color) {
+
+void Sprite::Init(const Vector2& pos, const Vector2& size, const Vector2& anchorPoint, const Vector4& color) {
 	sWinAPI = WinAPI::GetInstance();
 	sDirectXCommon = DirectXCommon::GetInstance();
 
@@ -29,17 +30,21 @@ void Sprite::Initialize(const Vector4& color) {
 
 	vertexResourceSprite_->Map(0, nullptr, reinterpret_cast<void**>(&vertexDataSprite_));
 
+	float left = 0.0f - anchorPoint.x;
+	float right = 1.0f - anchorPoint.x;
+	float top = 0.0f - anchorPoint.y;
+	float bottom = 1.0f - anchorPoint.y;
 	// 1枚目の三角形
-	vertexDataSprite_[0].position = { 0.0f,720.0f,0.0f,1.0f };//左下
+	vertexDataSprite_[0].position = { left,bottom,0.0f,1.0f };//左下
+	vertexDataSprite_[1].position = { left,top,0.0f,1.0f }; // 左上
+	vertexDataSprite_[2].position = { right,bottom,0.0f,1.0f }; // 右下
+	vertexDataSprite_[3].position = { right,top,0.0f,1.0f }; // 右上
+
+	// 1枚目の三角形
 	vertexDataSprite_[0].texcorrd = { 0.0f,1.0f };
-	vertexDataSprite_[1].position = { 0.0f,0.0f,0.0f,1.0f }; // 左上
 	vertexDataSprite_[1].texcorrd = { 0.0f,0.0f };
-	vertexDataSprite_[2].position = { 1280.0f,720.0f,0.0f,1.0f }; // 右下
 	vertexDataSprite_[2].texcorrd = { 1.0f,1.0f };
-
-	vertexDataSprite_[3].position = { 1280.0f,0.0f,0.0f,1.0f }; // 右上
 	vertexDataSprite_[3].texcorrd = { 1.0f,0.0f };
-
 	// 実際に頂点リソースを作る
 	materialResource = Mesh::CreateBufferResource(sDirectXCommon->GetDevice(), sizeof(Material));
 
@@ -62,7 +67,7 @@ void Sprite::Initialize(const Vector4& color) {
 	transformationMatrixDataSprite->WVP = MakeIdentity4x4();
 
 	// Transform変数の初期化
-	transform_ = { {1.0f,1.0f,0.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	transform_ = { {size.x,size.y,1.0f},{0.0f,0.0f,0.0f},{pos.x,pos.y ,0.0f} };
 
 	indexResourceSprite = Mesh::CreateBufferResource(sDirectXCommon->GetDevice(), sizeof(uint32_t) * 6);
 	// リソースの先頭のアドレスから使う
@@ -91,9 +96,21 @@ void Sprite::Initialize(const Vector4& color) {
 	
 
 };
-//void Sprite::Update() {
-//
-//};
+void Sprite::Update() {
+	transform_.translate = { position_.x,position_.y ,0.0f };
+	transform_.scale = { size_.x,size_.y,1.0f };
+	float left = 0.0f - anchorPoint_.x;
+	float right = 1.0f - anchorPoint_.x;
+	float top = 0.0f - anchorPoint_.y;
+	float bottom = 1.0f - anchorPoint_.y;
+
+	// 1枚目の三角形
+	vertexDataSprite_[0].position = { left,bottom,0.0f,1.0f };//左下
+	vertexDataSprite_[1].position = { left,top,0.0f,1.0f }; // 左上
+	vertexDataSprite_[2].position = { right,bottom,0.0f,1.0f }; // 右下
+	vertexDataSprite_[3].position = { right,top,0.0f,1.0f }; // 右上
+};
+
 
 void Sprite::Draw(uint32_t texture, const Vector4& color) {
 	pso_ = PSOSprite::GatInstance();
@@ -115,7 +132,7 @@ void Sprite::Draw(uint32_t texture, const Vector4& color) {
 	// TransformationmatrixCBufferの場所を設定
 	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResouceSprite->GetGPUVirtualAddress());
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
-	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->textureSrvHandleGPU_[texture]);
+	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->textureSrvHandleGPU_[texture]);
 	// 描画（DrawCall/ドローコール）
 	//sDirectXCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
 	sDirectXCommon->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);

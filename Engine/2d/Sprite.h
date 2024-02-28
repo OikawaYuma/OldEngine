@@ -34,18 +34,32 @@ public:
 	Sprite();
 	~Sprite();
 
-	void Initialize(const Vector4& color);
-	//void Update();
+	void Init(const Vector2& pos,const Vector2& size,const Vector2& anchorPoint,const Vector4& color);
+	void Update();
 	void Draw(uint32_t texture, const Vector4& color);
 	void Release();
-	void SetTextureManager(TextureManager* textureManager) {
-		textureManager_ = textureManager;
-	}
-
 	Transform GetTransform() {
 		return transform_;
 	}
-	Transform transform_;
+	// getter
+	const Vector2& GetPosition() const { return position_; }
+	const Vector2& GetSize() const { return size_; }
+	const Vector2& GetAnchorPoint()const { return anchorPoint_; }
+	const Vector2& GetTextureLeftTop()const { return textureleftTop_; }
+	const Vector2& GetTextureSize()const { return textureSize_; }
+
+	// setter
+	void SetPosition(const Vector2& position) { this->position_ = position; }
+	void SetSize(const Vector2& size) { this->size_ = size; }
+	void SetAnchorPoint(const Vector2& anchorPoint) {
+		this->anchorPoint_ = anchorPoint;
+	}
+	void SetTextureLeftTop(const Vector2& textureleftTop) {
+		this->textureleftTop_ = textureleftTop;
+	}
+	void SetTextureSize(const Vector2& textureSize) {
+		this->textureSize_ = textureSize;
+	}
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
 private:
 	PSOSprite* pso_ = nullptr;
@@ -53,7 +67,14 @@ private:
 	WinAPI* sWinAPI;
 	DirectXCommon* sDirectXCommon;
 	Mesh* mesh_;
-	TextureManager* textureManager_ = nullptr;
+	Vector2 position_ = { 0.0f, 0.0f };
+	Vector2 size_ = { 1.0f,1.0f };
+	Vector2 anchorPoint_ = { 0.0f,0.0f };
+	// テクスチャ左上座標
+	Vector2 textureleftTop_ = { 0.0f,0.0f };
+	// テクスチャ切り出しサイズ
+	Vector2 textureSize_ = { 100.0f,100.0f };
+	Transform transform_;
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferViewSprite_{};
 

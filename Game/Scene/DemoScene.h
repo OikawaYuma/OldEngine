@@ -1,9 +1,10 @@
-#pragma once
+﻿#pragma once
 #include "IScene.h"
 #include "Triangle.h"
 #include "WorldTransform.h"
 #include "Input.h"
 #include "Particle.h"
+#include "Sprite.h"
 class DemoScene : public IScene
 {
 public:
@@ -17,5 +18,9 @@ private:
 	int sceneTime = 0;
 	Camera* camera = nullptr;
 	Input* input = nullptr;
+	Sprite* demoSprite = nullptr;
+
+	//変数
+	uint32_t textureHandle;
 };
 
