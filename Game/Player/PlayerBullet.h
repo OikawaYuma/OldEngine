@@ -24,7 +24,7 @@ public:
 	/// </summary>
 	/// <param name="camera"></param>
 	void Draw(Camera* camera);
-
+	void SetParent(const WorldTransform* parent);
 	bool IsDead()const { return isDead_; }
 	// 衝突を検出したらコールバック関数
 	void OnCollision()override;

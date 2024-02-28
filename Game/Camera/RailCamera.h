@@ -23,7 +23,7 @@ private:
 	Input* input_ = nullptr;
 	std::vector<Vector3> constrolPoint_;
 	float t;
-
+	bool flagt = false;
 	Vector3 toDire;
 };
 

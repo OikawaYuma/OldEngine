@@ -41,6 +41,12 @@ void PlayerBullet::Draw(Camera* camera)
 	model_->Draw(worldtransform_, 1, camera, material,dir_);
 }
 
+void PlayerBullet::SetParent(const WorldTransform* parent)
+{
+	// 親子関係を結ぶ
+	worldtransform_.parent_ = parent;
+}
+
 void PlayerBullet::OnCollision()
 {
 	//GameScene::SetChangeScene();

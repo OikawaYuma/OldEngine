@@ -31,6 +31,8 @@ void Player::Init() {
 	dir_.direction = { 0.0f,-1.0f,0.0f };
 	model_ = new Model();
 	model_->Initialize("Resources/ball", "ball.obj", material);
+	model3DR_ = new Model();
+	model3DR_->Initialize("Resources/ball", "ball.obj", {1.0f,0.0f,1.0f,1.0f,});
 	particle = new Particle();
 	particle->Initialize({ 1.0f, 1.0f, 1.0f, 1.0f });
 	sprite_ = new Sprite;
@@ -175,13 +177,15 @@ void Player::Update(Camera* camera) {
 	spriteDierection = Normalize(spriteDierection);
 	// カメラから照準オブジェクトの距離
 	const float kDistanceTextObject = 100.0f;
-	worldTransform3DReticle_.translation_.x = spriteDierection.x * kDistanceTextObject;
-	worldTransform3DReticle_.translation_.y = spriteDierection.y * kDistanceTextObject;
-	worldTransform3DReticle_.translation_.z = spriteDierection.z * kDistanceTextObject;
+	worldTransform3DReticle_.translation_.x = posNear.x + spriteDierection.x * kDistanceTextObject;
+	worldTransform3DReticle_.translation_.y = posNear.y + spriteDierection.y * kDistanceTextObject;
+	worldTransform3DReticle_.translation_.z = posNear.z + spriteDierection.z * kDistanceTextObject;
 
 	worldTransform3DReticle_.UpdateMatrix();
 
-
+	ImGui::Begin("bulllet");
+	ImGui::Text("%f, %f , %f", worldTransform3DReticle_.translation_.x, worldTransform3DReticle_.translation_.y, worldTransform3DReticle_.translation_.z);
+	ImGui::End();
 
 	//XINPUT_STATE joyState1;
 
@@ -194,7 +198,7 @@ void Player::Update(Camera* camera) {
 	//}
 
 	// キャラクター攻撃処理
-	Attack();
+	Attack(worldTransform_.parent_);
 	// 弾更新
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Update();
@@ -220,6 +224,7 @@ void Player::Update(Camera* camera) {
 void Player::Draw(Camera *camera) {
 
 	model_->Draw(worldTransform_, texture_, camera,material,dir_);
+	model3DR_->Draw(worldTransform3DReticle_, texture_, camera, {1.0f,0.0f,1.0f,1.0f}, dir_);
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(camera);
 	}
@@ -233,12 +238,15 @@ void Player::Release()
 	Audio::SoundUnload(soundData2);
 }
 
-void Player::Attack()
+void Player::Attack(const WorldTransform* parent)
 {
 	if (input->TriggerKey(DIK_SPACE)) {
 		
 		// 自キャラの座標をコピー
-		Vector3 position = worldTransform_.translation_;
+		Vector3 position = { 
+			worldTransform_.matWorld_.m[3][0],
+			worldTransform_.matWorld_.m[3][1], 
+			worldTransform_.matWorld_.m[3][2] };
 
 		// 弾の速度
 		const float kBulletSpeed = 1.0f;
@@ -254,13 +262,13 @@ void Player::Attack()
 		velocity.z *= kBulletSpeed;
 
 		// 速度ベクトルを自機の向きに合わせて回転させる
-		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+		//velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
 		//velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Init(GetWorldPosition(), velocity);
-
+		//newBullet->SetParent(parent);
 		// 弾を登録する
 		bullets_.push_back(newBullet);
 
@@ -329,7 +337,7 @@ void Player::SetParent(const WorldTransform* parent)
 {
 	// 親子関係を結ぶ
 	worldTransform_.parent_ = parent;
-	worldTransform3DReticle_.parent_ = parent;
+	//worldTransform3DReticle_.parent_ = parent;
 }
 
 void Player::DrawUI()

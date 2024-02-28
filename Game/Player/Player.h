@@ -23,7 +23,7 @@ public:
 	void Draw(Camera *camera);
 	void Release();
 
-	void Attack();
+	void Attack(const WorldTransform* parent);
 	int GetRadius() { return radius_; }
 	// 弾リストを取得
 	const std::list<PlayerBullet*>& Getbullet() const { return bullets_; }
@@ -41,6 +41,7 @@ public:
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
+	Model* model3DR_ = nullptr;
 	uint32_t texture_ =1;
 	uint32_t texture2_ = 1;
 	uint32_t texture3_ = 1;
