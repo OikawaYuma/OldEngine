@@ -58,6 +58,9 @@ int GameManager::Run() {
 	Object3dManager* sObjectManager = Object3dManager::GetInstance();
 	sObjectManager->Init();
 
+	ModelManager* sModelManager = ModelManager::GetInstance();
+	sModelManager->init();
+
 	TextureManager* sTextureManager = TextureManager::GetInstance();
 
 	PSO* pso = PSO::GatInstance();
@@ -131,11 +134,12 @@ int GameManager::Run() {
 
 	//出力ウィンドウへの文字出力
 	OutputDebugStringA("Hello,DirectX!\n");
-
+	
 
 	/*------------------------------------------------------------
 
 	-------------------------------------------------------------*/
+	sModelManager->Finalize();
 	sWinAPI->Finalize();
 	//delete sWinAPI;
 	sDirctX->Release();

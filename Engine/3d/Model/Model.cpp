@@ -1,8 +1,12 @@
 
 #include "Model.h"
 
-Model::Model() {};
-ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string& filename)
+Model::Model() {}
+Model::~Model()
+{
+}
+;
+ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string& filePath)
 {
 	ModelData modelData; // 構築するMataData
 	std::vector<Vector4> positions; // 位置
@@ -10,7 +14,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 	std::vector<Vector2> texcoords; // テクスチャ座標
 	std::string line; // ファイルから読んだ1行を格納するもの
 
-	std::ifstream file(directoryPath + "/" + filename); // ファイルを開く
+	std::ifstream file(directoryPath + "/" + filePath); // ファイルを開く
 	assert(file.is_open()); // とりあえず開けなかったら止める
 
 	while(std::getline(file, line)) {
@@ -149,16 +153,7 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 		{0.0f,0.0f,0.0f}
 	};
 
-	//バッファリソース
-	// データを書き込む
-	wvpData = nullptr;
-	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	wvpResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(TransformationMatrix));
-	// 書き込むためのアドレスを取得
-	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
-	//単位行列を書き込んでいく
-	wvpData->WVP = MakeIdentity4x4();
-	wvpData->World = MakeIdentity4x4();
+	
 
 	directionalLightData = nullptr;
 	directionalLightResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(DirectionalLight));
@@ -170,26 +165,20 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
 	directionalLightData->intensity = 1.0f;
 
-	cameraForGPUData_ = nullptr;
-	cameraForGPUResource_ = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(CameraForGPU));
-	// 書き込むためのアドレスを取得
-	cameraForGPUResource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraForGPUData_));
 
-	cameraForGPUData_->worldPosition = { 1.0f,1.0f,-5.0f };
+	//worldTransform_.Initialize();
 
 };
 
 void Model::Update() {
-
+	//worldTransform_.UpdateMatrix();
 };
 
 
-void Model::Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera, const Material& material,const DirectionalLight& dire) {
-	camera_ = camera;
-	cameraForGPUData_->worldPosition = camera->GetTransform().translate;
+void Model::Draw(uint32_t texture,const Material& material,const DirectionalLight& dire) {
+	
 	pso_ = PSO::GatInstance();
-	Matrix4x4 worldViewProjectionMatrix = Multiply(worldTransform.matWorld_, Multiply(camera_->GetViewMatrix(), camera_->GetProjectionMatrix()));
-	wvpData->WVP = worldViewProjectionMatrix;
+	
 	textureManager_ = TextureManager::GetInstance();
 	// 色のデータを変数から読み込み
 	materialData->color = material.color;
@@ -200,14 +189,13 @@ void Model::Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera
 	//directXCommon_->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定
 	directXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);    //VBVを設定
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
-	directXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//directXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// マテリアルCBufferの場所を設定
 	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
-	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
-
+	
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	directXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->GetTextureSrvHandleGPU_(texture));
 	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(3, directionalLightResource->GetGPUVirtualAddress());
-	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(4, cameraForGPUResource_->GetGPUVirtualAddress());
+	
 	directXCommon_->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }

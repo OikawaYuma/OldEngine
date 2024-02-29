@@ -6,6 +6,7 @@
 #include "Particle.h"
 #include "Sprite.h"
 #include "Object3d.h"
+#include "Model.h"
 class DemoScene : public IScene
 {
 public:
@@ -24,9 +25,10 @@ private:
 	//変数
 	uint32_t textureHandle;
 	Object3d* object3d = nullptr;
-
+	Object3d* object3d2 = nullptr;
 	Material material;
 
 	WorldTransform worldTransform;
+	WorldTransform worldTransform2;
 };
 

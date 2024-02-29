@@ -15,6 +15,7 @@
 #include <Transform.h>
 #include <Camera.h>
 #include <WorldTransform.h>
+#include "Model.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -22,41 +23,40 @@
 class Object3d
 {
 public:
-	void Init(const std::string& directoryPath, const std::string& filename, const Material& material);
+	void Init();
 	void Update();
-	void Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera, const Material& material, const DirectionalLight& dire);
+	void Draw(uint32_t texture, Camera* camera);
 	void Release();
 
+public: // Setter
+	void SetModel(Model* model) { model_ = model; }
+	void SetModel(const std::string& filePath);
+	void SetWorldTransform(const WorldTransform& worldtransform) { worldTransform_ = worldtransform; };
+public: // Getter
+	WorldTransform GetWorldTransform() { return worldTransform_; }
 	ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
 	MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename);
 private:
 	HRESULT hr;
 	// RootSignature作成
-
 	DirectXCommon* directXCommon_;
 	WinAPI* sWinAPI_;
 	TextureManager* textureManager_ = nullptr;
+	Model* model_ = nullptr;
 	PSO* pso_ = nullptr;
 
-	TransformationMatrix* wvpData;
 	/*移動用*/
-	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
+// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
+	TransformationMatrix* wvpData;
 	Microsoft::WRL::ComPtr < ID3D12Resource> wvpResource;
-	// データを書き込む
-
-	// 平行光源用
-	Microsoft::WRL::ComPtr < ID3D12Resource> directionalLightResource;
-	// データを書き込む
-	DirectionalLight* directionalLightData;
+	// 頂点バッファビューを作成する
+	D3D12_VERTEX_BUFFER_VIEW wvpBufferView{};
+	Transform transformUv;
 
 	//カメラ用
 	Microsoft::WRL::ComPtr < ID3D12Resource> cameraForGPUResource_;
 	CameraForGPU* cameraForGPUData_;
-
-	Transform transformUv;
-	// 頂点バッファビューを作成する
-	D3D12_VERTEX_BUFFER_VIEW wvpBufferView{};
-	Camera* camera_ = nullptr;
-
+	// データを書き込む
+	WorldTransform worldTransform_;
 };
 

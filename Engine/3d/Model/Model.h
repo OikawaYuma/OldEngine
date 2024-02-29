@@ -4,7 +4,7 @@
 #include "PSOModel.h"
 #include "Mesh.h"
 #include "TextureManager.h"
-#include "ModelManager.h"
+//#include "ModelManager.h"
 
 #include "Transform.h"
 #include "WorldTransform.h"
@@ -34,34 +34,35 @@
 class Model
 {
 public:
-	TransformationMatrix* wvpData;
+	
 	ModelData GetModelData() { return modelData_; }
 	Model();
 	~Model();
-	void Initialize(const std::string& directoryPath, const std::string& filename, const Material& material);
+	void Initialize(const std::string& directoryPath, const std::string& filePath, const Material& material);
 	void Update();
-	void Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera, const Material& material, const DirectionalLight& dire);
+	void Draw(uint32_t texture, const Material& material, const DirectionalLight& dire);
 
 
 	void SetTextureManager(TextureManager* textureManager) {
 		textureManager_ = textureManager;
 	}
-	ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
+	ModelData LoadObjFile(const std::string& directoryPath, const std::string&filePath);
 	MaterialData LoadMaterialTemplateFile(const std::string& directoryPath,const std::string& filename);
+
+
 private:
+
+
+	
 	HRESULT hr;
 	// RootSignature作成
-	ModelManager* modelManager = nullptr;
+	//ModelManager* modelManager = nullptr;
 
 	// 頂点リソースにデータを書き込む
 	Material* materialData;
 
 	VertexData* vertexData_;
 	ModelData modelData_;
-
-
-
-
 	DirectXCommon* directXCommon_;
 	WinAPI* sWinAPI_;
 	TextureManager* textureManager_ = nullptr;
@@ -78,19 +79,14 @@ private:
 	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
 	
 
-	/*移動用*/
-	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	Microsoft::WRL::ComPtr < ID3D12Resource> wvpResource;
-	// データを書き込む
+
 	
 	// 平行光源用
 	Microsoft::WRL::ComPtr < ID3D12Resource> directionalLightResource;
 	// データを書き込む
 	DirectionalLight* directionalLightData;
 
-	//カメラ用
-	Microsoft::WRL::ComPtr < ID3D12Resource> cameraForGPUResource_;
-	CameraForGPU* cameraForGPUData_;
+	
 
 	Transform transformUv;
 	// 頂点バッファビューを作成する
