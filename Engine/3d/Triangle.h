@@ -8,7 +8,7 @@
 #include "WinAPI.h"
 #include "DirectXCommon.h"
 #include "Mesh.h"
-#include "PSO.h"
+#include "PSOModel.h"
 #include "VertexData.h"
 #include "Vector4.h"
 #include "Vector3.h"

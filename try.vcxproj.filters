@@ -38,17 +38,17 @@
     <ClCompile Include="Lib\math\mathFunction.cpp">
       <Filter>Func</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\Mesh.cpp">
+    <ClCompile Include="Engine\Interface\Mesh.cpp">
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3d\Camera.cpp" />
     <ClCompile Include="Engine\Interface\TextureManager.cpp" />
     <ClCompile Include="Engine\2d\Sprite.cpp" />
     <ClCompile Include="Engine\3d\Sphere.cpp" />
-    <ClCompile Include="Engine\3d\Model.cpp" />
+    <ClCompile Include="Engine\3d\Model\Model.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
     <ClCompile Include="Engine\3d\WorldTransform.cpp" />
-    <ClCompile Include="Engine\Interface\PSO.cpp" />
+    <ClCompile Include="Engine\Interface\PSO\PSOModel.cpp" />
     <ClCompile Include="Engine\3d\Triangle.cpp" />
     <ClCompile Include="Game\Scene\IScene.cpp" />
     <ClCompile Include="Game\Scene\GameManager.cpp" />
@@ -58,9 +58,9 @@
     <ClCompile Include="Engine\Adapter\Engine.cpp" />
     <ClCompile Include="Engine\Input\InputManager.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
-    <ClCompile Include="Engine\Interface\PSOSprite.cpp" />
-    <ClCompile Include="Engine\Interface\PSOProperty.cpp" />
-    <ClCompile Include="Engine\Interface\PSOParticle.cpp" />
+    <ClCompile Include="Engine\Interface\PSO\PSOSprite.cpp" />
+    <ClCompile Include="Engine\Interface\PSO\PSOProperty.cpp" />
+    <ClCompile Include="Engine\Interface\PSO\PSOParticle.cpp" />
     <ClCompile Include="Engine\3d\Particle.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -73,6 +73,9 @@
     <ClCompile Include="Game\Utilty\TimedCall.cpp" />
     <ClCompile Include="Game\Collision\CollisionManager.cpp" />
     <ClCompile Include="Game\Collision\Collider.cpp" />
+    <ClCompile Include="Engine\3d\Object3d\Object3d.cpp" />
+    <ClCompile Include="Engine\3d\Object3d\Object3dManager.cpp" />
+    <ClCompile Include="Engine\3d\Model\ModelManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -102,7 +105,7 @@
     <ClInclude Include="Lib\math\Matrix4x4.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3d\Mesh.h">
+    <ClInclude Include="Engine\Interface\Mesh.h">
       <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3d\Camera.h" />
@@ -111,7 +114,7 @@
     <ClInclude Include="Lib\math\Vector2.h" />
     <ClInclude Include="Engine\2d\Sprite.h" />
     <ClInclude Include="Engine\3d\Sphere.h" />
-    <ClInclude Include="Engine\3d\Model.h" />
+    <ClInclude Include="Engine\3d\Model\Model.h" />
     <ClInclude Include="Lib\math\ModelData.h" />
     <ClInclude Include="Lib\math\MaterialData.h" />
     <ClInclude Include="Engine\Input\Input.h" />
@@ -121,7 +124,7 @@
     <ClInclude Include="Lib\math\Matrix3x3.h" />
     <ClInclude Include="Engine\3d\ResourceObject.h" />
     <ClInclude Include="Engine\3d\WorldTransform.h" />
-    <ClInclude Include="Engine\Interface\PSO.h" />
+    <ClInclude Include="Engine\Interface\PSO\PSOModel.h" />
     <ClInclude Include="Engine\3d\Triangle.h" />
     <ClInclude Include="Game\Scene\IScene.h" />
     <ClInclude Include="Game\Scene\GameManager.h" />
@@ -131,9 +134,9 @@
     <ClInclude Include="Engine\Adapter\Engine.h" />
     <ClInclude Include="Engine\Input\InputManager.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />
-    <ClInclude Include="Engine\Interface\PSOSprite.h" />
-    <ClInclude Include="Engine\Interface\PSOProperty.h" />
-    <ClInclude Include="Engine\Interface\PSOParticle.h" />
+    <ClInclude Include="Engine\Interface\PSO\PSOSprite.h" />
+    <ClInclude Include="Engine\Interface\PSO\PSOProperty.h" />
+    <ClInclude Include="Engine\Interface\PSO\PSOParticle.h" />
     <ClInclude Include="Engine\3d\Particle.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -148,6 +151,9 @@
     <ClInclude Include="Game\Collision\CollisionManager.h" />
     <ClInclude Include="Game\Collision\Collider.h" />
     <ClInclude Include="Game\Collision\CollisionConfig.h" />
+    <ClInclude Include="Engine\3d\Object3d\Object3d.h" />
+    <ClInclude Include="Engine\3d\Object3d\Object3dManager.h" />
+    <ClInclude Include="Engine\3d\Model\ModelManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

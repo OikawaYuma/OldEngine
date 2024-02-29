@@ -196,8 +196,8 @@ void Model::Draw(WorldTransform worldTransform, uint32_t texture, Camera* camera
 	materialData->shininess = material.shininess;
 	directionalLightData->direction = dire.direction;
 	//directionalLightData->direction =  Normalize(directionalLightData->direction);
-	directXCommon_->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
-	directXCommon_->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定
+	//directXCommon_->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
+	//directXCommon_->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定
 	directXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);    //VBVを設定
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	directXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

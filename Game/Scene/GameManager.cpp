@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include "WinAPI.h"
 #include "DirectXCommon.h"
-#include "PSO.h"
+#include "PSOModel.h"
 #include "PSOSprite.h"
 #include "PSOParticle.h"
 #include "Input.h"
@@ -14,6 +14,9 @@
 #include "Sprite.h"
 #include "Sphere.h"
 #include "Model.h"
+#include "ModelManager.h"
+#include "Object3d.h"
+#include "Object3dManager.h"
 #include "Triangle.h"
 
 #include "VertexData.h"
@@ -52,6 +55,8 @@ int GameManager::Run() {
 	Audio* sAudio = Audio::GetInstance();
 	sAudio->Initialize();
 
+	Object3dManager* sObjectManager = Object3dManager::GetInstance();
+	sObjectManager->Init();
 
 	TextureManager* sTextureManager = TextureManager::GetInstance();
 

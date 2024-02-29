@@ -16,7 +16,7 @@
 #include "TransformationMatrix.h"
 #include "DirectionLight.h"
 #include "Mesh.h"
-#include "PSO.h"
+#include "PSOModel.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")

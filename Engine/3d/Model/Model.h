@@ -1,9 +1,10 @@
 #pragma once
 #include "WinAPI.h"
 #include "DirectXCommon.h"
-#include "PSO.h"
+#include "PSOModel.h"
 #include "Mesh.h"
 #include "TextureManager.h"
+#include "ModelManager.h"
 
 #include "Transform.h"
 #include "WorldTransform.h"
@@ -29,15 +30,10 @@
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
-class DirectXCommon;
-class WinAPI;
-class TextureManager;
-class Camera;
-class PSO;
+
 class Model
 {
 public:
-	ModelData modelData_;
 	TransformationMatrix* wvpData;
 	ModelData GetModelData() { return modelData_; }
 	Model();
@@ -55,7 +51,17 @@ public:
 private:
 	HRESULT hr;
 	// RootSignature作成
-	
+	ModelManager* modelManager = nullptr;
+
+	// 頂点リソースにデータを書き込む
+	Material* materialData;
+
+	VertexData* vertexData_;
+	ModelData modelData_;
+
+
+
+
 	DirectXCommon* directXCommon_;
 	WinAPI* sWinAPI_;
 	TextureManager* textureManager_ = nullptr;
@@ -64,16 +70,13 @@ private:
 	Microsoft::WRL::ComPtr < ID3D12Resource> vertexResource_;
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
 
-	VertexData* vertexData_;
-
 	/*色用*/
 //頂点リソースの設定
 // 実際に頂点リソースを作る
 	Microsoft::WRL::ComPtr < ID3D12Resource> materialResource;
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
-	// 頂点リソースにデータを書き込む
-	Material* materialData;
+	
 
 	/*移動用*/
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する

@@ -1,4 +1,4 @@
-#include "PSO.h"
+#include "PSOModel.h"
 
 void PSO::CreatePipelineStateObject() {
 	// DirectXCommonのインスタンスを取得
