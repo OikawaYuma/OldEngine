@@ -182,7 +182,7 @@ void Model::Draw(uint32_t texture,const Material& material,const DirectionalLigh
 	textureManager_ = TextureManager::GetInstance();
 	// 色のデータを変数から読み込み
 	materialData->color = material.color;
-	materialData->shininess = material.shininess;
+	materialData->shininess = 0.5f;
 	directionalLightData->direction = dire.direction;
 	//directionalLightData->direction =  Normalize(directionalLightData->direction);
 	//directXCommon_->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());

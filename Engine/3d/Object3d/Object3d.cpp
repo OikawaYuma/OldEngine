@@ -112,7 +112,7 @@ void Object3d::Draw(uint32_t texture, Camera* camera)
 	// 3Dモデルが割り当てられていれば描画する
 	if (model_) {
 		model_->Draw(texture,{ { 1.0f,1.0f,1.0f,1.0f },true
-	}, { 1.0f,1.0,1.0,1.0f });
+			}, { { 1.0f,1.0,1.0,1.0f } ,{ 0.0f,-1.0f,0.0f },0.5f });
 	}
 
 }

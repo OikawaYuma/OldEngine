@@ -11,6 +11,7 @@ void DemoScene::Init()
 	demoSprite = new Sprite();
 	demoSprite->Init({0.0f,0.0f},{600.0f,600.0f},{0.0f,0.0f},{1.0f,1.0f,1.0f,1.0f});
 	textureHandle = TextureManager::StoreTexture("Resources/uvChecker.png");
+	textureHandle2 = TextureManager::StoreTexture("Resources/white.png");
 
 	material.color = { 1.0f,1.0f,1.0f,1.0f };
 	material.enableLighting = true;
@@ -48,7 +49,7 @@ void DemoScene::Draw()
 {
 	demoSprite->Draw(textureHandle,{1.0f,1.0f,1.0f,1.0f});
 	object3d->Draw(textureHandle,camera);
-	object3d2->Draw(textureHandle, camera);
+	object3d2->Draw(textureHandle2, camera);
 }
 
 void DemoScene::Release() {
