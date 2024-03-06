@@ -1,78 +1,18 @@
 #include "Object3d.h"
 #include "Modelmanager.h"
+#include "Object3dCommon.h"
 void Object3d::Init()
 {
+
 	WinAPI* sWinAPI = WinAPI::GetInstance();
-	directXCommon_ = DirectXCommon::GetInstance();
+	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
 	worldTransform_.Initialize();
-	//// モデル読み込み
-	//modelData_ = LoadObjFile(directoryPath, filename);
-
-	//// 頂点リソースを作る
-	//vertexResource_ = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(VertexData) * modelData_.vertices.size());
-	//// 頂点バッファビューを作成する
-	//vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress(); // リソースの先頭のアドレスから使う
-	//vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size()); // 使用するリソースのサイズは頂点のサイズ
-	//vertexBufferView_.StrideInBytes = sizeof(VertexData); // 1頂点当たりのサイズ
-
-	//// 頂点リソースにデータを書き込む
-	//vertexData_ = nullptr;
-	//vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
-	//std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
-
-	//// 実際に頂点リソースを作る
-	//materialResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(Material));
-
-	///*materialBufferView = CreateBufferView();;*/
-	//// 頂点リソースにデータを書き込む
-	//materialData = nullptr;
-	//// 書き込むためのアドレスを取得
-	//materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
-	//// 色のデータを変数から読み込み
-	//materialData->color = material.color;
-	//materialData->enableLighting = material.enableLighting;
-	//materialData->uvTransform = MakeIdentity4x4();
-	//materialData->shininess = material.shininess;
-
-	//transformUv = {
-	//	{1.0f,1.0f,1.0f},
-	//	{0.0f,0.0f,0.0f},
-	//	{0.0f,0.0f,0.0f}
-	//};
-
-	////バッファリソース
-	//// データを書き込む
-	//wvpData = nullptr;
-	//// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	//wvpResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(TransformationMatrix));
-	//// 書き込むためのアドレスを取得
-	//wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
-	////単位行列を書き込んでいく
-	//wvpData->WVP = MakeIdentity4x4();
-	//wvpData->World = MakeIdentity4x4();
-
-	//directionalLightData = nullptr;
-	//directionalLightResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(DirectionalLight));
-	//// 書き込むためのアドレスを取得
-	//directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData));
-
-	//// デフォルト値はとりあえず以下のようにしておく
-	//directionalLightData->color = { 1.0f,1.0f,1.0f,1.0f };
-	//directionalLightData->direction = { 0.0f,-1.0f,0.0f };
-	//directionalLightData->intensity = 1.0f;
-
-	//cameraForGPUData_ = nullptr;
-	//cameraForGPUResource_ = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(CameraForGPU));
-	//// 書き込むためのアドレスを取得
-	//cameraForGPUResource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraForGPUData_));
-
-	//cameraForGPUData_->worldPosition = { 1.0f,1.0f,-5.0f };
 
 	//バッファリソース
 	// データを書き込む
 	wvpData = nullptr;
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	wvpResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(TransformationMatrix));
+	wvpResource = Mesh::CreateBufferResource(directXCommon->GetDevice(), sizeof(TransformationMatrix));
 	// 書き込むためのアドレスを取得
 	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvpData));
 	//単位行列を書き込んでいく
@@ -80,7 +20,7 @@ void Object3d::Init()
 	wvpData->World = MakeIdentity4x4();
 	// カメラ用
 	cameraForGPUData_ = nullptr;
-	cameraForGPUResource_ = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(CameraForGPU));
+	cameraForGPUResource_ = Mesh::CreateBufferResource(directXCommon->GetDevice(), sizeof(CameraForGPU));
 	// 書き込むためのアドレスを取得
 	cameraForGPUResource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraForGPUData_));
 
@@ -95,20 +35,20 @@ void Object3d::Update()
 
 }
 
-void Object3d::Draw(uint32_t texture, Camera* camera)
+void Object3d::Draw(uint32_t texture, Camera* camera )
 {
-	pso_ = PSO::GatInstance();
-
+	PSO *pso = PSO::GatInstance();
+	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
 	cameraForGPUData_->worldPosition = camera->GetTransform().translate;
-	Matrix4x4 worldViewProjectionMatrix = Multiply(worldTransform_.matWorld_, Multiply(camera->GetViewMatrix(), camera->GetProjectionMatrix()));
+	Matrix4x4 worldViewProjectionMatrix = Multiply(worldTransform_.matWorld_,camera->GetViewprojectionMatrix());
 	wvpData->WVP = worldViewProjectionMatrix;
 	//directionalLightData->direction =  Normalize(directionalLightData->direction);
-	directXCommon_->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
-	directXCommon_->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定
+	directXCommon->GetCommandList()->SetGraphicsRootSignature(pso->GetProperty().rootSignature.Get());
+	directXCommon->GetCommandList()->SetPipelineState(pso->GetProperty().graphicsPipelineState.Get());    //PSOを設定
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
-	directXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
-	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(4, cameraForGPUResource_->GetGPUVirtualAddress());
+	directXCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	directXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
+	directXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(4, cameraForGPUResource_->GetGPUVirtualAddress());
 	// 3Dモデルが割り当てられていれば描画する
 	if (model_) {
 		model_->Draw(texture,{ { 1.0f,1.0f,1.0f,1.0f },true

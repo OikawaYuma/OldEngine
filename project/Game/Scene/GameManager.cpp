@@ -16,7 +16,7 @@
 #include "Model.h"
 #include "ModelManager.h"
 #include "Object3d.h"
-#include "Object3dManager.h"
+#include "Object3dCommon.h"
 #include "Triangle.h"
 
 #include "VertexData.h"
@@ -55,8 +55,8 @@ int GameManager::Run() {
 	Audio* sAudio = Audio::GetInstance();
 	sAudio->Initialize();
 
-	Object3dManager* sObjectManager = Object3dManager::GetInstance();
-	sObjectManager->Init();
+	Object3dCommon* sObjectCommon = Object3dCommon::GetInstance();
+	sObjectCommon->Init();
 
 	ModelManager* sModelManager = ModelManager::GetInstance();
 	sModelManager->init();

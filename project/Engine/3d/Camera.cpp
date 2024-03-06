@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include"WinAPI.h"
+
 
 void Camera::Initialize() {
 	transform_={ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,-80.0f} };
@@ -7,20 +7,18 @@ void Camera::Initialize() {
 
 	cameraMatrix_ = MakeAffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
 	viewMatrix_ = Inverse(cameraMatrix_);
-	projectionMatrix_ = MakePerspectiveFovMatrix(0.45f, float(WinAPI::kClientWidth_) / float(WinAPI::kClientHeight_), 0.1f, 100.0f);
+	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, asepectRatio_, nearClip_, farClip_);
 	//worldCameraMatrix = Multiply(worldmatrix, Multiply(viewMatrix, projectionMatrix));
-	worldViewProjectionMatrix_ = Multiply(worldmatrix_, Multiply(viewMatrix_, projectionMatrix_));
+	viewProjectionMatrix_ = Multiply(viewMatrix_, projectionMatrix_);
 }
 
 void Camera::Update() {
 	cameraMatrix_ = MakeAffineMatrix(transform_.scale, transform_.rotate, transform_.translate);
 	viewMatrix_ = Inverse(cameraMatrix_);
-	projectionMatrix_ = MakePerspectiveFovMatrix(0.45f, float(WinAPI::kClientWidth_) / float(WinAPI::kClientHeight_), 0.1f, 100.0f);
-	worldViewProjectionMatrix_ = Multiply(worldmatrix_, Multiply(viewMatrix_, projectionMatrix_));
+	projectionMatrix_ = MakePerspectiveFovMatrix(fovY_, asepectRatio_, nearClip_, farClip_);
+	viewProjectionMatrix_ = Multiply(viewMatrix_, projectionMatrix_);
 
 
 }
 
-void Camera::Draw() {
 
-}

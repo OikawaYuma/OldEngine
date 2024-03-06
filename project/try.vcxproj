@@ -156,7 +156,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Utilty\TimedCall.cpp" />
     <ClCompile Include="Engine\3d\Model\ModelManager.cpp" />
     <ClCompile Include="Engine\3d\Object3d\Object3d.cpp" />
-    <ClCompile Include="Engine\3d\Object3d\Object3dManager.cpp" />
+    <ClCompile Include="Engine\3d\Object3d\Object3dCommon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Scene\DemoScene.h" />
@@ -214,7 +214,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Utilty\TimedCall.h" />
     <ClInclude Include="Engine\3d\Model\ModelManager.h" />
     <ClInclude Include="Engine\3d\Object3d\Object3d.h" />
-    <ClInclude Include="Engine\3d\Object3d\Object3dManager.h" />
+    <ClInclude Include="Engine\3d\Object3d\Object3dCommon.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

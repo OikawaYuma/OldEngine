@@ -116,7 +116,7 @@
     <ClCompile Include="Engine\3d\Model\ModelManager.cpp">
       <Filter>Engine\3d\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\Object3d\Object3dManager.cpp">
+    <ClCompile Include="Engine\3d\Object3d\Object3dCommon.cpp">
       <Filter>Engine\3d\Objecyt3d</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3d\Object3d\Object3d.cpp">
@@ -256,7 +256,7 @@
     <ClInclude Include="Engine\3d\Model\Model.h">
       <Filter>Engine\3d\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3d\Object3d\Object3dManager.h">
+    <ClInclude Include="Engine\3d\Object3d\Object3dCommon.h">
       <Filter>Engine\3d\Objecyt3d</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3d\Object3d\Object3d.h">
