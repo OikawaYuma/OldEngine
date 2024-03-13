@@ -21,6 +21,7 @@
 #include "Matrix4x4.h"
 #include "Material.h"
 #include "DirectionLight.h"
+#include "WorldTransform.h"
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
@@ -43,6 +44,12 @@ struct Emitter {
 	float frequencyTime; //!< 頻度用時刻
 };
 
+struct RandRangePro {
+	Vector2 rangeX;
+	Vector2 rangeY;
+	Vector2 rangeZ;
+};
+
 class Particle
 {
 public:
@@ -53,24 +60,24 @@ public:
 		float lifeTime;
 		float currentTime;
 	};
-	
+
 
 	Particle();
 	~Particle();
 
-	void Initialize(const Vector4& color);
+	void Initialize(Emitter emitter);
 	//void Update();
-	void Draw(uint32_t texture, const Vector4& color, Camera* camera);
+	void Draw(Emitter emitter, const Vector3& worldTransform, uint32_t texture, Camera* camera, const RandRangePro& randRange, bool scaleAddFlag);
 	void Release();
 	void SetTextureManager(TextureManager* textureManager) {
 		textureManager_ = textureManager;
 	}
-	ParticlePro MakeNewParticle(std::mt19937& randomEngine);
+	ParticlePro MakeNewParticle(std::mt19937& randomEngine, const Vector3& scale, const Vector3& translate, const RandRangePro& randRange);
 
-	std::list<ParticlePro> Emission(const Emitter& emitter, std::mt19937& randEngine);
+	std::list<ParticlePro> Emission(const Emitter& emitter, std::mt19937& randEngine, const Vector3& worldTransform, const RandRangePro& randRange);
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
 private:
-	const static uint32_t kNumMaxInstance = 10; // インスタンス数
+	const static uint32_t kNumMaxInstance = 10000; // インスタンス数
 	// Instancing用のTransformMatrixリソースを作る
 	Microsoft::WRL::ComPtr<ID3D12Resource> instancingResorce = nullptr;
 	PSOParticle* pso_ = nullptr;
@@ -89,11 +96,12 @@ private:
 	// データを書き込む
 	//TransformationMatrix* transformationMatrixDataSprite = nullptr;
 	D3D12_SHADER_RESOURCE_VIEW_DESC instancingSrvDesc{};
-	
+
 	D3D12_CPU_DESCRIPTOR_HANDLE instancingSrvHandleCPU;
 	D3D12_GPU_DESCRIPTOR_HANDLE instancingSrvHandleGPU;
 
-	
+	Particle* particle = nullptr;
+
 
 	//D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
 
@@ -121,12 +129,11 @@ private:
 	DirectionalLight* directionalLightData;
 	Transform transformUv;
 
-	
+
 
 	// Δtを定義。とりあえず60fps固定してあるが、
 	//実時間を計測して可変fpsで動かせるようにしておくとなお良い
-	const float kDeltaTime = 1.0f / 60.0f;
-
-
+	const float kDeltaTime = 1.0f / 45.0f;
+	Emitter emitter_{};
+	RandRangePro randRange_;
 };
-

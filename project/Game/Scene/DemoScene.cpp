@@ -29,6 +29,21 @@ void DemoScene::Init()
 	
 	object3d->SetModel("box.obj");
 	object3d2->SetModel("ball.obj");
+	particle = new Particle();
+	particle2 = new Particle();
+
+	demoRandPro = {
+		{1.0f,4.0f},
+		{1.0f,4.0f},
+		{0.0f,2.0f}
+	};
+
+	demoEmitter_.count = 6;
+	demoEmitter_.frequency = 0.02f;
+	demoEmitter_.frequencyTime = 0.0f;
+	demoEmitter_.transform.scale = { 0.5f,0.5f,0.5f };
+	particle->Initialize(demoEmitter_);
+	particle2->Initialize(demoEmitter_);
 }
 
 void DemoScene::Update()
@@ -47,9 +62,11 @@ void DemoScene::Update()
 }
 void DemoScene::Draw()
 {
-	demoSprite->Draw(textureHandle,{1.0f,1.0f,1.0f,1.0f});
-	object3d->Draw(textureHandle,camera);
-	object3d2->Draw(textureHandle2, camera);
+	//demoSprite->Draw(textureHandle,{1.0f,1.0f,1.0f,1.0f});
+	//object3d->Draw(textureHandle,camera);
+	//object3d2->Draw(textureHandle2, camera);
+	particle->Draw(demoEmitter_, { worldTransform.translation_.x,worldTransform.translation_.y,worldTransform.translation_.z}, textureHandle, camera, demoRandPro, false);
+	particle2->Draw(demoEmitter_, { worldTransform2.translation_.x,worldTransform2.translation_.y,worldTransform2.translation_.z }, textureHandle2, camera, demoRandPro, false);
 }
 
 void DemoScene::Release() {

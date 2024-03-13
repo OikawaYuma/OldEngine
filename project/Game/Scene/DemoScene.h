@@ -31,5 +31,10 @@ private:
 
 	WorldTransform worldTransform;
 	WorldTransform worldTransform2;
+
+	Particle* particle = nullptr;
+	Particle* particle2 = nullptr;
+	Emitter demoEmitter_;
+	RandRangePro demoRandPro;
 };
 
