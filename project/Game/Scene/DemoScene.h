@@ -20,7 +20,7 @@ private:
 	int sceneTime = 0;
 	Camera* camera = nullptr;
 	Input* input = nullptr;
-	Sprite* demoSprite = nullptr;
+	
 
 	//変数
 	uint32_t textureHandle;

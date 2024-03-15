@@ -8,8 +8,7 @@ void DemoScene::Init()
 	camera = new Camera;
 	camera->Initialize();
 	input = Input::GetInstance();
-	demoSprite = new Sprite();
-	demoSprite->Init({0.0f,0.0f},{600.0f,600.0f},{0.0f,0.0f},{1.0f,1.0f,1.0f,1.0f});
+	
 	textureHandle = TextureManager::StoreTexture("Resources/uvChecker.png");
 	textureHandle2 = TextureManager::StoreTexture("Resources/white.png");
 
@@ -48,10 +47,43 @@ void DemoScene::Init()
 
 void DemoScene::Update()
 {
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
+		sceneNo = TITLE;
+	}
+	
+	Vector3 cameraPos = camera->GetTranslate();
+
+	if (Input::GetInstance()->PushKey(DIK_A)) {
+		cameraPos.x -= 0.1f;
+		
+	}
+	else if (Input::GetInstance()->PushKey(DIK_D)) {
+		cameraPos.x += 0.1f;
+
+	}
+	else if (Input::GetInstance()->PushKey(DIK_W)) {
+		cameraPos.y += 0.1f;
+
+	}
+	else if (Input::GetInstance()->PushKey(DIK_S)) {
+	
+		cameraPos.y -= 0.1f;
+
+	}
+	else if (Input::GetInstance()->PushKey(DIK_E)) {
+		
+		cameraPos.z += 0.1f;
+
+	}
+	else if (Input::GetInstance()->PushKey(DIK_Q)) {
+		cameraPos.z -= 0.1f;
+
+	}
+	camera->SetTranslate(cameraPos);
 	sceneTime++;
 	////カメラの更新
 	camera->Update();
-	demoSprite->Update(textureHandle);
+	
 
 	object3d->SetWorldTransform(worldTransform);
 	object3d2->SetWorldTransform(worldTransform2);
@@ -62,9 +94,9 @@ void DemoScene::Update()
 }
 void DemoScene::Draw()
 {
-	//demoSprite->Draw(textureHandle,{1.0f,1.0f,1.0f,1.0f});
-	//object3d->Draw(textureHandle,camera);
-	//object3d2->Draw(textureHandle2, camera);
+	
+	object3d->Draw(textureHandle,camera);
+	object3d2->Draw(textureHandle2, camera);
 	particle->Draw(demoEmitter_, { worldTransform.translation_.x,worldTransform.translation_.y,worldTransform.translation_.z}, textureHandle, camera, demoRandPro, false);
 	particle2->Draw(demoEmitter_, { worldTransform2.translation_.x,worldTransform2.translation_.y,worldTransform2.translation_.z }, textureHandle2, camera, demoRandPro, false);
 }
