@@ -25,6 +25,7 @@ private:
 	//変数
 	uint32_t textureHandle;
 	uint32_t textureHandle2;
+	uint32_t textureHandle3;
 	Object3d* object3d = nullptr;
 	Object3d* object3d2 = nullptr;
 	Material material;
@@ -34,6 +35,7 @@ private:
 
 	Particle* particle = nullptr;
 	Particle* particle2 = nullptr;
+	Sprite* sprite_ = nullptr;
 	Emitter demoEmitter_;
 	RandRangePro demoRandPro;
 };

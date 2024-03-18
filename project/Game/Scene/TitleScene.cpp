@@ -10,9 +10,10 @@ void TitleScene::Init()
 
 	demoSprite2 = new Sprite();
 	demoSprite2->Init({ 600.0f,0.0f }, { 600.0f,600.0f }, { 0.0f,0.0f }, { 1.0f,1.0f,1.0f,1.0f });
+	demoSprite2->SetTextureSize({300.0f,300.0f});
 
 	textureHandle = TextureManager::StoreTexture("Resources/uvChecker.png");
-	textureHandle2 = TextureManager::StoreTexture("Resources/white.png");
+	textureHandle2 = TextureManager::StoreTexture("Resources/Demo2.png");
 }
 
 void TitleScene::Update()
@@ -21,7 +22,7 @@ void TitleScene::Update()
 		sceneNo = DEMO;
 	}
 	demoSprite->Update(textureHandle);
-	demoSprite2->Update(textureHandle);
+	demoSprite2->Update(textureHandle2);
 	
 }
 void TitleScene::Draw()

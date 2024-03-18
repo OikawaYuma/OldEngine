@@ -11,6 +11,11 @@ void DemoScene::Init()
 	
 	textureHandle = TextureManager::StoreTexture("Resources/uvChecker.png");
 	textureHandle2 = TextureManager::StoreTexture("Resources/white.png");
+	textureHandle3 = TextureManager::StoreTexture("Resources/Demo1.png");
+
+	sprite_ = new Sprite();
+	sprite_->Init({0.0f,0.0f},{300.0f,600.0f},{0.0f,0.0f},{1.0f,1.0f,1.0f,1.0f});
+	sprite_->SetTextureSize({ 300.0f,600.0f });
 
 	material.color = { 1.0f,1.0f,1.0f,1.0f };
 	material.enableLighting = true;
@@ -90,7 +95,7 @@ void DemoScene::Update()
 
 	object3d->Update();
 	object3d2->Update();
-
+	sprite_->Update(textureHandle3);
 }
 void DemoScene::Draw()
 {
@@ -99,6 +104,7 @@ void DemoScene::Draw()
 	object3d2->Draw(textureHandle2, camera);
 	particle->Draw(demoEmitter_, { worldTransform.translation_.x,worldTransform.translation_.y,worldTransform.translation_.z}, textureHandle, camera, demoRandPro, false);
 	particle2->Draw(demoEmitter_, { worldTransform2.translation_.x,worldTransform2.translation_.y,worldTransform2.translation_.z }, textureHandle2, camera, demoRandPro, false);
+	sprite_->Draw(textureHandle3,{1.0f,1.0f,1.0f,1.0f});
 }
 
 void DemoScene::Release() {

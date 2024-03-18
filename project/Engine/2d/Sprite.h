@@ -73,7 +73,7 @@ private:
 	// テクスチャ左上座標
 	Vector2 textureleftTop_ = { 0.0f,0.0f };
 	// テクスチャ切り出しサイズ
-	Vector2 textureSize_ = { 64.0f,64.0f };
+	Vector2 textureSize_ = { 100.0f,100.0f };
 	Transform transform_;
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferViewSprite_{};
