@@ -312,10 +312,7 @@ void DirectXCommon::CreateDepth() {
 
 void DirectXCommon::CreateDescriptorHeap() {
 	HRESULT hr;
-	// ディスクリプタサイズの設定
-	rtvDescriptorSize_ = 2;
-	srvDescriptorSize_ = 128;
-	dsvDescriptorSize_ = 1;
+
 
 	// ディスクリプタヒープの生成
 	//RTV用のヒープでディスクリプタの数は2。RTVはSHADER内で触るものではないのでShaderVisibleはfalse

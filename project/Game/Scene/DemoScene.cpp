@@ -16,8 +16,10 @@ void DemoScene::Init()
 	material.color = { 1.0f,1.0f,1.0f,1.0f };
 	material.enableLighting = true;
 	worldTransform.Initialize();
+	worldTransform.translation_.x = -5;
 	worldTransform2.Initialize();
 	worldTransform2.translation_.x = 5;
+	worldTransform.UpdateMatrix();
 	worldTransform2.UpdateMatrix();
 
 	ModelManager::GetInstance()->LoadModel("Resources/box", "box.obj");
@@ -63,10 +65,10 @@ void DemoScene::Update()
 void DemoScene::Draw()
 {
 	//demoSprite->Draw(textureHandle,{1.0f,1.0f,1.0f,1.0f});
-	//object3d->Draw(textureHandle,camera);
-	//object3d2->Draw(textureHandle2, camera);
-	particle->Draw(demoEmitter_, { worldTransform.translation_.x,worldTransform.translation_.y,worldTransform.translation_.z}, textureHandle, camera, demoRandPro, false);
-	particle2->Draw(demoEmitter_, { worldTransform2.translation_.x,worldTransform2.translation_.y,worldTransform2.translation_.z }, textureHandle2, camera, demoRandPro, false);
+	object3d->Draw(textureHandle,camera);
+	object3d2->Draw(textureHandle2, camera);
+	particle->Draw(demoEmitter_, { worldTransform.translation_.x,worldTransform.translation_.y,worldTransform.translation_.z +5}, textureHandle, camera, demoRandPro, false);
+	particle2->Draw(demoEmitter_, { worldTransform2.translation_.x,worldTransform2.translation_.y,worldTransform2.translation_.z +5}, textureHandle2, camera, demoRandPro, false);
 }
 
 void DemoScene::Release() {

@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include "WinAPI.h"
 #include "DirectXCommon.h"
+#include "SRVManager.h"
 #include "PSOModel.h"
 #include "PSOSprite.h"
 #include "PSOParticle.h"
@@ -52,6 +53,9 @@ int GameManager::Run() {
 	DirectXCommon* sDirctX = DirectXCommon::GetInstance();
 	sDirctX->Initialize();
 
+	SRVManager* sSRVManager = SRVManager::GetInstance();
+	sSRVManager->Init();
+
 	Audio* sAudio = Audio::GetInstance();
 	sAudio->Initialize();
 
@@ -62,6 +66,7 @@ int GameManager::Run() {
 	sModelManager->init();
 
 	TextureManager* sTextureManager = TextureManager::GetInstance();
+	sTextureManager->Init();
 
 	PSO* pso = PSO::GatInstance();
 	pso->CreatePipelineStateObject();
@@ -139,6 +144,7 @@ int GameManager::Run() {
 	/*------------------------------------------------------------
 
 	-------------------------------------------------------------*/
+
 	sModelManager->Finalize();
 	sWinAPI->Finalize();
 	//delete sWinAPI;
