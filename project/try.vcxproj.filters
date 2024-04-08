@@ -179,6 +179,7 @@
     <ClCompile Include="Engine\2d\ImGuiCommon.cpp">
       <Filter>Engine\2d</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Interface\Heap\SRVManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -277,9 +278,6 @@
     <ClInclude Include="Engine\3d\WorldTransform.h">
       <Filter>Engine\3d</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3d\Model\ModelManager.h">
-      <Filter>Engine\3d\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Lib\math\ModelData.h">
       <Filter>Engine\3d\Model</Filter>
     </ClInclude>
@@ -348,6 +346,10 @@
     </ClInclude>
     <ClInclude Include="Lib\math\VertexData.h">
       <Filter>Engine\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Interface\Heap\SRVManager.h" />
+    <ClInclude Include="Engine\3d\Model\ModelManager.h">
+      <Filter>Engine\3d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

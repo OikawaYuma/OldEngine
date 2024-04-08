@@ -29,7 +29,6 @@ class WinAPI;
 class DirectXCommon;
 class Camera;
 class Mesh;
-class TextureManager;
 
 struct ParticleForGPU {
 	Matrix4x4 WVP;
@@ -94,8 +93,6 @@ private:
 	// Sprite用のTransformationMatrix用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
 	Microsoft::WRL::ComPtr < ID3D12Resource> transformationMatrixResouceSprite;
 	// データを書き込む
-	//TransformationMatrix* transformationMatrixDataSprite = nullptr;
-	D3D12_SHADER_RESOURCE_VIEW_DESC instancingSrvDesc{};
 
 	D3D12_CPU_DESCRIPTOR_HANDLE instancingSrvHandleCPU;
 	D3D12_GPU_DESCRIPTOR_HANDLE instancingSrvHandleGPU;
@@ -129,7 +126,7 @@ private:
 	DirectionalLight* directionalLightData;
 	Transform transformUv;
 
-
+	uint32_t SRVIndex_;
 
 	// Δtを定義。とりあえず60fps固定してあるが、
 	//実時間を計測して可変fpsで動かせるようにしておくとなお良い

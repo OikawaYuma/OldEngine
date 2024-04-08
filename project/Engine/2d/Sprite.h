@@ -34,8 +34,8 @@ public:
 	Sprite();
 	~Sprite();
 
-	void Init(const Vector2& pos,const Vector2& size,const Vector2& anchorPoint,const Vector4& color);
-	void Update(uint32_t texture);
+	void Init(const Vector2& pos,const Vector2& size,const Vector2& anchorPoint,const Vector4& color,const std::string& filePath);
+	void Update();
 	void Draw(uint32_t texture, const Vector4& color);
 	void Release();
 	Transform GetTransform() {
@@ -110,6 +110,6 @@ private:
 	// データを書き込む
 	DirectionalLight* directionalLightData;
 	Transform transformUv;
-
+	Vector2 originSize_;
 };
 

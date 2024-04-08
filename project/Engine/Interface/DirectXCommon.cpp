@@ -1,10 +1,7 @@
 ﻿#include "DirectXCommon.h"
-#include "ImGuiCommon.h"
-#include "../../imgui/imgui.h"
-#include "../../imgui/imgui_impl_win32.h"
-#include "../../imgui/imgui_impl_dx12.h"
-#include <thread>
 
+#include <thread>
+#include "ImGuiCommon.h"
 
 /*----------------------------------------------------------
    このクラスはシングルトンパターンのを元に設計する
@@ -87,9 +84,6 @@ void DirectXCommon::Initialize() {
 
 	// dxCompilerを初期化
 	CreateDXCCompilier();
-
-	imGuiCommon_= new ImGuiCommon;
-	imGuiCommon_->Initialize();
 };
 
 void DirectXCommon::BeginFrame() {
@@ -125,9 +119,9 @@ void DirectXCommon::BeginFrame() {
 	commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	// ImGui
-	imGuiCommon_->UICreate();
+	ImGuiCommon::GetInstance()->UICreate();
 	//ImGuiの更新
-	imGuiCommon_->Update();
+	ImGuiCommon::GetInstance()->Update();
 	commandList_->RSSetViewports(1, &viewport);  //viewportを設定
 	commandList_->RSSetScissorRects(1, &scissorRect);    //Scirssorを設定:
 }
@@ -137,7 +131,7 @@ void DirectXCommon::BeginFrame() {
 void DirectXCommon::ViewChange() {
 	HRESULT hr;
 	//ImGuiの描画
-	imGuiCommon_->Draw();
+	ImGuiCommon::GetInstance()->Draw();
 	// これから書き込むバックバッファのインデックスを取得
 	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
 	//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
@@ -187,7 +181,7 @@ void DirectXCommon::ViewChange() {
 
 
 void DirectXCommon::Release() {
-	imGuiCommon_->Release();
+	ImGuiCommon::GetInstance()->Release();
 	CloseHandle(fenceEvent_);
 	CloseWindow(sWinAPI_->GetHwnd());
 }
@@ -312,16 +306,11 @@ void DirectXCommon::CreateDepth() {
 
 void DirectXCommon::CreateDescriptorHeap() {
 	HRESULT hr;
-	// ディスクリプタサイズの設定
-	rtvDescriptorSize_ = 2;
-	srvDescriptorSize_ = 128;
-	dsvDescriptorSize_ = 1;
+
 
 	// ディスクリプタヒープの生成
 	//RTV用のヒープでディスクリプタの数は2。RTVはSHADER内で触るものではないのでShaderVisibleはfalse
 	rtvDescriptorHeap_ = CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_RTV, rtvDescriptorSize_, false);
-	//SRV用のヒープでディスクリプタの数は128。SRVはShader内で触るものなので、ShaderVisibleはtrue
-	srvDescriptorHeap_ = CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, srvDescriptorSize_, true);
 	// DSVようのヒープでディスクリプタの数は1。DSVはShader内で触るものではないので、ShaderVisibleはfalse
 	dsvDescriptorHeap_ = CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE_DSV, dsvDescriptorSize_, false);
 

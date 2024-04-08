@@ -5,8 +5,7 @@
 #include "Camera.h"
 #include "mathFunction.h"
 #include "Mesh.h"
-#include "ImGuiCommon.h"
-
+#include "SRVManager.h"
 #include <numbers>
 
 
@@ -15,14 +14,6 @@ Particle::Particle() {};
 void Particle::Initialize(Emitter emitter) {
 	sWinAPI = WinAPI::GetInstance();
 	sDirectXCommon = DirectXCommon::GetInstance();
-
-
-
-	//rootParamerters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescripterTableを使う
-	//rootParamerters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
-	//rootParamerters[0].DescriptorTable.pDescriptorRanges = descriptorRange_; // Tableの中身の配列を指定
-	//rootParamerters[0].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange_); // Tableで利用する数
-
 	// Sprite用の頂点リソースを作る
 	vertexResourceSprite_ = Mesh::CreateBufferResource(sDirectXCommon->GetDevice(), sizeof(VertexData) * 4);
 
@@ -45,26 +36,6 @@ void Particle::Initialize(Emitter emitter) {
 
 	vertexDataSprite_[3].position = { 1.0f,1.0f,0.0f,1.0f }; // 右上
 	vertexDataSprite_[3].texcorrd = { 1.0f,0.0f };
-
-	//vertexDataSprite_[0].normal = {
-	//	vertexDataSprite_[0].position.x,
-	//	vertexDataSprite_[0].position.y,
-	//	vertexDataSprite_[0].position.z };
-
-	//vertexDataSprite_[1].normal = {
-	//	vertexDataSprite_[1].position.x,
-	//	vertexDataSprite_[1].position.y,
-	//	vertexDataSprite_[1].position.z };
-
-	//vertexDataSprite_[2].normal = {
-	//	vertexDataSprite_[2].position.x,
-	//	vertexDataSprite_[2].position.y,
-	//	vertexDataSprite_[2].position.z };
-
-	//vertexDataSprite_[3].normal = {
-	//	vertexDataSprite_[3].position.x,
-	//	vertexDataSprite_[3].position.y,
-	//	vertexDataSprite_[3].position.z };
 
 	// 実際に頂点リソースを作る
 	materialResource = Mesh::CreateBufferResource(sDirectXCommon->GetDevice(), sizeof(Material));
@@ -117,32 +88,11 @@ void Particle::Initialize(Emitter emitter) {
 		{0.0f,0.0f,0.0f}
 	};
 
-	//std::uniform_real_distribution<float> distribution(-1.0f, 1.0f);
-	//for (uint32_t index = 0; index < kNumMaxInstance; ++index) {
-	//	//particles_[index] = MakeNewParticle(randomEngine);
-	//	
-	//}
+	SRVIndex_ = SRVManager::Allocate();
+	SRVManager::CreateSRVforStructuredBuffer(SRVIndex_, transformationMatrixResouceSprite.Get(), kNumMaxInstance, sizeof(ParticleForGPU));
+	instancingSrvHandleCPU = SRVManager::GetCPUDescriptorHandle(SRVIndex_);
+	instancingSrvHandleGPU = SRVManager::GetGPUDescriptorHandle(SRVIndex_);
 
-	instancingSrvDesc.Format = DXGI_FORMAT_UNKNOWN;
-	instancingSrvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	instancingSrvDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
-	instancingSrvDesc.Buffer.FirstElement = 0;
-	instancingSrvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
-	instancingSrvDesc.Buffer.NumElements = kNumMaxInstance;
-	instancingSrvDesc.Buffer.StructureByteStride = sizeof(ParticleForGPU);
-
-	//// SRVを作成するDescriptorHeapの場所を決める
-	//instancingSrvHandleCPU = sDirectXCommon->GetSrvDescriptorHeap()->GetCPUDescriptorHandleForHeapStart();
-	//instancingSrvHandleGPU = sDirectXCommon->GetSrvDescriptorHeap()->GetGPUDescriptorHandleForHeapStart();
-	//// 先頭はImGuiが使っているのでその次を使う
-	//instancingSrvHandleCPU.ptr += sDirectXCommon->GetDevice()->(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * TextureManager::index_;
-	//instancingSrvHandleGPU.ptr += sDirectXCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) * TextureManager::index_;
-	// 
-	instancingSrvHandleCPU = sDirectXCommon->GetCPUDescriptorHandle(sDirectXCommon->GetSrvDescriptorHeap().Get(), sDirectXCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV), TextureManager::GetInstance()->GetIndex());
-	instancingSrvHandleGPU = sDirectXCommon->GetGPUDescriptorHandle(sDirectXCommon->GetSrvDescriptorHeap().Get(), sDirectXCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV), TextureManager::GetInstance()->GetIndex());
-	// SRVの生成
-	sDirectXCommon->GetDevice()->CreateShaderResourceView(transformationMatrixResouceSprite.Get(), &instancingSrvDesc, instancingSrvHandleCPU);
-	TextureManager::PlusIndex();
 	directionalLightData = nullptr;
 	directionalLightResource = Mesh::CreateBufferResource(sDirectXCommon->GetDevice(), sizeof(DirectionalLight));
 	// 書き込むためのアドレスを取得
@@ -234,7 +184,7 @@ void Particle::Draw(Emitter emitter, const Vector3& worldTransform, uint32_t tex
 	// TransformationmatrixCBufferの場所を設定
 	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, instancingSrvHandleGPU);
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
-	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetTextureSrvHandleGPU_(texture));
+	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, SRVManager::GetInstance()->GetGPUDescriptorHandle(texture));
 	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, directionalLightResource->GetGPUVirtualAddress());
 	// 描画（DrawCall/ドローコール）
 	//sDirectXCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
