@@ -56,6 +56,9 @@ int GameManager::Run() {
 	SRVManager* sSRVManager = SRVManager::GetInstance();
 	sSRVManager->Init();
 
+	ImGuiCommon *imGuiCommon = ImGuiCommon::GetInstance();
+	imGuiCommon->Initialize();
+
 	Audio* sAudio = Audio::GetInstance();
 	sAudio->Initialize();
 

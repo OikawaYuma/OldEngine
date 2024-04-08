@@ -8,11 +8,10 @@ void DemoScene::Init()
 	camera = new Camera;
 	camera->Initialize();
 	input = Input::GetInstance();
-	demoSprite = new Sprite();
-	demoSprite->Init({0.0f,0.0f},{600.0f,600.0f},{0.0f,0.0f},{1.0f,1.0f,1.0f,1.0f});
 	textureHandle = TextureManager::StoreTexture("Resources/uvChecker.png");
 	textureHandle2 = TextureManager::StoreTexture("Resources/white.png");
-
+	demoSprite = new Sprite();
+	demoSprite->Init({ 0.0f,0.0f }, { 600.0f,600.0f }, { 0.0f,0.0f }, { 1.0f,1.0f,1.0f,1.0f }, "Resources/uvChecker.png");
 	material.color = { 1.0f,1.0f,1.0f,1.0f };
 	material.enableLighting = true;
 	worldTransform.Initialize();
@@ -31,8 +30,8 @@ void DemoScene::Init()
 	
 	object3d->SetModel("box.obj");
 	object3d2->SetModel("ball.obj");
-	particle = new Particle();
-	particle2 = new Particle();
+    particle = new Particle();
+    particle2 = new Particle();
 
 	demoRandPro = {
 		{1.0f,4.0f},
@@ -53,7 +52,7 @@ void DemoScene::Update()
 	sceneTime++;
 	////カメラの更新
 	camera->Update();
-	demoSprite->Update(textureHandle);
+	demoSprite->Update();
 
 	object3d->SetWorldTransform(worldTransform);
 	object3d2->SetWorldTransform(worldTransform2);

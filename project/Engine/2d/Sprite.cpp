@@ -4,12 +4,12 @@
 #include "Camera.h"
 #include "mathFunction.h"
 #include "Mesh.h"
-
+#include "SRVManager.h"
 
 
 Sprite::Sprite() {};
 
-void Sprite::Init(const Vector2& pos, const Vector2& size, const Vector2& anchorPoint, const Vector4& color) {
+void Sprite::Init(const Vector2& pos, const Vector2& size, const Vector2& anchorPoint, const Vector4& color, const std::string& filePath) {
 	sWinAPI = WinAPI::GetInstance();
 	sDirectXCommon = DirectXCommon::GetInstance();
 
@@ -93,10 +93,12 @@ void Sprite::Init(const Vector2& pos, const Vector2& size, const Vector2& anchor
 		{0.0f,0.0f,0.0f}
 	};
 
-	
+	const DirectX::TexMetadata &metadata_ =
+		TextureManager::GetInstance()->GetMetaData(filePath);
+	originSize_ = {static_cast<float>(metadata_.width),static_cast<float>(metadata_.height) };
 
 };
-void Sprite::Update(uint32_t texture) {
+void Sprite::Update() {
 	/*transform_.translate = { position_.x,position_.y ,0.0f };
 	transform_.scale = { size_.x,size_.y,1.0f };*/
 	float left = 0.0f - anchorPoint_.x;
@@ -111,12 +113,11 @@ void Sprite::Update(uint32_t texture) {
 	vertexDataSprite_[2].position = { right,bottom,0.0f,1.0f }; // 右下
 	vertexDataSprite_[3].position = { right,top,0.0f,1.0f }; // 右上
 
-	const DirectX::TexMetadata& metadata =
-		TextureManager::GetInstance()->GetMetaData(texture);
-	float tex_left = textureleftTop_.x / metadata.width;
-	float tex_right = (textureleftTop_.x + textureSize_.x) / metadata.width;
-	float tex_top = textureleftTop_.y / metadata.height;
-	float tex_bottom = (textureleftTop_.y + textureSize_.y) / metadata.height;
+	
+	float tex_left = textureleftTop_.x / originSize_.x;
+	float tex_right = (textureleftTop_.x + textureSize_.x) / originSize_.x;
+	float tex_top = textureleftTop_.y / originSize_.y;
+	float tex_bottom = (textureleftTop_.y + textureSize_.y) / originSize_.y;
 
 	// 1枚目の三角形
 	vertexDataSprite_[0].texcorrd = { tex_left,tex_bottom };
@@ -151,7 +152,7 @@ void Sprite::Draw(uint32_t texture, const Vector4& color) {
 	// TransformationmatrixCBufferの場所を設定
 	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, transformationMatrixResouceSprite->GetGPUVirtualAddress());
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
-	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, TextureManager::GetInstance()->GetTextureSrvHandleGPU_(texture));
+	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, SRVManager::GetGPUDescriptorHandle(texture));
 	// 描画（DrawCall/ドローコール）
 	//sDirectXCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
 	sDirectXCommon->GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);

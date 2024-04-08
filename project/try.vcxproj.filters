@@ -278,9 +278,6 @@
     <ClInclude Include="Engine\3d\WorldTransform.h">
       <Filter>Engine\3d</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3d\Model\ModelManager.h">
-      <Filter>Engine\3d\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Lib\math\ModelData.h">
       <Filter>Engine\3d\Model</Filter>
     </ClInclude>
@@ -351,6 +348,9 @@
       <Filter>Engine\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Interface\Heap\SRVManager.h" />
+    <ClInclude Include="Engine\3d\Model\ModelManager.h">
+      <Filter>Engine\3d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

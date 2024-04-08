@@ -16,7 +16,6 @@
 #pragma comment(lib,"dxcompiler.lib")
 // テクスチャ1枚分のデータ
 struct TextureData {
-	std::string filePath;
 	DirectX::TexMetadata metaData;
 	Microsoft::WRL::ComPtr<ID3D12Resource> resource;
 	uint32_t srvIndex;
@@ -43,7 +42,7 @@ public:
 	void Release();
 
 	// メタデータを取得
-	const DirectX::TexMetadata& GetMetaData(uint32_t textureIndex);
+	const DirectX::TexMetadata& GetMetaData(const std::string& filePath);
 	static DirectX::ScratchImage LoadTexture(const std::string& filePath);
 
 	// DirectX12のTextureResourceを作る
@@ -51,9 +50,7 @@ public:
 
 	static void UploadTextureData(Microsoft::WRL::ComPtr <ID3D12Resource>, const DirectX::ScratchImage& mipImages);
 
-	// Getter
-	D3D12_CPU_DESCRIPTOR_HANDLE GetTextureSrvHandleCPU_(uint32_t texture){return textureDatas_[texture].textureSrvHandleCPU;}
-	D3D12_GPU_DESCRIPTOR_HANDLE GetTextureSrvHandleGPU_(uint32_t texture) { return textureDatas_[texture].textureSrvHandleGPU ; }
+
 
 	uint32_t GetIndex() { return  kParIndez; }
 private:
@@ -66,19 +63,8 @@ private:
 	// 現在空白のHeap位置を表す
 	static int kSRVIndexTop ;
 	static int kParIndez;
-	//SRV
-	const static uint32_t SRVSizes = 128;
-	// metaDataを基にSRVの設定
-	
-	// Resourceの生成
-	static std::vector<TextureData> textureDatas_;
-	/*static Microsoft::WRL::ComPtr <ID3D12Resource> textureResource_[SRVSizes];
-	static D3D12_CPU_DESCRIPTOR_HANDLE textureSrvHandleCPU_[SRVSizes];
-	static D3D12_GPU_DESCRIPTOR_HANDLE textureSrvHandleGPU_[SRVSizes];
-	static DirectX::TexMetadata metadata_[SRVSizes];*/
-	
-	//D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
+
 	// テクスチャデータ
-	//std::unordered_map<std::string,TextureData>
+	static std::unordered_map<std::string, TextureData> textureDatas_;
 };
 

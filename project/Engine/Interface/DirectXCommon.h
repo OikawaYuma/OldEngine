@@ -133,7 +133,6 @@ public: //Getter
 	IDxcIncludeHandler* GetIncludeHandler() { return includeHandler_; };
 
 	DXGI_SWAP_CHAIN_DESC1 GetSwapChainDesc() { return swapChainDesc_; };
-	Microsoft::WRL::ComPtr <ID3D12DescriptorHeap> GetSrvDescriptorHeap() { return srvDescriptorHeap_.Get(); };
 	D3D12_RENDER_TARGET_VIEW_DESC GetrtvDesc() { return rtvDesc_; };
 	D3D12_DEPTH_STENCIL_DESC GetDepthStencilDesc() { return depthStencilDesc_; };
 
@@ -205,7 +204,6 @@ private:
 
 	// ディスクリプタヒープの生成
 	Microsoft::WRL::ComPtr < ID3D12DescriptorHeap> rtvDescriptorHeap_ = nullptr;
-	Microsoft::WRL::ComPtr < ID3D12DescriptorHeap> srvDescriptorHeap_ = nullptr;
 	Microsoft::WRL::ComPtr < ID3D12DescriptorHeap> dsvDescriptorHeap_ = nullptr; // DSVようのヒープでディスクリプタの数は1。DSVはShader内で触るものではないので、ShaderVisibleはfalse
 
 
@@ -238,7 +236,6 @@ private:
 
 	WinAPI* sWinAPI_ = nullptr;
 	TextureManager* textureManager_ = nullptr;
-	ImGuiCommon* imGuiCommon_ = nullptr;
 
 
 	// DepthStencilTextureをウィンドウのサイズで作成
@@ -259,7 +256,6 @@ private:
 public: // 共通変数　以下の変数は変更しない
 	// ディスクリプターヒープのサイズをあらかじめ設定
 	const static uint32_t rtvDescriptorSize_ = 2;
-	const static uint32_t srvDescriptorSize_ = 128;
 	const static uint32_t dsvDescriptorSize_ = 1;
 };
 

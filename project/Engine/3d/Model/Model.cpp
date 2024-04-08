@@ -1,6 +1,6 @@
 
 #include "Model.h"
-
+#include "SRVManager.h"
 Model::Model() {}
 Model::~Model()
 {
@@ -194,7 +194,7 @@ void Model::Draw(uint32_t texture,const Material& material,const DirectionalLigh
 	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
 	
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
-	directXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, textureManager_->GetTextureSrvHandleGPU_(texture));
+	directXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, SRVManager::GetGPUDescriptorHandle(texture));
 	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(3, directionalLightResource->GetGPUVirtualAddress());
 	
 	directXCommon_->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
