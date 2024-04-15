@@ -53,6 +53,9 @@
     <Filter Include="Engine\Utility">
       <UniqueIdentifier>{d1679630-12a0-47b8-a94a-95de94447f28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\3d\Particle">
+      <UniqueIdentifier>{40c24aec-5ef3-42ae-bf6e-53e4d2414996}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Lib\utility\function.cpp">
@@ -128,9 +131,6 @@
     <ClCompile Include="Engine\2d\Sprite.cpp">
       <Filter>Engine\2d</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\Particle.cpp">
-      <Filter>Engine\3d</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\3d\WorldTransform.cpp">
       <Filter>Engine\3d</Filter>
     </ClCompile>
@@ -179,7 +179,15 @@
     <ClCompile Include="Engine\2d\ImGuiCommon.cpp">
       <Filter>Engine\2d</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Interface\Heap\SRVManager.cpp" />
+    <ClCompile Include="Engine\3d\Particle\Particle.cpp">
+      <Filter>Engine\3d\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\Particle\ParticleManager.cpp">
+      <Filter>Engine\3d\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Interface\Heap\SRVManager.cpp">
+      <Filter>Engine\interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -269,9 +277,6 @@
     <ClInclude Include="Lib\math\TransformationMatrix.h">
       <Filter>Engine\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3d\Particle.h">
-      <Filter>Engine\3d</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\2d\Sprite.h">
       <Filter>Engine\2d</Filter>
     </ClInclude>
@@ -347,9 +352,17 @@
     <ClInclude Include="Lib\math\VertexData.h">
       <Filter>Engine\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Interface\Heap\SRVManager.h" />
     <ClInclude Include="Engine\3d\Model\ModelManager.h">
       <Filter>Engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Particle\Particle.h">
+      <Filter>Engine\3d\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\3d\Particle\ParticleManager.h">
+      <Filter>Engine\3d\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Interface\Heap\SRVManager.h">
+      <Filter>Engine\interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
