@@ -1,6 +1,10 @@
-
 #include "Model.h"
 #include "SRVManager.h"
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 Model::Model() {}
 Model::~Model()
 {
@@ -8,6 +12,39 @@ Model::~Model()
 ;
 ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string& filePath)
 {
+	Assimp::Importer importer;
+	std::string filePathA = directoryPath + "/" + filePath;
+	const aiScene* scene = importer.ReadFile(filePathA.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
+	assert(scene->HasMaterials()); // メッシュがないのは対応しない
+
+	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
+		aiMesh* mesh = scene->mMeshes[meshIndex];
+		assert(mesh->HasNormals()); // 法線がないMeshは今回は非対応
+		assert(mesh->HasTextureCoords(0)); // TexcoordがないMeshは今回は非対応
+		// ここからMeshの中身(Face)の解析を行っていく
+		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
+			aiFace& face = mesh->mFaces[faceIndex];
+			assert(face.mNumIndices == 3);// 三角形のみサポート
+			// ここからFaceの中身(Vertex)の解析を行っていく
+			for (uint32_t element = 0; element < face.mNumIndices; ++element) {
+				uint32_t vertexIndex = face.mIndices[element];
+				aiVector3D& position = mesh->mVertices[vertexIndex];
+				aiVector3D& normal = mesh->mNormals[vertexIndex];
+				aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
+				VertexData vertex;
+				vertex.position = { position.x,position.y,position.z,1.0f };
+				vertex.normal = {normal.x, normal.y ,normal.z};
+				vertex.texcorrd = {texcoord.x,texcoord.y };
+				// aiProcess_MakeLeftHandedはz*=-1で、右手->左手に変換するので手動で対処
+				vertex.position.x *= -1.0f;
+				vertex.normal.x *= -1.0f;
+				modelData.v
+			}
+
+		}
+	}
+
+
 	ModelData modelData; // 構築するMataData
 	std::vector<Vector4> positions; // 位置
 	std::vector<Vector3> normals; // 法線
@@ -17,7 +54,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 	std::ifstream file(directoryPath + "/" + filePath); // ファイルを開く
 	assert(file.is_open()); // とりあえず開けなかったら止める
 
-	while(std::getline(file, line)) {
+	while (std::getline(file, line)) {
 		std::string identifier;
 		std::istringstream s(line);
 		s >> identifier; // 先頭の識別子を読む
@@ -33,7 +70,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 		else if (identifier == "vt") {
 			Vector2 texcoord;
 			s >> texcoord.x >> texcoord.y;
-			
+
 			texcoord.y *= -1.0f;// -texcoord.y; //- texcoord.y;
 			texcoords.push_back(texcoord);
 		}
@@ -65,17 +102,17 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 				//position.x *= -1.0f;
 				//texcoord.y = 1.0f - texcoord.y;
 				//normal.x *= -1.0f;
-			
+
 				VertexData vertex = { position, texcoord, normal };
 				modelData.vertices.push_back(vertex);
-				
+
 				triangle[faceVertex] = { position,texcoord,normal };
-				
+
 			}
 			modelData.vertices.push_back(triangle[2]);
 			modelData.vertices.push_back(triangle[1]);
 			modelData.vertices.push_back(triangle[0]);
-			
+
 		}
 		else if (identifier == "mtllib") {
 			// materialtemplateLibraryファイルの名前を取得する
@@ -84,7 +121,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 			// 基本的にobjファイルと同一階層にmtlは存在させるので、ディレクトリ名とファイル名を渡す
 			modelData.material = LoadMaterialTemplateFile(directoryPath, materialFilename);
 		}
-		
+
 	}
 	return modelData;
 
@@ -108,16 +145,16 @@ MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, c
 			// 連結してファイルパスにする
 			materialData.textureFilePath = directoryPath + "/" + textureFilename;
 		}
-		
+
 	}
 
-		return materialData;
+	return materialData;
 };
 
 void Model::Initialize(const std::string& directoryPath, const std::string& filename, const Material& material) {
 	WinAPI* sWinAPI = WinAPI::GetInstance();
 	directXCommon_ = DirectXCommon::GetInstance();
-	
+
 	// モデル読み込み
 	modelData_ = LoadObjFile(directoryPath, filename);
 
@@ -153,7 +190,7 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 		{0.0f,0.0f,0.0f}
 	};
 
-	
+
 
 	directionalLightData = nullptr;
 	directionalLightResource = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(DirectionalLight));
@@ -175,10 +212,10 @@ void Model::Update() {
 };
 
 
-void Model::Draw(uint32_t texture,const Material& material,const DirectionalLight& dire) {
-	
+void Model::Draw(uint32_t texture, const Material& material, const DirectionalLight& dire) {
+
 	pso_ = PSO::GatInstance();
-	
+
 	textureManager_ = TextureManager::GetInstance();
 	// 色のデータを変数から読み込み
 	materialData->color = material.color;
@@ -192,10 +229,10 @@ void Model::Draw(uint32_t texture,const Material& material,const DirectionalLigh
 	//directXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// マテリアルCBufferの場所を設定
 	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource->GetGPUVirtualAddress());
-	
+
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	directXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, SRVManager::GetGPUDescriptorHandle(texture));
 	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(3, directionalLightResource->GetGPUVirtualAddress());
-	
+
 	directXCommon_->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }
