@@ -70,7 +70,7 @@ TextureManager* TextureManager::GetInstance() {
 const DirectX::TexMetadata& TextureManager::GetMetaData(const std::string& filePath)
 {
 	// 範囲外指定違反チェック
-	assert(textureIndex <= SRVSizes);
+	//assert();
 	TextureData &textureData= textureDatas_[filePath];
 	return  textureData.metaData;
 }
