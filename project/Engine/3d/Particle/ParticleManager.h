@@ -16,13 +16,13 @@ class ParticleManager
 {
 public:
 	struct particleGroup {
-		// 実際に頂点リソースを作る
+		// 螳滄圀縺ｫ鬆らせ繝ｪ繧ｽ繝ｼ繧ｹ繧剃ｽ懊ｋ
 		Microsoft::WRL::ComPtr <ID3D12Resource> materialResource;
-		std::list<Particle> particles;
+		//std::list<Particle> particles;
 		uint32_t kNumMaxInstance;
 	};
 public:
-	// シングルトンパターン
+	// 繧ｷ繝ｳ繧ｰ繝ｫ繝医Φ繝代ち繝ｼ繝ｳ
 	static ParticleManager* GetInstance();
 
 	ParticleManager() = default;

@@ -48,7 +48,7 @@ D3D12_GPU_DESCRIPTOR_HANDLE SRVManager::GetGPUDescriptorHandle(uint32_t index)
 
 void SRVManager::CreateSRVforTexture2D(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT Format, UINT MipLevels)
 {
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc;
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	// metaDataを基にSRVの設定
 	srvDesc.Format = Format;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
