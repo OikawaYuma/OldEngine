@@ -41,7 +41,7 @@ void Object3d::Draw(uint32_t texture, Camera* camera )
 	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
 	cameraForGPUData_->worldPosition = camera->GetTransform().translate;
 	Matrix4x4 worldViewProjectionMatrix = Multiply(worldTransform_.matWorld_,camera->GetViewprojectionMatrix());
-	wvpData->WVP = worldViewProjectionMatrix;
+	
 	//directionalLightData->direction =  Normalize(directionalLightData->direction);
 	directXCommon->GetCommandList()->SetGraphicsRootSignature(pso->GetProperty().rootSignature.Get());
 	directXCommon->GetCommandList()->SetPipelineState(pso->GetProperty().graphicsPipelineState.Get());    //PSOを設定
@@ -51,6 +51,8 @@ void Object3d::Draw(uint32_t texture, Camera* camera )
 	directXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(4, cameraForGPUResource_->GetGPUVirtualAddress());
 	// 3Dモデルが割り当てられていれば描画する
 	if (model_) {
+		wvpData->WVP = Multiply(model_->GetModelData().rootNode.localMatrix, worldViewProjectionMatrix);
+		wvpData->World = Multiply(model_->GetModelData().rootNode.localMatrix, worldTransform_.matWorld_);
 		model_->Draw(texture,{ { 1.0f,1.0f,1.0f,1.0f },true
 			}, { { 1.0f,1.0,1.0,1.0f } ,{ 0.0f,-1.0f,0.0f },0.5f });
 	}

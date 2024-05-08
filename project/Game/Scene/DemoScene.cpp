@@ -7,6 +7,9 @@ void DemoScene::Init()
 {
 	camera = new Camera;
 	camera->Initialize();
+	Vector3 cameraPos = camera->GetTransform().translate;
+	cameraPos.z = -10;
+	camera->SetTranslate(cameraPos);
 	input = Input::GetInstance();
 	textureHandle = TextureManager::StoreTexture("Resources/uvChecker.png");
 	textureHandle2 = TextureManager::StoreTexture("Resources/white.png");
@@ -15,20 +18,20 @@ void DemoScene::Init()
 	material.color = { 1.0f,1.0f,1.0f,1.0f };
 	material.enableLighting = true;
 	worldTransform.Initialize();
-	worldTransform.translation_.x = -5;
+	worldTransform.translation_.x = 0;
 	worldTransform2.Initialize();
 	worldTransform2.translation_.x = 5;
 	worldTransform.UpdateMatrix();
 	worldTransform2.UpdateMatrix();
 
-	ModelManager::GetInstance()->LoadModel("Resources/box", "box.obj");
+	ModelManager::GetInstance()->LoadModel("Resources/plane", "plane.gltf");
 	ModelManager::GetInstance()->LoadModel("Resources/ball", "ball.obj");
 	object3d = new Object3d();
 	object3d->Init();
 	object3d2 = new Object3d();
 	object3d2->Init();
 	
-	object3d->SetModel("box.obj");
+	object3d->SetModel("plane.gltf");
 	object3d2->SetModel("ball.obj");
     particle = new Particle();
     particle2 = new Particle();
@@ -53,7 +56,7 @@ void DemoScene::Update()
 	////カメラの更新
 	camera->Update();
 	demoSprite->Update();
-
+	worldTransform.rotation_.y += 0.05f;
 	object3d->SetWorldTransform(worldTransform);
 	object3d2->SetWorldTransform(worldTransform2);
 

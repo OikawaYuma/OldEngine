@@ -27,9 +27,15 @@
 #include <sstream>
 #include <cassert>
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
+
+
 
 class Model
 {
@@ -49,6 +55,7 @@ public:
 	ModelData LoadObjFile(const std::string& directoryPath, const std::string&filePath);
 	MaterialData LoadMaterialTemplateFile(const std::string& directoryPath,const std::string& filename);
 
+	Node ReadNode(aiNode* node);
 
 private:
 
