@@ -283,10 +283,10 @@
     <ClInclude Include="Engine\3d\WorldTransform.h">
       <Filter>Engine\3d</Filter>
     </ClInclude>
-    <ClInclude Include="Lib\math\ModelData.h">
+    <ClInclude Include="Engine\3d\Model\ModelData.h">
       <Filter>Engine\3d\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Lib\math\MaterialData.h">
+    <ClInclude Include="Engine\3d\Model\MaterialData.h">
       <Filter>Engine\3d\Model</Filter>
     </ClInclude>
     <ClInclude Include="Game\Collision\Collider.h">
