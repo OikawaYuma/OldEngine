@@ -188,6 +188,7 @@
     <ClCompile Include="Engine\Interface\Heap\SRVManager.cpp">
       <Filter>Engine\interface</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\3d\Animation\Animation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -364,6 +365,8 @@
     <ClInclude Include="Engine\Interface\Heap\SRVManager.h">
       <Filter>Engine\interface</Filter>
     </ClInclude>
+    <ClInclude Include="Lib\math\Quaternion.h" />
+    <ClInclude Include="Engine\3d\Animation\Animation.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">

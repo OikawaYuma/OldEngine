@@ -8,7 +8,7 @@ void DemoScene::Init()
 	camera = new Camera;
 	camera->Initialize();
 	Vector3 cameraPos = camera->GetTransform().translate;
-	cameraPos.z = -10;
+	cameraPos.z = -50;
 	camera->SetTranslate(cameraPos);
 	input = Input::GetInstance();
 	textureHandle = TextureManager::StoreTexture("Resources/uvChecker.png");
@@ -24,15 +24,15 @@ void DemoScene::Init()
 	worldTransform.UpdateMatrix();
 	worldTransform2.UpdateMatrix();
 
-	ModelManager::GetInstance()->LoadModel("Resources/plane", "plane.gltf");
-	ModelManager::GetInstance()->LoadModel("Resources/ball", "ball.obj");
+	ModelManager::GetInstance()->LoadModel("Resources/AnimatedCube", "AnimatedCube.gltf");
+	//ModelManager::GetInstance()->LoadModel("Resources/ball", "ball.obj");
 	object3d = new Object3d();
 	object3d->Init();
 	object3d2 = new Object3d();
 	object3d2->Init();
 	
-	object3d->SetModel("plane.gltf");
-	object3d2->SetModel("ball.obj");
+	object3d->SetModel("AnimatedCube.gltf");
+	object3d2->SetModel("AnimatedCube.gltf");
     particle = new Particle();
     particle2 = new Particle();
 
@@ -56,7 +56,7 @@ void DemoScene::Update()
 	////カメラの更新
 	camera->Update();
 	demoSprite->Update();
-	worldTransform.rotation_.y += 0.05f;
+	//worldTransform.rotation_.y += 0.05f;
 	object3d->SetWorldTransform(worldTransform);
 	object3d2->SetWorldTransform(worldTransform2);
 
