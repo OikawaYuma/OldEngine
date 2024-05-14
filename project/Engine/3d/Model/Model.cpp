@@ -232,6 +232,19 @@ Node Model::ReadNode(aiNode* node)
 	}
 	return result;
 }
+void Model::ApplyAnimation(SkeletonData& skeleton, const AnimationData& animation, float animationTime)
+{
+	for (Joint& joint : skeleton.joints) {
+		// 対象のJointのAnimationがあれば、他の適用を行う。下記のif文はC++17,から可能になった初期化付きif文。
+		if (auto it = animation.nodeAnimations.find(joint.name); it != animation.nodeAnimations.end()) {
+			const NodeAnimation& rootNodeAnimation = (*it).second;
+			joint.transform.translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime);
+			joint.transform.rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
+			joint.transform.scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime);
+
+		}
+	}
+}
 ;
 
 void Model::Initialize(const std::string& directoryPath, const std::string& filename, const Material& material) {
@@ -241,6 +254,7 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	// モデル読み込み
 	modelData_ = LoadObjFile(directoryPath, filename);
 	animation_ = LoadAnimationFile(directoryPath, filename);
+	skeleton_ = Skeleton::CreateSkeleton(modelData_.rootNode);
 	// 頂点リソースを作る
 	vertexResource_ = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(VertexData) * modelData_.vertices.size());
 	// 頂点バッファビューを作成する
@@ -291,20 +305,34 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 };
 
 void Model::Update() {
-	//worldTransform_.UpdateMatrix();
+
+	animationTime += 1.0f / 60.0f;
+	animationTime = std::fmod(animationTime, animation_.duration); // 最後まで行ったら最初からリピート再生。リピートしなくても別によい
+	ApplyAnimation(skeleton_, animation_, animationTime);
+	// すべてのJointを更新。親が若いので通常ループで処理可能になっている
+	for (Joint& joint : skeleton_.joints) {
+		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
+		if (joint.parent) { // 親がいれば親の行列を掛ける
+			joint.skeletonSpaceMatrix = Multiply(joint.localMatrix, skeleton_.joints[*joint.parent].skeletonSpaceMatrix);
+		}
+		else { // 親がいないのでloacalMatrixとskeletonSpaceMatrixは一致する
+			joint.skeletonSpaceMatrix = joint.localMatrix;
+	
+		}
+		skeMatrix_ = joint.skeletonSpaceMatrix;
+	}
 };
 
 
 void Model::Draw(uint32_t texture, const Material& material, const DirectionalLight& dire) {
 
 	pso_ = PSO::GatInstance();
-	animationTime += 1.0f / 60.0f;
-	animationTime = std::fmod(animationTime, animation_.duration); // 最後まで行ったら最初からリピート再生。リピートしなくても別によい
-	NodeAnimation& rootNodeAnimation = animation_.nodeAnimations[modelData_.rootNode.name]; // rootNodeのAnimationを取得
-	Vector3 translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime);
-	Quaternion rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
-	Vector3 scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime);
-	aniMatrix_ = MakeAffineMatrix(scale, rotate, translate);
+	
+	//NodeAnimation& rootNodeAnimation = animation_.nodeAnimations[modelData_.rootNode.name]; // rootNodeのAnimationを取得
+	//Vector3 translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime);
+	//Quaternion rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
+	//Vector3 scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime);
+	//aniMatrix_ = MakeAffineMatrix(scale, rotate, translate);
 
 	textureManager_ = TextureManager::GetInstance();
 	// 色のデータを変数から読み込み

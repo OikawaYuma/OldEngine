@@ -56,10 +56,12 @@ public:
 	MaterialData LoadMaterialTemplateFile(const std::string& directoryPath,const std::string& filename);
 
 	Matrix4x4 GetAniMatrix() { return aniMatrix_; }
+	Matrix4x4 GetSkeMatrix() { return skeMatrix_; }
 	// アニメーション読み込み
 	AnimationData LoadAnimationFile(const std::string& directoryPath, const std::string& filePath);
 
 	Node ReadNode(aiNode* node);
+	void ApplyAnimation(SkeletonData& skeleton, const AnimationData& animation, float animationTime);
 
 private:
 
@@ -75,6 +77,9 @@ private:
 	VertexData* vertexData_;
 	ModelData modelData_;
 	AnimationData animation_;
+	SkeletonData skeleton_;
+
+
 	DirectXCommon* directXCommon_;
 	WinAPI* sWinAPI_;
 	TextureManager* textureManager_ = nullptr;
@@ -106,6 +111,7 @@ private:
 	Camera* camera_ = nullptr;
 
 	Matrix4x4 aniMatrix_;
+	Matrix4x4 skeMatrix_;
 	float animationTime = 0.0f;
 };
 

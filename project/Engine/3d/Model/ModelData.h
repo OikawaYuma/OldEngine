@@ -7,18 +7,7 @@
 #include <unordered_map>
 #include <Matrix4x4.h>
 #include "Skeleton.h"
-struct Node {
-	QaternionTransform transform;
-	Matrix4x4 localMatrix;
-	std::string name;
-	std::vector<Node> children;
-};
-struct ModelData {
-	std::vector<VertexData> vertices;
-	MaterialData material;
-	Node rootNode;
 
-};
 
 template <typename tValue>
 struct Keyframe {
