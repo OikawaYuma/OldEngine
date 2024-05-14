@@ -200,16 +200,29 @@ AnimationData Model::LoadAnimationFile(const std::string& directoryPath, const s
 Node Model::ReadNode(aiNode* node)
 {
 	Node result;
-	aiMatrix4x4 aiLocalMatrix = node->mTransformation; // nodeのloacalMatrixを習得
-	aiLocalMatrix.Transpose(); // 列ベクトル形式をベクトル形式に転置
+	aiVector3D scale, translate;
+	aiQuaternion rotate;
+	node->mTransformation.Decompose(scale, rotate, translate); // assimpの行列からSRTを抽出する関数を利用
 
-	//result.localMatrix.m[0][0] = aiLocalMatrix[0][0]; // 他の要素も同様に
-	for (uint32_t index = 0; index < 4; ++index) {
-		for (uint32_t j = 0; j < 4; ++j) {
-			//// 再帰的に読んで階層構造を作っていく
-			result.localMatrix.m[index][j] = aiLocalMatrix[index][j];
-		}
-	}
+	result.transform.scale = { scale.x, scale.y,scale.z }; // Scaleはそのまま
+	result.transform.rotate = { rotate.x, -rotate.y, -rotate.z, rotate.w }; // x軸を反転、さらに回転方向が逆なので軸を反転させる
+	result.transform.translate = { -translate.x, translate.y, translate.z };// x軸を反転
+	result.localMatrix = MakeAffineMatrix(
+		result.transform.scale,
+		result.transform.rotate,
+		result.transform.translate);
+
+	// 直接Matrixを代入　コメントアウト
+	//aiMatrix4x4 aiLocalMatrix = node->mTransformation; // nodeのloacalMatrixを習得
+	//aiLocalMatrix.Transpose(); // 列ベクトル形式をベクトル形式に転置
+
+	////result.localMatrix.m[0][0] = aiLocalMatrix[0][0]; // 他の要素も同様に
+	//for (uint32_t index = 0; index < 4; ++index) {
+	//	for (uint32_t j = 0; j < 4; ++j) {
+	//		//// 再帰的に読んで階層構造を作っていく
+	//		result.localMatrix.m[index][j] = aiLocalMatrix[index][j];
+	//	}
+	//}
 	// ...
 	result.name = node->mName.C_Str(); // Node名を格納
 	result.children.resize(node->mNumChildren); // 子供の数だけ確保
