@@ -18,27 +18,34 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 		aiMesh* mesh = scene->mMeshes[meshIndex];
 		assert(mesh->HasNormals()); // 法線がないMeshは今回は非対応
 		assert(mesh->HasTextureCoords(0)); // TexcoordがないMeshは今回は非対応
+		modelData_.vertices.resize(mesh->mNumVertices); // 最初に頂点数分のメモリを確保しておく
 		// ここからMeshの中身(Face)の解析を行っていく
+		for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
+
+			aiVector3D& position = mesh->mVertices[vertexIndex];
+			aiVector3D& normal = mesh->mNormals[vertexIndex];
+			aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
+
+			modelData_.vertices[vertexIndex].position = { -position.x,position.y,position.z,1.0f };
+			modelData_.vertices[vertexIndex].normal = { -normal.x, normal.y ,normal.z };
+			modelData_.vertices[vertexIndex].texcorrd = { texcoord.x,texcoord.y };
+			// aiProcess_MakeLeftHandedはz*=-1で、右手->左手に変換するので手動で対処
+			/*vertex.position.x *= -1.0f;
+			vertex.normal.x *= -1.0f;
+			modelData_.vertices.push_back(vertex);*/
+		}
+
 		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
 			aiFace& face = mesh->mFaces[faceIndex];
-			assert(face.mNumIndices == 3);// 三角形のみサポート
-			// ここからFaceの中身(Vertex)の解析を行っていく
+			assert(face.mNumIndices == 3);
+
 			for (uint32_t element = 0; element < face.mNumIndices; ++element) {
 				uint32_t vertexIndex = face.mIndices[element];
-				aiVector3D& position = mesh->mVertices[vertexIndex];
-				aiVector3D& normal = mesh->mNormals[vertexIndex];
-				aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
-				VertexData vertex;
-				vertex.position = { position.x,position.y,position.z,1.0f };
-				vertex.normal = {normal.x, normal.y ,normal.z};
-				vertex.texcorrd = {texcoord.x,texcoord.y };
-				// aiProcess_MakeLeftHandedはz*=-1で、右手->左手に変換するので手動で対処
-				vertex.position.x *= -1.0f;
-				vertex.normal.x *= -1.0f;
-				modelData_.vertices.push_back(vertex);
+				modelData_.indices.push_back(vertexIndex);
 			}
-
 		}
+
+
 	}
 
 	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
@@ -183,7 +190,7 @@ AnimationData Model::LoadAnimationFile(const std::string& directoryPath, const s
 			aiQuatKey& keyAssimp = nodeAnimationAssimp->mRotationKeys[keyIndex];
 			KeyFrameQuaternion keyframe;
 			keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond); // ここも秒に変換
-			keyframe.value = { keyAssimp.mValue.x, -keyAssimp.mValue.y, -keyAssimp.mValue.z, keyAssimp.mValue.w};
+			keyframe.value = { keyAssimp.mValue.x, -keyAssimp.mValue.y, -keyAssimp.mValue.z, keyAssimp.mValue.w };
 			nodeAnimation.rotate.keyframes.push_back(keyframe);
 		}
 		for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumScalingKeys; ++keyIndex) {
@@ -299,7 +306,15 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	directionalLightData->direction = { 0.0f,-1.0f,0.0f };
 	directionalLightData->intensity = 1.0f;
 
+	indexResource_ = Mesh::CreateBufferResource(DirectXCommon::GetInstance()->GetDevice().Get(),sizeof(uint32_t) * modelData_.indices.size());
+	indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
+	indexBufferView_.SizeInBytes = sizeof(uint32_t) * static_cast<uint32_t>(modelData_.indices.size());
+	indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
 
+	uint32_t* indexDataSprite = nullptr;
+	indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexDataSprite));
+	
+	std::memcpy(indexDataSprite, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
 	//worldTransform_.Initialize();
 
 };
@@ -317,7 +332,7 @@ void Model::Update() {
 		}
 		else { // 親がいないのでloacalMatrixとskeletonSpaceMatrixは一致する
 			joint.skeletonSpaceMatrix = joint.localMatrix;
-	
+
 		}
 		skeMatrix_ = joint.skeletonSpaceMatrix;
 	}
@@ -327,7 +342,7 @@ void Model::Update() {
 void Model::Draw(uint32_t texture, const Material& material, const DirectionalLight& dire) {
 
 	pso_ = PSO::GatInstance();
-	
+
 	//NodeAnimation& rootNodeAnimation = animation_.nodeAnimations[modelData_.rootNode.name]; // rootNodeのAnimationを取得
 	//Vector3 translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime);
 	//Quaternion rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
@@ -343,6 +358,7 @@ void Model::Draw(uint32_t texture, const Material& material, const DirectionalLi
 	//directXCommon_->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
 	//directXCommon_->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定
 	directXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);    //VBVを設定
+	directXCommon_->GetCommandList()->IASetIndexBuffer(&indexBufferView_);    //VBVを設定
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	//directXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// マテリアルCBufferの場所を設定
@@ -351,6 +367,6 @@ void Model::Draw(uint32_t texture, const Material& material, const DirectionalLi
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	directXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, SRVManager::GetGPUDescriptorHandle(texture));
 	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(3, directionalLightResource->GetGPUVirtualAddress());
-
-	directXCommon_->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
+	directXCommon_->GetCommandList()->DrawIndexedInstanced(static_cast<uint32_t>(modelData_.indices.size()),1,0,0,0);
+	//directXCommon_->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }
