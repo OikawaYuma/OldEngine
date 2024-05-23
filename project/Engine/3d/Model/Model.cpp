@@ -44,6 +44,28 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 				modelData_.indices.push_back(vertexIndex);
 			}
 		}
+		for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
+			aiBone* bone = mesh->mBones[boneIndex];
+			std::string jointName = bone->mName.C_Str();
+			JointWeightData& jointWeightData = modelData_.skinClusterData[jointName];
+
+			aiMatrix4x4  bindPoseMatrixAssimp = bone->mOffsetMatrix.Inverse();
+			aiVector3D scale, translate;
+			aiQuaternion rotate;
+			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
+			Matrix4x4 bindMatrix = MakeAffineMatrix(
+				{ scale.x , scale.y, scale.z },
+				{ rotate.x, -rotate.y,-rotate.z,rotate.w },
+				{ -translate.x,translate.y,translate.z });
+			jointWeightData.inverseBindPposeMatrix = Inverse(bindMatrix);
+			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
+				jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight,bone->mWeights[weightIndex].mVertexId });
+			}
+			aiBone* bone = mesh->mBones[boneIndex];
+			std::string jointName = bone->mName.C_Str();
+			JointWeightData& jointWeightData = modelData_.skinClusterData[jointName];
+
+		}
 
 
 	}
