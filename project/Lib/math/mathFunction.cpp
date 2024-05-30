@@ -560,3 +560,31 @@ Quaternion CalculateValue(const std::vector<KeyFrameQuaternion>& keyframes, floa
 	// ここまできた場合は一番後の時刻よりも後ろなので最後の値を返すことにする
 	return (*keyframes.rbegin()).value;
 };
+
+// 5. 転置行列
+Matrix4x4 Transpose(const Matrix4x4 m) {
+
+	Matrix4x4 m4;
+	m4.m[0][0] = m.m[0][0];
+	m4.m[0][1] = m.m[1][0];
+	m4.m[0][2] = m.m[2][0];
+	m4.m[0][3] = m.m[3][0];
+
+	m4.m[1][0] = m.m[0][1];
+	m4.m[1][1] = m.m[1][1];
+	m4.m[1][2] = m.m[2][1];
+	m4.m[1][3] = m.m[3][1];
+
+	m4.m[2][0] = m.m[0][2];
+	m4.m[2][1] = m.m[1][2];
+	m4.m[2][2] = m.m[2][2];
+	m4.m[2][3] = m.m[3][2];
+
+	m4.m[3][0] = m.m[0][3];
+	m4.m[3][1] = m.m[1][3];
+	m4.m[3][2] = m.m[2][3];
+	m4.m[3][3] = m.m[3][3];
+	return m4;
+
+
+};

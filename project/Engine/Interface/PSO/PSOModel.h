@@ -73,7 +73,7 @@ private:
 	D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
 
 	// InputLayout
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[5] = {};
 	D3D12_INPUT_LAYOUT_DESC  inputLayoutDesc{};
 
 	// blendStateの設定

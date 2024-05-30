@@ -24,15 +24,15 @@ void DemoScene::Init()
 	worldTransform.UpdateMatrix();
 	worldTransform2.UpdateMatrix();
 
-	ModelManager::GetInstance()->LoadModel("Resources/AnimatedCube", "AnimatedCube.gltf");
+	ModelManager::GetInstance()->LoadModel("Resources/human", "walk.gltf");
 	//ModelManager::GetInstance()->LoadModel("Resources/ball", "ball.obj");
 	object3d = new Object3d();
 	object3d->Init();
 	object3d2 = new Object3d();
 	object3d2->Init();
 	
-	object3d->SetModel("AnimatedCube.gltf");
-	object3d2->SetModel("AnimatedCube.gltf");
+	object3d->SetModel("walk.gltf");
+	object3d2->SetModel("walk.gltf");
     particle = new Particle();
     particle2 = new Particle();
 

@@ -389,6 +389,7 @@
     <FxCompile Include="Sprite.VS.hlsl">
       <Filter>Resources\shader</Filter>
     </FxCompile>
+    <FxCompile Include="SkinningObject3d.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\imgui.ini">

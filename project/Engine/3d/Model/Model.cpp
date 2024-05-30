@@ -61,10 +61,6 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
 				jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight,bone->mWeights[weightIndex].mVertexId });
 			}
-			aiBone* bone = mesh->mBones[boneIndex];
-			std::string jointName = bone->mName.C_Str();
-			JointWeightData& jointWeightData = modelData_.skinClusterData[jointName];
-
 		}
 
 
@@ -284,13 +280,18 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 	modelData_ = LoadObjFile(directoryPath, filename);
 	animation_ = LoadAnimationFile(directoryPath, filename);
 	skeleton_ = Skeleton::CreateSkeleton(modelData_.rootNode);
+	skinCluster_ = Skeleton::CreateSkinCluster(directXCommon_->GetDevice(),
+		skeleton_,modelData_,SRVManager::GetInstance()->GetDescriptorHeap(),SRVManager::GetInstance()->descriptorSize_ );
 	// 頂点リソースを作る
 	vertexResource_ = Mesh::CreateBufferResource(directXCommon_->GetDevice(), sizeof(VertexData) * modelData_.vertices.size());
+
 	// 頂点バッファビューを作成する
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress(); // リソースの先頭のアドレスから使う
 	vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size()); // 使用するリソースのサイズは頂点のサイズ
 	vertexBufferView_.StrideInBytes = sizeof(VertexData); // 1頂点当たりのサイズ
 
+	vbvs[0] = vertexBufferView_;
+	vbvs[1] = skinCluster_.influenceBufferView;
 	// 頂点リソースにデータを書き込む
 	vertexData_ = nullptr;
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
@@ -358,13 +359,22 @@ void Model::Update() {
 		}
 		skeMatrix_ = joint.skeletonSpaceMatrix;
 	}
+
+	for (size_t jointIndex = 0; jointIndex < skeleton_.joints.size(); ++jointIndex) {
+		assert(jointIndex < skinCluster_.inverseBindposeMatrices.size());
+		skinCluster_.mappedPalette[jointIndex].skeletonSpaceMatrix =
+			Multiply(skinCluster_.inverseBindposeMatrices[jointIndex] , skeleton_.joints[jointIndex].skeletonSpaceMatrix);
+		skinCluster_.mappedPalette[jointIndex].skeletonSpaceinverseTransposeMatrix =
+			Transpose(Inverse(skinCluster_.mappedPalette[jointIndex].skeletonSpaceMatrix));
+	}
 };
 
 
 void Model::Draw(uint32_t texture, const Material& material, const DirectionalLight& dire) {
 
 	pso_ = PSO::GatInstance();
-
+	vbvs[0] = vertexBufferView_;
+	vbvs[1] = skinCluster_.influenceBufferView;
 	//NodeAnimation& rootNodeAnimation = animation_.nodeAnimations[modelData_.rootNode.name]; // rootNodeのAnimationを取得
 	//Vector3 translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime);
 	//Quaternion rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
@@ -379,7 +389,8 @@ void Model::Draw(uint32_t texture, const Material& material, const DirectionalLi
 	//directionalLightData->direction =  Normalize(directionalLightData->direction);
 	//directXCommon_->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
 	//directXCommon_->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定
-	directXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);    //VBVを設定
+	//directXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);    //VBVを設定
+	directXCommon_->GetCommandList()->IASetVertexBuffers(0, 2, vbvs);    //VBVを設定
 	directXCommon_->GetCommandList()->IASetIndexBuffer(&indexBufferView_);    //VBVを設定
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	//directXCommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

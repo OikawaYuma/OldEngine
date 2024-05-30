@@ -78,6 +78,7 @@ private:
 	ModelData modelData_;
 	AnimationData animation_;
 	SkeletonData skeleton_;
+	SkinCluster skinCluster_;
 
 
 	DirectXCommon* directXCommon_;
@@ -86,7 +87,8 @@ private:
 	PSO* pso_ = nullptr;
 	
 	Microsoft::WRL::ComPtr < ID3D12Resource> vertexResource_;
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
+	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_;
+	D3D12_VERTEX_BUFFER_VIEW vbvs[2]{};
 
 	/*色用*/
 //頂点リソースの設定
