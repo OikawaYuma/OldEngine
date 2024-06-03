@@ -371,37 +371,37 @@
     <ClInclude Include="Engine\3d\Skeleton\Skeleton.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Object3d.PS.hlsl">
+    <FxCompile Include="Resources\shader\Object3d.PS.hlsl">
       <Filter>Resources\shader</Filter>
     </FxCompile>
-    <FxCompile Include="Object3d.VS.hlsl">
+    <FxCompile Include="Resources\shader\Object3d.VS.hlsl">
       <Filter>Resources\shader</Filter>
     </FxCompile>
-    <FxCompile Include="Particle.PS.hlsl">
+    <FxCompile Include="Resources\shader\Particle.PS.hlsl">
       <Filter>Resources\shader</Filter>
     </FxCompile>
-    <FxCompile Include="Particle.VS.hlsl">
+    <FxCompile Include="Resources\shader\Particle.VS.hlsl">
       <Filter>Resources\shader</Filter>
     </FxCompile>
-    <FxCompile Include="Sprite.PS.hlsl">
+    <FxCompile Include="Resources\shader\Sprite.PS.hlsl">
       <Filter>Resources\shader</Filter>
     </FxCompile>
-    <FxCompile Include="Sprite.VS.hlsl">
+    <FxCompile Include="Resources\shader\Sprite.VS.hlsl">
       <Filter>Resources\shader</Filter>
     </FxCompile>
-    <FxCompile Include="SkinningObject3d.VS.hlsl" />
+    <FxCompile Include="Resources\shader\SkinningObject3d.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\imgui.ini">
       <Filter>Externals\Imgui</Filter>
     </None>
-    <None Include="Object3d.hlsli">
+    <None Include="Resources\shader\Object3d.hlsli">
       <Filter>Resources\shader</Filter>
     </None>
-    <None Include="Particle.hlsli">
+    <None Include="Resources\shader\Particle.hlsli">
       <Filter>Resources\shader</Filter>
     </None>
-    <None Include="Sprite.hlsli">
+    <None Include="Resources\shader\Sprite.hlsli">
       <Filter>Resources\shader</Filter>
     </None>
   </ItemGroup>
