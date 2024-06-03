@@ -26,7 +26,6 @@
 #pragma comment(lib,"dxcompiler.lib")
 
 
-class TextureManager;
 
 class Triangle
 {
@@ -39,9 +38,6 @@ public:
 	void Release();
 	D3D12_VERTEX_BUFFER_VIEW  CreateBufferView();
 	D3D12_RESOURCE_DESC  CreateBufferResourceDesc(size_t sizeInBytes);
-	void SetTextureManager(TextureManager* textureManager) {
-		textureManager_ = textureManager;
-	}
 
 
 	HRESULT hr;
@@ -78,7 +74,7 @@ public:
 	DirectionalLight* directionalLightData;
 
 	DirectXCommon* sDirectXCommon_ = nullptr;
-	TextureManager* textureManager_ = nullptr;
+
 	Camera *camera_ = nullptr;
 
 	//ビューポート
