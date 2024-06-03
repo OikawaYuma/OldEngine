@@ -10,11 +10,11 @@ void PSOSprite::CreatePipelineStateObject() {
 	PSOSprite::SetRasterrizerState();
 	PSOSprite::CreateDepth();
 	// Shaderをコンパイルする
-	property.vertexShaderBlob = CompileShader(L"Sprite.VS.hlsl",
+	property.vertexShaderBlob = CompileShader(L"Resources/shader/Sprite.VS.hlsl",
 		L"vs_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.vertexShaderBlob != nullptr);
 
-	property.pixelShaderBlob = CompileShader(L"Sprite.PS.hlsl",
+	property.pixelShaderBlob = CompileShader(L"Resources/shader/Sprite.PS.hlsl",
 		L"ps_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.pixelShaderBlob != nullptr);
 

@@ -10,11 +10,11 @@ void PSO::CreatePipelineStateObject() {
 	PSO::SetRasterrizerState();
 	PSO::CreateDepth();
 	// Shaderをコンパイルする
-	property.vertexShaderBlob = CompileShader(L"SkinningObject3d.VS.hlsl",
+	property.vertexShaderBlob = CompileShader(L"Resources/shader/SkinningObject3d.VS.hlsl",
 		L"vs_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.vertexShaderBlob != nullptr);
 
-	property.pixelShaderBlob = CompileShader(L"Object3d.PS.hlsl",
+	property.pixelShaderBlob = CompileShader(L"Resources/shader/Object3d.PS.hlsl",
 		L"ps_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.pixelShaderBlob != nullptr);
 
