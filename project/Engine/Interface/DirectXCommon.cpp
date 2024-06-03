@@ -1,5 +1,4 @@
 ﻿#include "DirectXCommon.h"
-
 #include <thread>
 #include "ImGuiCommon.h"
 

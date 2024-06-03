@@ -10,9 +10,7 @@
 #include <chrono>
 
 #include "WinAPI.h"
-#include "Mesh.h"
 #include <dxcapi.h>
-#include "TextureManager.h"
 #include "ResourceObject.h"
 
 #pragma comment(lib,"d3d12.lib")
@@ -21,9 +19,6 @@
 /*----------------------------------------------------------
    このクラスはシングルトンパターンのを元に設計する
 --------------------------------------------------------------*/
-class ImGuiCommon;
-class TextureManager;
-
 class DirectXCommon final {
 public:
 	static DirectXCommon* GetInstance();
@@ -136,11 +131,7 @@ public: //Getter
 	D3D12_RENDER_TARGET_VIEW_DESC GetrtvDesc() { return rtvDesc_; };
 	D3D12_DEPTH_STENCIL_DESC GetDepthStencilDesc() { return depthStencilDesc_; };
 
-
-
-public: // 関数
-
-
+public: 
 	//ReleaseCheck
 	struct D3DResourceLeakChecker {
 		~D3DResourceLeakChecker()

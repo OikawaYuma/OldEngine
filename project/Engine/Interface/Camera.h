@@ -1,10 +1,10 @@
 #pragma once
 #include"WinAPI.h"
 
-#include"Vector3.h"
-#include"Matrix4x4.h"
-#include"Transform.h"
-#include"mathFunction.h"
+#include "Vector3.h"
+#include "Matrix4x4.h"
+#include "Transform.h"
+#include "mathFunction.h"
 #include <numbers>
 
 class Camera
