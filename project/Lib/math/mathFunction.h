@@ -52,3 +52,4 @@ Quaternion Normalize(Quaternion quaternion);
 Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
 Vector3 CalculateValue(const std::vector<KeyFrameVector3>& keyframes, float time);
 Quaternion CalculateValue(const std::vector<KeyFrameQuaternion>& keyframes, float time);
+Matrix4x4 Transpose(const Matrix4x4 m);

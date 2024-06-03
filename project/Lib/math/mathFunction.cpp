@@ -1,5 +1,6 @@
 ﻿#include"mathFunction.h"
 
+#include <limits>
 Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m) {
 	Vector3 result{
 		v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0],
@@ -478,6 +479,9 @@ Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t) {
 	s = Normalize(v1);
 	e = Normalize(v2);
 	float angle = acos(Dot(s, e));
+	if (angle < std::numeric_limits<float>::epsilon()) {
+		return s;
+	}
 	// SinΘ
 	float SinTh = sin(angle);
 
@@ -496,37 +500,42 @@ Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t) {
 }
 Quaternion SLerp(const Quaternion& v1, const Quaternion& v2, float t)
 {
-	Quaternion p;
 
-	Quaternion s;
-	Quaternion e;
+	Quaternion result;
+	float dot = DotQuaternion(v1, v2);
+	Quaternion q00 = v1;
+	if (dot < 0) {
+		q00 = { -v1.x,-v1.y ,-v1.z ,-v1.w };
+		dot = -dot;
+	}
 
-	s = Normalize(v1);
-	e = Normalize(v2);
-	float angle = acos(DotQuaternion(s, e));
-	// SinΘ
-	float SinTh = sin(angle);
+	// なす角を求める
+	float thate = std::acos(dot);
+	if (dot >= 1.0f - std::numeric_limits<float>::epsilon()) {
+		Quaternion eResult;
+		eResult.x = (1.0f - t) * v1.x + t * v2.x;
+		eResult.y = (1.0f - t) * v1.y + t * v2.y;
+		eResult.z = (1.0f - t) * v1.z + t * v2.z;
+		eResult.w = (1.0f - t) * v1.w + t * v2.w;
 
-	// 補間係数
-	float Ps = sin(angle * (1 - t));
-	float Pe = sin(angle * t);
+		return eResult;
+	}
 
-	p.x = (Ps * s.x + Pe * e.x) / SinTh;
-	p.y = (Ps * s.y + Pe * e.y) / SinTh;
-	p.z = (Ps * s.z + Pe * e.z) / SinTh;
-	p.w = (Ps * s.w + Pe * e.w) / SinTh;
-
-	p = Normalize(p);
+	result.x = (sin((1 - t) * thate) / sin(thate)) * q00.x + sin(t * thate) / sin(thate) * v2.x;
+	result.y = (sin((1 - t) * thate) / sin(thate)) * q00.y + sin(t * thate) / sin(thate) * v2.y;
+	result.z = (sin((1 - t) * thate) / sin(thate)) * q00.z + sin(t * thate) / sin(thate) * v2.z;
+	result.w = (sin((1 - t) * thate) / sin(thate)) * q00.w + sin(t * thate) / sin(thate) * v2.w;
+	
 
 
-	return p;
+	return result;
 }
 ;
 
 Vector3 CalculateValue(const std::vector<KeyFrameVector3>& keyframes, float time)
 {
 	assert(!keyframes.empty());// キーがないものは返す値がわからないのでダメ
-	if (keyframes.size() == 1 || keyframes[0].time) { // キーが1つか、時刻がキーフレーム前なら最初の値とする
+	if (keyframes.size() == 1 || time <=keyframes[0].time) { // キーが1つか、時刻がキーフレーム前なら最初の値とする
 		return keyframes[0].value;
 	}
 	for (size_t index = 0; index < keyframes.size() - 1; ++index) {
@@ -545,7 +554,7 @@ Vector3 CalculateValue(const std::vector<KeyFrameVector3>& keyframes, float time
 Quaternion CalculateValue(const std::vector<KeyFrameQuaternion>& keyframes, float time)
 {
 	assert(!keyframes.empty());// キーがないものは返す値がわからないのでダメ
-	if (keyframes.size() == 1 || keyframes[0].time) { // キーが1つか、時刻がキーフレーム前なら最初の値とする
+	if (keyframes.size() == 1 || time <= keyframes[0].time) { // キーが1つか、時刻がキーフレーム前なら最初の値とする
 		return keyframes[0].value;
 	}
 	for (size_t index = 0; index < keyframes.size() - 1; ++index) {
@@ -559,4 +568,32 @@ Quaternion CalculateValue(const std::vector<KeyFrameQuaternion>& keyframes, floa
 	}
 	// ここまできた場合は一番後の時刻よりも後ろなので最後の値を返すことにする
 	return (*keyframes.rbegin()).value;
+};
+
+// 5. 転置行列
+Matrix4x4 Transpose(const Matrix4x4 m) {
+
+	Matrix4x4 m4;
+	m4.m[0][0] = m.m[0][0];
+	m4.m[0][1] = m.m[1][0];
+	m4.m[0][2] = m.m[2][0];
+	m4.m[0][3] = m.m[3][0];
+
+	m4.m[1][0] = m.m[0][1];
+	m4.m[1][1] = m.m[1][1];
+	m4.m[1][2] = m.m[2][1];
+	m4.m[1][3] = m.m[3][1];
+
+	m4.m[2][0] = m.m[0][2];
+	m4.m[2][1] = m.m[1][2];
+	m4.m[2][2] = m.m[2][2];
+	m4.m[2][3] = m.m[3][2];
+
+	m4.m[3][0] = m.m[0][3];
+	m4.m[3][1] = m.m[1][3];
+	m4.m[3][2] = m.m[2][3];
+	m4.m[3][3] = m.m[3][3];
+	return m4;
+
+
 };

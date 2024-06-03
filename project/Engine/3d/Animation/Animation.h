@@ -6,6 +6,11 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+struct AnimationData {
+	float duration = 0; // アニメ―ション全体の尺（単位は秒）
+	// NodeAnimationの集合。NOde名で開けるようにしておく
+	std::unordered_map<std::string, NodeAnimation> nodeAnimations;
+};
 class Animation
 {
 public:

@@ -31,6 +31,9 @@ void Object3d::Init()
 void Object3d::Update()
 {
 	worldTransform_.UpdateMatrix();
+	if (model_) {
+		model_->Update();
+	}
 
 
 }
@@ -51,9 +54,9 @@ void Object3d::Draw(uint32_t texture, Camera* camera )
 	directXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(4, cameraForGPUResource_->GetGPUVirtualAddress());
 	// 3Dモデルが割り当てられていれば描画する
 	if (model_) {
-		wvpData->WVP = Multiply(model_->GetAniMatrix(),worldViewProjectionMatrix);
-		wvpData->World = Multiply(model_->GetAniMatrix(),worldTransform_.matWorld_);
-		model_->Draw(texture,{ { 1.0f,1.0f,1.0f,1.0f },true
+		wvpData->WVP =  worldViewProjectionMatrix;
+		wvpData->World =  worldTransform_.matWorld_;
+		model_->Draw(texture,{ { 1.0f,1.0f,1.0f,1.0f },false
 			}, { { 1.0f,1.0,1.0,1.0f } ,{ 0.0f,-1.0f,0.0f },0.5f });
 	}
 

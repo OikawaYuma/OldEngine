@@ -189,6 +189,7 @@
       <Filter>Engine\interface</Filter>
     </ClCompile>
     <ClCompile Include="Engine\3d\Animation\Animation.cpp" />
+    <ClCompile Include="Engine\3d\Skeleton\Skeleton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -367,6 +368,7 @@
     </ClInclude>
     <ClInclude Include="Lib\math\Quaternion.h" />
     <ClInclude Include="Engine\3d\Animation\Animation.h" />
+    <ClInclude Include="Engine\3d\Skeleton\Skeleton.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3d.PS.hlsl">
@@ -387,6 +389,7 @@
     <FxCompile Include="Sprite.VS.hlsl">
       <Filter>Resources\shader</Filter>
     </FxCompile>
+    <FxCompile Include="SkinningObject3d.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\imgui.ini">
