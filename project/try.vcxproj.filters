@@ -89,7 +89,7 @@
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Engine\interface</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\Camera.cpp">
+    <ClCompile Include="Engine\Interface\Camera.cpp">
       <Filter>Engine\3d</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Adapter\Engine.cpp">
@@ -131,7 +131,7 @@
     <ClCompile Include="Engine\2d\Sprite.cpp">
       <Filter>Engine\2d</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\WorldTransform.cpp">
+    <ClCompile Include="Engine\Interface\WorldTransform.cpp">
       <Filter>Engine\3d</Filter>
     </ClCompile>
     <ClCompile Include="Game\Collision\Collider.cpp">
@@ -158,10 +158,10 @@
     <ClCompile Include="Game\Scene\TitleScene.cpp">
       <Filter>Application\scene</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\Sphere.cpp">
+    <ClCompile Include="Engine\3d\Sphere\Sphere.cpp">
       <Filter>Engine\3d</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\3d\Triangle.cpp">
+    <ClCompile Include="Engine\3d\Triangle\Triangle.cpp">
       <Filter>Engine\3d</Filter>
     </ClCompile>
     <ClCompile Include="Game\Utilty\TimedCall.cpp">
@@ -237,7 +237,7 @@
     <ClInclude Include="Engine\Audio\Audio.h">
       <Filter>Engine\interface</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3d\Camera.h">
+    <ClInclude Include="Engine\Interface\Camera.h">
       <Filter>Engine\3d</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Adapter\Engine.h">
@@ -282,7 +282,7 @@
     <ClInclude Include="Engine\2d\Sprite.h">
       <Filter>Engine\2d</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3d\WorldTransform.h">
+    <ClInclude Include="Engine\Interface\WorldTransform.h">
       <Filter>Engine\3d</Filter>
     </ClInclude>
     <ClInclude Include="Engine\3d\Model\ModelData.h">
@@ -321,10 +321,10 @@
     <ClInclude Include="Engine\Interface\TextureManager.h">
       <Filter>Engine\interface</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3d\Sphere.h">
+    <ClInclude Include="Engine\3d\Sphere\Sphere.h">
       <Filter>Engine\3d</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\3d\Triangle.h">
+    <ClInclude Include="Engine\3d\Triangle\Triangle.h">
       <Filter>Engine\3d</Filter>
     </ClInclude>
     <ClInclude Include="Game\Utilty\TimedCall.h">

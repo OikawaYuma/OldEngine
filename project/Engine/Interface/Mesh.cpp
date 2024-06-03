@@ -1,16 +1,7 @@
 ﻿#include "Mesh.h"
-#include"WinAPI.h"
-#include"DirectXCommon.h"
-#include "TextureManager.h"
 
 Mesh::Mesh() {
-
-
-
 };
-
-
-
 
 Microsoft::WRL::ComPtr <ID3D12Resource> Mesh::CreateBufferResource(Microsoft::WRL::ComPtr<ID3D12Device> device, size_t sizeInBytes) {
 	//頂点リソース用のヒープの設定
@@ -36,11 +27,3 @@ Microsoft::WRL::ComPtr <ID3D12Resource> Mesh::CreateBufferResource(Microsoft::WR
 	resource->SetName(L"aaaaaaa");
 	return resource;
 };
-
-
-
-
-	//ID3D12Resource* CreateBufferResourceDesc(ID3D12Device* device, size_t sizeInBytes);
-
-
-
