@@ -54,6 +54,7 @@ public:
 		textureManager_ = textureManager;
 	}
 	ModelData LoadObjFile(const std::string& directoryPath, const std::string&filePath);
+	ModelData LoadGLTFFile(const std::string& directoryPath, const std::string& filePath);
 	MaterialData LoadMaterialTemplateFile(const std::string& directoryPath,const std::string& filename);
 
 	Matrix4x4 GetAniMatrix() { return aniMatrix_; }
