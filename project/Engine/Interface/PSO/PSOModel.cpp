@@ -84,6 +84,11 @@ void PSO::CreateRootSignature() {
 	rootParamerters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParamerters[4].Descriptor.ShaderRegister = 2;
 
+	rootParamerters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescripterTableを使う
+	rootParamerters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; // PixelShaderで使う
+	rootParamerters[5].DescriptorTable.pDescriptorRanges = descriptorRange_; // Tableの中身の配列を指定
+	rootParamerters[5].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange_); // Tableで利用する数
+
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイナリフィルタ
 	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; // 0~1の範囲外をリピート
 	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;

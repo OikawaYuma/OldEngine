@@ -36,5 +36,7 @@ private:
 	Particle* particle2 = nullptr;
 	Emitter demoEmitter_;
 	RandRangePro demoRandPro;
+
+	float rotateSize_ = 0.05f;
 };
 

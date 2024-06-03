@@ -8,7 +8,7 @@ void DemoScene::Init()
 	camera = new Camera;
 	camera->Initialize();
 	Vector3 cameraPos = camera->GetTransform().translate;
-	cameraPos.z = -15;
+	cameraPos.z = -5;
 	camera->SetTranslate(cameraPos);
 	input = Input::GetInstance();
 	textureHandle = TextureManager::StoreTexture("Resources/uvChecker.png");
@@ -16,7 +16,7 @@ void DemoScene::Init()
 	demoSprite = new Sprite();
 	demoSprite->Init({ 0.0f,0.0f }, { 600.0f,600.0f }, { 0.0f,0.0f }, { 1.0f,1.0f,1.0f,1.0f }, "Resources/uvChecker.png");
 	material.color = { 1.0f,1.0f,1.0f,1.0f };
-	material.enableLighting = true;
+	material.enableLighting = false;
 	worldTransform.Initialize();
 	worldTransform.translation_.x = 0;
 	worldTransform2.Initialize();
@@ -24,15 +24,16 @@ void DemoScene::Init()
 	worldTransform.UpdateMatrix();
 	worldTransform2.UpdateMatrix();
 
-	ModelManager::GetInstance()->LoadModel("Resources/human", "walk.gltf");
+	ModelManager::GetInstance()->LoadModel("Resources/human", "sneakWalk.gltf");
+	//ModelManager::GetInstance()->LoadModel("Resources/simpleSkin", "simpleSkin.gltf");
 	//ModelManager::GetInstance()->LoadModel("Resources/ball", "ball.obj");
 	object3d = new Object3d();
 	object3d->Init();
 	object3d2 = new Object3d();
 	object3d2->Init();
 	
-	object3d->SetModel("walk.gltf");
-	object3d2->SetModel("walk.gltf");
+	object3d->SetModel("sneakWalk.gltf");
+	object3d2->SetModel("sneakWalk.gltf");
     particle = new Particle();
     particle2 = new Particle();
 
@@ -56,12 +57,21 @@ void DemoScene::Update()
 	////カメラの更新
 	camera->Update();
 	demoSprite->Update();
-	worldTransform.rotation_.y += 0.05f;
+	
+	if (Input::GetInstance()->TriggerKey(DIK_A)) {
+		rotateSize_ = 0.0f;
+	}
+	if (Input::GetInstance()->TriggerKey(DIK_D)) {
+		rotateSize_ = 0.05f;
+	}
+
+
+	worldTransform.rotation_.y += rotateSize_;
 	object3d->SetWorldTransform(worldTransform);
 	object3d2->SetWorldTransform(worldTransform2);
-
+	
 	object3d->Update();
-	object3d2->Update();
+	//object3d2->Update();
 
 }
 void DemoScene::Draw()

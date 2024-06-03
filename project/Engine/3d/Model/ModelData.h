@@ -28,10 +28,6 @@ struct NodeAnimation {
 	AnimationCurve<Vector3> scale;
 };
 
-struct AnimationData {
-	float duration=0; // アニメ―ション全体の尺（単位は秒）
-	// NodeAnimationの集合。NOde名で開けるようにしておく
-	std::unordered_map<std::string, NodeAnimation> nodeAnimations;
-};
+
 
 

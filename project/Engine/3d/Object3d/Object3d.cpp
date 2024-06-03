@@ -56,7 +56,7 @@ void Object3d::Draw(uint32_t texture, Camera* camera )
 	if (model_) {
 		wvpData->WVP =  worldViewProjectionMatrix;
 		wvpData->World =  worldTransform_.matWorld_;
-		model_->Draw(texture,{ { 1.0f,1.0f,1.0f,1.0f },true
+		model_->Draw(texture,{ { 1.0f,1.0f,1.0f,1.0f },false
 			}, { { 1.0f,1.0,1.0,1.0f } ,{ 0.0f,-1.0f,0.0f },0.5f });
 	}
 

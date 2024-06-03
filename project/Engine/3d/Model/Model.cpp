@@ -346,7 +346,16 @@ void Model::Update() {
 
 	animationTime += 1.0f / 60.0f;
 	animationTime = std::fmod(animationTime, animation_.duration); // 最後まで行ったら最初からリピート再生。リピートしなくても別によい
-	ApplyAnimation(skeleton_, animation_, animationTime);
+	for (Joint& joint : skeleton_.joints) {
+		// 対象のJointのAnimationがあれば、他の適用を行う。下記のif文はC++17,から可能になった初期化付きif文。
+		if (auto it = animation_.nodeAnimations.find(joint.name); it != animation_.nodeAnimations.end()) {
+			const NodeAnimation& rootNodeAnimation = (*it).second;
+			joint.transform.translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime);
+			joint.transform.rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
+			joint.transform.scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime);
+
+		}
+	}
 	// すべてのJointを更新。親が若いので通常ループで処理可能になっている
 	for (Joint& joint : skeleton_.joints) {
 		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
@@ -384,6 +393,7 @@ void Model::Draw(uint32_t texture, const Material& material, const DirectionalLi
 	textureManager_ = TextureManager::GetInstance();
 	// 色のデータを変数から読み込み
 	materialData->color = material.color;
+	materialData->enableLighting = material.enableLighting;
 	materialData->shininess = 0.5f;
 	directionalLightData->direction = dire.direction;
 	//directionalLightData->direction =  Normalize(directionalLightData->direction);
@@ -399,7 +409,9 @@ void Model::Draw(uint32_t texture, const Material& material, const DirectionalLi
 
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	directXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(2, SRVManager::GetGPUDescriptorHandle(texture));
+	
 	directXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(3, directionalLightResource->GetGPUVirtualAddress());
+	directXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(5, skinCluster_.paletteSrvHandle.second);
 	directXCommon_->GetCommandList()->DrawIndexedInstanced(static_cast<uint32_t>(modelData_.indices.size()),1,0,0,0);
 	//directXCommon_->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }
