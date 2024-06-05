@@ -1,6 +1,7 @@
-#include "Triangle.h"
+#include "Triangle/Triangle.h"
 #include <mathFunction.h>
 #include "SRVManager.h"
+#include "TextureManager.h"
 void Triangle::Initialize(Camera* camera, Vector4 DrawColor) {
 
 	WinAPI* sWinAPI = WinAPI::GetInstance();
@@ -129,8 +130,6 @@ void Triangle::Draw(WorldTransform worlsTransform, Camera* camera,uint32_t textu
 	PSO *pso = PSO::GatInstance();
 
 	camera_ = camera;
-	textureManager_ = TextureManager::GetInstance();
-	
 	Matrix4x4 worldViewProjectionMatrix = Multiply(worlsTransform.matWorld_, camera->GetViewprojectionMatrix());
 	TransformationData->WVP = worldViewProjectionMatrix;
 	TransformationData->World = MakeIdentity4x4();

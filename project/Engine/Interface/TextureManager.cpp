@@ -8,14 +8,10 @@
 // ImGuiが0に格納されているため1から格納する
 int TextureManager::kSRVIndexTop = 1;
 int TextureManager::kParIndez = 10;
+
+// テクスチャ生成に必要なデータを定義
 std::unordered_map<std::string, TextureData> TextureManager::textureDatas_;
-//// ソースで静的メンバ変数を定義
-//Microsoft::WRL::ComPtr <ID3D12Resource> TextureManager::textureResource_[SRVSizes];
-//
-//D3D12_CPU_DESCRIPTOR_HANDLE TextureManager::textureSrvHandleCPU_[SRVSizes];
-//D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::textureSrvHandleGPU_[SRVSizes];
-//DirectX::TexMetadata TextureManager::metadata_[SRVSizes];
-//D3D12_SHADER_RESOURCE_VIEW_DESC TextureManager::srvDesc_[SRVSizes];
+
 void TextureManager::Init()
 {
 	textureDatas_.reserve(SRVManager::kMaXSRVCount);
