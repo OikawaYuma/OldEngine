@@ -190,6 +190,8 @@
     </ClCompile>
     <ClCompile Include="Engine\3d\Animation\Animation.cpp" />
     <ClCompile Include="Engine\3d\Skeleton\Skeleton.cpp" />
+    <ClCompile Include="Engine\Interface\PSO\PSOCopyImage.cpp" />
+    <ClCompile Include="Engine\2d\PostProcess.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -369,6 +371,8 @@
     <ClInclude Include="Lib\math\Quaternion.h" />
     <ClInclude Include="Engine\3d\Animation\Animation.h" />
     <ClInclude Include="Engine\3d\Skeleton\Skeleton.h" />
+    <ClInclude Include="Engine\Interface\PSO\PSOCopyImage.h" />
+    <ClInclude Include="Engine\2d\PostProcess.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\Object3d.PS.hlsl">
@@ -390,6 +394,8 @@
       <Filter>Resources\shader</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shader\SkinningObject3d.VS.hlsl" />
+    <FxCompile Include="Resources\shader\CopyImage.PS.hlsl" />
+    <FxCompile Include="Resources\shader\CopyImage.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\imgui.ini">
@@ -404,6 +410,7 @@
     <None Include="Resources\shader\Sprite.hlsli">
       <Filter>Resources\shader</Filter>
     </None>
+    <None Include="Resources\shader\CopyImage.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="imgui\LICENSE.txt" />

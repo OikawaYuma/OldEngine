@@ -5,6 +5,7 @@
 #include "mathFunction.h"
 #include "Mesh.h"
 #include "SRVManager.h"
+#include "TextureManager.h"
 
 
 Sprite::Sprite() {};

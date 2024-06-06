@@ -7,6 +7,7 @@
 #include "Sprite.h"
 #include "Object3d.h"
 #include "Model.h"
+
 class DemoScene : public IScene
 {
 public:
@@ -36,6 +37,7 @@ private:
 	Particle* particle2 = nullptr;
 	Emitter demoEmitter_;
 	RandRangePro demoRandPro;
+
 
 	float rotateSize_ = 0.05f;
 };

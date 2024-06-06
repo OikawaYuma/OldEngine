@@ -20,6 +20,8 @@
 #include "Matrix4x4.h"
 #include "Material.h"
 #include "DirectionLight.h"
+#include "TransformationMatrix.h"
+
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")

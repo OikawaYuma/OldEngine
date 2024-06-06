@@ -12,6 +12,7 @@
 #include "WinAPI.h"
 #include <dxcapi.h>
 #include "ResourceObject.h"
+#include "Vector4.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -79,6 +80,11 @@ public:
 	void RTVInit();
 
 	/// <summary>
+	/// RenderTextureの生成
+	/// </summary>
+	void CrateRenderTexture();
+
+	/// <summary>
 	/// fenceの生成
 	/// </summary>
 	void CreateFence();
@@ -97,6 +103,10 @@ public:
 	/// DXCコンパイラの生成
 	/// </summary>
 	void CreateDXCCompilier();
+
+
+	void tempRender();
+
 
 public: //Getter
 
@@ -131,6 +141,8 @@ public: //Getter
 	D3D12_RENDER_TARGET_VIEW_DESC GetrtvDesc() { return rtvDesc_; };
 	D3D12_DEPTH_STENCIL_DESC GetDepthStencilDesc() { return depthStencilDesc_; };
 
+	uint32_t GetRenderIndex() { return renderindex_; }
+
 public: 
 	//ReleaseCheck
 	struct D3DResourceLeakChecker {
@@ -149,6 +161,7 @@ public:
 
 	Microsoft::WRL::ComPtr <ID3D12DescriptorHeap> CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible);
 	Microsoft::WRL::ComPtr < ID3D12Resource> CreateDepthStencilTextureResource(Microsoft::WRL::ComPtr < ID3D12Device> device, int32_t width, int32_t height);
+	Microsoft::WRL::ComPtr < ID3D12Resource> CreateRenderTextureResource(Microsoft::WRL::ComPtr < ID3D12Device> device, int32_t width, int32_t height,DXGI_FORMAT format,const Vector4& clearColor);
 	/*D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(ID3D12DescriptorHeap* descriptorHeap, uint32_t descriptorSize, uint32_t index) {
 		D3D12_CPU_DESCRIPTOR_HANDLE handleCPU = descriptorHeap->GetCPUDescriptorHandleForHeapStart();
 		handleCPU.ptr += (descriptorSize * index);
@@ -192,6 +205,9 @@ private:
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_{};
 	Microsoft::WRL::ComPtr < ID3D12Resource> swapChainResources_[2] = { nullptr };
 
+	// RenderTextureresource
+	Microsoft::WRL::ComPtr < ID3D12Resource> renderTextureResource_ = nullptr;
+
 
 	// ディスクリプタヒープの生成
 	Microsoft::WRL::ComPtr < ID3D12DescriptorHeap> rtvDescriptorHeap_ = nullptr;
@@ -206,12 +222,13 @@ private:
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvStartHandle_;
 
 	// RTVを2つ作るのでディスクリプタを2つ用意
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles_[2];
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles_[3];
 
 	// これから書き込むバックバッファのインデックスを取得
 	//UINT backBufferIndex_;
 	// TransitionBarrierの設定
 	D3D12_RESOURCE_BARRIER barrier_{};
+	D3D12_RESOURCE_BARRIER barrier2_{};
 
 	// 初期値0でFenceを作る
 	Microsoft::WRL::ComPtr < ID3D12Fence> fence_;
@@ -226,7 +243,6 @@ private:
 
 
 	WinAPI* sWinAPI_ = nullptr;
-	TextureManager* textureManager_ = nullptr;
 
 
 	// DepthStencilTextureをウィンドウのサイズで作成
@@ -244,9 +260,18 @@ private:
 	// シザー矩形
 	D3D12_RECT scissorRect{};
 
+	//ビューポート
+	D3D12_VIEWPORT tmpViewport{};
+	// シザー矩形
+	D3D12_RECT tmpScissorRect{};
+
+	uint32_t renderindex_;
+
+
+
 public: // 共通変数　以下の変数は変更しない
 	// ディスクリプターヒープのサイズをあらかじめ設定
-	const static uint32_t rtvDescriptorSize_ = 2;
+	const static uint32_t rtvDescriptorSize_ = 3;
 	const static uint32_t dsvDescriptorSize_ = 1;
 };
 

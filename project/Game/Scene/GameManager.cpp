@@ -6,6 +6,8 @@
 #include "PSOModel.h"
 #include "PSOSprite.h"
 #include "PSOParticle.h"
+#include "PSOCopyImage.h"
+#include "PostProcess.h"
 #include "Input.h"
 #include "Mesh.h"
 #include "ImGuiCommon.h"
@@ -49,12 +51,9 @@ int GameManager::Run() {
 
 	WinAPI* sWinAPI = WinAPI::GetInstance();
 	sWinAPI->Initialize(L"CG2");
-
+	
 	DirectXCommon* sDirctX = DirectXCommon::GetInstance();
 	sDirctX->Initialize();
-
-	SRVManager* sSRVManager = SRVManager::GetInstance();
-	sSRVManager->Init();
 
 	ImGuiCommon *imGuiCommon = ImGuiCommon::GetInstance();
 	imGuiCommon->Initialize();
@@ -80,6 +79,11 @@ int GameManager::Run() {
 	PSOParticle* psoParticle = PSOParticle::GatInstance();
 	psoParticle->CreatePipelineStateObject();
 
+	PSOCopyImage* psoCopyImage = PSOCopyImage::GatInstance();
+	psoCopyImage->CreatePipelineStateObject();
+	
+	PostProcess* post = new PostProcess();
+	//post->Init();
 	sceneArr_[currentSceneNo_]->Init();
 
 	Input* sInput = Input::GetInstance();
@@ -93,7 +97,12 @@ int GameManager::Run() {
 			break;
 		}
 		// ゲームの処理の開始
-		sDirctX->BeginFrame();
+		sDirctX->tempRender();
+		// ImGui
+		ImGuiCommon::GetInstance()->UICreate();
+		//ImGuiの更新
+		ImGuiCommon::GetInstance()->Update();
+		
 		sInput->Update();
 
 		ImGui::Begin("kakunin");
@@ -123,12 +132,13 @@ int GameManager::Run() {
 		///
 
 		sceneArr_[currentSceneNo_]->Draw();
-
+		
 
 		///
 		/// ↑描画処理ここまで
 		///
-
+		sDirctX->BeginFrame();
+		post->Draw();
 		// フレームの終了
 		//スワップチェーン
 		sDirctX->ViewChange();
