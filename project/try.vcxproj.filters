@@ -394,8 +394,9 @@
       <Filter>Resources\shader</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shader\SkinningObject3d.VS.hlsl" />
-    <FxCompile Include="Resources\shader\CopyImage.PS.hlsl" />
-    <FxCompile Include="Resources\shader\CopyImage.VS.hlsl" />
+    <FxCompile Include="Resources\shader\Fullscreen.PS.hlsl" />
+    <FxCompile Include="Resources\shader\Fullscreen.VS.hlsl" />
+    <FxCompile Include="Resources\shader\Grayscale.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\imgui.ini">
@@ -410,7 +411,7 @@
     <None Include="Resources\shader\Sprite.hlsli">
       <Filter>Resources\shader</Filter>
     </None>
-    <None Include="Resources\shader\CopyImage.hlsli" />
+    <None Include="Resources\shader\Fullscreen.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="imgui\LICENSE.txt" />
