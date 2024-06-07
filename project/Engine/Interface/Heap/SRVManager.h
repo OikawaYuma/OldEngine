@@ -38,6 +38,7 @@ public:
 	// SRV生成（Structured Buffer用）
 	static void CreateSRVforStructuredBuffer(uint32_t srvIndex, ID3D12Resource* pResource, UINT numElements, UINT structureByteStride);
 
+	static void CreateSRVRenderTexture(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT Format, UINT MipLevels);
 	void PreDraw();
 
 	void SetGraphicsRootDescriptortable(UINT rootParameterIndex, uint32_t srvIndex);

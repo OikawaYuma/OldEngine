@@ -1,22 +1,26 @@
 #pragma once
+#pragma once
 #include <d3d12.h>
 #include "DirectXCommon.h"
 #include "PSOProperty.h"
 #include "Vector3.h"
+#include<Windows.h>
+#include<d3d12.h>
+#include<dxgi1_6.h>
+#include <dxcapi.h>
+#include <fstream>
+#include <sstream>
+#include <cassert>
 
 
-struct CameraForGPU {
-	Vector3 worldPosition;
-};
-
-class PSO : public PSOProperty
+class PSOCopyImage : public PSOProperty
 {
 public:
-	static PSO* GatInstance();
+	static PSOCopyImage* GatInstance();
 
-	PSO() = default;
-	~PSO() = default;
-	const PSO& operator=(const PSO&) = delete;
+	PSOCopyImage() = default;
+	~PSOCopyImage() = default;
+	const PSOCopyImage& operator=(const PSOCopyImage&) = delete;
 
 
 	/// <summary>
@@ -48,7 +52,7 @@ public:
 	/// Release
 	/// </summary>
 	/// <returns></returns>
-	
+
 	/// <summary>
 	/// DepthBufferの生成
 	/// </summary>
@@ -67,14 +71,14 @@ private:
 	// バイナリを元に生成
 	//ID3D12RootSignature* rootSignature;
 	// RootParmeter作成。複数でっていできるので配列。今回は結果１つだけなので長さ1の配列
-	D3D12_ROOT_PARAMETER rootParamerters[6] = {};
+	D3D12_ROOT_PARAMETER rootParamerters[1] = {};
 
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 
 	D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
 
 	// InputLayout
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[5] = {};
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[1] = {};
 	D3D12_INPUT_LAYOUT_DESC  inputLayoutDesc{};
 
 	// blendStateの設定
@@ -98,4 +102,5 @@ private:
 	PSOProperty property;
 
 };
+
 
