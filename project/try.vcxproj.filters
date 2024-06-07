@@ -398,6 +398,7 @@
     <FxCompile Include="Resources\shader\Fullscreen.VS.hlsl" />
     <FxCompile Include="Resources\shader\Grayscale.PS.hlsl" />
     <FxCompile Include="Resources\shader\Vignetting.PS.hlsl" />
+    <FxCompile Include="Resources\shader\BoxFilter.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\imgui.ini">
