@@ -399,6 +399,8 @@
     <FxCompile Include="Resources\shader\Grayscale.PS.hlsl" />
     <FxCompile Include="Resources\shader\Vignetting.PS.hlsl" />
     <FxCompile Include="Resources\shader\BoxFilter.PS.hlsl" />
+    <FxCompile Include="Resources\shader\GaussianFilter.PS.hlsl" />
+    <FxCompile Include="Resources\shader\Fullscreen.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\imgui.ini">
@@ -413,7 +415,6 @@
     <None Include="Resources\shader\Sprite.hlsli">
       <Filter>Resources\shader</Filter>
     </None>
-    <None Include="Resources\shader\Fullscreen.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="imgui\LICENSE.txt" />
