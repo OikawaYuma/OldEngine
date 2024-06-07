@@ -11,11 +11,11 @@ void PSOCopyImage::CreatePipelineStateObject() {
 	PSOCopyImage::SetRasterrizerState();
 	PSOCopyImage::CreateDepth();
 	// Shaderをコンパイルする
-	property.vertexShaderBlob = CompileShader(L"Resources/shader/CopyImage.VS.hlsl",
+	property.vertexShaderBlob = CompileShader(L"Resources/shader/Fullscreen.VS.hlsl",
 		L"vs_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.vertexShaderBlob != nullptr);
 
-	property.pixelShaderBlob = CompileShader(L"Resources/shader/CopyImage.PS.hlsl",
+	property.pixelShaderBlob = CompileShader(L"Resources/shader/Grayscale.PS.hlsl",
 		L"ps_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.pixelShaderBlob != nullptr);
 
