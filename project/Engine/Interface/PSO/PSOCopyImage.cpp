@@ -1,4 +1,5 @@
 #include "PSOCopyImage.h"
+#include <d3dx12.h>
 
 
 void PSOCopyImage::CreatePipelineStateObject() {
@@ -46,6 +47,8 @@ void PSOCopyImage::CreatePipelineStateObject() {
 	hr_ = sDirectXCommon->GetDevice()->CreateGraphicsPipelineState(&graphicsPipelineStateDesc,
 		IID_PPV_ARGS(&property.graphicsPipelineState));
 	assert(SUCCEEDED(hr_));
+
+	//DirectXCommon::GetInstance()->ChangeDepthStatetoRender();
 }
 
 void PSOCopyImage::CreateRootSignature() {
@@ -65,15 +68,21 @@ void PSOCopyImage::CreateRootSignature() {
 	descriptorRange_[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
 	descriptorRange_[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
+	descriptorRange_[1].BaseShaderRegister = 1; // 0から始まる
+	descriptorRange_[1].NumDescriptors = 1; // 数は2つ
+	descriptorRange_[1].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
+	descriptorRange_[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
+
 	rootParamerters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescripterTableを使う
 	rootParamerters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
-	rootParamerters[0].DescriptorTable.pDescriptorRanges = descriptorRange_; // Tableの中身の配列を指定
-	rootParamerters[0].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange_); // Tableで利用する数
+	rootParamerters[0].DescriptorTable.pDescriptorRanges = &descriptorRange_[0]; // Tableの中身の配列を指定
+	rootParamerters[0].DescriptorTable.NumDescriptorRanges = 1; // Tableで利用する数
 
 	rootParamerters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescripterTableを使う
 	rootParamerters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
-	rootParamerters[1].DescriptorTable.pDescriptorRanges = descriptorRange_; // Tableの中身の配列を指定
-	rootParamerters[1].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange_); // Tableで利用する数
+	rootParamerters[1].DescriptorTable.pDescriptorRanges = &descriptorRange_[1]; // Tableの中身の配列を指定
+	rootParamerters[1].DescriptorTable.NumDescriptorRanges = 1; // Tableで利用する数
+
 
 
 	

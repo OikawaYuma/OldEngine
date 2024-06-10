@@ -75,7 +75,7 @@ private:
 
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[2] = {};
 
-	D3D12_DESCRIPTOR_RANGE descriptorRange_[1] = {};
+	D3D12_DESCRIPTOR_RANGE descriptorRange_[2] = {};
 
 	// InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[1] = {};

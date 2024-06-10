@@ -2,6 +2,7 @@
 #include <thread>
 #include "ImGuiCommon.h"
 #include <SRVManager.h>
+#include <d3dx12.h>
 
 /*----------------------------------------------------------
    このクラスはシングルトンパターンのを元に設計する
@@ -125,7 +126,7 @@ void DirectXCommon::tempRender()
 	commandList_->OMSetRenderTargets(1, &rtvHandles_[2], false, &dsvHandle);
 
 	// 指定した深度で画面全体をクリアする
-	//commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	
 	commandList_->ClearRenderTargetView(rtvHandles_[2], rederClearColor, 0, nullptr);//Scirssorを設定:
@@ -169,7 +170,7 @@ void DirectXCommon::BeginFrame() {
 	commandList_->OMSetRenderTargets(1, &rtvHandles_[backBufferIndex], false, &dsvHandle);
 
 	// 指定した深度で画面全体をクリアする
-	commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	//commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	//指定した色で画面全体をクリアする
 	//float clearColor[] = { 0.1f,0.25f,0.5f,1.0f }; //青っぽい色。 RGBAの淳  0.1/0.25/0.5/1.0f
@@ -478,6 +479,32 @@ void DirectXCommon::CreateDXCCompilier() {
 	includeHandler_ = nullptr;
 	hr = dxcUtils_->CreateDefaultIncludeHandler(&includeHandler_);
 	assert(SUCCEEDED(hr));
+}
+
+void DirectXCommon::ChangeDepthStatetoRead()
+{
+	// リソース状態を変更するためのバリア設定
+	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
+		depthStencilResource_.Get(), // 変更するリソース
+		D3D12_RESOURCE_STATE_DEPTH_WRITE, // 現在の状態
+		D3D12_RESOURCE_STATE_DEPTH_READ // 変更後の状態
+	);
+
+	// バリアをコマンドリストに追加する
+	commandList_->ResourceBarrier(1, &barrier);
+}
+
+void DirectXCommon::ChangeDepthStatetoRender()
+{
+	// リソース状態を変更するためのバリア設定
+	CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
+		depthStencilResource_.Get(), // 変更するリソース
+		D3D12_RESOURCE_STATE_DEPTH_READ, // 現在の状態
+		D3D12_RESOURCE_STATE_DEPTH_WRITE // 変更後の状態
+	);
+
+	// バリアをコマンドリストに追加する
+	commandList_->ResourceBarrier(1, &barrier);
 }
 
 

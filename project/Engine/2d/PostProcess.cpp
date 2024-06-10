@@ -37,6 +37,7 @@ void PostProcess::Draw(){
 	// マテリアルCBufferの場所を設定
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(0, SRVManager::GetInstance()->GetGPUDescriptorHandle(sDirectXCommon->GetRenderIndex()));
+	
 	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, SRVManager::GetInstance()->GetGPUDescriptorHandle(sDirectXCommon->GetDepthIndex()));
 	// マテリアルCBufferの場所を設定
 	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(2, materialResource->GetGPUVirtualAddress());

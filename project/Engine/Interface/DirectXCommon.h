@@ -104,6 +104,8 @@ public:
 	/// </summary>
 	void CreateDXCCompilier();
 
+	void ChangeDepthStatetoRead();
+	void ChangeDepthStatetoRender();
 
 	void tempRender();
 
