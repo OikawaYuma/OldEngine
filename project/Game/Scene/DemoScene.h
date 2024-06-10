@@ -7,6 +7,7 @@
 #include "Sprite.h"
 #include "Object3d.h"
 #include "Model.h"
+#include "PostProcess.h"
 
 class DemoScene : public IScene
 {
@@ -14,6 +15,7 @@ public:
 	void Init() override;
 	void Update()override;
 	void Draw()override;
+	void PostDraw()override;
 	void Release()override;
 	int GameClose()override;
 
@@ -37,6 +39,8 @@ private:
 	Particle* particle2 = nullptr;
 	Emitter demoEmitter_;
 	RandRangePro demoRandPro;
+	
+	PostProcess* postProcess_ = nullptr;
 
 
 	float rotateSize_ = 0.05f;

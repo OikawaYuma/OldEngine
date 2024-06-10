@@ -1,7 +1,15 @@
 #include "Fullscreen.hlsli"
+struct Material
+{
+    float32_t4 projectionInverse;
+};
 
+
+ConstantBuffer<Material> gMaterial : register(b0);
 Texture2D<float32_t4> gTexture : register(t0);
+Texture2D<float32_t> gDepthTexture : register(t1);
 SamplerState gSampler : register(s0);
+SamplerState gSamplerPoint : register(s1);
 
 static const int32_t KenelSize = 3;
 
@@ -67,12 +75,14 @@ PixelShaderOutput main(VertexShaderOutput input)
         {
             // 3. 現在のtexcoordを算出
             float32_t2 texcoord = input.texcoord + kIndex3x3[x][y] * uvStepSize;
-            // 4. 色に1/9掛けて足す
-            float32_t3 fetchColor = gTexture.Sample(gSampler, texcoord).rgb;
-            // 輝度を使う
-            float32_t luminance = Luminance(fetchColor);
-            difference.x += luminance * kPrewittHorizontalKernel[x][y];
-            difference.y += luminance * kPrewittVerticalKernel[x][y];
+            
+            float32_t ndcDepth = gDepthTexture.Sample(gSamplerPoint, texcoord);
+            // NDC -> View。P^{-1}においてxとyはzwに影響を与えないので何でもよい。なので、わざわざ行列を渡さなくてもよい
+            // gMaterial.projectionInverseはCBufferを使って渡しておくこと
+            float32_t4 viewSpace = mul(float32_t4(0.0f, 0.0f, ndcDepth, 1.0f), gMaterial.projectionInverse);
+            float32_t viewZ = viewSpace.z * rcp(viewSpace.w); // 同時座標系からデカルト座標系へ変換
+            difference.x += viewZ * kPrewittHorizontalKernel[x][y];
+            difference.y += viewZ * kPrewittVerticalKernel[x][y];
 
         }
     }

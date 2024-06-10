@@ -402,6 +402,7 @@
     <FxCompile Include="Resources\shader\GaussianFilter.PS.hlsl" />
     <FxCompile Include="Resources\shader\Fullscreen.hlsli" />
     <FxCompile Include="Resources\shader\LuminanceBasedOutline.PS.hlsl" />
+    <FxCompile Include="Resources\shader\DepthBasedOutline.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\imgui.ini">

@@ -142,6 +142,7 @@ public: //Getter
 	D3D12_DEPTH_STENCIL_DESC GetDepthStencilDesc() { return depthStencilDesc_; };
 
 	uint32_t GetRenderIndex() { return renderindex_; }
+	uint32_t GetDepthIndex() { return depthIndex_; }
 
 public: 
 	//ReleaseCheck
@@ -266,6 +267,7 @@ private:
 	D3D12_RECT tmpScissorRect{};
 
 	uint32_t renderindex_;
+	uint32_t depthIndex_;
 
 
 

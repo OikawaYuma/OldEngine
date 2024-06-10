@@ -353,6 +353,10 @@ void DirectXCommon::CreateDepth() {
 	// DSVHeapの先頭にDSVをつくる
 	device_->CreateDepthStencilView(depthStencilResource_.Get(), &dsvDesc, dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart());
 
+	// SRVの設定
+	depthIndex_ = SRVManager::GetInstance()->Allocate();
+	SRVManager::GetInstance()->CreateSRVDepth(depthIndex_, depthStencilResource_.Get(), DXGI_FORMAT_R24_UNORM_X8_TYPELESS, 1);
+	
 	//// Depthの機能を有効化する
 	//depthStencilDesc_.DepthEnable = true;
 	//// 書き込みします
