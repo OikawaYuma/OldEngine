@@ -92,6 +92,8 @@ private:
 
 	uint32_t SRVIndex_;
 
+	uint32_t noiseTexture_;
+
 	Camera* camera_ = nullptr;
 };
 

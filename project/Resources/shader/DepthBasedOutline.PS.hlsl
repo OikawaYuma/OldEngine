@@ -1,7 +1,7 @@
 #include "Fullscreen.hlsli"
 struct Material
 {
-    float32_t4 projectionInverse;
+    float32_t4x4 projectionInverse;
 };
 
 
@@ -79,7 +79,7 @@ PixelShaderOutput main(VertexShaderOutput input)
             float32_t ndcDepth = gDepthTexture.Sample(gSamplerPoint, texcoord);
             // NDC -> View。P^{-1}においてxとyはzwに影響を与えないので何でもよい。なので、わざわざ行列を渡さなくてもよい
             // gMaterial.projectionInverseはCBufferを使って渡しておくこと
-            float32_t4 viewSpace = mul(float32_t4(0.0f, 0.0f, ndcDepth, 1.0f), gMaterial.projectionInverse);
+            float32_t4 viewSpace = mul( float32_t4(0.0f, 0.0f, ndcDepth, 1.0f), gMaterial.projectionInverse);
             float32_t viewZ = viewSpace.z * rcp(viewSpace.w); // 同時座標系からデカルト座標系へ変換
             difference.x += viewZ * kPrewittHorizontalKernel[x][y];
             difference.y += viewZ * kPrewittVerticalKernel[x][y];
@@ -91,7 +91,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     // 変化の長さをウェイトとして合成。ウェイトの決定方法も色々と考えられる。例えばdifference.xだけ使えば横方向のエッジが検出される
     float32_t weight = length(difference);
     // 差が小さい過ぎてわかりずらいので適当に6倍している。CBufferで調整パラメータとして送ったりすると良い
-    weight = saturate(weight * 6.0f);
+    weight = saturate(weight);
     
     PixelShaderOutput output;
     // weightが大きいほど暗く表示するようにしている。最もシンプルな合成方法
