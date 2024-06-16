@@ -1,8 +1,7 @@
 #include "Input.h"
 #include "WinAPI.h"
-#include <Xinput.h>
 //Xinput.lib; Xinput9_1_0.lib
-#pragma comment(lib, "Xinput.lib")
+
 
 void Input::Initialize() {
 	WinAPI *sWinAPI = WinAPI::GetInstance();
@@ -61,6 +60,19 @@ void Input::Update() {
 bool Input::PushKey(BYTE keyNumber)
 {
 	if (keys[keyNumber]) {
+		return true;
+	}
+	return false;
+}
+
+bool Input::GetJoystickState(XINPUT_STATE& state)
+{
+	ZeroMemory(&state, sizeof(XINPUT_STATE));
+
+	// コントローラーの状態を取得
+	result = XInputGetState(0, &state);
+
+	if (result == ERROR_SUCCESS) {
 		return true;
 	}
 	return false;

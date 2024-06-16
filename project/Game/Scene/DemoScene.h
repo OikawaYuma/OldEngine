@@ -43,6 +43,6 @@ private:
 	PostProcess* postProcess_ = nullptr;
 
 
-	float rotateSize_ = 0.05f;
+	float rotateSize_ = 1.057f;
 };
 

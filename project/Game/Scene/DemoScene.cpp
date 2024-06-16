@@ -8,7 +8,7 @@ void DemoScene::Init()
 	camera = new Camera;
 	camera->Initialize();
 	Vector3 cameraPos = camera->GetTransform().translate;
-	cameraPos.z = -5;
+	cameraPos.z = -15;
 	camera->SetTranslate(cameraPos);
 	input = Input::GetInstance();
 	textureHandle = TextureManager::StoreTexture("Resources/uvChecker.png");
@@ -29,7 +29,7 @@ void DemoScene::Init()
 	
 
 	ModelManager::GetInstance()->LoadModel("Resources/human", "sneakWalk.gltf");
-	//ModelManager::GetInstance()->LoadModel("Resources/simpleSkin", "simpleSkin.gltf");
+	ModelManager::GetInstance()->LoadModel("Resources/AnimatedCube", "AnimatedCube.gltf");
 	//ModelManager::GetInstance()->LoadModel("Resources/ball", "ball.obj");
 	object3d = new Object3d();
 	object3d->Init();
@@ -37,7 +37,7 @@ void DemoScene::Init()
 	object3d2->Init();
 	
 	object3d->SetModel("sneakWalk.gltf");
-	object3d2->SetModel("sneakWalk.gltf");
+	object3d2->SetModel("AnimatedCube.gltf");
     particle = new Particle();
     particle2 = new Particle();
 
@@ -57,6 +57,21 @@ void DemoScene::Init()
 
 void DemoScene::Update()
 {
+	XINPUT_STATE joyState{};
+	if (Input::GetInstance()->GetJoystickState(joyState)) {
+	}
+
+	short leftStickX = joyState.Gamepad.sThumbLX;
+	if (leftStickX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
+		worldTransform.translation_.x -= 0.01f;
+		worldTransform.rotation_.y = -rotateSize_;
+	}
+	if (leftStickX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
+		worldTransform.translation_.x += 0.01f;
+		worldTransform.rotation_.y = rotateSize_;
+
+	}
+
 	sceneTime++;
 	////カメラの更新
 	camera->Update();
@@ -70,12 +85,12 @@ void DemoScene::Update()
 	}
 
 
-	worldTransform.rotation_.y += rotateSize_;
+	
 	object3d->SetWorldTransform(worldTransform);
 	object3d2->SetWorldTransform(worldTransform2);
 	
 	object3d->Update();
-	//object3d2->Update();
+	object3d2->Update();
 
 }
 void DemoScene::Draw()
@@ -83,8 +98,8 @@ void DemoScene::Draw()
 	//demoSprite->Draw(textureHandle,{1.0f,1.0f,1.0f,1.0f});
 	object3d->Draw(textureHandle,camera);
 	object3d2->Draw(textureHandle2, camera);
-	particle->Draw(demoEmitter_, { worldTransform.translation_.x,worldTransform.translation_.y,worldTransform.translation_.z +5}, textureHandle, camera, demoRandPro, false);
-	particle2->Draw(demoEmitter_, { worldTransform2.translation_.x,worldTransform2.translation_.y,worldTransform2.translation_.z +5}, textureHandle2, camera, demoRandPro, false);
+	//particle->Draw(demoEmitter_, { worldTransform.translation_.x,worldTransform.translation_.y,worldTransform.translation_.z +5}, textureHandle, camera, demoRandPro, false);
+	//particle2->Draw(demoEmitter_, { worldTransform2.translation_.x,worldTransform2.translation_.y,worldTransform2.translation_.z +5}, textureHandle2, camera, demoRandPro, false);
 }
 
 void DemoScene::PostDraw()

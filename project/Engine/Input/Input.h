@@ -3,7 +3,10 @@
 #include <dinput.h>
 #include <cassert>
 #include <wrl.h>
+#include <Xinput.h>
 //#include <Xinput.h>
+
+#pragma comment(lib, "Xinput.lib")
 
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
@@ -30,6 +33,8 @@ public:
 	bool PushKey(BYTE keyNumber);
 
 	bool TriggerKey(BYTE keyNumber);
+
+	bool GetJoystickState(XINPUT_STATE& state);
 
 	// namespace省略
 	template <class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
