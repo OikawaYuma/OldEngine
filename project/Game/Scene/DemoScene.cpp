@@ -23,6 +23,10 @@ void DemoScene::Init()
 	worldTransform2.translation_.x = 5;
 	worldTransform.UpdateMatrix();
 	worldTransform2.UpdateMatrix();
+	postProcess_ = new PostProcess();
+	postProcess_->SetCamera(camera);
+	postProcess_->Init();
+	
 
 	ModelManager::GetInstance()->LoadModel("Resources/human", "sneakWalk.gltf");
 	//ModelManager::GetInstance()->LoadModel("Resources/simpleSkin", "simpleSkin.gltf");
@@ -81,6 +85,11 @@ void DemoScene::Draw()
 	object3d2->Draw(textureHandle2, camera);
 	particle->Draw(demoEmitter_, { worldTransform.translation_.x,worldTransform.translation_.y,worldTransform.translation_.z +5}, textureHandle, camera, demoRandPro, false);
 	particle2->Draw(demoEmitter_, { worldTransform2.translation_.x,worldTransform2.translation_.y,worldTransform2.translation_.z +5}, textureHandle2, camera, demoRandPro, false);
+}
+
+void DemoScene::PostDraw()
+{
+	postProcess_->Draw();
 }
 
 void DemoScene::Release() {

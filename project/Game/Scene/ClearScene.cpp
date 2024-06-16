@@ -13,6 +13,10 @@ void ClearScene::Draw()
 {
 }
 
+void ClearScene::PostDraw()
+{
+}
+
 void ClearScene::Release() {
 
 }

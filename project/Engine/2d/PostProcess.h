@@ -24,7 +24,9 @@
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
-
+struct PostMaterial {
+	Matrix4x4 projectionInverse;
+};
 class PostProcess
 {
 public:
@@ -42,6 +44,8 @@ public:
 		textureManager_ = textureManager;
 	}
 	D3D12_VERTEX_BUFFER_VIEW CreateBufferView();
+
+	void SetCamera(Camera *camera) { camera_ = camera; }
 private:
 
 	Microsoft::WRL::ComPtr < ID3D12Resource> vertexResourceSprite_ = nullptr;
@@ -74,15 +78,22 @@ private:
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
 	// 頂点リソースにデータを書き込む
-	Material* materialData;
+	PostMaterial* materialData;
 	//ParticlePro particles_[kNumMaxInstance];
 	std::list<Transform>  transforms_;
 	// 平行光源用
 	Microsoft::WRL::ComPtr < ID3D12Resource> directionalLightResource;
+
+	// 平行光源用
+	Microsoft::WRL::ComPtr < ID3D12Resource> depthStencilResource;
 	// データを書き込む
 	DirectionalLight* directionalLightData;
 	Transform transformUv;
 
 	uint32_t SRVIndex_;
+
+	uint32_t noiseTexture_;
+
+	Camera* camera_ = nullptr;
 };
 

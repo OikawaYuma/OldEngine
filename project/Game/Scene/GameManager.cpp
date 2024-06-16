@@ -82,7 +82,6 @@ int GameManager::Run() {
 	PSOCopyImage* psoCopyImage = PSOCopyImage::GatInstance();
 	psoCopyImage->CreatePipelineStateObject();
 	
-	PostProcess* post = new PostProcess();
 	//post->Init();
 	sceneArr_[currentSceneNo_]->Init();
 
@@ -138,9 +137,11 @@ int GameManager::Run() {
 		/// ↑描画処理ここまで
 		///
 		sDirctX->BeginFrame();
-		post->Draw();
+		sDirctX->ChangeDepthStatetoRead();
+		sceneArr_[currentSceneNo_]->PostDraw();
 		// フレームの終了
 		//スワップチェーン
+		sDirctX->ChangeDepthStatetoRender();
 		sDirctX->ViewChange();
 		sAudio->GetIXAudio().Reset();
 		// ESCキーが押されたらループを抜ける

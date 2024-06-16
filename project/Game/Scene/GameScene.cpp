@@ -13,6 +13,10 @@ void GameScene::Draw()
 	
 }
 
+void GameScene::PostDraw()
+{
+}
+
 void GameScene::Release() {
 
 }

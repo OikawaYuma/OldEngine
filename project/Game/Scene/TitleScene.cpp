@@ -15,6 +15,10 @@ void TitleScene::Draw()
 {
 }
 
+void TitleScene::PostDraw()
+{
+}
+
 void TitleScene::Release() {
 
 }
