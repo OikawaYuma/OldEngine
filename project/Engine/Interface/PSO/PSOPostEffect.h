@@ -13,14 +13,14 @@
 #include <cassert>
 
 
-class PSOCopyImage : public PSOProperty
+class PSOPostEffect : public PSOProperty
 {
 public:
-	static PSOCopyImage* GatInstance();
+	static PSOPostEffect* GatInstance();
 
-	PSOCopyImage() = default;
-	~PSOCopyImage() = default;
-	const PSOCopyImage& operator=(const PSOCopyImage&) = delete;
+	PSOPostEffect() = default;
+	~PSOPostEffect() = default;
+	const PSOPostEffect& operator=(const PSOPostEffect&) = delete;
 
 
 	/// <summary>

@@ -165,7 +165,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Interface\Heap\SRVManager.cpp" />
     <ClCompile Include="Engine\3d\Particle\ParticleManager.cpp" />
     <ClCompile Include="Engine\3d\Skeleton\Skeleton.cpp" />
-    <ClCompile Include="Engine\Interface\PSO\PSOCopyImage.cpp" />
+    <ClCompile Include="Engine\Interface\PSO\PSOPostEffect.cpp" />
     <ClCompile Include="Engine\2d\PostProcess.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -230,7 +230,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Interface\Heap\SRVManager.h" />
     <ClInclude Include="Engine\3d\Particle\ParticleManager.h" />
     <ClInclude Include="Lib\math\Quaternion.h" />
-    <ClInclude Include="Engine\Interface\PSO\PSOCopyImage.h" />
+    <ClInclude Include="Engine\Interface\PSO\PSOPostEffect.h" />
     <ClInclude Include="Engine\2d\PostProcess.h" />
   </ItemGroup>
   <ItemGroup>
