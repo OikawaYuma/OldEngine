@@ -6,7 +6,7 @@
 #include "PSOModel.h"
 #include "PSOSprite.h"
 #include "PSOParticle.h"
-#include "PSOCopyImage.h"
+#include "PSOPostEffect.h"
 #include "PostProcess.h"
 #include "Input.h"
 #include "Mesh.h"
@@ -79,8 +79,8 @@ int GameManager::Run() {
 	PSOParticle* psoParticle = PSOParticle::GatInstance();
 	psoParticle->CreatePipelineStateObject();
 
-	PSOCopyImage* psoCopyImage = PSOCopyImage::GatInstance();
-	psoCopyImage->CreatePipelineStateObject();
+	PSOPostEffect* pSOPostEffect = PSOPostEffect::GatInstance();
+	pSOPostEffect->CreatePipelineStateObject();
 	
 	//post->Init();
 	sceneArr_[currentSceneNo_]->Init();

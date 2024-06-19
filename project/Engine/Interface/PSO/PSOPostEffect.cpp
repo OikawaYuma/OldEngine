@@ -1,22 +1,22 @@
-#include "PSOCopyImage.h"
+#include "PSOPostEffect.h"
 #include <d3dx12.h>
 
 
-void PSOCopyImage::CreatePipelineStateObject() {
+void PSOPostEffect::CreatePipelineStateObject() {
 	// DirectXCommonのインスタンスを取得
 	DirectXCommon* sDirectXCommon = DirectXCommon::GetInstance();
 
-	PSOCopyImage::CreateRootSignature();
-	PSOCopyImage::SetInputLayout();
-	PSOCopyImage::SetBlendState();
-	PSOCopyImage::SetRasterrizerState();
-	PSOCopyImage::CreateDepth();
+	PSOPostEffect::CreateRootSignature();
+	PSOPostEffect::SetInputLayout();
+	PSOPostEffect::SetBlendState();
+	PSOPostEffect::SetRasterrizerState();
+	PSOPostEffect::CreateDepth();
 	// Shaderをコンパイルする
 	property.vertexShaderBlob = CompileShader(L"Resources/shader/Fullscreen.VS.hlsl",
 		L"vs_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.vertexShaderBlob != nullptr);
 
-	property.pixelShaderBlob = CompileShader(L"Resources/shader/Random.PS.hlsl",
+	property.pixelShaderBlob = CompileShader(L"Resources/shader/RadialBlur.PS.hlsl",
 		L"ps_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.pixelShaderBlob != nullptr);
 
@@ -51,7 +51,7 @@ void PSOCopyImage::CreatePipelineStateObject() {
 	//DirectXCommon::GetInstance()->ChangeDepthStatetoRender();
 }
 
-void PSOCopyImage::CreateRootSignature() {
+void PSOPostEffect::CreateRootSignature() {
 	// DirectXCommonのインスタンスを取得
 	DirectXCommon* sDirectXCommon = DirectXCommon::GetInstance();
 
@@ -94,9 +94,6 @@ void PSOCopyImage::CreateRootSignature() {
 	rootParamerters[2].DescriptorTable.pDescriptorRanges = &descriptorRange_[2]; // Tableの中身の配列を指定
 	rootParamerters[2].DescriptorTable.NumDescriptorRanges = 1; // Tableで利用する数
 
-
-
-	
 	// ProjectionInverseを送る用　Matria
 	rootParamerters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;  // CBVを使う
 	rootParamerters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;  // PixelShaderで使う
@@ -140,7 +137,7 @@ void PSOCopyImage::CreateRootSignature() {
 	assert(SUCCEEDED(hr_));
 }
 
-void PSOCopyImage::SetInputLayout() {
+void PSOPostEffect::SetInputLayout() {
 	// 頂点には何もデータを入力しないので、InputLayoutは利用しない。ドライバやGPUのやることが
 	// 少なくなりそうな気配を感じる
 	inputLayoutDesc.pInputElementDescs = nullptr;
@@ -148,7 +145,7 @@ void PSOCopyImage::SetInputLayout() {
 
 }
 
-void PSOCopyImage::SetBlendState() {
+void PSOPostEffect::SetBlendState() {
 	// blendStateの設定
 	//すべての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask =
@@ -163,14 +160,14 @@ void PSOCopyImage::SetBlendState() {
 	blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
 }
 
-void PSOCopyImage::SetRasterrizerState() {
+void PSOPostEffect::SetRasterrizerState() {
 	//裏面（時計回り）を表示しない
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
 	// 三角形の中を塗りつぶす
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 }
 
-void PSOCopyImage::CreateDepth()
+void PSOPostEffect::CreateDepth()
 {
 	// 全画面に対してなにか処理を施したいだけだから、比較も書き込みも必要ないのでDepth自体不要
 	depthStencilDesc_.DepthEnable = false;
@@ -178,7 +175,7 @@ void PSOCopyImage::CreateDepth()
 }
 
 
-PSOCopyImage* PSOCopyImage::GatInstance() {
-	static PSOCopyImage instance;
+PSOPostEffect* PSOPostEffect::GatInstance() {
+	static PSOPostEffect instance;
 	return &instance;
 }
