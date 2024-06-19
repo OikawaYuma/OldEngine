@@ -2,6 +2,7 @@
 #include "DirectXCommon.h"
 #include "SRVManager.h"
 #include "WinAPI.h"
+
 //DirectXCommon dirX;
 
 // resourceを保存する場所を設定
@@ -105,9 +106,9 @@ Microsoft::WRL::ComPtr <ID3D12Resource> TextureManager::CreateTextureResource(Mi
 	// 利用するHeapの設定。非常に特殊な運用。02_04exで一般的なケース版がある
 	D3D12_HEAP_PROPERTIES heapProperties_{};
 	// 利用するHeapの設定。非常に特殊な運用。02_04exで一般的なケース版がある
-	heapProperties_.Type = D3D12_HEAP_TYPE_CUSTOM; // 細かい設定を行う
-	heapProperties_.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
-	heapProperties_.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
+	heapProperties_.Type = D3D12_HEAP_TYPE_DEFAULT; // 細かい設定を行う
+	//heapProperties_.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
+	//heapProperties_.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
 
 	// Rewsourceの生成
 	resource_ = nullptr;
@@ -115,7 +116,7 @@ Microsoft::WRL::ComPtr <ID3D12Resource> TextureManager::CreateTextureResource(Mi
 		&heapProperties_, // Heapの設定
 		D3D12_HEAP_FLAG_NONE, //Heapの特殊な設定。特になし。
 		&resourceDesc_, // Resourceの設定
-		D3D12_RESOURCE_STATE_GENERIC_READ, // 初回のResourceState。Textureは基本読むだけ
+		D3D12_RESOURCE_STATE_COPY_DEST, // データ転送される設定
 		nullptr, // Clear最適地。使わないのでnullptr
 		IID_PPV_ARGS(&resource_));
 	assert(SUCCEEDED(hr));
@@ -125,8 +126,11 @@ Microsoft::WRL::ComPtr <ID3D12Resource> TextureManager::CreateTextureResource(Mi
 
 }
 
-
-void TextureManager::UploadTextureData(Microsoft::WRL::ComPtr <ID3D12Resource> texture, const DirectX::ScratchImage& mipImages) {
+[[nodiscard]]
+Microsoft::WRL::ComPtr <ID3D12Resource> TextureManager::UploadTextureData(Microsoft::WRL::ComPtr <ID3D12Resource> texture, const DirectX::ScratchImage& mipImages) {
+	
+	std::vector<D3D12_SUBRESOURCE_DATA> subresources;
+	DirectX::Prep
 	// Meta情報を取得
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
 	// 全MipMapについて

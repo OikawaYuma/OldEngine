@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <DirectXTex.h>
+#include "Externals/DirectXTex/d3dx12.h"
 #include <string>
 #include <string>
 #include <format>
@@ -48,9 +49,9 @@ public:
 	// DirectX12のTextureResourceを作る
 	static Microsoft::WRL::ComPtr <ID3D12Resource> CreateTextureResource(Microsoft::WRL::ComPtr <ID3D12Device> device, const DirectX::TexMetadata& matdata);
 
-	static void UploadTextureData(Microsoft::WRL::ComPtr <ID3D12Resource>, const DirectX::ScratchImage& mipImages);
+	//static void UploadTextureData(Microsoft::WRL::ComPtr <ID3D12Resource>, const DirectX::ScratchImage& mipImages);
 
-
+	static Microsoft::WRL::ComPtr<ID3D12Resource> UploadTextureData(Microsoft::WRL::ComPtr <ID3D12Resource>, const DirectX::ScratchImage& mipImages);
 
 	uint32_t GetIndex() { return  kParIndez; }
 private:
