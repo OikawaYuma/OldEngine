@@ -20,6 +20,21 @@ enum BlendMode {
 	kCountOfBlendMode,
 };
 
+enum PostEffectMode {
+	kFullScreen,
+	kGrayscale,
+	kVignetting,
+	kSmoothing,
+	kGaussianFilter,
+	kOutline,
+	kRadialBlur,
+	kDissolve,
+	kRandom,
+	kBloom,
+	kNumPostEffect
+
+};
+
 class PSOProperty {
 public:
 	struct  {
