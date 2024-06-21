@@ -3,6 +3,7 @@
 #include <d3d12.h>
 #include "DirectXCommon.h"
 #include "PSOProperty.h"
+#include "IPostEffectState.h"
 #include "Vector3.h"
 #include<Windows.h>
 #include<d3d12.h>
@@ -13,7 +14,7 @@
 #include <cassert>
 
 
-class PSOPostEffect : public PSOProperty
+class PSOPostEffect : public PSOProperty,IPostEffectState
 {
 public:
 	static PSOPostEffect* GatInstance();
