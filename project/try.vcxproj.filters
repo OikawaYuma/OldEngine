@@ -192,6 +192,7 @@
     <ClCompile Include="Engine\3d\Skeleton\Skeleton.cpp" />
     <ClCompile Include="Engine\Interface\PSO\PSOPostEffect.cpp" />
     <ClCompile Include="Engine\2d\PostProcess.cpp" />
+    <ClCompile Include="Engine\Interface\Loder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -373,6 +374,8 @@
     <ClInclude Include="Engine\3d\Skeleton\Skeleton.h" />
     <ClInclude Include="Engine\Interface\PSO\PSOPostEffect.h" />
     <ClInclude Include="Engine\2d\PostProcess.h" />
+    <ClInclude Include="Engine\Externals\json.hpp" />
+    <ClInclude Include="Engine\Interface\Loder.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\Object3d.PS.hlsl">

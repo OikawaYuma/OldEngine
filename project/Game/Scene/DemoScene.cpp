@@ -2,6 +2,7 @@
 #include "ImGuiCommon.h"
 #include "TextureManager.h"
 #include "ModelManager.h"
+#include "Loder.h"
 
 void DemoScene::Init()
 {
@@ -27,6 +28,7 @@ void DemoScene::Init()
 	postProcess_ = new PostProcess();
 	postProcess_->SetCamera(camera);
 	postProcess_->Init();
+	Loder::LoadJsonFile("Resources/");
 	
 
 	ModelManager::GetInstance()->LoadModel("Resources/human", "sneakWalk.gltf");
