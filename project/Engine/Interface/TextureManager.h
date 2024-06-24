@@ -1,6 +1,4 @@
 ﻿#pragma once
-#include <DirectXTex.h>
-#include "Externals/DirectXTex/d3dx12.h"
 #include <string>
 #include <string>
 #include <format>
@@ -11,7 +9,7 @@
 #include <wrl.h>
 #include "function.h"
 #include <unordered_map>
-
+#include <DirectXTex.h>
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
@@ -67,5 +65,6 @@ private:
 
 	// テクスチャデータ
 	static std::unordered_map<std::string, TextureData> textureDatas_;
+	static Microsoft::WRL::ComPtr<ID3D12Resource> intermediateResource_[kNumDescriptors];
 };
 

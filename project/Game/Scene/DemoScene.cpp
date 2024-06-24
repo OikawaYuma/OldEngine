@@ -37,7 +37,7 @@ void DemoScene::Init()
 	object3d2->Init();
 	
 	object3d->SetModel("sneakWalk.gltf");
-	object3d2->SetModel("AnimatedCube.gltf");
+	object3d2->SetModel("sneakWalk.gltf");
     particle = new Particle();
     particle2 = new Particle();
 
@@ -98,8 +98,8 @@ void DemoScene::Draw()
 	//demoSprite->Draw(textureHandle,{1.0f,1.0f,1.0f,1.0f});
 	object3d->Draw(textureHandle,camera);
 	object3d2->Draw(textureHandle2, camera);
-	//particle->Draw(demoEmitter_, { worldTransform.translation_.x,worldTransform.translation_.y,worldTransform.translation_.z +5}, textureHandle, camera, demoRandPro, false);
-	//particle2->Draw(demoEmitter_, { worldTransform2.translation_.x,worldTransform2.translation_.y,worldTransform2.translation_.z +5}, textureHandle2, camera, demoRandPro, false);
+	particle->Draw(demoEmitter_, { worldTransform.translation_.x,worldTransform.translation_.y,worldTransform.translation_.z +5}, textureHandle, camera, demoRandPro, false);
+	particle2->Draw(demoEmitter_, { worldTransform2.translation_.x,worldTransform2.translation_.y,worldTransform2.translation_.z +5}, textureHandle2, camera, demoRandPro, false);
 }
 
 void DemoScene::PostDraw()

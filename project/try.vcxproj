@@ -46,13 +46,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>$(ProjectDir)\Engine\Externals\DirectXTex;$(SolutionDir)\imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\Engine\Externals\DirectXTex;$(SolutionDir)\imgui;$(SolutionDir)\DirectXTex;$(IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)..\generated\obj\$(CG2_main)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\generated\outputs\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>$(ProjectDir)\Engine\Externals\DirectXTex;$(SolutionDir)\imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\Engine\Externals\DirectXTex;$(SolutionDir)\imgui;$(SolutionDir)\DirectXTex;$(IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)..\generated\obj\$(CG2_main)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\generated\outputs\$(Configuration)\</OutDir>
   </PropertyGroup>
@@ -65,7 +65,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\3d\Animation;$(ProjectDir)Engine\3d\Skeleton;$(ProjectDir)Engine\3d\Triangle;$(ProjectDir)Engine\3d\Sphere;$(ProjectDir)Engine\3d\Model;$(ProjectDir)Engine\3d\Object3d;$(ProjectDir)Engine\3d\Particle;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Interface;$(ProjectDir)Engine\Interface\PSO;$(ProjectDir)Engine\Interface\Heap;$(ProjectDir)Engine\Adapter;$(ProjectDir)Engine\Include;$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)Game\Scene;$(ProjectDir)Game\Collision;$(ProjectDir)\Game\Utilty;$(ProjectDir)Engine\Externals\assimp\include;$(ProjectDir)Resources\shaders;$(ProjectDir)Engine\Externals\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\3d\Animation;$(ProjectDir)Engine\3d\Skeleton;$(ProjectDir)Engine\3d\Triangle;$(ProjectDir)Engine\3d\Sphere;$(ProjectDir)Engine\3d\Model;$(ProjectDir)Engine\3d\Object3d;$(ProjectDir)Engine\3d\Particle;$(ProjectDir)Engine\Externals;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Interface;$(ProjectDir)Engine\Interface\PSO;$(ProjectDir)Engine\Interface\Heap;$(ProjectDir)Engine\Adapter;$(ProjectDir)Engine\Include;$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)Game\Scene;$(ProjectDir)Game\Collision;$(ProjectDir)\Game\Utilty;$(ProjectDir)Engine\Externals\assimp\include;$(ProjectDir)Resources\shaders;$(ProjectDir)Engine\Externals\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -96,7 +96,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\3d\Animation;$(ProjectDir)Engine\3d\Skeleton;$(ProjectDir)Engine\3d\Triangle;$(ProjectDir)Engine\3d\Sphere;$(ProjectDir)Engine\3d\Model;$(ProjectDir)Engine\3d\Object3d;$(ProjectDir)Engine\3d\Particle;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Interface;$(ProjectDir)Engine\Interface\PSO;$(ProjectDir)Engine\Interface\Heap;$(ProjectDir)Engine\Adapter;$(ProjectDir)Engine\Include;$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)Game\Scene;$(ProjectDir)Game\Collision;$(ProjectDir)\Game\Utilty;$(ProjectDir)Engine\Externals\assimp\include;$(ProjectDir)Resources\shaders;$(ProjectDir)Engine/Externals\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\3d\Animation;$(ProjectDir)Engine\3d\Skeleton;$(ProjectDir)Engine\3d\Triangle;$(ProjectDir)Engine\3d\Sphere;$(ProjectDir)Engine\3d\Model;$(ProjectDir)Engine\3d\Object3d;$(ProjectDir)Engine\3d\Particle;$(ProjectDir)Engine\Externals;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Interface;$(ProjectDir)Engine\Interface\PSO;$(ProjectDir)Engine\Interface\Heap;$(ProjectDir)Engine\Adapter;$(ProjectDir)Engine\Include;$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)Game\Scene;$(ProjectDir)Game\Collision;$(ProjectDir)\Game\Utilty;$(ProjectDir)Engine\Externals\assimp\include;$(ProjectDir)Resources\shaders;$(ProjectDir)Engine/Externals\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
