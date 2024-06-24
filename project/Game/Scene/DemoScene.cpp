@@ -28,7 +28,7 @@ void DemoScene::Init()
 	postProcess_ = new PostProcess();
 	postProcess_->SetCamera(camera);
 	postProcess_->Init();
-	Loder::LoadJsonFile("Resources/");
+	Loder::LoadJsonFile("Resources","TL");
 	
 
 	ModelManager::GetInstance()->LoadModel("Resources/human", "sneakWalk.gltf");

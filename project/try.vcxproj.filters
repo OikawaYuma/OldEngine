@@ -423,6 +423,7 @@
     <None Include="Resources\shader\Sprite.hlsli">
       <Filter>Resources\shader</Filter>
     </None>
+    <None Include="Resources\TL.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="imgui\LICENSE.txt" />
