@@ -21,7 +21,7 @@ void Object3d::Init()
 	// カメラ用
 	cameraForGPUData_ = nullptr;
 	cameraForGPUResource_ = Mesh::CreateBufferResource(directXCommon->GetDevice(), sizeof(CameraForGPU));
-	// 書き込むためのアドレスを取得
+	//// 書き込むためのアドレスを取得
 	cameraForGPUResource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraForGPUData_));
 
 	cameraForGPUData_->worldPosition = { 1.0f,1.0f,-5.0f };
@@ -31,7 +31,10 @@ void Object3d::Init()
 void Object3d::Update()
 {
 	worldTransform_.UpdateMatrix();
-	if (model_) {
+	if (animationModel_) {
+		animationModel_->Update();
+	}
+	else if (model_) {
 		model_->Update();
 	}
 
@@ -53,7 +56,13 @@ void Object3d::Draw(uint32_t texture, Camera* camera )
 	directXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());
 	directXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(4, cameraForGPUResource_->GetGPUVirtualAddress());
 	// 3Dモデルが割り当てられていれば描画する
-	if (model_) {
+	if (animationModel_) {
+		wvpData->WVP = worldViewProjectionMatrix;
+		wvpData->World = worldTransform_.matWorld_;
+		animationModel_->Draw(texture, { { 1.0f,1.0f,1.0f,1.0f },false
+			}, { { 1.0f,1.0,1.0,1.0f } ,{ 0.0f,-1.0f,0.0f },0.5f });
+	}
+	else if (model_) {
 		wvpData->WVP =  worldViewProjectionMatrix;
 		wvpData->World =  worldTransform_.matWorld_;
 		model_->Draw(texture,{ { 1.0f,1.0f,1.0f,1.0f },false
@@ -70,6 +79,19 @@ void Object3d::Release()
 void Object3d::SetModel(const std::string& filePath)
 {
 	model_ = ModelManager::GetInstance()->FindModel(filePath);
+}
+
+void Object3d::SetAnimationModel(const std::string& filePath)
+{
+	animationModel_ = ModelManager::GetInstance()->FindAnimationModel(filePath);
+}
+
+void Object3d::SetTransform(Transform transform)
+{
+	worldTransform_.translation_ = transform.translate;
+	worldTransform_.rotation_ = transform.rotate;
+	worldTransform_.scale_ = transform.scale;
+
 }
 
 ModelData Object3d::LoadObjFile(const std::string& directoryPath, const std::string& filename)

@@ -10,7 +10,7 @@ void DemoScene::Init()
 	camera->Initialize();
 	Vector3 cameraPos = camera->GetTransform().translate;
 	cameraPos.y = 1;
-	cameraPos.z = -5;
+	cameraPos.z = -15;
 	camera->SetTranslate(cameraPos);
 	input = Input::GetInstance();
 	textureHandle = TextureManager::StoreTexture("Resources/uvChecker.png");
@@ -28,12 +28,13 @@ void DemoScene::Init()
 	postProcess_ = new PostProcess();
 	postProcess_->SetCamera(camera);
 	postProcess_->Init();
-	Loder::LoadJsonFile("Resources","TL");
+	
 	
 
-	ModelManager::GetInstance()->LoadModel("Resources/human", "sneakWalk.gltf");
-	ModelManager::GetInstance()->LoadModel("Resources/AnimatedCube", "AnimatedCube.gltf");
+	//ModelManager::GetInstance()->LoadModel("Resources/human", "sneakWalk.gltf");
+	//ModelManager::GetInstance()->LoadModel("Resources/AnimatedCube", "AnimatedCube.gltf");
 	//ModelManager::GetInstance()->LoadModel("Resources/ball", "ball.obj");
+	Loder::LoadJsonFile("Resources", "TL10", object3d_,camera);
 	object3d = new Object3d();
 	object3d->Init();
 	object3d2 = new Object3d();
@@ -49,7 +50,7 @@ void DemoScene::Init()
 		{1.0f,4.0f},
 		{0.0f,2.0f}
 	};
-
+	
 	demoEmitter_.count = 6;
 	demoEmitter_.frequency = 0.02f;
 	demoEmitter_.frequencyTime = 0.0f;
@@ -60,6 +61,13 @@ void DemoScene::Init()
 
 void DemoScene::Update()
 {
+	Transform cameraNewPos = camera->GetTransform();
+	ImGui::Begin("camera");
+	ImGui::DragFloat3("translate", &cameraNewPos.translate.x,0.01f);
+	ImGui::DragFloat3("rotate", &cameraNewPos.rotate.x, 0.01f);
+	ImGui::End();
+	camera->SetTranslate(cameraNewPos.translate);
+	camera->SetRotate(cameraNewPos.rotate);
 	XINPUT_STATE joyState{};
 	if (Input::GetInstance()->GetJoystickState(joyState)) {
 	}
@@ -87,20 +95,25 @@ void DemoScene::Update()
 		rotateSize_ = 0.05f;
 	}
 
-
+	for (std::vector<Object3d*>::iterator itr = object3d_.begin(); itr != object3d_.end(); itr++) {
+		(*itr)->Update();
+	}
 	
 	object3d->SetWorldTransform(worldTransform);
 	object3d2->SetWorldTransform(worldTransform2);
 	
-	object3d->Update();
-	object3d2->Update();
+	/*object3d->Update();
+	object3d2->Update();*/
 
 }
 void DemoScene::Draw()
 {
+	for (std::vector<Object3d*>::iterator itr = object3d_.begin(); itr != object3d_.end(); itr++) {
+		(*itr)->Draw(textureHandle, camera);
+	}
 	//demoSprite->Draw(textureHandle,{1.0f,1.0f,1.0f,1.0f});
-	object3d->Draw(textureHandle,camera);
-	object3d2->Draw(textureHandle2, camera);
+	//object3d->Draw(textureHandle,camera);
+	//object3d2->Draw(textureHandle2, camera);
 	particle->Draw(demoEmitter_, { worldTransform.translation_.x,worldTransform.translation_.y,worldTransform.translation_.z +5}, textureHandle, camera, demoRandPro, false);
 	particle2->Draw(demoEmitter_, { worldTransform2.translation_.x,worldTransform2.translation_.y,worldTransform2.translation_.z +5}, textureHandle2, camera, demoRandPro, false);
 }
