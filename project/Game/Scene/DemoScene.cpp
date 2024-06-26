@@ -34,7 +34,7 @@ void DemoScene::Init()
 	//ModelManager::GetInstance()->LoadModel("Resources/human", "sneakWalk.gltf");
 	//ModelManager::GetInstance()->LoadModel("Resources/AnimatedCube", "AnimatedCube.gltf");
 	//ModelManager::GetInstance()->LoadModel("Resources/ball", "ball.obj");
-	Loder::LoadJsonFile("Resources", "TL10", object3d_,camera);
+	Loder::LoadJsonFile("Resources", "TL_TASK", object3d_,camera);
 	object3d = new Object3d();
 	object3d->Init();
 	object3d2 = new Object3d();
@@ -63,8 +63,9 @@ void DemoScene::Update()
 {
 	Transform cameraNewPos = camera->GetTransform();
 	ImGui::Begin("camera");
-	ImGui::DragFloat3("translate", &cameraNewPos.translate.x,0.01f);
+	ImGui::DragFloat3("translate", &cameraNewPos.translate.x,1.0f);
 	ImGui::DragFloat3("rotate", &cameraNewPos.rotate.x, 0.01f);
+	//ImGui::DragFloat3("rotatze", &object3d_[0].translate.x, 0.01f);
 	ImGui::End();
 	camera->SetTranslate(cameraNewPos.translate);
 	camera->SetRotate(cameraNewPos.rotate);

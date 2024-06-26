@@ -74,7 +74,7 @@ void Loder::LoadJsonFile(const std::string kDefaultBaseDirectory, const std::str
 			objectData.transform.scale.x = (float)transform["scaling"][0];
 			objectData.transform.scale.y = (float)transform["scaling"][2];
 			objectData.transform.scale.z = (float)transform["scaling"][1];
-			ModelManager::GetInstance()->LoadModel("Resources/box/", objectData.filename + ".obj");
+			ModelManager::GetInstance()->LoadModel("Resources/TLTASK/", objectData.filename + ".obj");
 
 		}
 		
@@ -111,7 +111,7 @@ void Loder::LoadJsonFile(const std::string kDefaultBaseDirectory, const std::str
 
 			camera->SetTranslate(objectData.transform.translate);
 			camera->SetRotate(objectData.transform.rotate);
-			ModelManager::GetInstance()->LoadModel("Resources/box/", objectData.filename + ".obj");
+			//ModelManager::GetInstance()->LoadModel("Resources/box/", objectData.filename + ".obj");
 
 		}
 	}
