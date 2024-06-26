@@ -41,6 +41,7 @@ private:
 	RandRangePro demoRandPro;
 	
 	PostProcess* postProcess_ = nullptr;
+	std::vector<Object3d*> object3d_;
 
 
 	float rotateSize_ = 1.057f;
