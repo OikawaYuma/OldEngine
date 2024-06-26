@@ -1,6 +1,8 @@
 #pragma once
 #include "IScene.h"
 
+#include <vector>
+
 
 class GameScene :public IScene
 {
