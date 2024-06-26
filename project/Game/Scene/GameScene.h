@@ -1,5 +1,7 @@
 #pragma once
 #include "IScene.h"
+#include "Player/Player.h"
+#include "PostProcess.h"
 
 #include <vector>
 
@@ -14,7 +16,9 @@ public:
 	void Release()override;
 	int GameClose()override;
 private:
-
+	std::unique_ptr<Camera> camera_;
+	std::unique_ptr<Player> player_;
+	PostProcess* postProcess_ = nullptr;
 	
 };
 
