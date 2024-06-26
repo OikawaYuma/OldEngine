@@ -28,15 +28,11 @@ private:
 	//変数
 	uint32_t textureHandle;
 	uint32_t textureHandle2;
-	Object3d* object3d = nullptr;
-	Object3d* object3d2 = nullptr;
+
 	Material material;
 
 	WorldTransform worldTransform;
 	WorldTransform worldTransform2;
-
-	Particle* particle = nullptr;
-	Particle* particle2 = nullptr;
 	Emitter demoEmitter_;
 	RandRangePro demoRandPro;
 	
