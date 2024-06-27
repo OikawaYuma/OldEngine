@@ -85,7 +85,6 @@ private:
 	DirectXCommon* directXCommon_;
 	WinAPI* sWinAPI_;
 	TextureManager* textureManager_ = nullptr;
-	PSO* pso_ = nullptr;
 
 	Microsoft::WRL::ComPtr < ID3D12Resource> vertexResource_;
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_;

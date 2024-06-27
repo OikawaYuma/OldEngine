@@ -43,14 +43,26 @@ void Object3d::Update()
 
 void Object3d::Draw(uint32_t texture, Camera* camera )
 {
-	PSO *pso = PSO::GatInstance();
 	DirectXCommon* directXCommon = DirectXCommon::GetInstance();
+	if (animationModel_) {
+		PSOAnimationModel* pso = PSOAnimationModel::GatInstance();
+		//directionalLightData->direction =  Normalize(directionalLightData->direction);
+		directXCommon->GetCommandList()->SetGraphicsRootSignature(pso->GetProperty().rootSignature.Get());
+		directXCommon->GetCommandList()->SetPipelineState(pso->GetProperty().graphicsPipelineState.Get());    //PSOを設定
+		
+	}
+	else if (model_) {
+		PSO* pso = PSO::GatInstance();
+		//directionalLightData->direction =  Normalize(directionalLightData->direction);
+		directXCommon->GetCommandList()->SetGraphicsRootSignature(pso->GetProperty().rootSignature.Get());
+		directXCommon->GetCommandList()->SetPipelineState(pso->GetProperty().graphicsPipelineState.Get());    //PSOを設定
+	}
+	
+	
 	cameraForGPUData_->worldPosition = camera->GetTransform().translate;
 	Matrix4x4 worldViewProjectionMatrix = Multiply(worldTransform_.matWorld_,camera->GetViewprojectionMatrix());
 	
-	//directionalLightData->direction =  Normalize(directionalLightData->direction);
-	directXCommon->GetCommandList()->SetGraphicsRootSignature(pso->GetProperty().rootSignature.Get());
-	directXCommon->GetCommandList()->SetPipelineState(pso->GetProperty().graphicsPipelineState.Get());    //PSOを設定
+	
 	//形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	directXCommon->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	directXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(1, wvpResource->GetGPUVirtualAddress());

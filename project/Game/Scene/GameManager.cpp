@@ -74,6 +74,9 @@ int GameManager::Run() {
 	PSO* pso = PSO::GatInstance();
 	pso->CreatePipelineStateObject();
 
+	PSOAnimationModel* psoAnimationModel = PSOAnimationModel::GatInstance();
+	psoAnimationModel->CreatePipelineStateObject();
+
 	PSOSprite* psoSprite = PSOSprite::GatInstance();
 	psoSprite->CreatePipelineStateObject();
 
