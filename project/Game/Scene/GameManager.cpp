@@ -4,6 +4,7 @@
 #include "DirectXCommon.h"
 #include "SRVManager.h"
 #include "PSOModel.h"
+#include "PSOAnimationModel.h"
 #include "PSOSprite.h"
 #include "PSOParticle.h"
 #include "PSOPostEffect.h"
