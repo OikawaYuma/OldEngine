@@ -23,25 +23,31 @@ void DemoScene::Init()
 	worldTransform.translation_.x = 0;
 	worldTransform2.Initialize();
 	worldTransform2.translation_.x = 5;
+	worldTransform3.Initialize();
+	worldTransform3.translation_.x = -5;
 	worldTransform.UpdateMatrix();
 	worldTransform2.UpdateMatrix();
+	worldTransform3.UpdateMatrix();
 	postProcess_ = new PostProcess();
 	postProcess_->SetCamera(camera);
 	postProcess_->Init();
 	
 	
 
-	//ModelManager::GetInstance()->LoadModel("Resources/human", "sneakWalk.gltf");
-	//ModelManager::GetInstance()->LoadModel("Resources/AnimatedCube", "AnimatedCube.gltf");
-	//ModelManager::GetInstance()->LoadModel("Resources/ball", "ball.obj");
-	Loder::LoadJsonFile("Resources", "TL10", object3d_,camera);
+	ModelManager::GetInstance()->LoadAnimationModel("Resources/human", "sneakWalk.gltf");
+	ModelManager::GetInstance()->LoadAnimationModel("Resources/human", "walk.gltf");
+	ModelManager::GetInstance()->LoadModel("Resources/box", "box.obj");
+	;
 	object3d = new Object3d();
 	object3d->Init();
 	object3d2 = new Object3d();
 	object3d2->Init();
+	object3d3 = new Object3d();
+	object3d3->Init();
 	
-	object3d->SetModel("sneakWalk.gltf");
-	object3d2->SetModel("AnimatedCube.gltf");
+	object3d->SetAnimationModel("sneakWalk.gltf");
+	object3d2->SetAnimationModel("walk.gltf");
+	object3d3->SetModel("box.obj");
     particle = new Particle();
     particle2 = new Particle();
 
@@ -101,9 +107,10 @@ void DemoScene::Update()
 	
 	object3d->SetWorldTransform(worldTransform);
 	object3d2->SetWorldTransform(worldTransform2);
+	object3d3->SetWorldTransform(worldTransform3);
 	
-	/*object3d->Update();
-	object3d2->Update();*/
+	object3d->Update();
+	object3d2->Update();
 
 }
 void DemoScene::Draw()
@@ -112,8 +119,9 @@ void DemoScene::Draw()
 		(*itr)->Draw(textureHandle, camera);
 	}
 	//demoSprite->Draw(textureHandle,{1.0f,1.0f,1.0f,1.0f});
-	//object3d->Draw(textureHandle,camera);
-	//object3d2->Draw(textureHandle2, camera);
+	object3d->Draw(textureHandle,camera);
+	object3d2->Draw(textureHandle2, camera);
+	object3d3->Draw(textureHandle2, camera);
 	particle->Draw(demoEmitter_, { worldTransform.translation_.x,worldTransform.translation_.y,worldTransform.translation_.z +5}, textureHandle, camera, demoRandPro, false);
 	particle2->Draw(demoEmitter_, { worldTransform2.translation_.x,worldTransform2.translation_.y,worldTransform2.translation_.z +5}, textureHandle2, camera, demoRandPro, false);
 }
