@@ -109,8 +109,8 @@ void DemoScene::Update()
 	object3d2->SetWorldTransform(worldTransform2);
 	object3d3->SetWorldTransform(worldTransform3);
 	
-	/*object3d->Update();
-	object3d2->Update();*/
+	object3d->Update();
+	object3d2->Update();
 
 }
 void DemoScene::Draw()
