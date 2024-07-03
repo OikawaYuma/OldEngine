@@ -28,6 +28,7 @@ void PostProcess::Update()
 void PostProcess::Draw(){
 	materialData->projectionInverse = Inverse(camera_->GetProjectionMatrix());
 	PSOPostEffect* pso_ = PSOPostEffect::GatInstance();
+	pso_->EffectChangeCheck();
 	DirectXCommon* sDirectXCommon = DirectXCommon::GetInstance();
 	sDirectXCommon->GetCommandList()->SetGraphicsRootSignature(pso_->GetProperty().rootSignature.Get());
 	sDirectXCommon->GetCommandList()->SetPipelineState(pso_->GetProperty().graphicsPipelineState.Get());    //PSOを設定

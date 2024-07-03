@@ -21,7 +21,7 @@
 #include "WorldTransform.h"
 #include "TextureManager.h"
 #include "Camera.h"
-
+#include "IPostEffectState.h"
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxcompiler.lib")
@@ -48,6 +48,12 @@ public:
 
 	void SetCamera(Camera *camera) { camera_ = camera; }
 private:
+	// シーンを保持するメンバ変数
+	//std::unique_ptr<IPostEffectState> effectArr_[POSTEFFECTMODE::EFFECTNUM];
+
+	// どのステージを呼び出すかを管理する変数
+	int currentSceneNo_ = 0;
+	int prevSceneNo_ = 0;
 
 	Microsoft::WRL::ComPtr < ID3D12Resource> vertexResourceSprite_ = nullptr;
 	WinAPI* sWinAPI;
@@ -96,5 +102,6 @@ private:
 	uint32_t noiseTexture_;
 
 	Camera* camera_ = nullptr;
+	
 };
 

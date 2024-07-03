@@ -190,9 +190,10 @@
     </ClCompile>
     <ClCompile Include="Engine\3d\Animation\Animation.cpp" />
     <ClCompile Include="Engine\3d\Skeleton\Skeleton.cpp" />
-    <ClCompile Include="Engine\Interface\PostEffect\PSOPostEffect.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\PSOPostEffect.cpp" />
     <ClCompile Include="Engine\2d\PostProcess.cpp" />
-    <ClCompile Include="Engine\Interface\PostEffect\IPostEffectState.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\IPostEffectState.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\DepthOutline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -372,9 +373,10 @@
     <ClInclude Include="Lib\math\Quaternion.h" />
     <ClInclude Include="Engine\3d\Animation\Animation.h" />
     <ClInclude Include="Engine\3d\Skeleton\Skeleton.h" />
-    <ClInclude Include="Engine\Interface\PostEffect\PSOPostEffect.h" />
+    <ClInclude Include="Engine\2d\PostEffect\PSOPostEffect.h" />
     <ClInclude Include="Engine\2d\PostProcess.h" />
-    <ClInclude Include="Engine\Interface\PostEffect\IPostEffectState.h" />
+    <ClInclude Include="Engine\2d\PostEffect\IPostEffectState.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\DepthOutline.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\Object3d.PS.hlsl">

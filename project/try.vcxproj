@@ -65,7 +65,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\3d\Animation;$(ProjectDir)Engine\3d\Skeleton;$(ProjectDir)Engine\3d\Triangle;$(ProjectDir)Engine\3d\Sphere;$(ProjectDir)Engine\3d\Model;$(ProjectDir)Engine\3d\Object3d;$(ProjectDir)Engine\3d\Particle;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Interface\PostEffect;$(ProjectDir)Engine\Interface;$(ProjectDir)Engine\Interface\PSO;$(ProjectDir)Engine\Interface\Heap;$(ProjectDir)Engine\Adapter;$(ProjectDir)Engine\Include;$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)Game\Scene;$(ProjectDir)Game\Collision;$(ProjectDir)\Game\Utilty;$(ProjectDir)Engine\Externals\assimp\include;$(ProjectDir)Resources\shaders;$(ProjectDir)Engine\Externals\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\3d\Animation;$(ProjectDir)Engine\3d\Skeleton;$(ProjectDir)Engine\3d\Triangle;$(ProjectDir)Engine\3d\Sphere;$(ProjectDir)Engine\3d\Model;$(ProjectDir)Engine\3d\Object3d;$(ProjectDir)Engine\3d\Particle;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\2d\PostEffect;$(ProjectDir)Engine\Interface;$(ProjectDir)Engine\Interface\PSO;$(ProjectDir)Engine\Interface\Heap;$(ProjectDir)Engine\Adapter;$(ProjectDir)Engine\Include;$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)Game\Scene;$(ProjectDir)Game\Collision;$(ProjectDir)\Game\Utilty;$(ProjectDir)Engine\Externals\assimp\include;$(ProjectDir)Resources\shaders;$(ProjectDir)Engine\Externals\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -96,7 +96,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\3d\Animation;$(ProjectDir)Engine\3d\Skeleton;$(ProjectDir)Engine\3d\Triangle;$(ProjectDir)Engine\3d\Sphere;$(ProjectDir)Engine\3d\Model;$(ProjectDir)Engine\3d\Object3d;$(ProjectDir)Engine\3d\Particle;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\Interface\PostEffect;$(ProjectDir)Engine\Interface;$(ProjectDir)Engine\Interface\PSO;$(ProjectDir)Engine\Interface\Heap;$(ProjectDir)Engine\Adapter;$(ProjectDir)Engine\Include;$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)Game\Scene;$(ProjectDir)Game\Collision;$(ProjectDir)\Game\Utilty;$(ProjectDir)Engine\Externals\assimp\include;$(ProjectDir)Resources\shaders;$(ProjectDir)Engine/Externals\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\Audio;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\3d\Animation;$(ProjectDir)Engine\3d\Skeleton;$(ProjectDir)Engine\3d\Triangle;$(ProjectDir)Engine\3d\Sphere;$(ProjectDir)Engine\3d\Model;$(ProjectDir)Engine\3d\Object3d;$(ProjectDir)Engine\3d\Particle;$(ProjectDir)Engine\Input;$(ProjectDir)Engine\2d\PostEffect;$(ProjectDir)Engine\Interface;$(ProjectDir)Engine\Interface\PSO;$(ProjectDir)Engine\Interface\Heap;$(ProjectDir)Engine\Adapter;$(ProjectDir)Engine\Include;$(ProjectDir)Lib\math;$(ProjectDir)Lib\utility;$(ProjectDir)Game\Scene;$(ProjectDir)Game\Collision;$(ProjectDir)\Game\Utilty;$(ProjectDir)Engine\Externals\assimp\include;$(ProjectDir)Resources\shaders;$(ProjectDir)Engine/Externals\assimp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -119,6 +119,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\2d\PostEffect\Effect\DepthOutline.cpp" />
     <ClCompile Include="Engine\3d\Animation\Animation.cpp" />
     <ClCompile Include="Game\Scene\DemoScene.cpp" />
     <ClCompile Include="Game\Collision\Collider.cpp" />
@@ -146,7 +147,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
-    <ClCompile Include="Engine\Interface\PostEffect\IPostEffectState.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\IPostEffectState.cpp" />
     <ClCompile Include="Lib\utility\function.cpp" />
     <ClCompile Include="Engine\2d\ImGuiCommon.cpp" />
     <ClCompile Include="main.cpp" />
@@ -166,10 +167,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Interface\Heap\SRVManager.cpp" />
     <ClCompile Include="Engine\3d\Particle\ParticleManager.cpp" />
     <ClCompile Include="Engine\3d\Skeleton\Skeleton.cpp" />
-    <ClCompile Include="Engine\Interface\PostEffect\PSOPostEffect.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\PSOPostEffect.cpp" />
     <ClCompile Include="Engine\2d\PostProcess.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\2d\PostEffect\Effect\DepthOutline.h" />
     <ClInclude Include="Engine\3d\Animation\Animation.h" />
     <ClInclude Include="Engine\3d\Skeleton\Skeleton.h" />
     <ClInclude Include="Game\Scene\DemoScene.h" />
@@ -195,7 +197,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Engine\3d\Model\MaterialData.h" />
     <ClInclude Include="Engine\3d\Material.h" />
-    <ClInclude Include="Engine\Interface\PostEffect\IPostEffectState.h" />
+    <ClInclude Include="Engine\2d\PostEffect\IPostEffectState.h" />
     <ClInclude Include="Lib\math\Matrix3x3.h" />
     <ClInclude Include="Engine\3d\ResourceObject.h" />
     <ClInclude Include="Engine\3d\Model\Model.h" />
@@ -232,7 +234,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Interface\Heap\SRVManager.h" />
     <ClInclude Include="Engine\3d\Particle\ParticleManager.h" />
     <ClInclude Include="Lib\math\Quaternion.h" />
-    <ClInclude Include="Engine\Interface\PostEffect\PSOPostEffect.h" />
+    <ClInclude Include="Engine\2d\PostEffect\PSOPostEffect.h" />
     <ClInclude Include="Engine\2d\PostProcess.h" />
   </ItemGroup>
   <ItemGroup>

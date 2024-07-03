@@ -92,5 +92,6 @@ private:
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle;
 
 	PSOProperty property;
-
+	
+	
 };
