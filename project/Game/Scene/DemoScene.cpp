@@ -2,6 +2,7 @@
 #include "ImGuiCommon.h"
 #include "TextureManager.h"
 #include "ModelManager.h"
+#include "IPostEffectState.h"
 #include "Loder.h"
 
 void DemoScene::Init()
@@ -67,13 +68,6 @@ void DemoScene::Init()
 
 void DemoScene::Update()
 {
-	Transform cameraNewPos = camera->GetTransform();
-	ImGui::Begin("camera");
-	ImGui::DragFloat3("translate", &cameraNewPos.translate.x,0.01f);
-	ImGui::DragFloat3("rotate", &cameraNewPos.rotate.x, 0.01f);
-	ImGui::End();
-	camera->SetTranslate(cameraNewPos.translate);
-	camera->SetRotate(cameraNewPos.rotate);
 	XINPUT_STATE joyState{};
 	if (Input::GetInstance()->GetJoystickState(joyState)) {
 	}
@@ -101,9 +95,20 @@ void DemoScene::Update()
 		rotateSize_ = 0.05f;
 	}
 
-	for (std::vector<Object3d*>::iterator itr = object3d_.begin(); itr != object3d_.end(); itr++) {
-		(*itr)->Update();
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
+		IPostEffectState::SetEffectNo(PostEffectMode::kFullScreen);
 	}
+	if (IPostEffectState::GetEffectNo() == PostEffectMode::kDissolve) {
+		float threa = postProcess_->GetThreshold();
+		threa -= 0.01f;
+		postProcess_->SetThreshold(threa);
+	}
+
+	if (Input::GetInstance()->TriggerKey(DIK_L)) {
+		IPostEffectState::SetEffectNo(PostEffectMode::kDissolve);
+	}
+
+
 	
 	object3d->SetWorldTransform(worldTransform);
 	object3d2->SetWorldTransform(worldTransform2);

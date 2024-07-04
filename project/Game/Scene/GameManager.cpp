@@ -84,7 +84,7 @@ int GameManager::Run() {
 	psoParticle->CreatePipelineStateObject();
 
 	PSOPostEffect* pSOPostEffect = PSOPostEffect::GatInstance();
-	pSOPostEffect->CreatePipelineStateObject();
+	pSOPostEffect->Init();
 	
 	//post->Init();
 	sceneArr_[currentSceneNo_]->Init();
@@ -120,6 +120,7 @@ int GameManager::Run() {
 		if (prevSceneNo_ != currentSceneNo_) {
 			sceneArr_[currentSceneNo_]->Init();
 		}
+		
 
 		///
 		/// ↓更新処理ここから
