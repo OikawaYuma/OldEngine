@@ -1,5 +1,10 @@
 #include "Fullscreen.hlsli"
+struct Material
+{
+    float32_t projectionInverse;
+};
 
+ConstantBuffer<Material> gMaterial : register(b0);
 Texture2D<float32_t4> gTexture : register(t0);
 SamplerState gSampler : register(s0);
 
@@ -53,7 +58,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     {
         for (int32_t y = 0; y < KenelSize; ++y)
         {
-            kernel5x5[x][y] = gauss(kIndex5x5[x][y].x, kIndex5x5[x][y].y, 2.0f);
+            kernel5x5[x][y] = gauss(kIndex5x5[x][y].x, kIndex5x5[x][y].y, gMaterial);
             weight += kernel5x5[x][y];
         }
     }

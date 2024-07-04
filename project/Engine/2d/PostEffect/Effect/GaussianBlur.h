@@ -3,8 +3,8 @@
 #include "PSOProperty.h"
 #include "Matrix4x4.h"
 
-struct DepthOutlineInfo {
-	Matrix4x4 projectionInverse;
+struct GaussianBlurInfo {
+	float projectionInverse;
 };
 class PostProcess;
 class GaussianBlur : public IPostEffectState
@@ -71,7 +71,7 @@ private:
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
 	// 頂点リソースにデータを書き込む
-	DepthOutlineInfo* depthOutlinelData_;
+	GaussianBlurInfo* depthOutlinelData_;
 
 
 };

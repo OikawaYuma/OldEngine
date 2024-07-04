@@ -108,6 +108,14 @@ void DemoScene::Update()
 		IPostEffectState::SetEffectNo(PostEffectMode::kDissolve);
 	}
 
+	if (Input::GetInstance()->TriggerKey(DIK_K)) {
+		IPostEffectState::SetEffectNo(PostEffectMode::kGaussianFilter);
+	}
+	if (IPostEffectState::GetEffectNo() == PostEffectMode::kGaussianFilter) {
+		float threa = postProcess_->GetThreshold();
+		threa -= 0.01f;
+		postProcess_->SetThreshold(threa);
+	}
 
 	
 	object3d->SetWorldTransform(worldTransform);
