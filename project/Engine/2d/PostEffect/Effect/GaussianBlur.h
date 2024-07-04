@@ -7,11 +7,11 @@ struct DepthOutlineInfo {
 	Matrix4x4 projectionInverse;
 };
 class PostProcess;
-class DepthOutline : public IPostEffectState
+class GaussianBlur : public IPostEffectState
 {
 public:
 
-	
+
 
 	void Init() override;
 	/// <summary>
@@ -25,7 +25,7 @@ public:
 	void CommandRootParameter(PostProcess* postProcess) override;
 
 
-	
+
 	std::vector<D3D12_DESCRIPTOR_RANGE> CreateDescriptorRange() override;
 
 	/// <summary>
@@ -71,8 +71,9 @@ private:
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
 	// 頂点リソースにデータを書き込む
-	DepthOutlineInfo *depthOutlinelData_;
+	DepthOutlineInfo* depthOutlinelData_;
 
-	
+
 };
+
 

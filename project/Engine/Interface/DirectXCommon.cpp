@@ -1,4 +1,4 @@
-﻿#include "DirectXCommon.h"
+#include "DirectXCommon.h"
 #include <thread>
 #include "ImGuiCommon.h"
 #include <SRVManager.h>
@@ -211,7 +211,7 @@ void DirectXCommon::ViewChange() {
 	commandQueue_->ExecuteCommandLists(1, commandLists);
 
 	// GPUとOSに画面の交換を行うよう通知する
-	swapChain_->Present(1, 0);
+ 	swapChain_->Present(1, 0);
 
 	//Fenceの値を更新
 	fenceValue_++;

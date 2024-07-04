@@ -1,5 +1,10 @@
 #include "Fullscreen.hlsli"
+struct Material
+{
+    float32_t projectionInverse;
+};
 
+ConstantBuffer<Material> gMaterial : register(b0);
 Texture2D<float32_t4> gTexture : register(t0);
 Texture2D<float32_t> gMaskTexture : register(t2);
 SamplerState gSampler : register(s0);
@@ -54,7 +59,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     output.color.a = 1.0f;
     float32_t mask = gMaskTexture.Sample(gSampler, input.texcoord);
     // maskの値が0.5f（闘値）以下の場合はdiscardして抜く
-    if (mask <= 0.5f)
+    if (mask <= gMaterial.projectionInverse)
     {
         discard;
     }

@@ -1,31 +1,19 @@
 #pragma once
 #include "IPostEffectState.h"
 #include "PSOProperty.h"
-#include "Matrix4x4.h"
-
-struct DepthOutlineInfo {
-	Matrix4x4 projectionInverse;
-};
-class PostProcess;
-class DepthOutline : public IPostEffectState
+class FullScreen : public IPostEffectState
 {
 public:
-
-	
-
-	void Init() override;
 	/// <summary>
 	/// 描画に関する設定をまとめる関数
 	/// </summary>
 	PSOProperty CreatePipelineStateObject() override;
-
+	void Init() override;
 	/// <summary>
 	/// 設定したことを元にコマンドリストを使う
 	/// </summary>
 	void CommandRootParameter(PostProcess* postProcess) override;
 
-
-	
 	std::vector<D3D12_DESCRIPTOR_RANGE> CreateDescriptorRange() override;
 
 	/// <summary>
@@ -64,14 +52,6 @@ public:
 	/// DepthBufferの生成
 	/// </summary>
 	D3D12_DEPTH_STENCIL_DESC CreateDepth() override;
-private:
-	//PostProcess* postProcess_ = nullptr;
-	// 実際に頂点リソースを作る
-	Microsoft::WRL::ComPtr <ID3D12Resource> depthOutlineResource_;
-	// 頂点バッファビューを作成する
-	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
-	// 頂点リソースにデータを書き込む
-	DepthOutlineInfo *depthOutlinelData_;
 
 	
 };

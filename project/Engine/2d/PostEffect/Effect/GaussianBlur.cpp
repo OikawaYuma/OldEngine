@@ -1,11 +1,11 @@
-#include "DepthOutline.h"
+#include "GaussianBlur.h"
 #include <function.h>
 #include <DirectXCommon.h>
 #include "PostProcess.h"
 #include "SRVManager.h"
 #include "Mesh.h"
 
-void DepthOutline::Init()
+void GaussianBlur::Init()
 {
 	// 実際に頂点リソースを作る
 	depthOutlineResource_ = Mesh::CreateBufferResource(DirectXCommon::GetInstance()->GetDevice(), sizeof(DepthOutlineInfo));
@@ -15,10 +15,10 @@ void DepthOutline::Init()
 	depthOutlinelData_ = nullptr;
 	// 書き込むためのアドレスを取得
 	depthOutlineResource_->Map(0, nullptr, reinterpret_cast<void**>(&depthOutlinelData_));
-	
+
 }
 
-PSOProperty DepthOutline::CreatePipelineStateObject()
+PSOProperty GaussianBlur::CreatePipelineStateObject()
 {
 	PSOProperty property;
 	HRESULT hr;
@@ -87,7 +87,7 @@ PSOProperty DepthOutline::CreatePipelineStateObject()
 }
 
 
-void DepthOutline::CommandRootParameter(PostProcess* postProcess)
+void GaussianBlur::CommandRootParameter(PostProcess* postProcess)
 {
 	DirectXCommon* sDirectXCommon = DirectXCommon::GetInstance();
 	Camera* camera = postProcess->GetCamera();
@@ -95,7 +95,7 @@ void DepthOutline::CommandRootParameter(PostProcess* postProcess)
 	// マテリアルCBufferの場所を設定
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(0, SRVManager::GetInstance()->GetGPUDescriptorHandle(sDirectXCommon->GetRenderIndex()));
-	
+
 	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, SRVManager::GetInstance()->GetGPUDescriptorHandle(sDirectXCommon->GetDepthIndex()));
 
 	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, SRVManager::GetInstance()->GetGPUDescriptorHandle(postProcess->GetNoisetex()));
@@ -103,7 +103,7 @@ void DepthOutline::CommandRootParameter(PostProcess* postProcess)
 	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, depthOutlineResource_->GetGPUVirtualAddress());
 }
 
-std::vector<D3D12_DESCRIPTOR_RANGE> DepthOutline::CreateDescriptorRange()
+std::vector<D3D12_DESCRIPTOR_RANGE> GaussianBlur::CreateDescriptorRange()
 {
 	std::vector<D3D12_DESCRIPTOR_RANGE> descriptorRange(3);
 	descriptorRange[0].BaseShaderRegister = 0; // 0から始まる
@@ -123,9 +123,9 @@ std::vector<D3D12_DESCRIPTOR_RANGE> DepthOutline::CreateDescriptorRange()
 	return descriptorRange;
 }
 
-std::vector<D3D12_ROOT_PARAMETER> DepthOutline::CreateRootParamerter(std::vector<D3D12_DESCRIPTOR_RANGE>& descriptorRange)
+std::vector<D3D12_ROOT_PARAMETER> GaussianBlur::CreateRootParamerter(std::vector<D3D12_DESCRIPTOR_RANGE>& descriptorRange)
 {
-	
+
 
 	std::vector<D3D12_ROOT_PARAMETER> rootParamerters(4);
 	rootParamerters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // DescripterTableを使う
@@ -150,7 +150,7 @@ std::vector<D3D12_ROOT_PARAMETER> DepthOutline::CreateRootParamerter(std::vector
 	return rootParamerters;
 }
 
-std::vector<D3D12_STATIC_SAMPLER_DESC> DepthOutline::CreateSampler()
+std::vector<D3D12_STATIC_SAMPLER_DESC> GaussianBlur::CreateSampler()
 {
 	std::vector<D3D12_STATIC_SAMPLER_DESC> staticSamplers(2);
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイナリフィルタ
@@ -174,13 +174,13 @@ std::vector<D3D12_STATIC_SAMPLER_DESC> DepthOutline::CreateSampler()
 	return staticSamplers;
 }
 
-D3D12_ROOT_SIGNATURE_DESC DepthOutline::CreateRootSignature(PSOProperty& pso, std::vector<D3D12_ROOT_PARAMETER>& rootParameters, std::vector<D3D12_STATIC_SAMPLER_DESC>& samplers)
+D3D12_ROOT_SIGNATURE_DESC GaussianBlur::CreateRootSignature(PSOProperty& pso, std::vector<D3D12_ROOT_PARAMETER>& rootParameters, std::vector<D3D12_STATIC_SAMPLER_DESC>& samplers)
 {
 	HRESULT hr;
 	// RootSignature作成
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
 	descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-	
+
 	descriptionRootSignature.pParameters = rootParameters.data(); // ルートパラメータ配列へのポインタ
 	descriptionRootSignature.NumParameters = static_cast<UINT>(rootParameters.size()); // 配列の長さ
 	descriptionRootSignature.pStaticSamplers = samplers.data();
@@ -201,7 +201,7 @@ D3D12_ROOT_SIGNATURE_DESC DepthOutline::CreateRootSignature(PSOProperty& pso, st
 	return descriptionRootSignature;
 }
 
-D3D12_INPUT_LAYOUT_DESC DepthOutline::SetInputLayout()
+D3D12_INPUT_LAYOUT_DESC GaussianBlur::SetInputLayout()
 {
 	// 頂点には何もデータを入力しないので、InputLayoutは利用しない。ドライバやGPUのやることが
 	// 少なくなりそうな気配を感じる
@@ -211,7 +211,7 @@ D3D12_INPUT_LAYOUT_DESC DepthOutline::SetInputLayout()
 	return inputLayoutDesc;
 }
 
-D3D12_BLEND_DESC DepthOutline::SetBlendState()
+D3D12_BLEND_DESC GaussianBlur::SetBlendState()
 {
 	// blendStateの設定
 	//すべての色要素を書き込む
@@ -230,7 +230,7 @@ D3D12_BLEND_DESC DepthOutline::SetBlendState()
 	return blendDesc;
 }
 
-D3D12_RASTERIZER_DESC DepthOutline::SetRasterrizerState()
+D3D12_RASTERIZER_DESC GaussianBlur::SetRasterrizerState()
 {
 	// RasiterzerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -241,7 +241,7 @@ D3D12_RASTERIZER_DESC DepthOutline::SetRasterrizerState()
 	return rasterizerDesc;
 }
 
-D3D12_DEPTH_STENCIL_DESC DepthOutline::CreateDepth()
+D3D12_DEPTH_STENCIL_DESC GaussianBlur::CreateDepth()
 {
 	// DepthStencilStateの設定
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
@@ -249,5 +249,4 @@ D3D12_DEPTH_STENCIL_DESC DepthOutline::CreateDepth()
 	depthStencilDesc.DepthEnable = false;
 	return depthStencilDesc;
 }
-
 

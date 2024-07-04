@@ -2,6 +2,7 @@
 #include "ImGuiCommon.h"
 #include "TextureManager.h"
 #include "ModelManager.h"
+#include "IPostEffectState.h"
 
 void DemoScene::Init()
 {
@@ -58,20 +59,7 @@ void DemoScene::Init()
 
 void DemoScene::Update()
 {
-	XINPUT_STATE joyState{};
-	if (Input::GetInstance()->GetJoystickState(joyState)) {
-	}
-
-	short leftStickX = joyState.Gamepad.sThumbLX;
-	if (leftStickX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
-		worldTransform.translation_.x -= 0.01f;
-		worldTransform.rotation_.y = -rotateSize_;
-	}
-	if (leftStickX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
-		worldTransform.translation_.x += 0.01f;
-		worldTransform.rotation_.y = rotateSize_;
-
-	}
+	
 
 	sceneTime++;
 	////カメラの更新
@@ -83,6 +71,19 @@ void DemoScene::Update()
 	}
 	if (Input::GetInstance()->TriggerKey(DIK_D)) {
 		rotateSize_ = 0.05f;
+	}
+
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
+		IPostEffectState::SetEffectNo(PostEffectMode::kFullScreen);
+	}
+	if (IPostEffectState::GetEffectNo() == PostEffectMode::kDissolve) {
+		float threa = postProcess_->GetThreshold();
+		threa -= 0.01f;
+		postProcess_->SetThreshold(threa);
+	}
+
+	if (Input::GetInstance()->TriggerKey(DIK_L)) {
+		IPostEffectState::SetEffectNo(PostEffectMode::kDissolve);
 	}
 
 

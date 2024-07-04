@@ -194,6 +194,10 @@
     <ClCompile Include="Engine\2d\PostProcess.cpp" />
     <ClCompile Include="Engine\2d\PostEffect\IPostEffectState.cpp" />
     <ClCompile Include="Engine\2d\PostEffect\Effect\DepthOutline.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\FullScreen.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\Vignette.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\GaussianBlur.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\Dissolve.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -377,6 +381,10 @@
     <ClInclude Include="Engine\2d\PostProcess.h" />
     <ClInclude Include="Engine\2d\PostEffect\IPostEffectState.h" />
     <ClInclude Include="Engine\2d\PostEffect\Effect\DepthOutline.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\FullScreen.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\Vignette.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\GaussianBlur.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\Dissolve.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\Object3d.PS.hlsl">

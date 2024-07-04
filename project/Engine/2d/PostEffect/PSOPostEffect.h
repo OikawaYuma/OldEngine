@@ -29,6 +29,7 @@ public:
 	void Init();
 
 	void EffectChangeCheck();
+	void SetCommand(PostProcess* postProcess);
 
 	PSOProperty GetProperty() { return property; }
 

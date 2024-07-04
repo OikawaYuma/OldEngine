@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
-#include<d3d12.h>
+#include <d3d12.h>
 #include <PSOProperty.h>
+
 enum PostEffectMode {
 	kFullScreen,
 	kGrayscale,
@@ -16,13 +17,21 @@ enum PostEffectMode {
 	kNumPostEffect
 
 };
-
+class PostProcess;
 // シーン内での処理を行う基底クラス
 class IPostEffectState {
 protected:
 	// シーン番号を管理する変数
-	static int effectNo;
+	static int effectNo_;
 public:
+
+	/// <summary>
+	/// 描画に関する設定をまとめる関数
+	/// </summary>
+	virtual PSOProperty CreatePipelineStateObject() = 0;
+
+	virtual void CommandRootParameter(PostProcess* postProcess) = 0;
+	virtual void Init() = 0;
 
 	/// <summary>
 	/// Shaderの配列設定
@@ -67,10 +76,7 @@ public:
 	/// </summary>
 	virtual D3D12_DEPTH_STENCIL_DESC CreateDepth() = 0;
 
-	/// <summary>
-	/// 描画に関する設定をまとめる関数
-	/// </summary>
-	virtual PSOProperty CreatePipelineStateObject() = 0;
+	
 	// 仮想デストラクタを用意しないと警告される
 	virtual ~IPostEffectState();
 

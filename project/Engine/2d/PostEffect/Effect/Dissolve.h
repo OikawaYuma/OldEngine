@@ -1,17 +1,18 @@
 #pragma once
+
 #include "IPostEffectState.h"
 #include "PSOProperty.h"
 #include "Matrix4x4.h"
 
-struct DepthOutlineInfo {
-	Matrix4x4 projectionInverse;
+struct DissolveInfo {
+	float threshold;
 };
 class PostProcess;
-class DepthOutline : public IPostEffectState
+class Dissolve : public IPostEffectState
 {
 public:
 
-	
+
 
 	void Init() override;
 	/// <summary>
@@ -25,7 +26,7 @@ public:
 	void CommandRootParameter(PostProcess* postProcess) override;
 
 
-	
+
 	std::vector<D3D12_DESCRIPTOR_RANGE> CreateDescriptorRange() override;
 
 	/// <summary>
@@ -71,8 +72,7 @@ private:
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
 	// 頂点リソースにデータを書き込む
-	DepthOutlineInfo *depthOutlinelData_;
+	DissolveInfo* depthOutlinelData_;
 
-	
+
 };
-
