@@ -197,13 +197,13 @@
     <ClCompile Include="Engine\2d\PostEffect\Effect\FullScreen.cpp" />
     <ClCompile Include="Engine\2d\PostEffect\Effect\Vignette.cpp" />
     <ClCompile Include="Engine\2d\PostEffect\Effect\GaussianBlur.cpp" />
-    <ClCompile Include="Engine\2d\PostEffect\Effect\Dissolve.cpp" />
     <ClCompile Include="Engine\Interface\Loder.cpp" />
     <ClCompile Include="Engine\Interface\PSO\PSOAnimationModel.cpp" />
     <ClCompile Include="Engine\3d\Model\AnimationModel.cpp" />
     <ClCompile Include="Engine\2d\PostEffect\Effect\GrayScale.cpp" />
     <ClCompile Include="Engine\2d\PostEffect\Effect\RadialBlur.cpp" />
     <ClCompile Include="Engine\2d\PostEffect\Effect\Random.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\Dissolve.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
