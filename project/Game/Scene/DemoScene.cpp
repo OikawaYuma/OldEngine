@@ -4,6 +4,8 @@
 #include "ModelManager.h"
 #include "IPostEffectState.h"
 #include "Loder.h"
+#include<stdio.h>
+#include<time.h>
 
 void DemoScene::Init()
 {
@@ -88,35 +90,86 @@ void DemoScene::Update()
 	camera->Update();
 	demoSprite->Update();
 	
+	ImGui::Begin("PostEffect");
+	Vector2 viggnetDarkness = postProcess_->GetDarkness();
+	float gauss = postProcess_->GetDeviation();
+	float threa = postProcess_->GetThreshold();
+	time_t currentTime = time(nullptr);
+	srand(unsigned int( currentTime));
+	int eye = rand() % 70 + 1;
+	Vector2 randaa = { float(eye),float(rand() %90 + 2)};
+	if (ImGui::TreeNode("Base")) {
+		if (ImGui::Button("Base On")) {
+			IPostEffectState::SetEffectNo(PostEffectMode::kFullScreen);
+		}
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("GrayScale")) {
+		if (ImGui::Button("GrayScale On")) {
+			IPostEffectState::SetEffectNo(PostEffectMode::kGrayscale);
+		}
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Viggnet")) {
+		if (ImGui::Button("Viggnet On")) {
+			IPostEffectState::SetEffectNo(PostEffectMode::kVignetting);
+		}
+		ImGui::SliderFloat("darkness 1", &viggnetDarkness.x, 0.0f, 16.0f);
+		ImGui::SliderFloat("darkness 2", &viggnetDarkness.y, 0.0f, 1.0f);
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("GaussianFilter")) {
+		if (ImGui::Button("Gaussian On")) {
+			IPostEffectState::SetEffectNo(PostEffectMode::kGaussianFilter);
+		}
+		ImGui::SliderFloat("Devaition", &gauss, 0.01f, 10.0f);
+		ImGui::TreePop();
+	}
+
+	
+	if (ImGui::TreeNode("DepthOutline")) {
+		if (ImGui::Button("DepthOutline On")) {
+			IPostEffectState::SetEffectNo(PostEffectMode::kOutline);
+		}
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Radial Blur")) {
+		if (ImGui::Button("Radial Blur On")) {
+			IPostEffectState::SetEffectNo(PostEffectMode::kRadialBlur);
+		}
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Dissolve")) {
+		if (ImGui::Button("Dissolve On")) {
+			IPostEffectState::SetEffectNo(PostEffectMode::kDissolve);
+		}
+		ImGui::SliderFloat("Devaition", &threa, 0.00f, 1.0f);
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Random")) {
+		if (ImGui::Button("Random On")) {
+			IPostEffectState::SetEffectNo(PostEffectMode::kRandom);
+		}
+		ImGui::TreePop();
+	}
+	ImGui::End();
+
+	postProcess_->SetDarkness(viggnetDarkness);
+	postProcess_->SetDeviation(gauss);
+	postProcess_->SetThreshold(threa);
+	postProcess_->Setrandom(randaa);
 	if (Input::GetInstance()->TriggerKey(DIK_A)) {
 		rotateSize_ = 0.0f;
 	}
 	if (Input::GetInstance()->TriggerKey(DIK_D)) {
 		rotateSize_ = 0.05f;
 	}
-
-	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
-		IPostEffectState::SetEffectNo(PostEffectMode::kFullScreen);
-	}
-	if (IPostEffectState::GetEffectNo() == PostEffectMode::kDissolve) {
-		float threa = postProcess_->GetThreshold();
-		threa -= 0.01f;
-		postProcess_->SetThreshold(threa);
-	}
-
-	if (Input::GetInstance()->TriggerKey(DIK_L)) {
-		IPostEffectState::SetEffectNo(PostEffectMode::kDissolve);
-	}
-
-	if (Input::GetInstance()->TriggerKey(DIK_K)) {
-		IPostEffectState::SetEffectNo(PostEffectMode::kGaussianFilter);
-	}
-	if (IPostEffectState::GetEffectNo() == PostEffectMode::kGaussianFilter) {
-		float threa = postProcess_->GetThreshold();
-		threa -= 0.01f;
-		postProcess_->SetThreshold(threa);
-	}
-
 	
 	object3d->SetWorldTransform(worldTransform);
 	object3d2->SetWorldTransform(worldTransform2);

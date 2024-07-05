@@ -58,7 +58,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     {
         for (int32_t y = 0; y < KenelSize; ++y)
         {
-            kernel5x5[x][y] = gauss(kIndex5x5[x][y].x, kIndex5x5[x][y].y, gMaterial);
+            kernel5x5[x][y] = gauss(kIndex5x5[x][y].x, kIndex5x5[x][y].y, gMaterial.projectionInverse);
             weight += kernel5x5[x][y];
         }
     }

@@ -8,7 +8,7 @@
 void GaussianBlur::Init()
 {
 	// 実際に頂点リソースを作る
-	depthOutlineResource_ = Mesh::CreateBufferResource(DirectXCommon::GetInstance()->GetDevice(), sizeof(DepthOutlineInfo));
+	depthOutlineResource_ = Mesh::CreateBufferResource(DirectXCommon::GetInstance()->GetDevice(), sizeof(GaussianBlur));
 
 	/*materialBufferView = CreateBufferView();;*/
 	// 頂点リソースにデータを書き込む
@@ -51,7 +51,7 @@ PSOProperty GaussianBlur::CreatePipelineStateObject()
 		L"vs_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.vertexShaderBlob != nullptr);
 
-	property.pixelShaderBlob = CompileShader(L"Resources/shader/DepthBasedOutline.PS.hlsl",
+	property.pixelShaderBlob = CompileShader(L"Resources/shader/GaussianFilter.PS.hlsl",
 		L"ps_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.pixelShaderBlob != nullptr);
 
@@ -90,8 +90,7 @@ PSOProperty GaussianBlur::CreatePipelineStateObject()
 void GaussianBlur::CommandRootParameter(PostProcess* postProcess)
 {
 	DirectXCommon* sDirectXCommon = DirectXCommon::GetInstance();
-	Camera* camera = postProcess->GetCamera();
-	depthOutlinelData_->projectionInverse = Inverse(camera->GetProjectionMatrix());
+	depthOutlinelData_->deviation = postProcess->GetDeviation();
 	// マテリアルCBufferの場所を設定
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(0, SRVManager::GetInstance()->GetGPUDescriptorHandle(sDirectXCommon->GetRenderIndex()));

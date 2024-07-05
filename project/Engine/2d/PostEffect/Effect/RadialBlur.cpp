@@ -1,14 +1,14 @@
-#include "Vignette.h"
+#include "RadialBlur.h"
 #include <function.h>
 #include <DirectXCommon.h>
 #include "PostProcess.h"
 #include "SRVManager.h"
 #include "Mesh.h"
 
-void Vignette::Init()
+void RadialBlur::Init()
 {
 	// 実際に頂点リソースを作る
-	depthOutlineResource_ = Mesh::CreateBufferResource(DirectXCommon::GetInstance()->GetDevice(), sizeof(VignetteInfo));
+	depthOutlineResource_ = Mesh::CreateBufferResource(DirectXCommon::GetInstance()->GetDevice(), sizeof(RadialBlurInfo));
 
 	/*materialBufferView = CreateBufferView();;*/
 	// 頂点リソースにデータを書き込む
@@ -18,7 +18,7 @@ void Vignette::Init()
 
 }
 
-PSOProperty Vignette::CreatePipelineStateObject()
+PSOProperty RadialBlur::CreatePipelineStateObject()
 {
 	PSOProperty property;
 	HRESULT hr;
@@ -51,7 +51,7 @@ PSOProperty Vignette::CreatePipelineStateObject()
 		L"vs_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.vertexShaderBlob != nullptr);
 
-	property.pixelShaderBlob = CompileShader(L"Resources/shader/Vignetting.PS.hlsl",
+	property.pixelShaderBlob = CompileShader(L"Resources/shader/RadialBlur.PS.hlsl",
 		L"ps_6_0", sDirectXCommon->GetDxcUtils(), sDirectXCommon->GetDxcCompiler(), sDirectXCommon->GetIncludeHandler());
 	assert(property.pixelShaderBlob != nullptr);
 
@@ -87,10 +87,11 @@ PSOProperty Vignette::CreatePipelineStateObject()
 }
 
 
-void Vignette::CommandRootParameter(PostProcess* postProcess)
+void RadialBlur::CommandRootParameter(PostProcess* postProcess)
 {
 	DirectXCommon* sDirectXCommon = DirectXCommon::GetInstance();
-	depthOutlinelData_->Darkness = postProcess->GetDarkness();
+	Camera* camera = postProcess->GetCamera();
+	depthOutlinelData_->projectionInverse = Inverse(camera->GetProjectionMatrix());
 	// マテリアルCBufferの場所を設定
 	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
 	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(0, SRVManager::GetInstance()->GetGPUDescriptorHandle(sDirectXCommon->GetRenderIndex()));
@@ -102,7 +103,7 @@ void Vignette::CommandRootParameter(PostProcess* postProcess)
 	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, depthOutlineResource_->GetGPUVirtualAddress());
 }
 
-std::vector<D3D12_DESCRIPTOR_RANGE> Vignette::CreateDescriptorRange()
+std::vector<D3D12_DESCRIPTOR_RANGE> RadialBlur::CreateDescriptorRange()
 {
 	std::vector<D3D12_DESCRIPTOR_RANGE> descriptorRange(3);
 	descriptorRange[0].BaseShaderRegister = 0; // 0から始まる
@@ -122,7 +123,7 @@ std::vector<D3D12_DESCRIPTOR_RANGE> Vignette::CreateDescriptorRange()
 	return descriptorRange;
 }
 
-std::vector<D3D12_ROOT_PARAMETER> Vignette::CreateRootParamerter(std::vector<D3D12_DESCRIPTOR_RANGE>& descriptorRange)
+std::vector<D3D12_ROOT_PARAMETER> RadialBlur::CreateRootParamerter(std::vector<D3D12_DESCRIPTOR_RANGE>& descriptorRange)
 {
 
 
@@ -149,7 +150,7 @@ std::vector<D3D12_ROOT_PARAMETER> Vignette::CreateRootParamerter(std::vector<D3D
 	return rootParamerters;
 }
 
-std::vector<D3D12_STATIC_SAMPLER_DESC> Vignette::CreateSampler()
+std::vector<D3D12_STATIC_SAMPLER_DESC> RadialBlur::CreateSampler()
 {
 	std::vector<D3D12_STATIC_SAMPLER_DESC> staticSamplers(2);
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; // バイナリフィルタ
@@ -173,7 +174,7 @@ std::vector<D3D12_STATIC_SAMPLER_DESC> Vignette::CreateSampler()
 	return staticSamplers;
 }
 
-D3D12_ROOT_SIGNATURE_DESC Vignette::CreateRootSignature(PSOProperty& pso, std::vector<D3D12_ROOT_PARAMETER>& rootParameters, std::vector<D3D12_STATIC_SAMPLER_DESC>& samplers)
+D3D12_ROOT_SIGNATURE_DESC RadialBlur::CreateRootSignature(PSOProperty& pso, std::vector<D3D12_ROOT_PARAMETER>& rootParameters, std::vector<D3D12_STATIC_SAMPLER_DESC>& samplers)
 {
 	HRESULT hr;
 	// RootSignature作成
@@ -200,7 +201,7 @@ D3D12_ROOT_SIGNATURE_DESC Vignette::CreateRootSignature(PSOProperty& pso, std::v
 	return descriptionRootSignature;
 }
 
-D3D12_INPUT_LAYOUT_DESC Vignette::SetInputLayout()
+D3D12_INPUT_LAYOUT_DESC RadialBlur::SetInputLayout()
 {
 	// 頂点には何もデータを入力しないので、InputLayoutは利用しない。ドライバやGPUのやることが
 	// 少なくなりそうな気配を感じる
@@ -210,7 +211,7 @@ D3D12_INPUT_LAYOUT_DESC Vignette::SetInputLayout()
 	return inputLayoutDesc;
 }
 
-D3D12_BLEND_DESC Vignette::SetBlendState()
+D3D12_BLEND_DESC RadialBlur::SetBlendState()
 {
 	// blendStateの設定
 	//すべての色要素を書き込む
@@ -229,7 +230,7 @@ D3D12_BLEND_DESC Vignette::SetBlendState()
 	return blendDesc;
 }
 
-D3D12_RASTERIZER_DESC Vignette::SetRasterrizerState()
+D3D12_RASTERIZER_DESC RadialBlur::SetRasterrizerState()
 {
 	// RasiterzerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -240,7 +241,7 @@ D3D12_RASTERIZER_DESC Vignette::SetRasterrizerState()
 	return rasterizerDesc;
 }
 
-D3D12_DEPTH_STENCIL_DESC Vignette::CreateDepth()
+D3D12_DEPTH_STENCIL_DESC RadialBlur::CreateDepth()
 {
 	// DepthStencilStateの設定
 	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
@@ -248,4 +249,3 @@ D3D12_DEPTH_STENCIL_DESC Vignette::CreateDepth()
 	depthStencilDesc.DepthEnable = false;
 	return depthStencilDesc;
 }
-

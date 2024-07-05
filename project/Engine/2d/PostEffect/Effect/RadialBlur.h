@@ -1,23 +1,30 @@
 #pragma once
 #include "IPostEffectState.h"
 #include "PSOProperty.h"
+#include "Matrix4x4.h"
 
-struct FullScreenInfo {
-	float threshold;
+struct RadialBlurInfo {
+	Matrix4x4 projectionInverse;
 };
-
-class FullScreen : public IPostEffectState
+class PostProcess;
+class RadialBlur : public IPostEffectState
 {
 public:
+
+
+
+	void Init() override;
 	/// <summary>
 	/// 描画に関する設定をまとめる関数
 	/// </summary>
 	PSOProperty CreatePipelineStateObject() override;
-	void Init() override;
+
 	/// <summary>
 	/// 設定したことを元にコマンドリストを使う
 	/// </summary>
 	void CommandRootParameter(PostProcess* postProcess) override;
+
+
 
 	std::vector<D3D12_DESCRIPTOR_RANGE> CreateDescriptorRange() override;
 
@@ -64,7 +71,7 @@ private:
 	// 頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW materialBufferView{};
 	// 頂点リソースにデータを書き込む
-	FullScreenInfo* depthOutlinelData_;
-	
-};
+	RadialBlurInfo* depthOutlinelData_;
 
+
+};

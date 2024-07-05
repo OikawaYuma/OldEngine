@@ -3,9 +3,9 @@
 static const uint32_t kNumVertex = 3;
 static const float32_t4 kPositions[kNumVertex] =
 {
-    { -1.0f, 1.1f, 0.0f, 1.0f }, // 左上
-    { 3.0f, 1.1f, 0.0f, 1.0f }, // 右上
-    { -1.0f, -3.1f, 0.0f, 1.0f }, // 左下
+    { -1.2f, 1.2f, 0.0f, 1.0f }, // 左上
+    { 3.2f, 1.2f, 0.0f, 1.0f }, // 右上
+    { -1.2f, -3.2f, 0.0f, 1.0f }, // 左下
 };
 
 static const float32_t2 kTexcoords[kNumVertex] =

@@ -1,7 +1,10 @@
 #include "FullScreen.h"
 #include <function.h>
 #include <DirectXCommon.h>
-
+#include "Mesh.h"
+#include "Camera.h"
+#include "SRVManager.h"
+#include "PostProcess.h"
 PSOProperty FullScreen::CreatePipelineStateObject()
 {
 	PSOProperty property;
@@ -72,12 +75,35 @@ PSOProperty FullScreen::CreatePipelineStateObject()
 
 void FullScreen::Init()
 {
+
+	// 実際に頂点リソースを作る
+	depthOutlineResource_ = Mesh::CreateBufferResource(DirectXCommon::GetInstance()->GetDevice(), sizeof(FullScreenInfo));
+
+	/*materialBufferView = CreateBufferView();;*/
+	// 頂点リソースにデータを書き込む
+	depthOutlinelData_ = nullptr;
+	// 書き込むためのアドレスを取得
+	depthOutlineResource_->Map(0, nullptr, reinterpret_cast<void**>(&depthOutlinelData_));
+
 }
 
 
 void FullScreen::CommandRootParameter(PostProcess* postProcess)
 {
+	DirectXCommon* sDirectXCommon = DirectXCommon::GetInstance();
+
+	depthOutlinelData_->threshold = postProcess->GetThreshold();
+	// マテリアルCBufferの場所を設定
+	// SRV のDescriptorTableの先頭を設定。2はrootParameter[2]である。
+	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(0, SRVManager::GetInstance()->GetGPUDescriptorHandle(sDirectXCommon->GetRenderIndex()));
+
+	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(1, SRVManager::GetInstance()->GetGPUDescriptorHandle(sDirectXCommon->GetDepthIndex()));
+
+	sDirectXCommon->GetCommandList()->SetGraphicsRootDescriptorTable(2, SRVManager::GetInstance()->GetGPUDescriptorHandle(postProcess->GetNoisetex()));
+	// マテリアルCBufferの場所を設定
+	sDirectXCommon->GetCommandList()->SetGraphicsRootConstantBufferView(3, depthOutlineResource_->GetGPUVirtualAddress());
 }
+
 
 std::vector<D3D12_DESCRIPTOR_RANGE> FullScreen::CreateDescriptorRange()
 {

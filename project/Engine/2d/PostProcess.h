@@ -46,8 +46,18 @@ public:
 
 	void SetCamera(Camera *camera) { camera_ = camera; }
 	void SetThreshold(float threshold) { threshold_ = threshold; }
+	void SetDeviation(float deviation) { deviation_ = deviation; }
 
 	float GetThreshold(){ return threshold_; }
+	float GetDeviation() { return deviation_; }
+
+	Vector2 GetRandom() { return random_; }
+	void Setrandom(Vector2 rand ){ random_ = rand; }
+
+	Vector2 GetDarkness() { return darkness_; }
+	void SetDarkness(Vector2 darkness) { darkness_ = darkness; }
+	Vector3 GetColorValue() { return valueColor; }
+	void SetvalueColor(Vector3 valueColor_) { valueColor = valueColor_; }
 	Camera* GetCamera() { return camera_; }
 	uint32_t GetNoisetex() { return noiseTexture_; }
 
@@ -108,7 +118,12 @@ private:
 	Camera* camera_ = nullptr;
 
 	// 
-	float threshold_ = 1.0f;
+	float threshold_ = 0.0f;
+	float deviation_ = 2.0f;
+	Vector2 darkness_{ 16.0f,0.8f };
+	Vector2 random_{ 16.0f,0.8f };
+	Vector3 valueColor = { 0.2125f, 0.7154f, 0.0721f };
+
 	
 };
 

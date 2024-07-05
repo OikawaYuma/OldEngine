@@ -143,6 +143,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Scene\TitleScene.cpp" />
     <ClCompile Include="Engine\Input\InputManager.cpp" />
     <ClCompile Include="Engine\2d\PostEffect\Effect\GaussianBlur.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\GrayScale.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -174,6 +175,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\2d\PostEffect\PSOPostEffect.cpp" />
     <ClCompile Include="Engine\2d\PostProcess.cpp" />
     <ClCompile Include="Engine\2d\PostEffect\Effect\Vignette.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\RadialBlur.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2d\PostEffect\Effect\Dissolve.h" />
@@ -197,6 +200,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Scene\IScene.h" />
     <ClInclude Include="Engine\Input\InputManager.h" />
     <ClInclude Include="Engine\2d\PostEffect\Effect\GaussianBlur.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\GrayScale.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx12.h" />
@@ -247,6 +251,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\2d\PostEffect\PSOPostEffect.h" />
     <ClInclude Include="Engine\2d\PostProcess.h" />
     <ClInclude Include="Engine\2d\PostEffect\Effect\Vignette.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\RadialBlur.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\Random.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\Fog.PS.hlsl">

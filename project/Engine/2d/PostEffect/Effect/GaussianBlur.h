@@ -4,7 +4,7 @@
 #include "Matrix4x4.h"
 
 struct GaussianBlurInfo {
-	float projectionInverse;
+	float deviation;
 };
 class PostProcess;
 class GaussianBlur : public IPostEffectState

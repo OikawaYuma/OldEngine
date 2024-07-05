@@ -201,6 +201,9 @@
     <ClCompile Include="Engine\Interface\Loder.cpp" />
     <ClCompile Include="Engine\Interface\PSO\PSOAnimationModel.cpp" />
     <ClCompile Include="Engine\3d\Model\AnimationModel.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\GrayScale.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\RadialBlur.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -390,6 +393,9 @@
     <ClInclude Include="Engine\2d\PostEffect\Effect\Dissolve.h" />
     <ClInclude Include="Engine\Interface\PSO\PSOAnimationModel.h" />
     <ClInclude Include="Engine\3d\Model\AnimationModel.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\GrayScale.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\RadialBlur.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\Random.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\Object3d.PS.hlsl">
