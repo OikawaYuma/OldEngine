@@ -11,6 +11,12 @@ void GameScene::Init()
 	camera_->SetRotate({ 0.05f, 0.0f, 0.0f });
 	flooar_ = new Floor();
 	flooar_->Init();
+	
+	item_ = new Item();
+	item_->Init();
+
+	enemy_ = new Enemy();
+	enemy_->Init();
 
 	postProcess_ = new PostProcess();
 	postProcess_->SetCamera(camera_);
@@ -27,11 +33,15 @@ void GameScene::Update()
 	camera_->Update();
 	player_->Update();
 	flooar_->Update();
-}
+	item_->Update();
+	enemy_->Update();
+	}
 void GameScene::Draw()
 {
 	player_->Draw(camera_);
 	flooar_->Draw(camera_);
+	item_->Draw(camera_);
+	enemy_->Draw(camera_);
 }
 
 void GameScene::PostDraw()

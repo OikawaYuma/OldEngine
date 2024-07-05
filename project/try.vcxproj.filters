@@ -197,6 +197,8 @@
     <ClCompile Include="Engine\Interface\PSO\PSOAnimationModel.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
     <ClCompile Include="Game\Floor.cpp" />
+    <ClCompile Include="Game\Item.cpp" />
+    <ClCompile Include="Game\Enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -384,6 +386,8 @@
     <ClInclude Include="Engine\Interface\PSO\PSOAnimationModel.h" />
     <ClInclude Include="Game\Player\Player.h" />
     <ClInclude Include="Game\Floor.h" />
+    <ClInclude Include="Game\Item.h" />
+    <ClInclude Include="Game\Enemy.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\Object3d.PS.hlsl">

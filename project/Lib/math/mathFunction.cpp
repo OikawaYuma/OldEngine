@@ -416,6 +416,17 @@ Vector3 Add(const Vector3& posa, const Vector3& posb) {
 	return AddPos;
 }
 
+Vector3 Subtract(const Vector3& posa, const Vector3& posb)
+{
+	Vector3 AddPos;
+
+	AddPos.x = posa.x - posb.x;
+	AddPos.y = posa.y - posb.y;
+	AddPos.z = posa.z - posb.z;
+
+	return AddPos;
+}
+
 // 正規化
 Vector3 Normalize(const Vector3& v) {
 	Vector3 m3;
