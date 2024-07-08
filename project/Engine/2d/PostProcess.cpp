@@ -30,3 +30,7 @@ void PostProcess::Draw(){
 	//sDirectXCommon->GetCommandList()->DrawInstanced(6, 1, 0, 0);
 	sDirectXCommon->GetCommandList()->DrawInstanced(3, 1, 0, 0);
 }
+
+void PostProcess::Release()
+{
+}
