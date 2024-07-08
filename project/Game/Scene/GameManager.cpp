@@ -4,6 +4,7 @@
 #include "DirectXCommon.h"
 #include "SRVManager.h"
 #include "PSOModel.h"
+#include "PSOAnimationModel.h"
 #include "PSOSprite.h"
 #include "PSOParticle.h"
 #include "PSOPostEffect.h"
@@ -73,6 +74,9 @@ int GameManager::Run() {
 	PSO* pso = PSO::GatInstance();
 	pso->CreatePipelineStateObject();
 
+	PSOAnimationModel* psoAnimationModel = PSOAnimationModel::GatInstance();
+	psoAnimationModel->CreatePipelineStateObject();
+
 	PSOSprite* psoSprite = PSOSprite::GatInstance();
 	psoSprite->CreatePipelineStateObject();
 
@@ -80,7 +84,7 @@ int GameManager::Run() {
 	psoParticle->CreatePipelineStateObject();
 
 	PSOPostEffect* pSOPostEffect = PSOPostEffect::GatInstance();
-	pSOPostEffect->CreatePipelineStateObject();
+	pSOPostEffect->Init();
 	
 	//post->Init();
 	sceneArr_[currentSceneNo_]->Init();
@@ -116,6 +120,7 @@ int GameManager::Run() {
 		if (prevSceneNo_ != currentSceneNo_) {
 			sceneArr_[currentSceneNo_]->Init();
 		}
+		
 
 		///
 		/// ↓更新処理ここから

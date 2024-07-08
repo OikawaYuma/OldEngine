@@ -92,7 +92,7 @@
     <ClCompile Include="Engine\Interface\Camera.cpp">
       <Filter>Engine\3d</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Adapter\Engine.cpp">
+    <ClCompile Include="Engine\Audio\Adapter\Engine.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Input\Input.cpp">
@@ -190,15 +190,24 @@
     </ClCompile>
     <ClCompile Include="Engine\3d\Animation\Animation.cpp" />
     <ClCompile Include="Engine\3d\Skeleton\Skeleton.cpp" />
-    <ClCompile Include="Engine\Interface\PSO\PSOPostEffect.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\PSOPostEffect.cpp" />
     <ClCompile Include="Engine\2d\PostProcess.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\IPostEffectState.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\DepthOutline.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\FullScreen.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\Vignette.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\GaussianBlur.cpp" />
     <ClCompile Include="Engine\Interface\Loder.cpp" />
-    <ClCompile Include="Engine\3d\Model\AnimationModel.cpp" />
     <ClCompile Include="Engine\Interface\PSO\PSOAnimationModel.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
     <ClCompile Include="Game\Floor.cpp" />
     <ClCompile Include="Game\Item.cpp" />
     <ClCompile Include="Game\Enemy.cpp" />
+    <ClCompile Include="Engine\3d\Model\AnimationModel.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\GrayScale.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\RadialBlur.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\Random.cpp" />
+    <ClCompile Include="Engine\2d\PostEffect\Effect\Dissolve.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\utility\function.h">
@@ -249,7 +258,7 @@
     <ClInclude Include="Engine\Interface\Camera.h">
       <Filter>Engine\3d</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Adapter\Engine.h">
+    <ClInclude Include="Engine\Audio\Adapter\Engine.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Input\InputManager.h">
@@ -378,16 +387,23 @@
     <ClInclude Include="Lib\math\Quaternion.h" />
     <ClInclude Include="Engine\3d\Animation\Animation.h" />
     <ClInclude Include="Engine\3d\Skeleton\Skeleton.h" />
-    <ClInclude Include="Engine\Interface\PSO\PSOPostEffect.h" />
+    <ClInclude Include="Engine\2d\PostEffect\PSOPostEffect.h" />
     <ClInclude Include="Engine\2d\PostProcess.h" />
-    <ClInclude Include="Engine\Externals\json.hpp" />
-    <ClInclude Include="Engine\Interface\Loder.h" />
-    <ClInclude Include="Engine\3d\Model\AnimationModel.h" />
+    <ClInclude Include="Engine\2d\PostEffect\IPostEffectState.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\DepthOutline.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\FullScreen.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\Vignette.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\GaussianBlur.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\Dissolve.h" />
     <ClInclude Include="Engine\Interface\PSO\PSOAnimationModel.h" />
     <ClInclude Include="Game\Player\Player.h" />
     <ClInclude Include="Game\Floor.h" />
     <ClInclude Include="Game\Item.h" />
     <ClInclude Include="Game\Enemy.h" />
+    <ClInclude Include="Engine\3d\Model\AnimationModel.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\GrayScale.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\RadialBlur.h" />
+    <ClInclude Include="Engine\2d\PostEffect\Effect\Random.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shader\Object3d.PS.hlsl">

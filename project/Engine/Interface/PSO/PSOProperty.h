@@ -20,6 +20,8 @@ enum BlendMode {
 	kCountOfBlendMode,
 };
 
+
+
 class PSOProperty {
 public:
 	struct  {
