@@ -21,6 +21,8 @@ public: //Getter
 	const Matrix4x4& GetViewMatrix() const { return viewMatrix_; }
 	const Matrix4x4& GetProjectionMatrix() const { return projectionMatrix_; }
 	const Matrix4x4& GetViewprojectionMatrix() const { return viewProjectionMatrix_; }
+
+	const float& GetFarClip() const { return farClip_; }
 	
 public: //Setter
 	void SetRotate(const Vector3& rotate) { transform_.rotate = rotate; }
@@ -28,7 +30,7 @@ public: //Setter
 	void SetFovY(){}
 	void SetAspectRario(){}
 	void SetNearClip() {}
-	void SetFarClip(){}
+	void SetFarClip(const float& clip) { farClip_ = clip; }
 
 private:
 	Transform transform_;
@@ -40,6 +42,6 @@ private:
 	float fovY_ = 0.45f;
 	float asepectRatio_ = float(WinAPI::kClientWidth_) / float(WinAPI::kClientHeight_);
 	float nearClip_ = 0.1f;
-	float farClip_ = 100.0f;
+	float farClip_ = 150.0f;
 };
 

@@ -17,5 +17,6 @@ private:
 	Camera* camera_ = nullptr;
 	bool isJump_ = false;
 	float accel_ = 0;
+	Vector3 cameraToPlayerDistance_{0.0f, 6.9f, -44.0f};
 };
 

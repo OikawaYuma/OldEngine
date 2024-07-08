@@ -8,7 +8,7 @@ void GameScene::Init()
 	player_ = new Player();
 	player_->Init();
 	player_->SetCamera(camera_);
-	camera_->SetRotate({ 0.05f, 0.0f, 0.0f });
+	camera_->SetRotate({ 0.06f, 0.0f, 0.0f });
 	flooar_ = new Floor();
 	flooar_->Init();
 	
@@ -25,11 +25,7 @@ void GameScene::Init()
 
 void GameScene::Update()
 {
-	Vector3 camerarotate_ = camera_->GetRotate();
-	ImGui::Begin("Camera");
-	ImGui::DragFloat3("rotate", &camerarotate_.x,0.01f);
-	ImGui::End();
-	camera_->SetRotate(camerarotate_);
+	
 	camera_->Update();
 	player_->Update();
 	flooar_->Update();

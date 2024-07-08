@@ -26,9 +26,20 @@ void Player::Init()
 void Player::Update()
 {
 
-	ImGui::Begin("Player");
-	ImGui::DragFloat3("Scale", &worldTransform_.scale_.x);
+	Vector3 camerarotate_ = camera_->GetRotate();
+	Vector3 preCameraToPlayerDistance = cameraToPlayerDistance_;
+	float cameraFarY = camera_->GetFarClip();
+	ImGui::Begin("Player & camera");
+
+	ImGui::DragFloat3("playerScale", &worldTransform_.scale_.x);
+
+	ImGui::DragFloat3("cameraRotate", &camerarotate_.x, 0.01f);
+	ImGui::DragFloat3("cameraTranslate", &preCameraToPlayerDistance.x, 0.01f);
+	ImGui::DragFloat("cameraForY", &cameraFarY, 2.5f);
 	ImGui::End();
+	camera_->SetRotate(camerarotate_);
+	camera_->SetFarClip(cameraFarY);
+	cameraToPlayerDistance_ = preCameraToPlayerDistance;
 
 	object_->Update();
 	if (Input::GetInstance()->TriggerKey(DIK_SPACE) && !isJump_) {
@@ -63,9 +74,12 @@ void Player::Update()
 		accel_ = 0.0f;
 		isJump_ = false;
 	}
-	worldTransform_.translation_.z += 1.0f;
+	//worldTransform_.translation_.z += 1.0f;
 	worldTransform_.UpdateMatrix();
-	camera_->SetTranslate({ worldTransform_.translation_.x,worldTransform_.translation_.y+ 10, worldTransform_.translation_.z - 50 });
+	camera_->SetTranslate({ 
+		worldTransform_.translation_.x + cameraToPlayerDistance_.x,
+		worldTransform_.translation_.y + cameraToPlayerDistance_.y, 
+		worldTransform_.translation_.z + cameraToPlayerDistance_.z });
 	object_->SetWorldTransform(worldTransform_);
 }
 
