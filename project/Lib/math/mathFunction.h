@@ -46,7 +46,6 @@ float DotQuaternion(const Quaternion& v1, const Quaternion& v2);
 Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t);
 Quaternion SLerp(const Quaternion& v1, const Quaternion& v2, float t);
 Vector3 Add(const Vector3& posa, const Vector3& posb);
-Vector3 Subtract(const Vector3& posa, const Vector3& posb);
 
 Vector3 Normalize(const Vector3& v);
 Quaternion Normalize(Quaternion quaternion);
