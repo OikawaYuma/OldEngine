@@ -19,8 +19,8 @@ public:
 	void Release()override;
 	int GameClose()override;
 private:
-	Camera* camera_ = nullptr;
-	Player* player_ = nullptr;
+	std::unique_ptr<Camera> camera_ = nullptr;
+	std::unique_ptr<Player> player_ = nullptr;
 	Floor* flooar_ = nullptr;
 	Item* item_ = nullptr;
 	Enemy* enemy_ = nullptr;
